@@ -1,0 +1,12 @@
+# Large raw media never belongs in this repo — keep it in Drive/local storage
+*.mp4
+*.mov
+*.m4a
+*.mp3
+*.wav
+*.mkv
+
+# OS / editor noise
+.DS_Store
+.vscode/
+*.swp
