@@ -17,21 +17,16 @@ Published at [study.anati.in](https://study.anati.in) via GitHub Pages.
   - `index.html` — programme landing page, lists semesters
 - `philosophy/` — yoga philosophy notes, not tied to a specific course
 - `practice/` — asanas, sequences, teaching notes, not tied to a specific course
-- `courses/`
-  - `msc/` — small raw source material for the M.Sc. program (see below)
-    - `class-notes/raw-transcripts/` — raw class notes and reference PDFs as given
-    - `question-papers/` — old question papers, used to calibrate note depth/format
-  - `yic/`, `ycb/` — earlier certifications (to be populated)
 - `assets/shared/` — shared stylesheets/fonts used across topic pages
 
 See `NOTE-FORMAT.md` for the note format used across `msc-yoga/` (and the reasoning behind it).
 
 ## What goes here vs. stays external
 
-Large raw material — audio/video recordings, big scanned PDFs, the full
-local class-material archive — stays outside the repo and is *referenced*,
-not committed. Small text-based raw material (class notes, question papers,
-short reference PDFs) is fine to commit directly, as in `courses/msc/`.
-Processed, finished notes (`msc-yoga/`, `philosophy/`, `practice/`) are
-what this repo is really for — along with the specific diagrams a topic's
-notes actually use, copied into that topic's own `assets/diagrams/`.
+Raw source material — class-note PDFs, textbook references, question
+papers, the full local class-material archive of screenshots and photos —
+stays outside the repo, on the local machine, and is only *read from* when
+writing a topic's notes. Nothing raw is committed. This repo holds only the
+finished, published output: the notes pages themselves (`msc-yoga/`,
+`philosophy/`, `practice/`) and the specific diagrams a topic's notes
+actually use, copied into that topic's own `assets/diagrams/`.

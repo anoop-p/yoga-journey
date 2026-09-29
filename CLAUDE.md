@@ -4,6 +4,12 @@ This repo holds Anoop's yoga study notes (M.Sc. Yoga, plus earlier YIC/YCB
 certifications). Read `README.md` for the folder layout and `NOTE-FORMAT.md`
 before touching anything under `msc-yoga/`.
 
+All raw source material (class notes, question papers, textbook references,
+photos) lives outside this repo, in Anoop's local class-material archive
+(path given by the user — e.g. `.../learning/msc-yoga/`) or the person's
+other apps. This repo holds only the finished, published output: nothing
+raw gets committed here.
+
 ## Conventions
 
 - **Note format**: topics under `msc-yoga/` (and eventually `philosophy/`,
@@ -27,15 +33,15 @@ before touching anything under `msc-yoga/`.
   in `<subject>/<topic>/assets/diagrams/` and are referenced with a relative
   path (`assets/diagrams/<name>.jpg`), inserted inline near the section they
   illustrate — not bundled at the end.
-- **Raw vs. processed**: small text/PDF class notes are fine to commit under
-  `courses/<course>/class-notes/raw-transcripts/` and
-  `courses/<course>/question-papers/`. Large audio/video, and the full local
-  class-material archive (screenshots, textbook PDFs), stay external — never
-  commit them here. Only the specific diagrams a topic actually uses get
-  copied into that topic's `assets/diagrams/`. When in doubt, check `.gitignore`.
+- **Nothing raw gets committed**: class notes, question papers, textbook
+  PDFs, and the full local screenshot/photo archive all stay on the local
+  machine and are only read from, never copied into this repo — not even a
+  small excerpt. The only files this repo ever gains are a topic's
+  `notes.html` and the specific diagrams it uses. When in doubt, check
+  `.gitignore`.
 - **Question papers are a design input**, not just an archive item — when
-  building or revising a topic's note format, check
-  `courses/msc/question-papers/` for how that topic is actually examined
+  building or revising a topic's note format, check the local archive for
+  past question papers on that topic to see how it's actually examined
   (recall vs. explain vs. synthesis) and shape the three layers accordingly.
 - **Source honesty**: when writing the "Connect to practice" layer, if the
   class notes don't state a specific asana/mechanism link, say so in the
@@ -43,15 +49,14 @@ before touching anything under `msc-yoga/`.
 
 ## Before adding a new topic
 
-1. Check `courses/msc/question-papers/` for any past questions on the topic.
-2. Check the local class-material archive (screenshots, notes, references)
-   for the relevant subject/topic, and `courses/msc/class-notes/raw-transcripts/`
-   for anything already committed.
-3. Follow the structure in
+1. Ask for (or recall) the local class-material archive path if not already
+   known, and check it for question papers and class notes/references on
+   the topic.
+2. Follow the structure in
    `msc-yoga/semester-1/t3-human-anatomy-physiology/digestive-system/notes.html`
    — copy its CSS/JS scaffolding rather than rewriting it.
-4. Pick out only the diagrams/photos actually relevant to that topic, copy
+3. Pick out only the diagrams/photos actually relevant to that topic, copy
    them into `<subject>/<topic>/assets/diagrams/`, and reference them inline
    near the relevant explanation.
-5. Add the topic to its subject's `index.html`, and update
+4. Add the topic to its subject's `index.html`, and update
    `semester-1/index.html` if this is the subject's first topic.
