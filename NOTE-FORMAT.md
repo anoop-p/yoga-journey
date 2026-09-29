@@ -14,7 +14,7 @@ things fixed that:
    Anoop needs both: real comprehension, and the ability to reproduce
    Def/Stru/Fun-style answers on paper.
 2. **The M.Sc. question paper itself rewards graduated understanding**, not
-   just recall. See `courses/msc/question-papers/msc_first_semester_question_paper.pdf`
+   just recall. See the Semester 1 question paper in the local class-material archive
    (Semester 1, Human Anatomy and Physiology, DSCC-18):
 
    | Section | Marks | Style | Example |
