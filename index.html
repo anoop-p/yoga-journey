@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yoga Journey &mdash; Study Notes</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  main{ max-width:760px; margin:0 auto; padding:64px 20px 100px; }
+  h1{
+    font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:36px;
+    margin:0 0 8px; text-wrap:balance;
+  }
+  .dek{ font-size:15px; color:var(--muted); margin:0 0 40px; max-width:56ch; }
+  .kicker{
+    font-size:11.5px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--teal); font-weight:600; margin-bottom:14px;
+  }
+  .topic-grid{ display:flex; flex-direction:column; gap:12px; }
+  a.topic-card{
+    display:block; background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; padding:18px 22px; box-shadow:var(--shadow);
+    text-decoration:none; color:inherit;
+  }
+  a.topic-card:hover{ border-color:var(--accent); }
+  .topic-card .area{
+    font-family:"IBM Plex Mono", monospace; font-size:10.5px;
+    letter-spacing:.04em; text-transform:uppercase; color:var(--teal);
+    background:var(--teal-soft); padding:2px 8px; border-radius:5px;
+    display:inline-block; margin-bottom:8px;
+  }
+  .topic-card h2{ font-family:"Fraunces", Georgia, serif; font-size:19px; margin:0 0 4px; }
+  .topic-card p{ font-size:13.5px; color:var(--ink-soft); margin:0; }
+  .soon{
+    background:var(--surface-2); border:1px dashed var(--border);
+    border-radius:12px; padding:18px 22px; color:var(--muted); font-size:13.5px;
+  }
+  footer{
+    margin-top:56px; padding-top:20px; border-top:1px solid var(--border);
+    font-size:12px; color:var(--muted);
+  }
+  footer a{ color:var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <div class="kicker">Yoga Journey</div>
+  <h1>Study Notes</h1>
+  <p class="dek">Anatomy, physiology, and practice notes for the M.Sc. Yoga program &mdash; each topic laid out to build real understanding first, then the exam-ready facts on top of it.</p>
+
+  <div class="topic-grid">
+    <a class="topic-card" href="anatomy/digestive-system/notes.html">
+      <span class="area">Anatomy</span>
+      <h2>Digestive System</h2>
+      <p>Mouth through elimination &mdash; structure, mechanism, and how yoga practice connects to each stage.</p>
+    </a>
+    <div class="soon">More topics (respiratory, muscular, philosophy, practice) are added here as they're written &mdash; see the repo's <code>NOTE-FORMAT.md</code> for the format these follow.</div>
+  </div>
+
+  <footer>
+    Source on <a href="https://github.com/anoop-p/yoga-journey">GitHub</a>.
+  </footer>
+</main>
+</body>
+</html>
