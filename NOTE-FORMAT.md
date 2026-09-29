@@ -1,6 +1,6 @@
 # Note format for anatomy/physiology topics
 
-Decided 2026-09-25, based on `anatomy/digestive-system/notes.html` as the
+Decided 2026-09-25, based on `msc-yoga/semester-1/t3-human-anatomy-physiology/digestive-system/notes.html` as the
 reference implementation. Read that file's Stomach section first if you
 want a concrete example before changing this format.
 
@@ -59,7 +59,7 @@ answerable without memorizing them as a separate list.
 ## Implementation notes
 
 - Single self-contained HTML file per topic, no external framework — see
-  `anatomy/digestive-system/notes.html`.
+  `msc-yoga/semester-1/t3-human-anatomy-physiology/digestive-system/notes.html`.
 - Tabs and recall-card flip are implemented generically in a shared
   `<script>` block: any section with a `.layer-nav` + three `.layer-panel`
   elements (`data-panel="understand|explain|practice"`) gets working tabs

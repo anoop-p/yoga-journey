@@ -330,6 +330,10 @@
   }
   figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
 
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+
   .source-note{
     font-size:12px;
     color:var(--muted);
@@ -543,7 +547,7 @@
       <p class="dek">Food contains carbohydrates, protein, fat, vitamins, minerals and water &mdash; none of it usable until it is broken into molecules small enough for a cell to absorb. That breakdown is the job of this whole system.</p>
 
       <figure>
-        <img src="ILLUS_OVERVIEW" alt="Digestive system overview showing main organs, the digestion and absorption process step by step, nutrient absorption pathways in the small intestine, and major digestive enzymes">
+        <img src="assets/diagrams/overview.jpg" alt="Digestive system overview showing main organs, the digestion and absorption process step by step, nutrient absorption pathways in the small intestine, and major digestive enzymes">
         <figcaption>Main organs, the process step-by-step, and the major enzymes at each stage.</figcaption>
       </figure>
 
@@ -602,6 +606,17 @@
       <div class="kicker">01 &middot; Ingestion</div>
       <h2>Mouth &amp; Oral Cavity</h2>
       <p class="dek">Digestion begins here &mdash; three things happen at once: mastication, mixing with saliva, and bolus formation.</p>
+
+      <div class="figure-grid">
+        <figure>
+          <img src="assets/diagrams/teeth-types.jpg" alt="The four types of human teeth: incisor, canine, premolar, molar">
+          <figcaption>Incisor, canine, premolar, molar &mdash; each shaped for a different job.</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/diagrams/salivary-glands.jpg" alt="Salivary glands: parotid, submandibular, sublingual, with their ducts">
+          <figcaption>Parotid, submandibular and sublingual glands and their ducts.</figcaption>
+        </figure>
+      </div>
 
       <div class="layer-nav">
         <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
@@ -666,6 +681,10 @@
           <li><b>Crown</b> &mdash; the visible part &middot; <b>Root</b> &mdash; anchored below the gum &middot; <b>Apex</b> &mdash; the root tip</li>
           <li><b>Enamel</b> &mdash; the hardest tissue in the body &middot; <b>Dentin</b> &mdash; the bulk of the tooth &middot; <b>Pulp</b> &mdash; vessels, connective tissue, nerves</li>
         </ul>
+        <figure style="margin-top:14px;">
+          <img src="assets/diagrams/tooth-cross-section.jpg" alt="Labeled cross-section of a tooth showing crown, root, enamel, dentin, pulp, gum, cementum, blood vessels and nerve">
+          <figcaption>Crown to root &mdash; enamel, dentin, pulp, cementum, and the nerve/blood supply.</figcaption>
+        </figure>
 
         <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Salivary glands</p>
         <ul class="notes">
@@ -771,7 +790,7 @@
       <p class="dek">A J-shaped muscular organ &mdash; part storage tank, part grinder, part acid bath.</p>
 
       <figure>
-        <img src="ILLUS_STOMACH" alt="Anatomy of the stomach showing cardia, fundus, body, pyloric region, duodenum">
+        <img src="assets/diagrams/stomach-anatomy.jpg" alt="Anatomy of the stomach showing cardia, fundus, body, pyloric region, duodenum">
         <figcaption>Regions of the stomach: cardia, fundus, body (corpus), and pyloric region leading into the duodenum.</figcaption>
       </figure>
 
@@ -854,6 +873,11 @@
       <div class="kicker">04 &middot; Digestion &amp; absorption</div>
       <h2>Small Intestine</h2>
       <p class="dek">5&ndash;6 metres long, in three parts. Most digestion &mdash; and almost all absorption &mdash; happens here.</p>
+
+      <figure>
+        <img src="assets/diagrams/small-intestine-regions.jpg" alt="The three regions of the small intestine: duodenum, jejunum, ileum">
+        <figcaption>Duodenum &rarr; jejunum &rarr; ileum, in order along the tube.</figcaption>
+      </figure>
 
       <div class="layer-nav">
         <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
@@ -940,7 +964,7 @@
       <p class="dek">What's left after the small intestine is done &mdash; mostly water, electrolytes, and undigested fibre.</p>
 
       <figure>
-        <img src="ILLUS_LARGE_INTESTINE" alt="Large intestine and colon showing ascending, transverse, descending, sigmoid colon, cecum and rectum">
+        <img src="assets/diagrams/large-intestine.jpg" alt="Large intestine and colon showing ascending, transverse, descending, sigmoid colon, cecum and rectum">
         <figcaption>Ascending &rarr; transverse &rarr; descending &rarr; sigmoid colon, ending at the rectum.</figcaption>
       </figure>
 
@@ -1013,7 +1037,7 @@
       <p class="dek">The organs that support digestion without food ever passing through them.</p>
 
       <figure>
-        <img src="ILLUS_LIVER" alt="Liver anatomy showing right and left lobes, bile duct, gallbladder, hepatic artery and vein">
+        <img src="assets/diagrams/liver.jpg" alt="Liver anatomy showing right and left lobes, bile duct, gallbladder, hepatic artery and vein">
         <figcaption>Liver lobes, bile duct and gallbladder &mdash; the source and storage route for bile.</figcaption>
       </figure>
 
@@ -1105,6 +1129,11 @@
           <tr><td>Fat</td><td>Fatty acids / monoglycerides + bile salts &rarr; micelles &rarr; enter epithelial cells &rarr; packaged as chylomicrons &rarr; lacteals &rarr; lymph &rarr; bloodstream</td></tr>
         </table>
       </div>
+
+      <figure>
+        <img src="assets/diagrams/villi-microvilli.jpg" alt="Colourised electron micrograph of intestinal villi and their brush border of microvilli">
+        <figcaption>Electron micrograph of the villi and microvilli (brush border) that give the small intestine its huge absorptive surface.</figcaption>
+      </figure>
 
       <div class="card">
         <h3>Villus cross-section &mdash; what's inside</h3>
