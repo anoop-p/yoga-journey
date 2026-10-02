@@ -1,0 +1,498 @@
+<title>Skeletal System</title>
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Skeletal System</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../index.html">&larr; Unit 2 &middot; Skeletal &amp; Muscular System</a>
+    <div class="brand">
+      <div class="eyebrow">Anatomy &amp; Physiology</div>
+      <h1>Skeletal System</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="overview"><span class="num">00</span><span>Functions &amp; Divisions</span></button>
+      <button class="nav-item" data-target="bones"><span class="num">01</span><span>Bone Classification &amp; Structure</span></button>
+      <button class="nav-item" data-target="joints"><span class="num">02</span><span>Joints</span></button>
+      <button class="nav-item" data-target="movements"><span class="num">03</span><span>Joint Movements &amp; Practice</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Reference: Anatomy &amp; Physiology &mdash; M.Sc. Notes, Unit 1 (Skeletal System) &amp; Unit 2 (Joints)
+    </div>
+  </aside>
+
+  <main id="main">
+
+    <!-- 00 OVERVIEW -->
+    <section class="section" id="sec-overview">
+      <div class="kicker">00 &middot; Foundations</div>
+      <h2>Functions &amp; Divisions</h2>
+      <p class="dek">206 bones, one framework, doing six different jobs at once.</p>
+
+      <figure>
+        <img src="assets/diagrams/skeletal-system-overview.jpg" alt="The Skeletal System overview: divisions (axial and appendicular), types of bones, anterior and posterior full-skeleton views with labels, vertebral column regions, rib cage, skull, and pelvic bone">
+        <figcaption>Axial skeleton (80 bones) in the trunk and head; appendicular skeleton (126 bones) in the limbs and girdles.</figcaption>
+      </figure>
+
+      <div class="card">
+        <h3><span class="tag">Def</span>Skeletal System</h3>
+        <div class="dsf">
+          <div class="row"><div class="label">Def</div><p>The framework of bones, cartilages, joints, and ligaments that supports and protects the body. An adult has 206 bones, though this varies slightly between individuals (accessory bones, fused sutures).</p></div>
+        </div>
+      </div>
+
+      <div class="card story" style="box-shadow:none;">
+        <p style="margin-bottom:0;">Six functions, in one place: <b>support</b> (a rigid frame bearing body weight and anchoring soft tissue), <b>protection</b> (cranium round the brain, thoracic cage round heart and lungs, vertebral column round the spinal cord), <b>movement</b> (bones act as levers that muscles pull on via tendons), <b>mineral storage</b> (calcium and phosphate, released into blood as needed), <b>haematopoiesis</b> (red marrow in flat bones and long-bone ends makes red cells, white cells, platelets), and <b>fat/energy storage</b> (yellow marrow in the medullary cavity stores triglycerides).</p>
+      </div>
+
+      <p style="font-size:13px; font-weight:600; color:var(--ink); margin:22px 0 10px;">Two divisions</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Feature</th><th>Axial Skeleton</th><th>Appendicular Skeleton</th></tr>
+          <tr><td>Bones</td><td>80</td><td>126</td></tr>
+          <tr><td>Location</td><td>Skull, vertebral column, thoracic cage, hyoid</td><td>Limbs and girdles</td></tr>
+          <tr><td>Primary role</td><td>Protection &amp; support of trunk organs</td><td>Locomotion &amp; manipulation</td></tr>
+          <tr><td>Mobility</td><td>Relatively less mobile (except cervical spine)</td><td>Highly mobile, especially shoulder &amp; hip</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">How many bones in the adult human skeleton?</div><div class="a">206</div></div>
+          <div class="recall-card"><div class="q">Which skeleton division has 80 bones?</div><div class="a">The axial skeleton</div></div>
+          <div class="recall-card"><div class="q">Which skeleton division has 126 bones?</div><div class="a">The appendicular skeleton</div></div>
+          <div class="recall-card"><div class="q">Where is red bone marrow, and what does it do?</div><div class="a">Flat bones and long-bone ends; makes red cells, white cells, and platelets (haematopoiesis)</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01 BONE CLASSIFICATION & STRUCTURE -->
+    <section class="section" id="sec-bones">
+      <div class="kicker">01 &middot; Shape &amp; structure</div>
+      <h2>Bone Classification &amp; Structure</h2>
+      <p class="dek">Five shapes for five mechanical jobs; every long bone shares the same basic anatomy, right down to the microscopic level.</p>
+
+      <div class="layer-nav">
+        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
+        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
+        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      </div>
+
+      <!-- LAYER 1 -->
+      <div class="layer-panel story" data-panel="understand">
+        <p>Bones aren't all one shape because they don't all do the same mechanical job. <b>Long bones</b> (femur, humerus) act as levers &mdash; a shaft plus two ends. <b>Short bones</b> (carpals, tarsals) give stability with limited motion. <b>Flat bones</b> (sternum, ribs, cranial bones) protect organs and offer broad surfaces for muscle to attach to. <b>Irregular bones</b> (vertebrae, hip bone) don't fit any other category. <b>Sesamoid bones</b> (patella, pisiform) sit embedded inside tendons, reducing friction and changing the angle a muscle pulls at.</p>
+        <div class="analogy">
+          <b>Longest to shortest, same skeleton</b>
+          The <b>femur</b> (thigh bone) is the longest bone in the body &mdash; a long bone built to carry the whole body's weight through the hip and knee. At the opposite extreme, the <b>stapes</b>, one of the three tiny auditory ossicles in the middle ear (with the malleus and incus), is the shortest bone in the body &mdash; built purely to transmit sound vibrations, nothing to do with weight-bearing at all.
+        </div>
+      </div>
+
+      <!-- LAYER 2 -->
+      <div class="layer-panel" data-panel="explain" hidden>
+        <div class="marks-tag">Reference &middot; bone shapes</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Type</th><th>Description</th><th>Examples</th></tr>
+            <tr><td>Long</td><td>Longer than wide; shaft (diaphysis) + two ends (epiphyses); act as levers</td><td>Femur, humerus, phalanges</td></tr>
+            <tr><td>Short</td><td>Roughly cube-shaped; stability with limited motion</td><td>Carpals, tarsals</td></tr>
+            <tr><td>Flat</td><td>Thin, flattened, often curved; protect organs, broad muscle attachment</td><td>Sternum, ribs, scapula, cranial bones</td></tr>
+            <tr><td>Irregular</td><td>Complex shapes fitting no other category</td><td>Vertebrae, sacrum, hip bone</td></tr>
+            <tr><td>Sesamoid</td><td>Small, embedded in tendons; reduce friction, alter angle of pull</td><td>Patella, pisiform</td></tr>
+          </table>
+        </div>
+
+        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Gross structure of a long bone</p>
+        <ul class="notes">
+          <li><b>Diaphysis</b> &mdash; the shaft; mainly compact bone around the medullary (marrow) cavity</li>
+          <li><b>Epiphysis</b> &mdash; the expanded ends; spongy (cancellous) bone under a thin compact-bone shell</li>
+          <li><b>Epiphyseal plate/line</b> &mdash; hyaline-cartilage growth plate in children, responsible for lengthwise bone growth; ossifies to a line in adults</li>
+          <li><b>Periosteum</b> &mdash; tough fibrous outer covering (not at joint surfaces); carries osteoblasts, osteoprogenitor cells, blood vessels, nerves; where tendons/ligaments attach</li>
+          <li><b>Endosteum</b> &mdash; thin lining of the medullary cavity and trabeculae, carrying osteoblasts and osteoclasts</li>
+          <li><b>Articular cartilage</b> &mdash; hyaline cartilage over the epiphyseal (joint) surfaces, reducing friction</li>
+        </ul>
+
+        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Microscopic structure &mdash; the osteon (Haversian system)</p>
+        <ul class="notes">
+          <li><b>Central (Haversian) canal</b> &mdash; runs the bone's long axis, carries blood vessels and nerves</li>
+          <li><b>Lamellae</b> &mdash; concentric rings of mineralised matrix around the central canal</li>
+          <li><b>Lacunae</b> &mdash; small spaces between lamellae, housing osteocytes</li>
+          <li><b>Canaliculi</b> &mdash; tiny channels linking lacunae to each other and to the central canal, for nutrient/waste exchange</li>
+          <li><b>Perforating (Volkmann's) canals</b> &mdash; transverse channels linking osteons to each other and to the periosteum/medullary cavity</li>
+          <li>Spongy bone has no true osteons &mdash; a trabecular lattice along stress lines, with red marrow filling the spaces</li>
+        </ul>
+
+        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Bone cells</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Cell</th><th>Location</th><th>Function</th></tr>
+            <tr><td>Osteoprogenitor cells</td><td>Periosteum &amp; endosteum</td><td>Stem cells &mdash; differentiate into osteoblasts</td></tr>
+            <tr><td>Osteoblasts</td><td>Bone surfaces</td><td>Synthesise/secrete osteoid (organic matrix); mineralisation</td></tr>
+            <tr><td>Osteocytes</td><td>Trapped in lacunae</td><td>Mature bone cells; maintain matrix, sense mechanical strain</td></tr>
+            <tr><td>Osteoclasts</td><td>Bone surfaces (monocyte lineage)</td><td>Resorb bone matrix; remodelling &amp; calcium homeostasis</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- LAYER 3 -->
+      <div class="layer-panel" data-panel="practice" hidden>
+        <div class="marks-tag">Note</div>
+        <p style="font-size:14.5px;">Your notes don't draw a specific asana link for bone shape or microscopic structure on their own &mdash; the practice connections your notes actually make (Q22: how asanas/pranayama benefit muscles <i>and</i> bones) are drawn at the joint and movement level, in Section 03, not at the tissue level covered here.</p>
+      </div>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Which is the longest bone in the human body?</div><div class="a">The femur</div></div>
+          <div class="recall-card"><div class="q">Name the shortest bone in the human body.</div><div class="a">The stapes (one of the three auditory ossicles)</div></div>
+          <div class="recall-card"><div class="q">What is the shaft of a long bone called?</div><div class="a">The diaphysis</div></div>
+          <div class="recall-card"><div class="q">Which bone cell resorbs bone matrix?</div><div class="a">Osteoclasts</div></div>
+        </div>
+      </div>
+
+      <figure style="margin-top:8px;">
+        <img src="assets/diagrams/long-bone-structure.jpg" alt="Structure of a long bone: epiphysis, metaphysis, diaphysis (shaft), and epiphyseal plate at each end">
+        <figcaption>A long bone: epiphysis (ends) &middot; metaphysis &middot; diaphysis (shaft) &middot; epiphyseal plate (growth plate, in children).</figcaption>
+      </figure>
+    </section>
+
+    <!-- 02 JOINTS -->
+    <section class="section" id="sec-joints">
+      <div class="kicker">02 &middot; Articulations</div>
+      <h2>Joints</h2>
+      <p class="dek">A joint is any point of contact between two bones &mdash; classified either by how much it moves, or by what tissue holds it together.</p>
+
+      <div class="layer-nav">
+        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
+        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
+        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      </div>
+
+      <!-- LAYER 1 -->
+      <div class="layer-panel story" data-panel="understand">
+        <p>Joints can be described two ways, and it's worth keeping them separate. <b>Functionally</b> &mdash; by how much they move &mdash; a joint is synarthrosis (immovable, like a skull suture), amphiarthrosis (slightly movable, like an intervertebral disc), or diarthrosis (freely movable, like the shoulder). <b>Structurally</b> &mdash; by what tissue joins the bones &mdash; a joint is fibrous, cartilaginous, or synovial. The two systems line up loosely (fibrous joints tend to be immovable, synovial joints tend to be freely movable) but they're answering different questions, and exam questions sometimes ask for one specifically.</p>
+        <div class="analogy">
+          <b>Synovial joints, the moving majority</b>
+          Synovial joints are the most common and most mobile type &mdash; a fluid-filled capsule (synovial fluid lubricates and nourishes the joint), lined with articular cartilage at the bone ends, and reinforced by ligaments. Their six sub-types (plane, hinge, pivot, condyloid, saddle, ball-and-socket) each permit a different range and axis of movement, which is exactly what asana practice works with and against.
+        </div>
+      </div>
+
+      <!-- LAYER 2 -->
+      <div class="layer-panel" data-panel="explain" hidden>
+        <div class="marks-tag">Q17 &middot; Name two types of joints in the body (5 marks)</div>
+        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:0 0 6px;">Functional classification (by movement)</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Class</th><th>Movement</th><th>Example</th></tr>
+            <tr><td>Synarthrosis</td><td>Immovable</td><td>Sutures of the skull</td></tr>
+            <tr><td>Amphiarthrosis</td><td>Slightly movable</td><td>Pubic symphysis, intervertebral discs</td></tr>
+            <tr><td>Diarthrosis</td><td>Freely movable</td><td>Shoulder, hip, knee, elbow</td></tr>
+          </table>
+        </div>
+        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Structural classification (by tissue)</p>
+        <ul class="notes">
+          <li><b>Fibrous</b> &mdash; dense fibrous tissue; generally immovable/slightly movable.
+            <ul>
+              <li>Sutures &mdash; skull only, interlocking, ossify with age</li>
+              <li>Syndesmoses &mdash; ligament/membrane, e.g. distal tibiofibular joint, radio-ulnar interosseous membrane</li>
+              <li>Gomphoses &mdash; peg-in-socket, e.g. a tooth in its socket</li>
+            </ul>
+          </li>
+          <li><b>Cartilaginous</b> &mdash; united by cartilage; little to moderate movement.
+            <ul>
+              <li>Synchondroses &mdash; hyaline cartilage, often temporary, e.g. epiphyseal growth plates</li>
+              <li>Symphyses &mdash; fibrocartilage, e.g. pubic symphysis, intervertebral discs</li>
+            </ul>
+          </li>
+          <li><b>Synovial</b> &mdash; fluid-filled cavity; the most mobile type. Structure: articular cartilage, joint capsule (fibrous layer + synovial membrane), synovial fluid, reinforcing ligaments, and (in some joints) menisci, fat pads, bursae.</li>
+        </ul>
+        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Types of synovial joint</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Type</th><th>Movement</th><th>Example</th></tr>
+            <tr><td>Plane (gliding)</td><td>Short, non-axial gliding</td><td>Intercarpal, acromioclavicular</td></tr>
+            <tr><td>Hinge</td><td>Uniaxial &mdash; flexion/extension only</td><td>Elbow, knee, interphalangeal</td></tr>
+            <tr><td>Pivot</td><td>Uniaxial &mdash; rotation on a central axis</td><td>Atlanto-axial, proximal radio-ulnar</td></tr>
+            <tr><td>Condyloid</td><td>Biaxial &mdash; flexion/extension, abduction/adduction</td><td>Wrist, metacarpophalangeal</td></tr>
+            <tr><td>Saddle</td><td>Biaxial &mdash; greater range than condyloid</td><td>Thumb carpometacarpal</td></tr>
+            <tr><td>Ball-and-socket</td><td>Multiaxial &mdash; all movements plus rotation</td><td>Shoulder, hip</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- LAYER 3 -->
+      <div class="layer-panel" data-panel="practice" hidden>
+        <div class="marks-tag">Applied</div>
+        <div class="practice-link">
+          <b>Joint design sets the natural limits of an asana</b>
+          The notes are explicit on this: ball-and-socket joints (hip, shoulder) permit the greatest multiaxial freedom but depend heavily on surrounding muscle and ligament for stability &mdash; and the hip's deeper socket favours stability over mobility compared with the shallower shoulder joint. Hinge joints (knee, elbow) are built principally for uniaxial flexion/extension, so forcing rotation or lateral movement at them &mdash; the notes give poorly aligned padmasana or virasana as examples &mdash; risks ligamentous strain. The vertebral column, as a chain of amphiarthrotic symphyses (the discs) plus paired facet (plane) joints, permits cumulative flexion, extension, lateral flexion, and rotation, with how much motion available at each region set by the local facet-joint orientation.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Name any two types of joints in the body.</div><div class="a">Any two of: fibrous, cartilaginous, synovial (structural); or synarthrosis, amphiarthrosis, diarthrosis (functional)</div></div>
+          <div class="recall-card"><div class="q">What fluid lubricates a synovial joint?</div><div class="a">Synovial fluid</div></div>
+          <div class="recall-card"><div class="q">Which synovial joint type is uniaxial, flexion/extension only?</div><div class="a">Hinge (e.g. elbow, knee)</div></div>
+          <div class="recall-card"><div class="q">Which synovial joint type allows the most freedom of movement?</div><div class="a">Ball-and-socket (e.g. shoulder, hip)</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 JOINT MOVEMENTS & PRACTICE -->
+    <section class="section" id="sec-movements">
+      <div class="kicker">03 &middot; Applied biomechanics</div>
+      <h2>Joint Movements &amp; Practice</h2>
+      <p class="dek">The vocabulary that names every movement an asana asks a joint to make.</p>
+
+      <div class="layer-nav">
+        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
+        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
+        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      </div>
+
+      <!-- LAYER 1 -->
+      <div class="layer-panel story" data-panel="understand">
+        <p>Every movement at a synovial joint has a name, and the names come in opposite pairs &mdash; one direction, then its reverse. Learn them as pairs and the whole list becomes half the size: flexion/extension, abduction/adduction, supination/pronation, inversion/eversion, dorsiflexion/plantarflexion, protraction/retraction, elevation/depression. Rotation and circumduction stand alone &mdash; rotation turns a bone around its own long axis, and circumduction strings flexion, abduction, extension, and adduction together into one conical sweep.</p>
+        <div class="analogy">
+          <b>Why bones and muscles and pranayama share one exam question</b>
+          Range of motion at any joint is set by four things together: the shape of the articulating surfaces, the strength and placement of ligaments, muscle bulk, and the tension of the opposing (antagonist) muscle. That's exactly why the exam pairs "muscles and bones" in one question (Q22) &mdash; asana practice works on the joint's bony geometry (fixed) and its surrounding soft tissue (adaptable) at the same time, and neither half of that picture is separable from the other in practice.
+        </div>
+      </div>
+
+      <!-- LAYER 2 -->
+      <div class="layer-panel" data-panel="explain" hidden>
+        <div class="marks-tag">Reference &middot; movement terminology</div>
+        <ul class="notes">
+          <li><b>Flexion / Extension</b> &mdash; decreasing / increasing the angle between two bones</li>
+          <li><b>Abduction / Adduction</b> &mdash; moving a limb away from / toward the midline</li>
+          <li><b>Rotation</b> (medial/lateral) &mdash; turning a bone around its own long axis</li>
+          <li><b>Circumduction</b> &mdash; a conical movement combining flexion, abduction, extension, adduction in sequence</li>
+          <li><b>Supination / Pronation</b> &mdash; forearm rotation so the palm faces anteriorly-superiorly / posteriorly-inferiorly</li>
+          <li><b>Inversion / Eversion</b> &mdash; turning the sole of the foot medially / laterally</li>
+          <li><b>Dorsiflexion / Plantarflexion</b> &mdash; lifting the foot toward the shin / pointing the toes away, at the ankle</li>
+          <li><b>Protraction / Retraction</b> &mdash; moving a body part anteriorly / posteriorly in the transverse plane (e.g. scapular)</li>
+          <li><b>Elevation / Depression</b> &mdash; lifting / lowering a body part (e.g. shoulder)</li>
+        </ul>
+      </div>
+
+      <!-- LAYER 3 -->
+      <div class="layer-panel" data-panel="practice" hidden>
+        <div class="marks-tag">Q22 &middot; How asanas and pranayama are good for muscles and bones (10 marks) &mdash; the bones-specific angle</div>
+        <div class="practice-link">
+          <b>What the notes actually connect</b>
+          The notes cue specific asanas against specific joint movements &mdash; elbow flexion in bhujangasana's preparatory phase, spinal extension in the full pose, arm abduction in tadasana variations &mdash; and frame this explicitly as "essential for accurately cueing and analysing asanas." That is the connection your notes draw: movement vocabulary maps directly onto naming and cueing what a given asana is doing at a given joint.
+        </div>
+        <p style="font-size:14.5px;">On why this matters for the joints themselves (not just the muscles crossing them, which the Muscular System topic covers): the notes state that a hinge joint like the knee or elbow is built for uniaxial flexion/extension, and that forcing rotation or lateral movement at it &mdash; misaligned padmasana or virasana are the examples given &mdash; risks ligamentous strain, not muscular strain. That is a joint-structure argument, distinct from the muscular-fatigue and stretch-tolerance content in the Muscular System topic, which is why Q22 asks about muscles <i>and</i> bones as two separate halves of the same answer.</p>
+      </div>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">What are bio-mechanical movements?</div><div class="a">Named movements produced at joints by muscles acting on bones as levers &mdash; flexion, extension, abduction, rotation, and so on</div></div>
+          <div class="recall-card"><div class="q">Lifting the foot toward the shin is called?</div><div class="a">Dorsiflexion</div></div>
+          <div class="recall-card"><div class="q">A conical movement combining flexion, abduction, extension, adduction?</div><div class="a">Circumduction</div></div>
+          <div class="recall-card"><div class="q">Why does forcing rotation at the knee risk injury?</div><div class="a">The knee is a hinge joint, built for uniaxial flexion/extension only &mdash; forcing rotation risks ligamentous strain</div></div>
+        </div>
+      </div>
+
+      <p class="source-note">Source: Anatomy &amp; Physiology &mdash; M.Sc. Notes, Unit 1 (Skeletal System) and Unit 2 (Joints).</p>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function activate(id, scroll){
+    sections.forEach(function(s){ s.hidden = (s.id !== 'sec-' + id); });
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+    if (scroll) window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+    try { history.replaceState(null, '', '#' + id); } catch(e){}
+    closeSidebar();
+  }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){ activate(btn.dataset.target, true); });
+  });
+
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      var text = btn.textContent.toLowerCase();
+      btn.hidden = q.length > 0 && text.indexOf(q) === -1;
+    });
+  });
+
+  Array.prototype.slice.call(document.querySelectorAll('.layer-nav')).forEach(function(nav){
+    var scope = nav.closest('.section') || document;
+    var layerButtons = Array.prototype.slice.call(nav.querySelectorAll('.layer-item'));
+    var layerPanels = Array.prototype.slice.call(scope.querySelectorAll('.layer-panel'));
+    layerButtons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var target = btn.dataset.layer;
+        layerButtons.forEach(function(b){ b.classList.toggle('active', b === btn); });
+        layerPanels.forEach(function(p){ p.hidden = (p.dataset.panel !== target); });
+      });
+    });
+  });
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var startId = 'overview';
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)) startId = hash;
+  activate(startId, false);
+})();
+</script>

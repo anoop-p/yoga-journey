@@ -28,6 +28,26 @@ raw gets committed here.
   Each subject folder has its own `index.html` listing its topics; add a new
   `<a class="topic-card">` entry there (and mark the subject non-"soon" in
   `semester-1/index.html`) whenever a topic's `notes.html` goes in.
+- **Unit folders within a subject**: when a subject's syllabus is broken
+  into units (as T3 -- Human Anatomy & Physiology I is, per its
+  DSCC-18 syllabus), nest topics one level deeper under
+  `<subject>/unit-<n>-<unit-slug>/`. A unit with more than one topic gets
+  its own `unit-<n>-<unit-slug>/index.html` (same visual pattern as a
+  subject index, with a `.soon` card for a unit's topic that has no notes
+  yet) and each topic sits in its own `<topic-slug>/notes.html` below that.
+  A unit with exactly one topic skips the extra nesting and the topic's
+  `notes.html` sits directly at `unit-<n>-<unit-slug>/notes.html` (see
+  `t3-human-anatomy-physiology/unit-3-digestive-system/` and
+  `unit-4-respiratory-system/`). The subject's own `index.html` links the
+  units, not the individual topics. Every topic page's `.back-link` points
+  to `../index.html` relative to itself — for a nested topic that resolves
+  to the unit index; for a flattened single-topic unit it resolves to the
+  subject index, same as before units existed. Moving a topic into (or
+  between) unit folders breaks its old URL, since this is a public site;
+  leave a tiny redirect stub (`<meta http-equiv="refresh">` to the new
+  path) at the old location rather than a dead link — see the stub files
+  left at the pre-restructuring paths under `t3-human-anatomy-physiology/`
+  for the pattern.
 - **One HTML file per topic**, self-contained (inline CSS/JS), at
   `<subject>/<topic>/notes.html`. Diagrams for that topic live alongside it
   in `<subject>/<topic>/assets/diagrams/` and are referenced with a relative

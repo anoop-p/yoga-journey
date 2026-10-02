@@ -1,0 +1,517 @@
+<title>Respiratory System</title>
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Respiratory System</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../index.html">&larr; T3 &middot; Human Anatomy &amp; Physiology</a>
+    <div class="brand">
+      <div class="eyebrow">Anatomy &amp; Physiology</div>
+      <h1>Respiratory System</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="overview"><span class="num">00</span><span>Organs &amp; Air Passages</span></button>
+      <button class="nav-item" data-target="breathing"><span class="num">01</span><span>Mechanism of Breathing</span></button>
+      <button class="nav-item" data-target="volumes"><span class="num">02</span><span>Volumes &amp; Capacities</span></button>
+      <button class="nav-item" data-target="exchange"><span class="num">03</span><span>Gas Exchange &amp; Transport</span></button>
+      <button class="nav-item" data-target="regulation"><span class="num">04</span><span>Regulation &amp; Pranayama</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Reference: Respiratory System &mdash; Simple Notes (PDF); Yoga &amp; Human Body &mdash; Pranayama &amp; Physiology (notes)
+    </div>
+  </aside>
+
+  <main id="main">
+
+    <!-- 00 OVERVIEW -->
+    <section class="section" id="sec-overview">
+      <div class="kicker">00 &middot; Foundations</div>
+      <h2>Organs &amp; Air Passages</h2>
+      <p class="dek">The respiratory system is two things: a set of air passages that condition and carry air, and the lungs where the actual gas exchange happens.</p>
+
+      <div class="card">
+        <h3><span class="tag">Def</span>Respiratory System</h3>
+        <div class="dsf">
+          <div class="row"><div class="label">Def</div><p>The organs responsible for breathing air in and out, and exchanging oxygen and carbon dioxide between air and blood. Consists of the air passages and the lungs.</p></div>
+          <div class="row"><div class="label">Fun</div><p>Lungs are the respiratory organs; respiration through the lungs is called pulmonary respiration. Their job: bring atmospheric oxygen into the blood, and remove carbon dioxide from it.</p></div>
+        </div>
+      </div>
+
+      <div class="flow">
+        <span class="step">External nostrils</span><span class="arrow">&rarr;</span>
+        <span class="step">Nasal cavities</span><span class="arrow">&rarr;</span>
+        <span class="step">Pharynx</span><span class="arrow">&rarr;</span>
+        <span class="step">Larynx</span><span class="arrow">&rarr;</span>
+        <span class="step">Trachea</span><span class="arrow">&rarr;</span>
+        <span class="step">Bronchi</span><span class="arrow">&rarr;</span>
+        <span class="step">Bronchioles</span><span class="arrow">&rarr;</span>
+        <span class="step">Alveoli</span>
+      </div>
+
+      <div class="card story" style="box-shadow:none;">
+        <p><b>Nasal cavities</b> are separated by the nasal septum and open into the pharynx at the back through the internal nostrils. They carry the sense organs of smell, a mucous membrane, and small hairs that filter dust and foreign particles &mdash; so air is filtered, warmed, and moistened before it goes any further.</p>
+        <p><b>Pharynx</b> is the shared passage for both air and food, in two parts: the nasopharynx (air only) and oropharynx (food, and air during mouth breathing).</p>
+        <p><b>Larynx</b> (voice box) guards the entrance to the trachea. Its opening is the <b>glottis</b>, covered by a cartilaginous lid, the <b>epiglottis</b>, which closes during swallowing to keep food out of the trachea. Elastic vocal cords stretched across the cavity vibrate to produce sound, and the whole structure is supported by the thyroid cartilage (the "Adam's apple") and the cricoid cartilage.</p>
+        <p><b>Trachea</b> (windpipe) is a cartilaginous tube about 12&nbsp;cm long and 2.5&nbsp;cm across, held open by 15&ndash;20 C-shaped cartilage rings so it never collapses. Its lining combines ciliated epithelium with mucus-secreting goblet cells &mdash; the cilia sweep trapped dust and mucus upward as sputum, to be cleared. It divides into two bronchi, one to each lung.</p>
+        <p><b>Bronchi and bronchioles</b> keep subdividing inside the lung: bronchus &rarr; secondary bronchi &rarr; tertiary bronchi &rarr; bronchioles &rarr; terminal bronchioles &rarr; respiratory bronchioles &rarr; alveolar ducts &rarr; alveolar sacs &rarr; alveoli.</p>
+        <p><b>Alveoli</b> are the respiratory unit &mdash; the structural and functional unit of the lung. Each alveolus is very thin (about 0.5&nbsp;&micro;m), lined by simple squamous epithelium, and wrapped in highly permeable blood capillaries. This is where O&#8322; and CO&#8322; actually cross by diffusion.</p>
+        <p style="margin-bottom:0;"><b>Pleura and thoracic cavity:</b> each lung sits in the thoracic cavity, one on either side of the mediastinum, wrapped in a double-layered membrane, the <b>pleura</b> &mdash; an outer <b>parietal</b> layer and an inner <b>visceral</b> layer. The space between them, the pleural cavity, is filled with <b>pleural fluid</b>, which reduces friction as the lungs expand and recoil during breathing. The right lung has three lobes (superior, middle, inferior); the left has two (superior, inferior) &mdash; it makes room for the heart.</p>
+      </div>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">What is the function of the lungs?</div><div class="a">The respiratory organs &mdash; they bring O&#8322; into the blood and remove CO&#8322; from it (pulmonary respiration)</div></div>
+          <div class="recall-card"><div class="q">Name the fluid present in the lungs' cavity.</div><div class="a">Pleural fluid, in the pleural cavity between the parietal and visceral pleura</div></div>
+          <div class="recall-card"><div class="q">What structure guards the entrance to the trachea during swallowing?</div><div class="a">The epiglottis, covering the glottis</div></div>
+          <div class="recall-card"><div class="q">How many lobes does the right lung have? The left?</div><div class="a">Right: 3 (superior, middle, inferior). Left: 2 (superior, inferior)</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01 MECHANISM OF BREATHING -->
+    <section class="section" id="sec-breathing">
+      <div class="kicker">01 &middot; Ventilation</div>
+      <h2>Mechanism of Breathing</h2>
+      <p class="dek">Breathing is a pressure-volume game: change the size of the thoracic cavity, and air follows the pressure difference.</p>
+
+      <figure>
+        <img src="assets/diagrams/mechanism-of-respiration.jpg" alt="Mechanism of respiration diagram showing inspiration (diaphragm and external intercostals contract, thoracic volume increases, pressure decreases, air flows in) and expiration (muscles relax, lung recoil, thoracic volume decreases, pressure increases, air flows out)">
+        <figcaption>Inspiration is active (muscles contract); expiration in quiet breathing is passive (muscles relax, lungs recoil).</figcaption>
+      </figure>
+
+      <div class="layer-nav">
+        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
+        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
+        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      </div>
+
+      <!-- LAYER 1 -->
+      <div class="layer-panel story" data-panel="understand">
+        <p>Breathing (ventilation) is a cyclic process with two phases, and they work by opposite mechanics. <b>Inspiration is active</b>: muscles contract to enlarge the thoracic cavity, which drops the pressure inside the lungs below atmospheric pressure, so air rushes in. <b>Expiration in quiet breathing is passive</b>: those same muscles simply relax, the elastic lungs recoil to their smaller resting size, pressure inside rises above atmospheric, and air is pushed back out. Either way, air moves to equalise pressure &mdash; there's no separate "pump" pushing air in or sucking it out; it's all a matter of pressure following volume.</p>
+        <div class="analogy">
+          <b>Boyle's Law, in one line</b>
+          At constant temperature, when a gas's volume goes up, its pressure goes down, and vice versa. Enlarge the thoracic cavity &rarr; intrapulmonary pressure falls &rarr; air flows in. Shrink it back &rarr; pressure rises &rarr; air flows out. Every detail of the breathing mechanism is just this one rule applied to the chest.
+        </div>
+      </div>
+
+      <!-- LAYER 2 -->
+      <div class="layer-panel" data-panel="explain" hidden>
+        <div class="marks-tag">Q19 &middot; How do we breathe? (5 marks)</div>
+        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:0 0 6px;">a) Inspiration (active)</p>
+        <ul class="notes">
+          <li>Diaphragm contracts and flattens (moves down) &mdash; increases the vertical diameter of the thorax.</li>
+          <li>External intercostal muscles contract &mdash; ribs move up and outward, increasing the antero-posterior and transverse diameters.</li>
+          <li>Result: thoracic cavity volume increases &rarr; intrapulmonary pressure drops below atmospheric &rarr; air rushes into the lungs.</li>
+        </ul>
+        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">b) Expiration (passive)</p>
+        <ul class="notes">
+          <li>Diaphragm and intercostal muscles relax.</li>
+          <li>Lungs recoil due to their own elasticity; thorax volume decreases.</li>
+          <li>Intrapulmonary pressure rises above atmospheric &rarr; air is expelled.</li>
+        </ul>
+        <p style="font-size:13.5px; margin-top:14px;">Labored/forced expiration recruits internal intercostals and abdominal muscles to actively push the thorax volume down further &mdash; but that's not the default quiet-breathing mechanism above.</p>
+      </div>
+
+      <!-- LAYER 3 -->
+      <div class="layer-panel" data-panel="practice" hidden>
+        <div class="marks-tag">Q20 &middot; How does breathing affect the body in yoga practice? (10 marks)</div>
+        <div class="practice-link">
+          <b>What the notes actually support</b>
+          The class notes on pranayama physiology are explicit that effects are conditional &mdash; "depend on technique, duration, breathing rate, and individual characteristics" &mdash; rather than fixed guarantees, so this section states it that way rather than promising a specific outcome.
+        </div>
+        <p style="font-size:14.5px;">Two mechanical facts from this section carry straight into practice: (1) inspiration is an active, muscular act &mdash; deliberately slowing and deepening it is deliberately changing muscular effort, not just "relaxing"; (2) quiet-breathing expiration is passive, driven by elastic recoil, which is why a forced, effortful exhale (as in several pranayama techniques) needs active abdominal/intercostal recruitment beyond the everyday mechanism above. Diaphragmatic breathing practice works directly on the first mechanism in this section: consciously emphasising diaphragm descent (belly rises) over rib-cage-dominant breathing changes which muscles do the work of enlarging the thoracic cavity. The autonomic and lung-function effects of sustained practice are covered with their own evidence in Regulation &amp; Pranayama (Section 04), where the source material is more specific.</p>
+      </div>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Is inspiration active or passive?</div><div class="a">Active &mdash; diaphragm and external intercostals contract</div></div>
+          <div class="recall-card"><div class="q">Is quiet-breathing expiration active or passive?</div><div class="a">Passive &mdash; muscles relax, lungs recoil elastically</div></div>
+          <div class="recall-card"><div class="q">What happens to thoracic volume and pressure during inspiration?</div><div class="a">Volume increases, intrapulmonary pressure decreases (below atmospheric)</div></div>
+          <div class="recall-card"><div class="q">What two muscles/muscle groups drive quiet inspiration?</div><div class="a">The diaphragm (contracts, flattens, moves down) and the external intercostal muscles (ribs up and out)</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 VOLUMES & CAPACITIES -->
+    <section class="section" id="sec-volumes">
+      <div class="kicker">02 &middot; Measuring breath</div>
+      <h2>Respiratory Volumes &amp; Capacities</h2>
+      <p class="dek">Four volumes, measured directly; the capacities are just sums of two or more volumes.</p>
+
+      <div class="layer-nav">
+        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
+        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
+        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      </div>
+
+      <!-- LAYER 1 -->
+      <div class="layer-panel story" data-panel="understand">
+        <p>Normal quiet breathing moves a small, steady amount of air in and out &mdash; the <b>tidal volume</b>. But the lungs can do much more than that on demand: extra air can still be pulled in after a normal breath in (<b>inspiratory reserve</b>), and extra air can still be pushed out after a normal breath out (<b>expiratory reserve</b>). Even after the hardest possible exhale, some air always stays behind so the lungs never fully collapse &mdash; the <b>residual volume</b>. Capacities are just these four volumes added together in different combinations, matching different real-world questions (how much can I inhale from rest? how much can I move through the lungs at all?).</p>
+        <div class="analogy">
+          <b>One formula worth memorising</b>
+          Vital Capacity (VC) = ERV + TV + IRV &mdash; the maximum air you can expel after the maximum possible inspiration. Add the one volume VC leaves out, Residual Volume, and you get Total Lung Capacity: TLC = VC + RV.
+        </div>
+      </div>
+
+      <!-- LAYER 2 -->
+      <div class="layer-panel" data-panel="explain" hidden>
+        <div class="marks-tag">Reference</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Volume</th><th>Definition</th><th>Approx. value</th></tr>
+            <tr><td>Tidal Volume (TV)</td><td>Air breathed in/out during normal quiet breathing</td><td>500&nbsp;mL</td></tr>
+            <tr><td>Inspiratory Reserve Volume (IRV)</td><td>Extra air inhaled forcefully after a normal inspiration</td><td>2500&ndash;3000&nbsp;mL</td></tr>
+            <tr><td>Expiratory Reserve Volume (ERV)</td><td>Extra air exhaled forcefully after a normal expiration</td><td>1000&ndash;1100&nbsp;mL</td></tr>
+            <tr><td>Residual Volume (RV)</td><td>Air remaining in the lungs even after forceful expiration</td><td>1100&ndash;1200&nbsp;mL</td></tr>
+          </table>
+        </div>
+        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Capacities (combinations of volumes)</p>
+        <ul class="notes">
+          <li>Inspiratory Capacity (IC) = TV + IRV</li>
+          <li>Expiratory Capacity (EC) = TV + ERV</li>
+          <li>Vital Capacity (VC) = ERV + TV + IRV &mdash; max air expelled after max inspiration</li>
+          <li>Functional Residual Capacity (FRC) = ERV + RV</li>
+          <li>Total Lung Capacity (TLC) = RV + ERV + TV + IRV = VC + RV</li>
+        </ul>
+        <div class="stat-strip">
+          <div class="stat"><div class="v">12&ndash;14 / min</div><div class="k">Quiet respiratory rate</div></div>
+          <div class="stat"><div class="v">&asymp; 6000 mL/min</div><div class="k">Minute volume (quiet)</div></div>
+        </div>
+        <p style="font-size:13.5px;">Minute ventilation (V<sub>E</sub>) = Tidal Volume &times; Respiratory rate. Example: 500&nbsp;mL &times; 12/min = 6000&nbsp;mL/min = 6&nbsp;L/min. Not all of this reaches gas-exchanging surfaces &mdash; some fills the conducting airways (anatomical dead space) without taking part in exchange.</p>
+      </div>
+
+      <!-- LAYER 3 -->
+      <div class="layer-panel" data-panel="practice" hidden>
+        <div class="marks-tag">Applied</div>
+        <p style="font-size:14.5px;">The pranayama-physiology notes state plainly that regular appropriate breathing practice <i>may</i> influence lung volumes and breathing efficiency, but add that "specific changes depend on the population and technique" &mdash; there's no fixed number attached to how much a given practice changes VC or IRV in your notes, so none is claimed here. What the notes do connect concretely: lung <b>compliance</b> (how easily the lungs expand) is a real variable in this picture &mdash; higher compliance means the lungs expand more easily, lower compliance means they're stiffer &mdash; though your notes don't state that yoga practice changes compliance specifically.</p>
+      </div>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Tidal Volume, approx. value?</div><div class="a">500 mL</div></div>
+          <div class="recall-card"><div class="q">Vital Capacity formula?</div><div class="a">ERV + TV + IRV</div></div>
+          <div class="recall-card"><div class="q">Total Lung Capacity formula?</div><div class="a">RV + ERV + TV + IRV (= VC + RV)</div></div>
+          <div class="recall-card"><div class="q">Normal quiet respiratory rate?</div><div class="a">12&ndash;14 breaths/minute</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 GAS EXCHANGE & TRANSPORT -->
+    <section class="section" id="sec-exchange">
+      <div class="kicker">03 &middot; Diffusion &amp; carriage</div>
+      <h2>Gas Exchange &amp; Transport</h2>
+      <p class="dek">Exchange happens twice &mdash; once at the lungs, once at the tissues &mdash; and O&#8322; and CO&#8322; travel through blood by different routes.</p>
+
+      <div class="layer-nav">
+        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
+        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
+        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      </div>
+
+      <!-- LAYER 1 -->
+      <div class="layer-panel story" data-panel="understand">
+        <p>Gas exchange happens by simple diffusion, always moving from high pressure toward low pressure, and it happens at two separate sites. <b>External respiration</b> is the exchange between alveolar air and pulmonary capillary blood, inside the lungs. <b>Internal respiration</b> is the exchange between blood and the tissue cells it's flowing past, everywhere else in the body. Once in the blood, oxygen and carbon dioxide are carried very differently: oxygen mostly rides on haemoglobin, while carbon dioxide is mostly carried as dissolved bicarbonate.</p>
+        <div class="analogy">
+          <b>Same rule, opposite directions</b>
+          At the lungs: O&#8322; is high outside the blood (in the alveoli) and low inside it, so O&#8322; diffuses in, while CO&#8322; is high inside the blood and low in the alveoli, so CO&#8322; diffuses out. At the tissues, it's the exact mirror image &mdash; O&#8322; is high in blood and low in the tissue, CO&#8322; is high in the tissue and low in blood. One rule (diffusion down a pressure gradient), two sites, opposite outcomes.
+        </div>
+      </div>
+
+      <!-- LAYER 2 -->
+      <div class="layer-panel" data-panel="explain" hidden>
+        <div class="marks-tag">Reference</div>
+        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:0 0 6px;">External respiration (alveoli &harr; blood)</p>
+        <ul class="notes">
+          <li>O&#8322; diffuses from alveolar air (PO&#8322; &asymp; 105&nbsp;mmHg) into pulmonary capillary blood (PO&#8322; &asymp; 40&nbsp;mmHg).</li>
+          <li>CO&#8322; diffuses from blood (PCO&#8322; &asymp; 45&nbsp;mmHg) into alveolar air (PCO&#8322; &asymp; 40&nbsp;mmHg).</li>
+        </ul>
+        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Oxygen transport</p>
+        <ul class="notes">
+          <li>Dissolved in plasma (~3%, minor route).</li>
+          <li>As oxyhaemoglobin, HbO&#8322; (~97%, major route) &mdash; each Hb molecule has 4 heme units, each binding one O&#8322;.</li>
+          <li>The oxygen&ndash;haemoglobin dissociation curve is S-shaped (sigmoid): ~97&ndash;100% saturation at the lungs (PO&#8322; &asymp; 100&nbsp;mmHg), falling to ~70&ndash;75% at the tissues (PO&#8322; &asymp; 40&nbsp;mmHg), with a sharp drop below 60&nbsp;mmHg.</li>
+        </ul>
+        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Carbon dioxide transport</p>
+        <ul class="notes">
+          <li>Dissolved in plasma (~7%).</li>
+          <li>As carbaminohaemoglobin, CO&#8322; + HbNH&#8322; (~23%).</li>
+          <li>As bicarbonate (~70%, major route): CO&#8322; + H&#8322;O &rarr; H&#8322;CO&#8323; (via carbonic anhydrase) &rarr; H&#8314; + HCO&#8323;&#8315;. H&#8314; buffers onto Hb; HCO&#8323;&#8315; leaves the red cell for plasma (the chloride shift, Cl&#8315; moving in to balance it). The whole reaction reverses at the lungs, releasing CO&#8322; to be exhaled.</li>
+        </ul>
+      </div>
+
+      <!-- LAYER 3 -->
+      <div class="layer-panel" data-panel="practice" hidden>
+        <div class="marks-tag">Note</div>
+        <p style="font-size:14.5px;">No specific asana or pranayama link is stated in your notes for the gas-exchange and transport chemistry itself &mdash; it's the physiology layer underneath the breathing-mechanism and pranayama-regulation content, where the actual practice connections are drawn (Sections 01 and 04).</p>
+      </div>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">What is external respiration?</div><div class="a">Gas exchange between alveolar air and pulmonary capillary blood, in the lungs</div></div>
+          <div class="recall-card"><div class="q">What carries most of the oxygen in blood?</div><div class="a">Haemoglobin, as oxyhaemoglobin (~97%)</div></div>
+          <div class="recall-card"><div class="q">What is the major route for CO&#8322; transport?</div><div class="a">As bicarbonate (~70%), via carbonic anhydrase in the red blood cell</div></div>
+          <div class="recall-card"><div class="q">Shape of the oxygen&ndash;haemoglobin dissociation curve?</div><div class="a">S-shaped (sigmoid)</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 REGULATION & PRANAYAMA -->
+    <section class="section" id="sec-regulation">
+      <div class="kicker">04 &middot; Control</div>
+      <h2>Regulation of Breathing &amp; Pranayama</h2>
+      <p class="dek">Breathing is normally automatic, run by brainstem centres &mdash; but it's one of the few autonomic functions we can also deliberately override, which is exactly what pranayama uses.</p>
+
+      <div class="layer-nav">
+        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
+        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
+        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      </div>
+
+      <!-- LAYER 1 -->
+      <div class="layer-panel story" data-panel="understand">
+        <p>Two brainstem regions run breathing without any conscious input. The <b>medulla</b> holds an inspiratory centre that fires to trigger each breath in, and an expiratory centre that stays switched off during quiet breathing (it only joins in for forced expiration). The <b>pons</b> fine-tunes the rhythm from above: the pneumotaxic centre switches inspiration off after a set duration, and the apneustic centre pushes the other way, prolonging inspiration. A protective reflex (Hering&ndash;Breuer) uses stretch receptors in the lungs to signal the medulla via the vagus nerve when the lungs are getting too full, so inspiration stops before over-inflation. Chemoreceptors watch the blood chemistry itself &mdash; central ones in the medulla sense CO&#8322;/H&#8314;, peripheral ones in the carotid and aortic bodies sense O&#8322;, CO&#8322;, and pH &mdash; and a rise in CO&#8322; is the main trigger that speeds breathing back up.</p>
+        <div class="analogy">
+          <b>Automatic, but not only automatic</b>
+          Breathing is normally involuntary, but higher brain centres can override the brainstem to a limited extent &mdash; holding the breath, speaking, singing. Pranayama practice works entirely inside that limited window of voluntary control: it doesn't bypass the automatic system, it deliberately drives it.
+        </div>
+      </div>
+
+      <!-- LAYER 2 -->
+      <div class="layer-panel" data-panel="explain" hidden>
+        <div class="marks-tag">Reference</div>
+        <ul class="notes">
+          <li><b>Inspiratory centre</b> (medulla) &mdash; sends impulses to inspiratory muscles to trigger contraction.</li>
+          <li><b>Expiratory centre</b> (medulla) &mdash; inactive in quiet breathing; active during forced expiration.</li>
+          <li><b>Pneumotaxic centre</b> (pons) &mdash; controls rate/pattern; switches off inspiration (usually after 0.5&ndash;5 sec), allowing expiration.</li>
+          <li><b>Apneustic centre</b> (lower pons) &mdash; promotes and prolongs inspiration, opposing the pneumotaxic centre.</li>
+          <li><b>Hering&ndash;Breuer reflex</b> &mdash; stretch receptors in the lungs detect inflation, signal via the vagus nerve to inhibit further inspiration and prevent over-inflation.</li>
+          <li><b>Central chemoreceptors</b> (medulla) &mdash; sensitive to CO&#8322;/H&#8314; in blood and CSF.</li>
+          <li><b>Peripheral chemoreceptors</b> (carotid &amp; aortic bodies) &mdash; sensitive to O&#8322;, CO&#8322;, and pH in arterial blood. Rising CO&#8322; stimulates both sets and increases respiratory rate.</li>
+          <li><b>Voluntary control</b> &mdash; higher brain centres can override the automatic rhythm for breath-holding, speaking, etc.</li>
+        </ul>
+      </div>
+
+      <!-- LAYER 3 -->
+      <div class="layer-panel" data-panel="practice" hidden>
+        <div class="marks-tag">Q20 &middot; How does breathing affect the body in yoga practice? (10 marks) &mdash; continued from Section 01</div>
+        <div class="practice-link">
+          <b>Pranayama and the autonomic system</b>
+          Your Yoga &amp; Human Body notes state directly: slow, controlled breathing can influence respiratory rate, heart rate, heart-rate variability, autonomic balance, perceived stress, and emotional state &mdash; and that, generally, slow, comfortable breathing tends toward greater relaxation and parasympathetic influence, while rapid or forceful breathing can have different effects. The notes are equally explicit that the size of the effect "depends on technique, duration, breathing rate, and individual characteristics" &mdash; this is a directional finding, not a fixed rule to quote as universal.
+        </div>
+        <p style="font-size:14.5px;">This connects directly to the automatic vs. voluntary control covered in Layer 1: pranayama is deliberate, sustained use of the voluntary-override window on a normally automatic system. Kumbhaka (breath retention) is the clearest example of that override reaching further into the physiology &mdash; the notes flag that prolonged or forceful retention can alter blood CO&#8322;, O&#8322;, blood pressure, and intrathoracic pressure, "therefore it must be taught appropriately." On lung function specifically, the notes say regular appropriate breathing practice <i>may</i> influence respiratory muscle function, breathing efficiency, lung volumes, respiratory rate, and perceived breathlessness &mdash; again with the caveat that specific changes depend on population and technique, which is why Section 02 doesn't attach a number to it.</p>
+      </div>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Which brainstem regions hold the respiratory centres?</div><div class="a">The medulla oblongata and the pons</div></div>
+          <div class="recall-card"><div class="q">What does the Hering&ndash;Breuer reflex prevent?</div><div class="a">Over-inflation of the lungs &mdash; via stretch receptors and the vagus nerve</div></div>
+          <div class="recall-card"><div class="q">What is the main chemical trigger that speeds up breathing?</div><div class="a">Rising blood CO&#8322; (sensed by central and peripheral chemoreceptors)</div></div>
+          <div class="recall-card"><div class="q">Generally, which breathing style favours parasympathetic influence?</div><div class="a">Slow, comfortable/controlled breathing (per the notes, direction only &mdash; not a fixed effect size)</div></div>
+        </div>
+      </div>
+
+      <p class="source-note">Source: Respiratory System &mdash; Simple Notes (PDF); pranayama/breathing-physiology content in Yoga &amp; Human Body notes.</p>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function activate(id, scroll){
+    sections.forEach(function(s){ s.hidden = (s.id !== 'sec-' + id); });
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+    if (scroll) window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+    try { history.replaceState(null, '', '#' + id); } catch(e){}
+    closeSidebar();
+  }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){ activate(btn.dataset.target, true); });
+  });
+
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      var text = btn.textContent.toLowerCase();
+      btn.hidden = q.length > 0 && text.indexOf(q) === -1;
+    });
+  });
+
+  Array.prototype.slice.call(document.querySelectorAll('.layer-nav')).forEach(function(nav){
+    var scope = nav.closest('.section') || document;
+    var layerButtons = Array.prototype.slice.call(nav.querySelectorAll('.layer-item'));
+    var layerPanels = Array.prototype.slice.call(scope.querySelectorAll('.layer-panel'));
+    layerButtons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var target = btn.dataset.layer;
+        layerButtons.forEach(function(b){ b.classList.toggle('active', b === btn); });
+        layerPanels.forEach(function(p){ p.hidden = (p.dataset.panel !== target); });
+      });
+    });
+  });
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var startId = 'overview';
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)) startId = hash;
+  activate(startId, false);
+})();
+</script>

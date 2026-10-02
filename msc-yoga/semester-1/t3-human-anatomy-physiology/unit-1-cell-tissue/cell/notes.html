@@ -1,0 +1,643 @@
+<title>Cell &amp; Homeostasis</title>
+<style>
+  :root{
+    --bg:#f3f1ea;
+    --surface:#ffffff;
+    --surface-2:#ebe7db;
+    --border:#d9d3c2;
+    --ink:#1e231f;
+    --ink-soft:#4d5449;
+    --muted:#7a8072;
+    --accent:#b1502e;
+    --accent-soft:#f0dccd;
+    --teal:#2f6a5e;
+    --teal-soft:#dde9e4;
+    --gold:#a9822c;
+    --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16;
+      --surface:#212420;
+      --surface-2:#262924;
+      --border:#3a3d35;
+      --ink:#ece8dd;
+      --ink-soft:#c3c2b5;
+      --muted:#8d9285;
+      --accent:#e0895f;
+      --accent-soft:#3a2a20;
+      --teal:#7fbfae;
+      --teal-soft:#213330;
+      --gold:#d9b862;
+      --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16;
+    --surface:#212420;
+    --surface-2:#262924;
+    --border:#3a3d35;
+    --ink:#ece8dd;
+    --ink-soft:#c3c2b5;
+    --muted:#8d9285;
+    --accent:#e0895f;
+    --accent-soft:#3a2a20;
+    --teal:#7fbfae;
+    --teal-soft:#213330;
+    --gold:#d9b862;
+    --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:600;
+    text-wrap:balance;
+    margin:0 0 .4em;
+    color:var(--ink);
+  }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+
+  .app{ display:flex; min-height:100%; }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    width:280px; flex-shrink:0; background:var(--surface);
+    border-right:1px solid var(--border); position:sticky; top:0;
+    height:100vh; overflow-y:auto; padding:20px 14px 40px;
+  }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+
+  .search{
+    width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border);
+    background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px;
+  }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{
+    all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px;
+    padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35;
+  }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+
+  /* ---------- Main ---------- */
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{
+    display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px;
+  }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px;
+  }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{
+    display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em;
+    text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px;
+    margin-right:9px; vertical-align:middle; position:relative; top:-1px;
+  }
+
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+
+  /* ---------- Layer model ---------- */
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+
+  .mobile-bar{
+    display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border);
+    padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px;
+  }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Cell &amp; Homeostasis</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../index.html">&larr; Unit 1 &middot; Cell &amp; Tissue</a>
+    <div class="brand">
+      <div class="eyebrow">Anatomy &amp; Physiology</div>
+      <h1>Cell &amp; Homeostasis</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="overview"><span class="num">00</span><span>What Is a Cell</span></button>
+      <button class="nav-item" data-target="membrane"><span class="num">01</span><span>Cell Membrane</span></button>
+      <button class="nav-item" data-target="organelles"><span class="num">02</span><span>Cytoplasm &amp; Organelles</span></button>
+      <button class="nav-item" data-target="nucleus"><span class="num">03</span><span>Nucleus &amp; DNA</span></button>
+      <button class="nav-item" data-target="transport"><span class="num">04</span><span>Membrane Transport</span></button>
+      <button class="nav-item" data-target="homeostasis"><span class="num">05</span><span>Homeostasis &amp; Feedback</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Class notes &middot; Cell Study Notes (PDF)
+    </div>
+  </aside>
+
+  <main id="main">
+
+    <!-- 00 OVERVIEW -->
+    <section class="section" id="sec-overview">
+      <div class="kicker">00 &middot; Foundations</div>
+      <h2>What Is a Cell</h2>
+      <p class="dek">Before any organ system makes sense, the cell has to. Every structure covered elsewhere in this subject &mdash; muscle fibre, villus, alveolus &mdash; is a variation on the same basic unit.</p>
+
+      <div class="card">
+        <h3><span class="tag">Def</span>Cell</h3>
+        <div class="dsf">
+          <div class="row"><div class="label">Def</div><p>The basic structural and functional unit of life.</p></div>
+          <div class="row"><div class="label">Stru</div><p>Structural unit &mdash; the whole body is built from cells. Some organisms are unicellular (bacteria, amoeba); humans are multicellular, made of many different cell types.</p></div>
+          <div class="row"><div class="label">Fun</div><p>Functional unit &mdash; cells carry out the basic activities that keep an organism alive: metabolism, growth, response, reproduction.</p></div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h3>Somatic vs germ cells</h3>
+          <ul class="notes">
+            <li><b>Somatic</b> &mdash; ordinary body cells: muscle, skin, liver, nerve</li>
+            <li><b>Germ</b> &mdash; reproductive cells: sperm (male), ovum (female)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Prokaryotic vs eukaryotic</h3>
+          <ul class="notes">
+            <li><b>Prokaryotic</b> &mdash; no true membrane-bound nucleus, e.g. bacteria</li>
+            <li><b>Eukaryotic</b> &mdash; true nucleus + membrane-bound organelles. Human cells are eukaryotic.</li>
+          </ul>
+        </div>
+      </div>
+
+      <figure>
+        <img src="assets/diagrams/neuron-structure.jpg" alt="Structure of a neuron (nerve cell): dendrites, cell body/soma, nucleus, axon, myelin sheath, axon terminals">
+        <figcaption>A nerve cell (neuron) &mdash; one example of a specialised somatic cell, all built from the same basic membrane + cytoplasm + nucleus plan.</figcaption>
+      </figure>
+
+      <div class="card story" style="box-shadow:none;">
+        <p style="margin-bottom:0;">Think of the body as a huge city, and each cell as one house or small factory that keeps the city running. A typical human cell has three major working parts: the <b>cell membrane</b> (boundary/security gate), the <b>cytoplasm</b> (factory floor), and the <b>nucleus</b> (manager's office). Everything else in this topic is really just zooming into one of those three.</p>
+      </div>
+    </section>
+
+    <!-- 01 CELL MEMBRANE -->
+    <section class="section" id="sec-membrane">
+      <div class="kicker">01 &middot; Boundary</div>
+      <h2>Cell Membrane</h2>
+      <p class="dek">The outer boundary of the cell &mdash; and the thing that decides what's allowed in or out.</p>
+
+      <div class="layer-nav">
+        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
+        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
+        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      </div>
+
+      <!-- LAYER 1 -->
+      <div class="layer-panel story" data-panel="understand">
+        <p>Imagine a security gate at the entrance to a house: family members can come and go, but the gate doesn't let everyone and everything through. The <b>cell membrane</b> works the same way &mdash; it's <b>selectively permeable</b>, meaning it chooses what enters and leaves the cell rather than letting substances pass freely.</p>
+        <p>Structurally, it's built from a <b>phospholipid bilayer</b> &mdash; two layers of phospholipid molecules, each with a water-loving (hydrophilic) head and a water-avoiding (hydrophobic) tail. The heads face outward toward the watery environment on both sides; the tails face each other in the middle. Proteins, cholesterol, and carbohydrates are embedded in this layer too, and it's mostly those embedded proteins that do the actual work of controlling what crosses.</p>
+        <div class="analogy">
+          <b>Why "selective" matters</b>
+          A membrane that let everything through wouldn't be able to keep the cell's internal environment any different from the outside &mdash; and a cell's internal chemistry has to stay within a fairly narrow range to keep working. The membrane's selectivity is what makes an "inside" and an "outside" meaningful at all.
+        </div>
+      </div>
+
+      <!-- LAYER 2 -->
+      <div class="layer-panel" data-panel="explain" hidden>
+        <div class="marks-tag">Reference &middot; Def/Stru/Fun style</div>
+        <div class="dsf">
+          <div class="row"><div class="label">Def</div><p>The selectively permeable boundary that separates the inside of a cell from its surroundings.</p></div>
+          <div class="row"><div class="label">Stru</div><p>Phospholipid bilayer with embedded proteins, cholesterol, and carbohydrates.</p></div>
+          <div class="row"><div class="label">Fun</div><p>Protects the cell, separates inside from outside, controls what enters/leaves, helps maintain the internal environment, receives signals from outside.</p></div>
+        </div>
+        <p class="source-note" style="border-top:none; margin-top:14px; padding-top:0;">Remember: cell membrane &rarr; transport &rarr; internal environment &rarr; homeostasis (see section 05).</p>
+      </div>
+
+      <!-- LAYER 3 -->
+      <div class="layer-panel" data-panel="practice" hidden>
+        <div class="marks-tag">Note</div>
+        <p style="font-size:14.5px;">Your class notes don't link the cell membrane specifically to a named asana &mdash; this topic is foundational biology, not a clinical/disorder topic, so the Section C "yoga connection" style used elsewhere in this subject doesn't apply directly here. What does carry over is the general theme picked up again in section 05: every regulatory practice in yoga (breath control, relaxation) ultimately works by influencing processes that happen at the level of individual cells, membranes included.</p>
+      </div>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">What is the cell membrane mainly made of?</div><div class="a">A phospholipid bilayer, plus proteins, cholesterol, carbohydrates</div></div>
+          <div class="recall-card"><div class="q">What does "selectively permeable" mean?</div><div class="a">It controls what substances enter and leave, rather than letting everything through</div></div>
+          <div class="recall-card"><div class="q">What part of a phospholipid faces outward?</div><div class="a">The hydrophilic (water-loving) head</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 ORGANELLES -->
+    <section class="section" id="sec-organelles">
+      <div class="kicker">02 &middot; Working parts</div>
+      <h2>Cytoplasm &amp; Organelles</h2>
+      <p class="dek">The factory floor, and every machine on it.</p>
+
+      <div class="layer-nav">
+        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
+        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
+        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      </div>
+
+      <!-- LAYER 1 -->
+      <div class="layer-panel story" data-panel="understand">
+        <p>The <b>cytoplasm</b> is everything between the membrane and the nucleus &mdash; the working area of the cell. Its fluid portion (<b>cytosol</b>) plus everything suspended in it (organelles, proteins, ions) together make up the cytoplasm. Most of the cell's actual chemical work happens here.</p>
+        <p>Picture the whole cell as a small, highly organised factory, and each organelle as a department with one job:</p>
+        <div class="analogy">
+          <b>The factory, department by department</b>
+          <b>Mitochondria</b> = power stations, producing ATP (cells that need a lot of energy &mdash; heart, skeletal muscle &mdash; are packed with them). <b>Ribosomes</b> = protein-making machines. <b>Rough ER</b> (ribosomes attached) = protein factory + transport network. <b>Smooth ER</b> (no ribosomes) = lipid/steroid and detox centre. <b>Golgi apparatus</b> = packaging and delivery centre. <b>Lysosomes</b> = cleaning and recycling department, full of digestive enzymes. <b>Centrioles</b> = organisers of cell division. <b>Vacuoles</b> = storage rooms. <b>Cytoskeleton</b> = the building's internal framework, giving the cell shape and letting things move around inside it.
+        </div>
+        <p>Two easy memory hooks from the notes: <b>"Rough = Ribosomes = Protein"</b> and <b>"Smooth ER = lipid/steroid + detoxification."</b></p>
+      </div>
+
+      <!-- LAYER 2 -->
+      <div class="layer-panel" data-panel="explain" hidden>
+        <div class="marks-tag">Reference &middot; organelle-by-organelle</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Organelle</th><th>Main job</th></tr>
+            <tr><td>Mitochondria</td><td>ATP production &mdash; aerobic cellular respiration</td></tr>
+            <tr><td>Ribosomes</td><td>Protein synthesis (free in cytoplasm, or attached to rough ER)</td></tr>
+            <tr><td>Rough ER</td><td>Protein synthesis, processing, transport (has ribosomes attached)</td></tr>
+            <tr><td>Smooth ER</td><td>Lipid/steroid synthesis, detoxification, calcium storage</td></tr>
+            <tr><td>Golgi apparatus</td><td>Modifies, sorts and packages proteins; forms lysosomes</td></tr>
+            <tr><td>Lysosomes</td><td>Digestive enzymes &mdash; break down debris and damaged components</td></tr>
+            <tr><td>Centrosome / centrioles</td><td>Organise microtubules and the spindle during cell division</td></tr>
+            <tr><td>Vacuoles</td><td>Storage of water, ions, other substances</td></tr>
+            <tr><td>Nissl bodies</td><td>Found in nerve cells; rough ER/ribosomes for neuron protein synthesis</td></tr>
+            <tr><td>Secretory granules</td><td>Hold substances ready for release from the cell</td></tr>
+            <tr><td>Cytoskeleton</td><td>Shape, internal support, movement (microfilaments, intermediate filaments, microtubules)</td></tr>
+          </table>
+        </div>
+        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Cytosol vs cytoplasm</p>
+        <p style="font-size:13.5px;">Cytosol = the fluid portion only. Cytoplasm = cytosol + organelles and everything else outside the nucleus.</p>
+      </div>
+
+      <!-- LAYER 3 -->
+      <div class="layer-panel" data-panel="practice" hidden>
+        <div class="marks-tag">Note</div>
+        <p style="font-size:14.5px;">As with the membrane, your notes don't tie individual organelles to specific asanas &mdash; this is groundwork for later, more clinical topics (e.g. why muscle fibres are unusually rich in mitochondria, covered in the Muscular System topic).</p>
+      </div>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Which organelle makes ATP?</div><div class="a">Mitochondria</div></div>
+          <div class="recall-card"><div class="q">Which organelle makes proteins?</div><div class="a">Ribosomes</div></div>
+          <div class="recall-card"><div class="q">Rough ER vs smooth ER?</div><div class="a">Rough = ribosomes + protein; Smooth = lipids/steroids + detox</div></div>
+          <div class="recall-card"><div class="q">What does the Golgi apparatus do?</div><div class="a">Modifies, sorts and packages proteins for their destination</div></div>
+          <div class="recall-card"><div class="q">What's in a lysosome?</div><div class="a">Digestive enzymes &mdash; the cell's cleanup/recycling department</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 NUCLEUS -->
+    <section class="section" id="sec-nucleus">
+      <div class="kicker">03 &middot; Control centre</div>
+      <h2>Nucleus &amp; DNA</h2>
+      <p class="dek">Where the instructions are kept, and how "instructions" turn into "chromosomes."</p>
+
+      <div class="layer-nav">
+        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
+        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
+        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      </div>
+
+      <!-- LAYER 1 -->
+      <div class="layer-panel story" data-panel="understand">
+        <p>The <b>nucleus</b> is the manager's office of the cell &mdash; it holds the instructions (DNA) and tells the rest of the factory what to do. It stores genetic information, controls cellular activity, regulates which genes get switched on, and is central to growth and division.</p>
+        <div class="analogy">
+          <b>DNA &rarr; genes &rarr; chromatin &rarr; chromosomes, as a book</b>
+          <b>DNA</b> is the genetic information itself &mdash; the instructions. A <b>gene</b> is one specific section of that DNA, coding for one particular trait or product &mdash; like one chapter of the book. <b>Chromatin</b> is DNA loosely associated with proteins, in its normal, less-condensed everyday form. A <b>chromosome</b> is that same DNA+protein highly condensed and organised &mdash; especially visible during cell division, like the book's pages bound tightly for transport.
+        </div>
+        <p>Humans normally have <b>46 chromosomes</b>, arranged as <b>23 pairs</b>. Sex chromosomes: female &rarr; XX, male &rarr; XY.</p>
+      </div>
+
+      <!-- LAYER 2 -->
+      <div class="layer-panel" data-panel="explain" hidden>
+        <div class="marks-tag">Reference &middot; Def/Stru/Fun style</div>
+        <div class="dsf">
+          <div class="row"><div class="label">Def</div><p>The nucleus is the control centre of the cell, containing DNA, chromatin and the nucleolus.</p></div>
+          <div class="row"><div class="label">Stru</div><p>DNA + proteins = chromatin (normal state); condensed chromatin = chromosomes (division). Genes are functional sections of DNA.</p></div>
+          <div class="row"><div class="label">Fun</div><p>Stores genetic information, controls cellular activities, regulates gene expression, directs growth and division.</p></div>
+        </div>
+        <div class="stat-strip">
+          <div class="stat"><div class="v">46</div><div class="k">Chromosomes</div></div>
+          <div class="stat"><div class="v">23</div><div class="k">Pairs</div></div>
+        </div>
+      </div>
+
+      <!-- LAYER 3 -->
+      <div class="layer-panel" data-panel="practice" hidden>
+        <div class="marks-tag">Note</div>
+        <p style="font-size:14.5px;">No asana-level connection stated in your notes for this section &mdash; it's pure structural biology, feeding forward into topics like tissue and organ formation rather than into a specific practice.</p>
+      </div>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">What is a gene?</div><div class="a">A specific section of DNA coding for one trait/product</div></div>
+          <div class="recall-card"><div class="q">DNA + protein, uncondensed = ?</div><div class="a">Chromatin</div></div>
+          <div class="recall-card"><div class="q">Condensed chromatin = ?</div><div class="a">Chromosomes</div></div>
+          <div class="recall-card"><div class="q">How many chromosomes do humans have?</div><div class="a">46 (23 pairs)</div></div>
+          <div class="recall-card"><div class="q">Male sex chromosomes?</div><div class="a">XY</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 TRANSPORT -->
+    <section class="section" id="sec-transport">
+      <div class="kicker">04 &middot; In and out</div>
+      <h2>Membrane Transport</h2>
+      <p class="dek">How substances actually cross that selective boundary &mdash; six different ways, split into "costs no energy" and "costs energy."</p>
+
+      <div class="layer-nav">
+        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
+        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
+        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      </div>
+
+      <!-- LAYER 1 -->
+      <div class="layer-panel story" data-panel="understand">
+        <p>Everything here splits into two families: <b>passive transport</b> (no ATP needed &mdash; substances move "downhill," from high to low concentration) and <b>active transport</b> (needs ATP &mdash; the cell pushes something "uphill," from low to high concentration).</p>
+        <div class="analogy">
+          <b>Passive: three flavours of "downhill"</b>
+          <b>Simple diffusion</b> &mdash; open a perfume bottle and the scent spreads on its own, high concentration to low, no help needed (oxygen, CO&#8322; move this way). <b>Facilitated diffusion</b> &mdash; still high &rarr; low, still no ATP, but the substance needs a doorway (a membrane protein) to get through, the way a person needs a door rather than walking through a wall (glucose and certain ions move this way). <b>Osmosis</b> &mdash; specifically the movement of <b>water</b> across the membrane, toward the side with more dissolved solute.
+        </div>
+        <div class="analogy">
+          <b>Active: pushing the ball uphill</b>
+          <b>Active transport</b> moves substances from low to high concentration &mdash; the opposite of what happens naturally, so it costs ATP, like pushing a ball up a hill. The textbook example is the <b>sodium&ndash;potassium pump</b>: it uses ATP to push 3 Na&#8314; out and pull 2 K&#8314; in, which is what keeps nerve and muscle cells electrically ready to fire.
+        </div>
+        <p><b>Endocytosis</b> (bringing something large inside &mdash; phagocytosis "cell eating," pinocytosis "cell drinking," receptor-mediated) and <b>exocytosis</b> (sending something out, e.g. hormone or neurotransmitter release) are the two bulk-transport routes, and both need ATP too.</p>
+      </div>
+
+      <!-- LAYER 2 -->
+      <div class="layer-panel" data-panel="explain" hidden>
+        <div class="marks-tag">Reference &middot; quick comparison table</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Process</th><th>Direction</th><th>ATP?</th><th>Main idea</th></tr>
+            <tr><td>Simple diffusion</td><td>High &rarr; Low</td><td>No</td><td>Direct movement</td></tr>
+            <tr><td>Facilitated diffusion</td><td>High &rarr; Low</td><td>No</td><td>Uses a membrane protein</td></tr>
+            <tr><td>Osmosis</td><td>Toward higher solute conc.</td><td>No</td><td>Movement of water</td></tr>
+            <tr><td>Active transport</td><td>Low &rarr; High</td><td>Yes</td><td>Uses energy (e.g. Na&#8314;/K&#8314; pump)</td></tr>
+            <tr><td>Endocytosis</td><td>Into the cell</td><td>Yes</td><td>Brings large material in</td></tr>
+            <tr><td>Exocytosis</td><td>Out of the cell</td><td>Yes</td><td>Sends material out</td></tr>
+          </table>
+        </div>
+        <p class="source-note" style="border-top:none; margin-top:0; padding-top:0;">Remember: passive = downhill = no ATP. Active = uphill = ATP.</p>
+      </div>
+
+      <!-- LAYER 3 -->
+      <div class="layer-panel" data-panel="practice" hidden>
+        <div class="marks-tag">Note</div>
+        <p style="font-size:14.5px;">Your notes don't state a specific asana link for membrane transport. The one connection worth flagging honestly as <i>inferred, not stated</i>: pranayama increases how much oxygen is available in the blood for simple diffusion into cells, and the sodium&ndash;potassium pump is exactly what keeps neurons firing during meditation and asana practice &mdash; but neither claim is written in your class notes as a Section C answer, so don't present it as one.</p>
+      </div>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Does simple diffusion need ATP?</div><div class="a">No</div></div>
+          <div class="recall-card"><div class="q">What does osmosis move?</div><div class="a">Water, across a selectively permeable membrane</div></div>
+          <div class="recall-card"><div class="q">Na&#8314;/K&#8314; pump: how many of each, which direction?</div><div class="a">3 Na&#8314; out, 2 K&#8314; in, using ATP</div></div>
+          <div class="recall-card"><div class="q">"Cell eating" = ?</div><div class="a">Phagocytosis</div></div>
+          <div class="recall-card"><div class="q">"Cell drinking" = ?</div><div class="a">Pinocytosis</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 HOMEOSTASIS -->
+    <section class="section" id="sec-homeostasis">
+      <div class="kicker">05 &middot; Applied</div>
+      <h2>Homeostasis &amp; Feedback</h2>
+      <p class="dek">Why all of the above matters: keeping the internal environment stable, and the two feedback patterns the body uses to do it.</p>
+
+      <div class="layer-nav">
+        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
+        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
+        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      </div>
+
+      <!-- LAYER 1 -->
+      <div class="layer-panel story" data-panel="understand">
+        <p><b>Homeostasis</b> is the body keeping its internal conditions within a suitable, fairly narrow range, no matter what's happening outside. If it's very hot outside, your body doesn't want its internal temperature to climb uncontrollably &mdash; so you sweat, sweat evaporates, heat is lost, temperature comes back down. That whole loop is homeostasis in action. The body regulates temperature, blood glucose, water balance, electrolytes, blood pressure, blood pH, and O&#8322;/CO&#8322; levels this way.</p>
+        <div class="analogy">
+          <b>Negative feedback &mdash; the common one</b>
+          Reverses the original change, pulling things back toward normal. "Too much? Reduce it. Too little? Increase it." Temperature regulation and blood glucose regulation both work this way &mdash; a change triggers a response that opposes that same change.
+        </div>
+        <div class="analogy">
+          <b>Positive feedback &mdash; the rare one</b>
+          Amplifies the original change instead of opposing it, driving a process forward until it's complete. Childbirth is the classic example: contractions trigger oxytocin release, which causes stronger contractions, which release more oxytocin &mdash; escalating until delivery. Blood clotting works the same way, each step activating more of the next, until the clot is formed.
+        </div>
+      </div>
+
+      <!-- LAYER 2 -->
+      <div class="layer-panel" data-panel="explain" hidden>
+        <div class="marks-tag">Reference &middot; Def/Stru/Fun + comparison</div>
+        <div class="dsf">
+          <div class="row"><div class="label">Def</div><p>Homeostasis is the maintenance of a relatively stable internal environment despite changes outside the body.</p></div>
+          <div class="row"><div class="label">Fun</div><p>Keeps cells working within the narrow conditions they need &mdash; achieved mainly through negative feedback, occasionally positive feedback.</p></div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Negative feedback</th><th>Positive feedback</th></tr>
+            <tr><td>Opposes the change</td><td>Strengthens the change</td></tr>
+            <tr><td>Maintains stability</td><td>Drives a process to completion</td></tr>
+            <tr><td>Very common</td><td>Less common</td></tr>
+            <tr><td>e.g. temperature, blood glucose regulation</td><td>e.g. childbirth, blood clotting</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- LAYER 3 -->
+      <div class="layer-panel" data-panel="practice" hidden>
+        <div class="marks-tag">Section C style &mdash; general, not asana-specific</div>
+        <p style="font-size:14.5px;">This is the one place in the Cell topic where a yoga connection is genuinely reasonable to state, because homeostasis is itself the physiological version of what a lot of yogic self-regulation is aiming at &mdash; but your notes don't name specific asanas here, so keep this general rather than presenting it as an exam-ready Section C answer.</p>
+        <div class="practice-link">
+          <b>Yogic self-regulation as applied homeostasis</b>
+          Slow, controlled pranayama and relaxation practices are understood to shift the autonomic nervous system toward parasympathetic dominance &mdash; supporting the same negative-feedback loops (heart rate, blood pressure, cortisol) that keep the internal environment stable under stress.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Define homeostasis in one line.</div><div class="a">Keeping the internal environment relatively stable despite outside change</div></div>
+          <div class="recall-card"><div class="q">Which feedback type is more common?</div><div class="a">Negative feedback</div></div>
+          <div class="recall-card"><div class="q">Give an example of positive feedback.</div><div class="a">Childbirth (oxytocin) or blood clotting</div></div>
+          <div class="recall-card"><div class="q">What does negative feedback do to the original change?</div><div class="a">Opposes/reduces it</div></div>
+        </div>
+      </div>
+
+      <p class="source-note">Source: class notes &mdash; Cell Study Notes (PDF).</p>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function activate(id, scroll){
+    sections.forEach(function(s){ s.hidden = (s.id !== 'sec-' + id); });
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+    if (scroll) window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+    try { history.replaceState(null, '', '#' + id); } catch(e){}
+    closeSidebar();
+  }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){ activate(btn.dataset.target, true); });
+  });
+
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      var text = btn.textContent.toLowerCase();
+      btn.hidden = q.length > 0 && text.indexOf(q) === -1;
+    });
+  });
+
+  // Layer tabs (Understand / Explain / Connect to practice) -- one independent set per section
+  Array.prototype.slice.call(document.querySelectorAll('.layer-nav')).forEach(function(nav){
+    var scope = nav.closest('.section') || document;
+    var layerButtons = Array.prototype.slice.call(nav.querySelectorAll('.layer-item'));
+    var layerPanels = Array.prototype.slice.call(scope.querySelectorAll('.layer-panel'));
+    layerButtons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var target = btn.dataset.layer;
+        layerButtons.forEach(function(b){ b.classList.toggle('active', b === btn); });
+        layerPanels.forEach(function(p){ p.hidden = (p.dataset.panel !== target); });
+      });
+    });
+  });
+
+  // Flip-to-reveal recall cards
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var startId = 'overview';
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)) startId = hash;
+  activate(startId, false);
+})();
+</script>
