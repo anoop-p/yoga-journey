@@ -1,3 +1,6 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Respiratory System</title>
 <style>
   :root{
@@ -129,6 +132,84 @@
     .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
     .scrim.show{ display:block; }
   }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 
@@ -147,425 +228,1004 @@
     </div>
     <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
     <nav class="tree" id="tree">
-      <button class="nav-item" data-target="overview"><span class="num">00</span><span>Organs &amp; Air Passages</span></button>
-      <button class="nav-item" data-target="breathing"><span class="num">01</span><span>Mechanism of Breathing</span></button>
-      <button class="nav-item" data-target="volumes"><span class="num">02</span><span>Volumes &amp; Capacities</span></button>
-      <button class="nav-item" data-target="exchange"><span class="num">03</span><span>Gas Exchange &amp; Transport</span></button>
-      <button class="nav-item" data-target="regulation"><span class="num">04</span><span>Regulation &amp; Pranayama</span></button>
+      <button class="nav-item" data-target="overview"><span class="num">01</span><span>Big Picture &amp; Functions</span></button>
+      <button class="nav-item" data-target="passages"><span class="num">02</span><span>Air Passages</span></button>
+      <button class="nav-item" data-target="lungs"><span class="num">03</span><span>Lungs, Lobes &amp; Pleura</span></button>
+      <button class="nav-item" data-target="breathing"><span class="num">04</span><span>Mechanism of Breathing</span></button>
+      <button class="nav-item" data-target="volumes"><span class="num">05</span><span>Volumes &amp; Capacities</span></button>
+      <button class="nav-item" data-target="exchange"><span class="num">06</span><span>Gas Exchange &amp; Transport</span></button>
+      <button class="nav-item" data-target="regulation"><span class="num">07</span><span>Regulation of Breathing</span></button>
+      <button class="nav-item" data-target="yoga"><span class="num">08</span><span>Breathing &amp; Yoga</span></button>
     </nav>
     <div class="sidebar-footer">
-      Reference: Respiratory System &mdash; Simple Notes (PDF); Yoga &amp; Human Body &mdash; Pranayama &amp; Physiology (notes); handwritten class notes (respiratory system)
+      Reference: Respiratory System Handwritten Notes (class notebook); Respiratory System &mdash; Simple Notes (PDF); Yoga &amp; Human Body notes; Ross &amp; Wilson ch. 10
     </div>
   </aside>
 
   <main id="main">
 
-    <!-- 00 OVERVIEW -->
+    <!-- 01 OVERVIEW -->
     <section class="section" id="sec-overview">
-      <div class="kicker">00 &middot; Foundations</div>
-      <h2>Organs &amp; Air Passages</h2>
-      <p class="dek">The respiratory system is two things: a set of air passages that condition and carry air, and the lungs where the actual gas exchange happens.</p>
+      <div class="sec-head">
+        <div class="kicker">01 &#183; Big picture</div>
+        <h2>The Respiratory System: Organs &amp; Functions</h2>
+        <p class="dek">Two parts, one job: air passages carry and clean the air, and the lungs swap oxygen for carbon dioxide with the blood.</p>
+      </div>
 
-      <div class="card">
-        <h3><span class="tag">Def</span>Respiratory System</h3>
-        <div class="dsf">
-          <div class="row"><div class="label">Def</div><p>The organs responsible for breathing air in and out, and exchanging oxygen and carbon dioxide between air and blood. Consists of the air passages and the lungs.</p></div>
-          <div class="row"><div class="label">Fun</div><p>Lungs are the respiratory organs; respiration through the lungs is called pulmonary respiration. Their job: bring atmospheric oxygen into the blood, and remove carbon dioxide from it.</p></div>
+      <div class="spread">
+        <figure class="fig">
+          <svg viewBox="0 0 380 440" role="img" aria-label="Schematic of the respiratory system: nasal cavity, pharynx, larynx, trachea, two bronchi, right lung and left lung with bronchial tree, and the diaphragm below">
+            <!-- nasal cavity -->
+            <ellipse class="ft" cx="180" cy="34" rx="34" ry="22"/>
+            <!-- pharynx -->
+            <path class="ft" d="M162 54 h36 v52 h-36z"/>
+            <!-- larynx -->
+            <path class="fg" d="M166 108 h28 v32 h-28z"/>
+            <path class="fa" d="M168 106 l24 0 l-12 -10z"/>
+            <!-- trachea -->
+            <rect class="fs" x="172" y="142" width="16" height="92"/>
+            <g class="ln"><path d="M172 154h16M172 166h16M172 178h16M172 190h16M172 202h16M172 214h16M172 226h16"/></g>
+            <!-- lungs -->
+            <path class="fa" d="M172 176 C116 156 66 196 62 300 C60 352 94 388 150 382 C176 379 172 340 172 300 Z"/>
+            <path class="fa" d="M188 176 C244 156 296 196 300 300 C302 352 268 388 212 382 C186 379 188 340 188 300 Z"/>
+            <!-- bronchi -->
+            <g class="ln" style="stroke-width:3"><path d="M180 234 L140 268"/><path d="M180 234 L220 268"/></g>
+            <g class="ln"><path d="M140 268 L112 292 M140 268 L136 308 M140 268 L124 330"/><path d="M220 268 L248 292 M220 268 L224 308 M220 268 L236 330"/>
+              <path d="M112 292 l-14 14 M112 292 l6 20 M136 308 l-10 22 M136 308 l12 20 M248 292 l14 14 M248 292 l-6 20 M224 308 l10 22 M224 308 l-12 20"/></g>
+            <g fill="var(--accent)"><circle cx="98" cy="306" r="3"/><circle cx="118" cy="312" r="3"/><circle cx="126" cy="330" r="3"/><circle cx="148" cy="328" r="3"/><circle cx="262" cy="306" r="3"/><circle cx="242" cy="312" r="3"/><circle cx="234" cy="330" r="3"/><circle cx="212" cy="328" r="3"/></g>
+            <!-- diaphragm -->
+            <path d="M40 400 Q180 352 320 400" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round"/>
+            <!-- labels -->
+            <text class="t tb" x="236" y="38">Nasal cavity</text><path class="lnt" d="M214 34 H232"/>
+            <text class="t tb" x="236" y="84">Pharynx</text><path class="lnt" d="M198 80 H232"/>
+            <text class="t tb" x="236" y="128">Larynx</text><path class="lnt" d="M194 124 H232"/>
+            <text class="t tb" x="236" y="154">Trachea</text><path class="lnt" d="M188 150 H232"/>
+            <text class="t tb" x="6" y="250">Bronchi</text><path class="lnt" d="M84 246 L152 256"/>
+            <text class="t tb tc" x="106" y="236">Right lung</text><text class="t tb tc" x="256" y="236">Left lung</text>
+            <text class="t ts tc" x="238" y="358" style="fill:var(--accent)">Bronchioles</text><text class="t ts tc" x="238" y="371" style="fill:var(--accent)">&#8594; alveoli</text><text class="t tb tc" x="180" y="424" style="fill:var(--accent)">Diaphragm</text>
+            <g class="bd"><circle cx="150" cy="34" r="9"/><text x="150" y="38">1</text></g><g class="bd"><circle cx="216" cy="80" r="9"/><text x="216" y="84">2</text></g><g class="bd"><circle cx="210" cy="124" r="9"/><text x="210" y="128">3</text></g><g class="bd"><circle cx="210" cy="150" r="9"/><text x="210" y="154">4</text></g><g class="bd"><circle cx="72" cy="246" r="9"/><text x="72" y="250">5</text></g><g class="bd"><circle cx="92" cy="360" r="9"/><text x="92" y="364">6</text></g><g class="bd"><circle cx="268" cy="336" r="9"/><text x="268" y="340">7</text></g><g class="bd"><circle cx="180" cy="404" r="9"/><text x="180" y="408">8</text></g>
+          </svg>
+          <figcaption>The whole system on one page. Numbers match the key.</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Nasal cavity</b> &#8211; filters, warms and moistens air (hairs, mucus, mucous membrane); holds the sense organs of smell.</li>
+          <li><b>Pharynx</b> &#8211; the shared passage for air and food.</li>
+          <li><b>Larynx</b> &#8211; the voice box; its opening (glottis) is guarded by the epiglottis.</li>
+          <li><b>Trachea</b> &#8211; the windpipe, a tube held open by C-shaped cartilage rings.</li>
+          <li><b>Bronchi</b> &#8211; the trachea divides into two, one for each lung.</li>
+          <li><b>Lungs</b> &#8211; soft, spongy, elastic; right has 3 lobes, left has 2.</li>
+          <li><b>Bronchioles &#8594; alveoli</b> &#8211; the fine branches ending in air sacs, where gas exchange happens.</li>
+          <li><b>Diaphragm</b> &#8211; the muscle sheet under the lungs that drives breathing.</li>
+        </ol>
+      </div>
+
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Think of the system as a <b>delivery road with a warehouse at the end</b>. The road (nose to bronchioles) only carries air and cleans it on the way: dust is trapped by hairs and mucus, the air is warmed and moistened so it does not shock the delicate lung tissue. The warehouse (the alveoli) is where the real transaction happens: oxygen from the air passes into the blood, and carbon dioxide from the blood passes out into the air.</p>
+        <p>That is why the system has two <i>zones</i>: a <b>conducting zone</b> (nose, pharynx, larynx, trachea, bronchi, bronchioles &#8211; no gas exchange) and a <b>respiratory zone</b> (respiratory bronchioles, alveolar ducts, alveoli &#8211; gas exchange).</p>
+      </div>
+
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this &#183; functions</span>
+          <ul class="plain">
+            <li><b>Oxygen uptake</b> and <b>carbon dioxide removal</b> &#8211; the main job (pulmonary respiration).</li>
+            <li><b>Acid&#8211;base regulation</b> &#8211; CO&#8322; carries acid, so breathing helps keep blood pH steady.</li>
+            <li><b>Voice</b> &#8211; air over the vocal cords in the larynx.</li>
+            <li><b>Protection</b> &#8211; filtering, mucus and cilia, cough.</li>
+          </ul>
+          <p style="font-size:12.5px;color:var(--muted)">From the Yoga &amp; Human Body notes (respiratory section).</p>
+        </div>
+        <div class="blk mem">
+          <span class="lbl">Memory aid</span>
+          <p><b>The air path, in order:</b> Nose &#8594; Pharynx &#8594; Larynx &#8594; Trachea &#8594; Bronchi &#8594; Bronchioles &#8594; Alveoli.</p>
+          <p style="margin:0">A made-up sentence to hold the first letters: <i>&#8220;Never Put Large Trucks Beyond Busy Areas.&#8221;</i></p>
         </div>
       </div>
 
-      <div class="flow">
-        <span class="step">External nostrils</span><span class="arrow">&rarr;</span>
-        <span class="step">Nasal cavities</span><span class="arrow">&rarr;</span>
-        <span class="step">Internal nostrils</span><span class="arrow">&rarr;</span>
-        <span class="step">Pharynx</span><span class="arrow">&rarr;</span>
-        <span class="step">Glottis</span><span class="arrow">&rarr;</span>
-        <span class="step">Larynx</span><span class="arrow">&rarr;</span>
-        <span class="step">Trachea</span><span class="arrow">&rarr;</span>
-        <span class="step">Bronchi</span><span class="arrow">&rarr;</span>
-        <span class="step">Bronchioles</span><span class="arrow">&rarr;</span>
-        <span class="step">Alveoli</span>
+      <div class="blk conf">
+        <span class="lbl">Common confusion</span>
+        <p><b>Breathing is not the same as respiration.</b> Breathing (ventilation) is the <i>movement of air</i> in and out. Respiration is the <i>exchange of gases</i> &#8211; at the lungs (external) and at the tissues (internal). You breathe with muscles; you respire with diffusion.</p>
       </div>
 
-      <div class="card story" style="box-shadow:none;">
-        <p><b>Nasal cavities</b> are separated by the nasal septum and open into the pharynx at the back through the internal nostrils. They carry the sense organs of smell, a mucous membrane, and small hairs that filter dust and foreign particles &mdash; so air is filtered, warmed, and moistened before it goes any further.</p>
-        <p><b>Pharynx</b> is the shared passage for both air and food, in two parts: the nasopharynx (air only) and oropharynx (food, and air during mouth breathing).</p>
-        <p><b>Larynx</b> (voice box) guards the entrance to the trachea. Its opening is the <b>glottis</b>, covered by a cartilaginous lid, the <b>epiglottis</b>, which closes during swallowing to keep food out of the trachea. Elastic vocal cords stretched across the cavity vibrate to produce sound, and the whole structure is supported by the thyroid cartilage (the "Adam's apple") and the cricoid cartilage.</p>
-        <p><b>Trachea</b> (windpipe) is a cartilaginous tube about 12&nbsp;cm long and 2.5&nbsp;cm across, held open by 15&ndash;20 C-shaped cartilage rings so it never collapses. Its lining combines ciliated epithelium with mucus-secreting goblet cells &mdash; the cilia sweep trapped dust and mucus upward as sputum, to be cleared. It divides into two bronchi, one to each lung.</p>
-        <p><b>Bronchi and bronchioles</b>: the trachea passes down the neck into the thoracic cavity and divides into a pair of <b>bronchi</b>, whose walls are supported by bronchial rings. Each bronchus enters the lung of its side and divides into a system of air capillaries called the <b>respiratory tree</b> (bronchial tree). The bronchus that enters the lung is the <b>primary bronchus</b>; inside the lung it divides repeatedly into <b>secondary</b> and <b>tertiary bronchi</b>, whose ultimate branches are the <b>bronchioles</b>. They keep subdividing: bronchioles &rarr; terminal bronchioles &rarr; respiratory bronchioles &rarr; alveolar ducts &rarr; alveolar sacs &rarr; alveoli. A group of alveoli is called an <b>infundibulum</b>, which looks like a bunch of grapes. The respiratory unit starts from the respiratory bronchioles.</p>
-        <p><b>Alveoli</b> are the respiratory unit &mdash; the structural and functional unit of the lung. Each alveolus is very thin (about 0.5&nbsp;&micro;m), lined by simple squamous epithelium, and wrapped in highly permeable blood capillaries. This is where O&#8322; and CO&#8322; actually cross by diffusion. Each alveolus is about 0.1&nbsp;mm across; branches of the <b>pulmonary artery</b> supply its capillaries, gas crosses between blood and alveolar air by diffusion through the alveolar wall, and the oxygenated blood returns by the <b>pulmonary veins</b>. The membranous structure through which this exchange happens is the <b>respiratory membrane</b>.</p>
-        <p style="margin-bottom:0;"><b>Pleura and thoracic cavity:</b> each lung sits in the thoracic cavity, one on either side of the mediastinum, wrapped in a double-layered membrane, the <b>pleura</b> &mdash; an outer <b>parietal</b> layer and an inner <b>visceral</b> layer. The space between them, the pleural cavity, is filled with <b>pleural fluid</b>, which reduces friction as the lungs expand and recoil during breathing. The right lung has three lobes (superior, middle, inferior); the left has two (superior, inferior) &mdash; it makes room for the heart.</p>
-<p style="margin-bottom:0;"><b>The thorax</b> that protects the lungs is a closed cavity bounded behind by the vertebral column, in front by the ribs and sternum, and below by the diaphragm.</p>
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; Q6 &#8220;What is the function of the lungs?&#8221; (2 marks)</span>
+        <p>&#8220;The lungs are the respiratory organs. They take oxygen from the air into the blood and remove carbon dioxide from the blood into the air (pulmonary respiration).&#8221; Two facts, two marks: <b>O&#8322; in, CO&#8322; out.</b></p>
       </div>
 
-      <div class="figure-grid">
-        <figure>
-          <img src="assets/diagrams/lungs-handdrawn.jpg" alt="Hand-drawn diagram of the lungs with the larynx, trachea, bronchi and lobes labelled: right superior, middle and inferior lobes; left superior and inferior lobes; terminal bronchiole, alveolar duct and alveolus">
-          <figcaption>The lungs (from your notebook): trachea, bronchi, and the lobes of the right and left lungs.</figcaption>
-        </figure>
-        <figure>
-          <img src="assets/diagrams/larynx-respiratory-unit.jpg" alt="Hand-drawn diagram of the larynx and trachea (epiglottis, thyroid, tracheal cartilage) and a respiratory unit (terminal bronchiole, respiratory bronchiole, alveolar duct, alveoli, infundibulum)">
-          <figcaption>Larynx and trachea, and one respiratory unit down to the alveoli and infundibulum (from your notebook).</figcaption>
-        </figure>
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;Your respiratory system has a road and a warehouse. The road is the nose, throat, windpipe and its branches &#8211; it cleans, warms and moistens the air. The warehouse is millions of tiny air sacs called alveoli, wrapped in blood vessels. Oxygen slips into the blood there and carbon dioxide slips out. The diaphragm under your lungs is the engine that moves the air.&#8221;</p>
       </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; conducting vs respiratory zone</summary>
+        <div class="inner">
+          <p>Only the final branches (from the respiratory bronchioles onward) have walls thin enough for gas exchange. Everything before that is &#8220;dead space&#8221;: air sits in it but no exchange occurs. This matters when we calculate how much of each breath actually reaches the blood (see <a href="#sec-volumes">Section 5</a>). The same airways are also where mucus and cilia clean the air, and where asthma and bronchitis act (see the disorders fold in <a href="#sec-lungs">Section 3</a>).</p>
+        </div>
+      </details>
 
       <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
         <div class="recall-strip">
-          <div class="recall-card"><div class="q">What is the function of the lungs?</div><div class="a">The respiratory organs &mdash; they bring O&#8322; into the blood and remove CO&#8322; from it (pulmonary respiration)</div></div>
-          <div class="recall-card"><div class="q">Name the fluid present in the lungs' cavity.</div><div class="a">Pleural fluid, in the pleural cavity between the parietal and visceral pleura</div></div>
-          <div class="recall-card"><div class="q">What structure guards the entrance to the trachea during swallowing?</div><div class="a">The epiglottis, covering the glottis</div></div>
-          <div class="recall-card"><div class="q">How many lobes does the right lung have? The left?</div><div class="a">Right: 3 (superior, middle, inferior). Left: 2 (superior, inferior)</div></div>
-          <div class="recall-card"><div class="q">What is the bronchus that enters the lung called?</div><div class="a">The primary bronchus; it divides into secondary and tertiary bronchi, then bronchioles</div></div>
-          <div class="recall-card"><div class="q">What is a group of alveoli called?</div><div class="a">An infundibulum (looks like a bunch of grapes)</div></div>
-          <div class="recall-card"><div class="q">What bounds the thorax behind, in front and below?</div><div class="a">Vertebral column behind; ribs and sternum in front; diaphragm below</div></div>
-          <div class="recall-card"><div class="q">What is the respiratory membrane?</div><div class="a">The membranous structure through which gases are exchanged between alveolar air and blood</div></div>
+          <div class="recall-card"><div class="q">What is the function of the lungs?</div><div class="a">The respiratory organs: bring O&#8322; into the blood and remove CO&#8322; (pulmonary respiration)</div></div>
+          <div class="recall-card"><div class="q">What are the two parts of the respiratory system?</div><div class="a">The air passages and the lungs</div></div>
+          <div class="recall-card"><div class="q">Name the air path from nose to alveoli.</div><div class="a">Nose &#8594; pharynx &#8594; larynx &#8594; trachea &#8594; bronchi &#8594; bronchioles &#8594; alveoli</div></div>
+          <div class="recall-card"><div class="q">Breathing vs respiration?</div><div class="a">Breathing = moving air (ventilation). Respiration = exchange of gases</div></div>
+          <div class="recall-card"><div class="q">Name four functions of the respiratory system.</div><div class="a">O&#8322; uptake, CO&#8322; removal, acid&#8211;base regulation, voice, protection</div></div>
+          <div class="recall-card"><div class="q">Which zone does gas exchange?</div><div class="a">The respiratory zone: respiratory bronchioles, alveolar ducts and alveoli</div></div>
         </div>
       </div>
     </section>
 
-    <!-- 01 MECHANISM OF BREATHING -->
-    <section class="section" id="sec-breathing">
-      <div class="kicker">01 &middot; Ventilation</div>
-      <h2>Mechanism of Breathing</h2>
-      <p class="dek">Breathing is a pressure-volume game: change the size of the thoracic cavity, and air follows the pressure difference.</p>
+    <!-- 02 AIR PASSAGES -->
+    <section class="section" id="sec-passages">
+      <div class="sec-head">
+        <div class="kicker">02 &#183; The road</div>
+        <h2>Air Passages: Nose to Alveoli</h2>
+        <p class="dek">Every part of the road has one feature that explains its job: hairs and mucus, a lid, vocal cords, C-rings, cilia, thin walls.</p>
+      </div>
 
-      <figure>
-        <img src="assets/diagrams/mechanism-of-respiration.jpg" alt="Mechanism of respiration diagram showing inspiration (diaphragm and external intercostals contract, thoracic volume increases, pressure decreases, air flows in) and expiration (muscles relax, lung recoil, thoracic volume decreases, pressure increases, air flows out)">
-        <figcaption>Inspiration is active (muscles contract); expiration in quiet breathing is passive (muscles relax, lungs recoil).</figcaption>
+      <h3 class="sub"><span class="n">2A</span>Larynx, trachea and the respiratory unit</h3>
+      <div class="spread">
+        <figure class="fig photo">
+          <img src="assets/diagrams/larynx-respiratory-unit.jpg" alt="Hand-drawn diagram of the larynx and trachea (epiglottis, thyroid cartilage, tracheal cartilage, trachea) and one respiratory unit (terminal bronchiole, respiratory bronchiole, alveolar duct, alveoli, infundibulum)">
+          <figcaption>From your notebook: larynx and trachea (top), one respiratory unit (bottom).</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Epiglottis</b> &#8211; the cartilage lid over the glottis; closes during swallowing so food does not enter the trachea.</li>
+          <li><b>Thyroid cartilage</b> &#8211; gives the &#8220;Adam&#8217;s apple&#8221;; the cricoid cartilage below it also supports the larynx wall.</li>
+          <li><b>Tracheal cartilage rings</b> &#8211; 15&#8211;20 C-shaped rings that stop the trachea from collapsing.</li>
+          <li><b>Trachea</b> &#8211; ~12 cm long, ~2.5 cm wide; lined with ciliated epithelium.</li>
+          <li><b>Terminal bronchiole &#8594; respiratory bronchiole &#8594; alveolar duct</b> &#8211; the last tubes of the tree.</li>
+          <li><b>Alveoli and infundibulum</b> &#8211; the air sacs; a group of alveoli looks like a bunch of grapes (infundibulum).</li>
+        </ol>
+      </div>
+
+      <div class="table-wrap"><table>
+        <tr><th>Part</th><th>What to remember</th><th>Why it matters</th></tr>
+        <tr><td>Nasal cavities</td><td>Two cavities split by the nasal septum; open to the pharynx through internal nostrils. Mucous membrane, hairs, sense organs of smell.</td><td>Filters, warms, moistens the air.</td></tr>
+        <tr><td>Pharynx</td><td>Common passage for air and food. Nasopharynx = air; oropharynx = food (class notes).</td><td>Crossroads &#8211; needs the epiglottis to direct traffic.</td></tr>
+        <tr><td>Larynx</td><td>Voice box. Glottis (opening) + epiglottis (lid). Vocal cords: two elastic bands stretched across the cavity. Thyroid and cricoid cartilages.</td><td>Air vibrates the cords &#8594; sound. Protects the airway.</td></tr>
+        <tr><td>Trachea</td><td>12 cm &#215; 2.5 cm; 15&#8211;20 C-shaped rings; ciliated epithelium + mucus-secreting (goblet) cells.</td><td>Rings keep it open; cilia sweep mucus and dust upward (sputum).</td></tr>
+        <tr><td>Bronchi</td><td>Trachea divides into two; walls supported by rings. Primary &#8594; secondary &#8594; tertiary bronchi inside the lung.</td><td>Carries air to each lung and its lobes.</td></tr>
+        <tr><td>Bronchioles</td><td>Terminal &#8594; respiratory bronchioles &#8594; alveolar ducts &#8594; alveolar sacs &#8594; alveoli.</td><td>The &#8220;respiratory tree&#8221;. Respiratory unit starts at the respiratory bronchioles.</td></tr>
+      </table></div>
+
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Two design problems: keep the tube <b>open</b> and keep it <b>clean</b>. The rings (cartilage) solve the first &#8211; a soft tube would flatten every time pressure dropped during inspiration, like a drinking straw sucked too hard. Cilia and mucus solve the second: the mucus traps dust, the cilia beat upward like a conveyor belt and push it toward the throat to be swallowed or coughed out.</p>
+        <p>The epiglottis solves a third problem: air and food share the pharynx. At each swallow the larynx lifts and the lid closes the glottis, sending food down the oesophagus instead of the windpipe.</p>
+      </div>
+
+      <h3 class="sub"><span class="n">2B</span>The respiratory unit and the respiratory membrane</h3>
+      <div class="spread rev">
+        <ol class="key">
+          <li><b>Terminal bronchiole &#8594; alveolar duct</b> &#8211; the last air tube, ending in a cluster of sacs.</li>
+          <li><b>Alveolus</b> &#8211; ~0.1 mm across; wall is one cell thick (simple squamous epithelium).</li>
+          <li><b>Pulmonary artery branch</b> &#8211; brings blood low in O&#8322;, high in CO&#8322; to the alveolar capillaries.</li>
+          <li><b>Pulmonary vein</b> &#8211; takes the freshly oxygenated blood back to the heart.</li>
+          <li><b>Capillary net</b> &#8211; a mesh of blood vessels wrapped around the alveolus; highly permeable.</li>
+          <li><b>Respiratory membrane</b> &#8211; alveolar wall + capillary wall (~0.5 &#181;m); gases cross it by diffusion.</li>
+        </ol>
+        <figure class="fig">
+          <svg viewBox="0 0 380 300" role="img" aria-label="Respiratory unit: a terminal bronchiole leads to an alveolar duct and an alveolus; a capillary ring wraps the alveolus, taking blood from the pulmonary artery on its way to the pulmonary vein; the inset shows the respiratory membrane with O2 diffusing in and CO2 diffusing out">
+            <path d="M14 70 L132 108" class="ln" style="stroke:var(--teal);stroke-width:14;opacity:.55"/>
+            <path d="M132 108 L186 124" class="ln" style="stroke:var(--teal);stroke-width:9;opacity:.55"/>
+            <circle class="fa" cx="240" cy="125" r="52"/>
+            <path d="M283.8 81.2 A62 62 0 1 0 240 187" fill="none" stroke="var(--teal)" stroke-width="5" stroke-linecap="round"/>
+            <path d="M240 187 A62 62 0 0 0 283.8 168.8" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/>
+            <path d="M283.8 81.2 L336 34" class="ct" style="stroke-width:5"/>
+            <path d="M283.8 168.8 L336 214" class="ca" style="stroke-width:5"/>
+            <text class="t ts tb tc" x="240" y="120" style="font-weight:600">Alveolus</text><text class="t ts tc" x="240" y="134" style="fill:var(--muted)">air inside</text>
+            <text class="t ts" x="14" y="46">Terminal bronchiole</text>
+            <text class="t ts" x="62" y="132">Alveolar duct</text>
+            <text class="t ts" x="296" y="20">Pulmonary artery</text><text class="t ts" x="296" y="32" style="fill:var(--muted)">(low O&#8322;)</text>
+            <text class="t ts" x="290" y="236">Pulmonary vein</text><text class="t ts" x="290" y="248" style="fill:var(--muted)">(high O&#8322;)</text>
+            <g class="bd"><circle cx="70" cy="96" r="9"/><text x="70" y="100">1</text></g><g class="bd"><circle cx="240" cy="150" r="9"/><text x="240" y="154">2</text></g><g class="bd"><circle cx="322" cy="44" r="9"/><text x="322" y="48">3</text></g><g class="bd"><circle cx="322" cy="204" r="9"/><text x="322" y="208">4</text></g><g class="bd"><circle cx="180" cy="84" r="9"/><text x="180" y="88">5</text></g>
+            <rect class="fs" x="14" y="196" width="250" height="96" rx="8"/>
+            <g class="bd"><circle cx="30" cy="212" r="9"/><text x="30" y="216">6</text></g><text class="t ts" x="46" y="216" style="font-weight:600">Respiratory membrane (zoom)</text>
+            <rect class="fa" x="26" y="226" width="70" height="56" opacity=".55"/><text class="t ts tc" x="61" y="258">Alveolar air</text>
+            <rect class="fw" x="96" y="226" width="14" height="56"/><rect class="fw" x="110" y="226" width="14" height="56"/>
+            <rect class="ft" x="124" y="226" width="128" height="56" opacity=".55"/><text class="t ts tc" x="196" y="258">Blood in capillary</text>
+            <path d="M40 238 H196" stroke="var(--teal)" stroke-width="2" fill="none"/><path d="M190 234 l8 4 l-8 4z" fill="var(--teal)"/><text class="t ts" x="130" y="236" style="fill:var(--teal);font-weight:600">O&#8322; &#8594;</text>
+            <path d="M196 274 H40" stroke="var(--accent)" stroke-width="2" fill="none"/><path d="M46 270 l-8 4 l8 4z" fill="var(--accent)"/><text class="t ts" x="130" y="272" style="fill:var(--accent);font-weight:600">&#8592; CO&#8322;</text>
+          </svg>
+          <figcaption>One alveolus and its capillary net; the zoom shows the thin membrane the gases cross.</figcaption>
+        </figure>
+      </div>
+
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this</span>
+          <ul class="plain">
+            <li>The <b>alveolus</b> is the structural and functional unit of the lung (class notes also call the whole <b>respiratory unit</b> &#8211; from the respiratory bronchioles onward &#8211; the functional unit).</li>
+            <li>Thin wall + large surface + dense capillaries = fast diffusion.</li>
+            <li>Blood arrives by the <b>pulmonary artery</b> and leaves by the <b>pulmonary vein</b> &#8211; the only place in the body where an artery carries deoxygenated blood and a vein carries oxygenated blood.</li>
+            <li>Respiratory membrane thickness ~0.5 &#181;m (class notes: &#8220;0.5 &#181;m as written&#8221;).</li>
+          </ul>
+        </div>
+        <div class="blk conf">
+          <span class="lbl">Common confusion</span>
+          <ul class="plain">
+            <li><b>Glottis vs epiglottis:</b> the glottis is the opening; the epiglottis is the lid.</li>
+            <li><b>Larynx vs pharynx:</b> pharynx = throat (air + food); larynx = voice box (air only).</li>
+            <li><b>Nasopharynx vs oropharynx:</b> class notes say nasopharynx = air, oropharynx = food. In practice the oropharynx also carries air when you breathe through the mouth.<span class="src gen">general</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="blk mem">
+        <span class="lbl">Memory aid</span>
+        <p><b>C-rings open at the back.</b> The tracheal rings are C-shaped, with the gap facing the oesophagus behind, so food can bulge through during swallowing.<span class="src gen">general</span></p>
+        <p style="margin:0"><b>Epi-glottis</b> = &#8220;on top of&#8221; (epi) the glottis, like a lid on a pot.</p>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;The windpipe is a ribbed tube, like a vacuum-cleaner hose, so it never collapses. Its lining makes sticky mucus that traps dust, and tiny hairs called cilia sweep it up. At the bottom it splits into two branches, then keeps splitting into smaller and smaller tubes, ending in millions of grape-like air sacs. Those sacs are one cell thick and wrapped in blood vessels &#8211; that&#8217;s where oxygen gets in.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; surfactant, goblet cells, mucociliary clearance</summary>
+        <div class="inner">
+          <p><b>Mucociliary clearance:</b> goblet cells make mucus; ciliated cells beat it upward. Smoke and irritants slow the cilia, which is why smokers cough to clear what the cilia cannot.<span class="src gen">general</span></p>
+          <p><b>Surfactant:</b> a thin film inside alveoli that lowers surface tension so the tiny sacs do not collapse on expiration. Without it (as in some premature babies) breathing is very hard.<span class="src gen">general</span></p>
+        </div>
+      </details>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Which structure closes the glottis during swallowing?</div><div class="a">The epiglottis</div></div>
+          <div class="recall-card"><div class="q">What supports the wall of the larynx?</div><div class="a">The thyroid and cricoid cartilages</div></div>
+          <div class="recall-card"><div class="q">Size and support of the trachea?</div><div class="a">~12 cm &#215; 2.5 cm; 15&#8211;20 C-shaped cartilage rings</div></div>
+          <div class="recall-card"><div class="q">What do cilia in the trachea do?</div><div class="a">Push mucus and trapped dust upward (sputum)</div></div>
+          <div class="recall-card"><div class="q">Order of branching inside the lung?</div><div class="a">Primary &#8594; secondary &#8594; tertiary bronchi &#8594; bronchioles &#8594; terminal &#8594; respiratory bronchioles &#8594; alveolar ducts &#8594; alveolar sacs &#8594; alveoli</div></div>
+          <div class="recall-card"><div class="q">What is an infundibulum?</div><div class="a">A group of alveoli, like a bunch of grapes</div></div>
+          <div class="recall-card"><div class="q">What is the respiratory membrane?</div><div class="a">Alveolar wall + capillary wall, through which gases diffuse</div></div>
+          <div class="recall-card"><div class="q">Which vessel brings blood to the alveoli? Which takes it away?</div><div class="a">Pulmonary artery brings it; pulmonary vein takes it away</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 LUNGS & PLEURA -->
+    <section class="section" id="sec-lungs">
+      <div class="sec-head">
+        <div class="kicker">03 &#183; The organs</div>
+        <h2>Lungs, Lobes &amp; Pleura</h2>
+        <p class="dek">Two soft, elastic lungs in a closed bony cage, each wrapped in a double membrane with a film of fluid in between.</p>
+      </div>
+
+      <h3 class="sub"><span class="n">3A</span>The lungs and their lobes</h3>
+      <div class="spread rev">
+        <ol class="key">
+          <li><b>Larynx and cricoid/thyroid cartilage</b> at the top.</li>
+          <li><b>Trachea</b> dividing into the two <b>bronchi</b>.</li>
+          <li><b>Right lung &#8211; 3 lobes:</b> superior, middle, inferior.</li>
+          <li><b>Left lung &#8211; 2 lobes:</b> superior, inferior (smaller, to make room for the heart).</li>
+          <li><b>Inside each lobe:</b> bronchioles dividing down to alveolar ducts and alveoli (lower left of your drawing).</li>
+        </ol>
+        <figure class="fig photo">
+          <img src="assets/diagrams/lungs-handdrawn.jpg" alt="Hand-drawn diagram of the lungs with larynx, trachea, bronchi and lobes: right superior, middle and inferior; left superior and inferior; terminal bronchiole, alveolar duct and alveolus">
+          <figcaption>From your notebook: lungs, lobes and the airway tree inside.</figcaption>
+        </figure>
+      </div>
+
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this</span>
+          <ul class="plain">
+            <li>Lungs lie in the thoracic cavity, one each side of the <b>mediastinum</b> (the space between them, holding the heart).</li>
+            <li>Each lung is <b>conical</b> and rests on the <b>diaphragm</b>.</li>
+            <li>Each lobe is built of millions of alveoli.</li>
+            <li>The <b>thorax</b> is a closed cavity: <b>vertebral column</b> behind, <b>ribs and sternum</b> in front, <b>diaphragm</b> below.</li>
+          </ul>
+        </div>
+        <div class="blk mem">
+          <span class="lbl">Memory aid</span>
+          <p><b>Right = 3, Left = 2.</b> The heart leans to the left, so the left lung gives it room and is one lobe short.</p>
+          <p style="margin:0">Right lobes top to bottom: <b>S-M-I</b> (superior, middle, inferior). Left: <b>S-I</b>.</p>
+        </div>
+      </div>
+
+      <h3 class="sub"><span class="n">3B</span>The pleura and pleural fluid</h3>
+      <div class="spread">
+        <figure class="fig">
+          <svg viewBox="0 0 400 270" role="img" aria-label="Cross-section: chest wall with ribs, parietal pleura, pleural cavity with pleural fluid, visceral pleura on the lung surface; a zoom shows the three layers; the diaphragm lies below the lung">
+            <path class="fs" d="M20 20 Q10 130 20 230 L52 230 Q44 130 52 20z"/>
+            <text class="t ts tc" x="34" y="14" style="font-weight:600">Chest wall</text>
+            <path d="M58 22 Q50 130 58 226" fill="none" stroke="var(--accent)" stroke-width="3"/>
+            <path d="M66 22 Q58 130 66 226" fill="none" stroke="var(--teal)" stroke-width="6" opacity=".35"/>
+            <path d="M72 22 Q64 130 72 226" fill="none" stroke="var(--accent)" stroke-width="3"/>
+            <path class="fa" d="M76 24 Q70 130 76 224 Q150 244 190 218 Q216 130 190 40 Q130 12 76 24z" opacity=".7"/>
+            <text class="t tb tc" x="140" y="132">Lung</text>
+            <path d="M8 236 Q110 262 200 236" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round"/>
+            <text class="t ts tc" x="104" y="268">Diaphragm</text>
+            <circle cx="64" cy="120" r="16" fill="none" stroke="var(--ink-soft)" stroke-dasharray="3 3"/>
+            <path class="lnt" d="M80 112 L236 74 M80 128 L236 168"/>
+            <!-- zoom -->
+            <rect class="fa" x="236" y="74" width="140" height="28"/><text class="t ts tc" x="306" y="92">Parietal pleura (outer)</text>
+            <rect class="ft" x="236" y="102" width="140" height="42"/><text class="t ts tc" x="306" y="120">Pleural cavity</text><text class="t ts tc" x="306" y="134" style="fill:var(--teal)">filled with pleural fluid</text>
+            <rect class="fa" x="236" y="144" width="140" height="28"/><text class="t ts tc" x="306" y="162">Visceral pleura (inner)</text>
+            <text class="t ts" x="238" y="62" style="font-weight:600">Zoom of the three layers</text>
+            <g class="bd"><circle cx="386" cy="88" r="9"/><text x="386" y="92">1</text></g><g class="bd"><circle cx="386" cy="123" r="9"/><text x="386" y="127">2</text></g><g class="bd"><circle cx="386" cy="158" r="9"/><text x="386" y="162">3</text></g>
+          </svg>
+          <figcaption>Left: where the pleura sits. Right: the zoom.</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Parietal pleura</b> &#8211; the outer layer, stuck to the inside of the chest wall and diaphragm.</li>
+          <li><b>Pleural cavity</b> &#8211; a thin space between the layers, filled with <b>pleural fluid</b>.</li>
+          <li><b>Visceral pleura</b> &#8211; the inner layer, stuck to the surface of the lung.</li>
+        </ol>
+      </div>
+
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Every breath, the lungs slide against the chest wall. Without lubrication that would be like rubbing two dry hands together thousands of times a day. The <b>pleural fluid</b> is the lubricant: a thin film between two smooth membranes. It <b>reduces friction</b> so the lungs can expand and recoil silently.</p>
+        <p>Picture two glass plates with a drop of water between them: they slide easily but are hard to pull apart. That is also why the lung follows the chest wall when the chest expands (the layers cling through the fluid film).<span class="src gen">general</span></p>
+      </div>
+
+      <div class="blk conf">
+        <span class="lbl">Common confusion</span>
+        <p><b>Four &#8220;cavities&#8221;, four meanings.</b> <i>Thoracic cavity</i> = the whole chest space. <i>Pleural cavity</i> = the tiny space between the two pleural layers (holds fluid). <i>Intrapulmonary cavity</i> = the air space inside the lung (alveoli + bronchioles). <i>Mediastinum</i> = the space between the two lungs.</p>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; Q9 &#8220;Name the fluid in the lungs&#8217; cavity&#8221; (2 marks) &#183; Q16 &#8220;Draw and label the respiratory system&#8221; (5 marks)</span>
+        <p><b>Q9:</b> Pleural fluid (in the pleural cavity, between parietal and visceral pleura); it reduces friction between the lungs and the chest wall.</p>
+        <p><b>Q16 drawing checklist</b> &#8211; tick each as you draw:</p>
+        <ul class="chk">
+          <li>Nasal cavity, pharynx and larynx at the top (with epiglottis)</li>
+          <li>Trachea with C-rings drawn as lines across</li>
+          <li>Trachea dividing into two bronchi</li>
+          <li><b>Right lung with 3 lobes</b> (superior, middle, inferior) and <b>left lung with 2</b> (superior, inferior)</li>
+          <li>Bronchi branching into bronchioles inside the lungs, ending in alveoli</li>
+          <li>Diaphragm as a dome under the lungs</li>
+          <li>Labels in straight lines (ruler) outside the drawing, pointing to the structure</li>
+          <li>Title: &#8220;Human respiratory system&#8221;</li>
+        </ul>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;Each lung is wrapped in a two-layer bag called the pleura, one layer stuck to the lung and one to the chest wall. Between them is a thin film of fluid, so the lungs can slide with every breath instead of rubbing. The right lung has three lobes and the left only two, because the heart takes up space on the left.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; lung disorders and breathing terms</summary>
+        <div class="inner">
+          <div class="table-wrap"><table>
+            <tr><th>Condition</th><th>What it is</th></tr>
+            <tr><td>Bronchial asthma</td><td>Narrowing of the airways causing wheezing and difficulty breathing</td></tr>
+            <tr><td>Bronchitis</td><td>Inflammation of the bronchi</td></tr>
+            <tr><td>Emphysema</td><td>Damage to the alveoli that reduces the surface area for gas exchange</td></tr>
+            <tr><td>Pneumonia</td><td>Infection or inflammation of the lungs; the alveoli fill with fluid</td></tr>
+            <tr><td>Asphyxia</td><td>Severe lack of O&#8322; with excess CO&#8322;</td></tr>
+            <tr><td>Hypoxia</td><td>Deficiency of oxygen at tissue level</td></tr>
+            <tr><td>Altitude (mountain) sickness</td><td>Low PO&#8322; at high altitude</td></tr>
+          </table></div>
+          <p><b>Breathing terms:</b> <i>apnoea</i> &#8211; temporary stoppage of breathing; <i>dyspnoea</i> &#8211; difficulty in breathing; <i>hyperpnoea</i> &#8211; increased depth or rate of breathing.</p>
+          <p style="font-size:12.5px;color:var(--muted)">Source: the teacher&#8217;s Respiratory System notes. Your notebook also lists these as topics still to be written up: cough, sneezing, yawning, hypercapnia, hypocapnia, silicosis, asbestosis, CPR.</p>
+        </div>
+      </details>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Name the fluid in the lungs&#8217; cavity.</div><div class="a">Pleural fluid, in the pleural cavity between the parietal and visceral pleura</div></div>
+          <div class="recall-card"><div class="q">What does the pleural fluid do?</div><div class="a">Reduces friction between the lungs and the chest wall</div></div>
+          <div class="recall-card"><div class="q">Parietal vs visceral pleura?</div><div class="a">Parietal = outer (on the chest wall); visceral = inner (on the lung)</div></div>
+          <div class="recall-card"><div class="q">Lobes of the right and left lungs?</div><div class="a">Right: superior, middle, inferior. Left: superior, inferior</div></div>
+          <div class="recall-card"><div class="q">What is the mediastinum?</div><div class="a">The space between the two lungs</div></div>
+          <div class="recall-card"><div class="q">What bounds the thorax?</div><div class="a">Vertebral column behind; ribs and sternum in front; diaphragm below</div></div>
+          <div class="recall-card"><div class="q">What happens to the alveoli in emphysema? In pneumonia?</div><div class="a">Emphysema: alveoli damaged, less surface area. Pneumonia: alveoli fill with fluid</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 MECHANISM -->
+    <section class="section" id="sec-breathing">
+      <div class="sec-head">
+        <div class="kicker">04 &#183; Ventilation</div>
+        <h2>The Mechanism of Breathing</h2>
+        <p class="dek">Change the size of the chest, and air follows the pressure. No separate pump; the muscles just change the volume.</p>
+      </div>
+
+      <div class="spread wide">
+        <figure class="fig photo">
+          <img src="assets/diagrams/mechanism-of-respiration.jpg" alt="Mechanism of respiration: inspiration (external intercostals contract, ribs up and out, diaphragm contracts and moves down, thoracic volume increases, lung pressure decreases, air rushes in) and expiration (muscles relax, ribs down and in, diaphragm relaxes and moves up, volume decreases, pressure increases, air rushes out)">
+          <figcaption>Inspiration (left) and expiration (right). Boyle&#8217;s law: when volume goes up, pressure goes down.</figcaption>
+        </figure>
+      </div>
+
+      <div class="table-wrap"><table class="cmp">
+        <tr><th></th><th>Inspiration (breathing in)</th><th>Expiration (breathing out)</th></tr>
+        <tr><td>Type</td><td class="in">Active (muscles work)</td><td class="out">Passive in quiet breathing (muscles relax)</td></tr>
+        <tr><td>Diaphragm</td><td class="in">Contracts, flattens, moves down</td><td class="out">Relaxes, returns upward (dome)</td></tr>
+        <tr><td>Intercostals</td><td class="in">External intercostals contract</td><td class="out">Relax</td></tr>
+        <tr><td>Ribs and sternum</td><td class="in">Up and out; sternum up and forward</td><td class="out">Down and in</td></tr>
+        <tr><td>Chest volume</td><td class="in">Increases (vertical, front-to-back, side-to-side)</td><td class="out">Decreases (elastic recoil)</td></tr>
+        <tr><td>Pressure in lungs</td><td class="in">Falls below atmospheric</td><td class="out">Rises above atmospheric</td></tr>
+        <tr><td>Air flow</td><td class="in">Into the lungs</td><td class="out">Out of the lungs</td></tr>
+      </table></div>
+
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Imagine a <b>syringe</b>. Pull the plunger back: the space grows, the pressure inside drops below the outside air, and air rushes in through the nozzle. Push it in and air is forced out. The chest is the syringe and the diaphragm is the plunger. At rest the air inside the lungs is at the <b>same pressure as outside</b>, because the lungs are open to the air through the nose and windpipe. So any change in chest size creates a pressure difference, and air moves until the two pressures are equal again.</p>
+        <p><b>Why expiration is passive:</b> the lungs are elastic, like a stretched balloon. Once the muscles stop pulling, the lungs spring back by themselves and push the air out. No effort needed.</p>
+      </div>
+
+      <h3 class="sub"><span class="n">4A</span>Three ways the chest gets bigger</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Diameter</th><th>Caused by</th><th>Image</th></tr>
+        <tr><td>Vertical (top to bottom)</td><td>Diaphragm flattens and descends</td><td>Piston going down</td></tr>
+        <tr><td>Antero-posterior (front to back)</td><td>Ribs and sternum swing up and forward</td><td><b>Pump-handle</b> movement</td></tr>
+        <tr><td>Transverse (side to side)</td><td>Ribs swing up and outward</td><td><b>Bucket-handle</b> movement</td></tr>
+      </table></div>
+
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this</span>
+          <ul class="plain">
+            <li>Breathing = ventilation = a cyclic process: fresh air in, an equal volume out.</li>
+            <li>Quiet respiration: <b>12&#8211;14 per minute</b> (class notes); textbooks usually say 12&#8211;16.</li>
+            <li><b>Minute volume</b> in quiet breathing &#8776; <b>6000 mL/min</b> (500 mL &#215; 12).</li>
+            <li><b>Laboured breathing</b> (exercise, hard work): rate rises and expiration becomes <b>forceful</b>, not passive.</li>
+            <li><b>Accessory muscles</b> when demand rises: sternocleidomastoid, scalenes, intercostals.<span class="src cls">Yoga &amp; Human Body</span></li>
+            <li>Forced expiration uses the internal intercostals and abdominal muscles.<span class="src gen">general</span></li>
+          </ul>
+        </div>
+        <div class="blk mem">
+          <span class="lbl">Memory aid</span>
+          <p><b>In = Contract. Out = Relax.</b></p>
+          <p><b>Volume &#8593; &#8594; Pressure &#8595; &#8594; Air in.</b> <b>Volume &#8595; &#8594; Pressure &#8593; &#8594; Air out.</b></p>
+          <p style="margin:0"><b>P</b>ump-handle = <b>P</b>ush forward (front&#8211;back). <b>B</b>ucket-handle = <b>B</b>roader (side to side).</p>
+        </div>
+      </div>
+
+      <div class="blk conf">
+        <span class="lbl">Common confusion</span>
+        <ul class="plain">
+          <li><b>The diaphragm moves down on inspiration.</b> It flattens like a drawn bowstring; it doesn&#8217;t &#8220;squeeze&#8221; the lungs. Moving down is what makes room.</li>
+          <li><b>Air is not sucked in by the lungs.</b> The lungs have no muscle of their own; the chest muscles change the volume and the pressure difference moves the air.</li>
+          <li><b>Boyle&#8217;s law</b> in one line: at constant temperature, bigger volume = lower pressure.</li>
+        </ul>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; Q19 &#8220;How do we breathe?&#8221; (5 marks)</span>
+        <p>Structure: <b>Define &#8594; Inspiration (active) &#8594; Expiration (passive) &#8594; Pressure link</b>. Draw a small two-panel sketch if time allows.</p>
+        <ul class="plain">
+          <li><b>Intro:</b> breathing is a cyclic process of inspiration and expiration that moves air in and out; the lungs are open to the outside, so intrapulmonary pressure = atmospheric at rest.</li>
+          <li><b>Inspiration (active):</b> diaphragm contracts and flattens; external intercostals contract and lift the ribs and sternum; thorax enlarges in all diameters; pressure falls; air rushes in.</li>
+          <li><b>Expiration (passive):</b> diaphragm and intercostals relax; thorax returns to size; lungs recoil; pressure rises; air is forced out.</li>
+          <li><b>Close:</b> in forced breathing, expiration becomes active (abdominals, internal intercostals).</li>
+        </ul>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;Breathing works like a syringe. When you breathe in, your diaphragm flattens and your ribs lift, so your chest gets bigger. A bigger space means lower pressure, so air from outside rushes in. When you breathe out, the muscles relax, your elastic lungs spring back, the space shrinks, the pressure goes up and the air is pushed out.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; intrapleural pressure, compliance, and a worked example</summary>
+        <div class="inner">
+          <p><b>Intrapleural pressure</b> (inside the pleural cavity) stays slightly <i>below</i> atmospheric throughout normal breathing. This keeps the lungs held against the chest wall. If air enters the pleural cavity (pneumothorax) the lung collapses.<span class="src gen">general</span></p>
+          <p><b>Lung compliance</b> is how easily the lungs expand. High compliance: expand easily. Low compliance: stiff lungs.<span class="src cls">Yoga &amp; Human Body</span></p>
+          <p><b>Worked example:</b> tidal volume 500 mL &#215; 12 breaths/min = 6000 mL/min = 6 L/min. This is &#8220;minute ventilation&#8221;.</p>
+        </div>
+      </details>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Is inspiration active or passive?</div><div class="a">Active: the diaphragm and external intercostals contract</div></div>
+          <div class="recall-card"><div class="q">Is quiet expiration active or passive?</div><div class="a">Passive: muscles relax and the lungs recoil</div></div>
+          <div class="recall-card"><div class="q">What happens to chest volume and lung pressure in inspiration?</div><div class="a">Volume increases; pressure falls below atmospheric</div></div>
+          <div class="recall-card"><div class="q">What do the diaphragm and ribs do in inspiration?</div><div class="a">Diaphragm flattens and descends; ribs and sternum move up and out</div></div>
+          <div class="recall-card"><div class="q">Pump-handle vs bucket-handle?</div><div class="a">Pump-handle increases the front-to-back diameter; bucket-handle increases the side-to-side diameter</div></div>
+          <div class="recall-card"><div class="q">Normal rate and minute volume?</div><div class="a">12&#8211;14 per minute (class notes); about 6000 mL/min in quiet breathing</div></div>
+          <div class="recall-card"><div class="q">What changes in laboured breathing?</div><div class="a">Rate rises and expiration becomes forceful, not passive</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 VOLUMES -->
+    <section class="section" id="sec-volumes">
+      <div class="sec-head">
+        <div class="kicker">05 &#183; Measuring breath</div>
+        <h2>Lung Volumes &amp; Capacities</h2>
+        <p class="dek">Four volumes you can measure; the capacities are just sums of them. Learn the picture and the formulas drop out.</p>
+      </div>
+
+      <div class="spread wide">
+        <figure class="fig">
+          <svg viewBox="0 0 580 300" role="img" aria-label="Spirogram: a trace of quiet breathing, then a maximal inspiration and a maximal expiration, then quiet breathing again, with tidal volume, inspiratory reserve volume, expiratory reserve volume and residual volume marked, and capacities bracketed on the right">
+            <!-- levels: y = 260 - mL*0.04 -->
+            <path class="lnt" d="M50 28 H395"/><path class="lnt" d="M50 148 H395"/><path class="lnt" d="M50 168 H395"/><path class="lnt" d="M50 212 H395"/>
+            <path class="ln" d="M50 20 V260 H395"/>
+            <text class="t ts" x="12" y="150" transform="rotate(-90 12 150)">Volume of air in lungs (mL)</text>
+            <text class="t tm" x="46" y="32" style="text-anchor:end">5800</text><text class="t tm" x="46" y="152" style="text-anchor:end">2800</text><text class="t tm" x="46" y="172" style="text-anchor:end">2300</text><text class="t tm" x="46" y="216" style="text-anchor:end">1200</text><text class="t tm" x="46" y="264" style="text-anchor:end">0</text>
+            <text class="t ts tc" x="222" y="282">Time &#8594;</text>
+            <!-- RV shading -->
+            <rect class="fs" x="50" y="212" width="345" height="48" opacity=".6"/>
+            <text class="t ts tc" x="222" y="242">Residual volume (never leaves the lungs)</text>
+            <!-- trace -->
+            <path d="M50 158 Q62 146 75 148 T100 168 T125 148 T150 168 C165 168 170 28 195 28 L205 28 C225 28 225 212 250 212 L260 212 C275 212 280 168 295 168 Q305 148 320 148 T345 168 T370 148" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linejoin="round"/>
+            <text class="t ts tc" x="100" y="192" style="fill:var(--accent)">quiet breathing</text>
+            <text class="t ts" x="214" y="21" style="fill:var(--accent)">max inspiration</text>
+            <text class="t ts tc" x="236" y="205" style="fill:var(--accent)"> </text>
+            <text class="t ts" x="262" y="226" style="fill:var(--accent)">max expiration</text>
+            <!-- volume brackets x=412 -->
+            <g class="ln" style="stroke-width:2"><path d="M410 28 V148"/><path d="M406 28 h8 M406 148 h8"/><path d="M410 148 V168"/><path d="M406 168 h8"/><path d="M410 168 V212"/><path d="M406 212 h8"/><path d="M410 212 V260"/><path d="M406 260 h8"/></g>
+            <text class="t tb" x="418" y="92" style="fill:var(--teal)">IRV</text><text class="t ts" x="418" y="104">2500&#8211;3000</text>
+            <text class="t tb" x="418" y="162" style="fill:var(--teal)">TV</text><text class="t ts" x="440" y="162">500</text>
+            <text class="t tb" x="418" y="194" style="fill:var(--teal)">ERV</text><text class="t ts" x="418" y="206">1000&#8211;1100</text>
+            <text class="t tb" x="418" y="238" style="fill:var(--teal)">RV</text><text class="t ts" x="418" y="250">1100&#8211;1200</text>
+            <!-- capacity brackets -->
+            <g class="ln" style="stroke:var(--gold);stroke-width:2"><path d="M500 28 V168"/><path d="M496 28 h8 M496 168 h8"/><path d="M525 28 V212"/><path d="M521 28 h8 M521 212 h8"/><path d="M550 28 V260"/><path d="M546 28 h8 M546 260 h8"/></g>
+            <text class="t ts" x="500" y="184" style="fill:var(--gold);font-weight:600;text-anchor:middle">IC</text>
+            <text class="t ts" x="525" y="228" style="fill:var(--gold);font-weight:600;text-anchor:middle">VC</text>
+            <text class="t ts" x="550" y="276" style="fill:var(--gold);font-weight:600;text-anchor:middle">TLC</text>
+          </svg>
+          <figcaption>Spirogram (typical values, mL). Teal = volumes. Gold = capacities (IC, VC, TLC). FRC = ERV + RV.</figcaption>
+        </figure>
+      </div>
+
+      <div class="table-wrap"><table>
+        <tr><th>Term</th><th>Definition</th><th>Value / formula</th></tr>
+        <tr><td>Tidal volume (TV)</td><td>Air breathed in and out in effortless (quiet) breathing</td><td>~500 mL</td></tr>
+        <tr><td>Inspiratory reserve volume (IRV)</td><td>Extra air breathed in by forceful inspiration (after a normal inspiration)</td><td>2500&#8211;3000 mL</td></tr>
+        <tr><td>Expiratory reserve volume (ERV)</td><td>Extra air breathed out by forceful expiration (after a normal expiration)</td><td>1000&#8211;1100 mL</td></tr>
+        <tr><td>Residual volume (RV)</td><td>Air remaining in the lungs even after a forceful expiration</td><td>1100&#8211;1200 mL</td></tr>
+        <tr><td>Inspiratory capacity (IC)</td><td>Air a person can inspire after a normal expiration</td><td><b>TV + IRV</b></td></tr>
+        <tr><td>Expiratory capacity (EC)</td><td>Air a person can expire after a normal inspiration</td><td><b>TV + ERV</b></td></tr>
+        <tr><td>Functional residual capacity (FRC)</td><td>Air remaining in the lungs after a normal expiration</td><td><b>ERV + RV</b></td></tr>
+        <tr><td>Vital capacity (VC)</td><td>Maximum air breathed out after a maximal inspiration (or the maximum breathed in after a forced expiration)</td><td><b>ERV + TV + IRV</b></td></tr>
+        <tr><td>Total lung capacity (TLC)</td><td>Total air in the lungs at the end of a forced inspiration</td><td><b>RV + ERV + TV + IRV = VC + RV</b></td></tr>
+      </table></div>
+
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Imagine the lungs as a <b>storage tank with a floor and a roof</b>. Quiet breathing uses only a small band in the middle (tidal volume). Above it is spare room you can fill on a deep breath (IRV). Below it is spare air you can still push out (ERV). Under all of it is a floor you can never empty: the <b>residual volume</b>, which keeps the alveoli open and gas exchange going between breaths.</p>
+        <p>A <b>volume</b> is one slice. A <b>capacity</b> is two or more slices added together. That is the whole difference.</p>
+      </div>
+
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this &#183; with your numbers</span>
+          <ul class="plain">
+            <li><b>VC</b> = 500 + (2500 to 3000) + (1000 to 1100) = about <b>4000&#8211;4600 mL</b> (arithmetic from the class values).</li>
+            <li><b>TLC</b> = VC + RV = about <b>5100&#8211;5800 mL</b> (same arithmetic).</li>
+            <li>Volumes are measured with a <b>spirometer</b>.</li>
+            <li>Your notebook first wrote FRC as ERV + TV + IRV and struck it out. The correct one is <b>ERV + RV</b>.</li>
+          </ul>
+        </div>
+        <div class="blk mem">
+          <span class="lbl">Memory aid</span>
+          <p><b>VC = everything except RV.</b> You can blow out the vital capacity, but never the residual volume.</p>
+          <p><b>TLC = VC + RV.</b></p>
+          <p style="margin:0"><b>IC</b> counts upward from rest (<b>I</b>nspire). <b>FRC</b> is what is left at rest (<b>R</b>esidual + ERV).</p>
+        </div>
+      </div>
+
+      <div class="blk conf">
+        <span class="lbl">Common confusion</span>
+        <ul class="plain">
+          <li><b>IRV vs IC:</b> IRV is only the extra; IC = TV + IRV, the whole inward trip from rest.</li>
+          <li><b>RV vs FRC:</b> RV is what stays after a <i>forced</i> expiration; FRC is what stays after a <i>normal</i> expiration (so FRC includes ERV).</li>
+          <li><b>VC vs TLC:</b> VC is what you can move; TLC includes the RV you can&#8217;t.</li>
+        </ul>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; short answers and tables</span>
+        <p>The paper asks recall-style questions on this topic: <i>define</i> tidal volume / vital capacity, <i>give the formula</i>, <i>name the instrument</i>. Always write the value with the unit (e.g. TV &#8776; 500 mL) and the formula as words and symbols.</p>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;Quiet breathing moves about half a litre each time. But you can breathe in much more on a deep breath, and breathe out much more when you push. The most you can move is your vital capacity. Even then, about a litre stays in your lungs so they never collapse. Add that to the vital capacity and you get the total lung capacity.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; dead space, alveolar ventilation, spirometry tests</summary>
+        <div class="inner">
+          <p><b>Minute ventilation</b> = tidal volume &#215; respiratory rate = 500 &#215; 12 = 6000 mL/min.<span class="src cls">Yoga &amp; Human Body</span></p>
+          <p><b>Dead space:</b> air in the conducting airways takes no part in exchange (anatomical dead space, roughly 150 mL in an adult).<span class="src gen">value: general</span> So <b>alveolar ventilation = (tidal volume &#8722; dead space) &#215; rate</b>. Slow, deep breaths therefore bring more fresh air to the alveoli than fast, shallow ones, even if the minute volume is the same.</p>
+          <p><b>V/Q ratio:</b> ventilation (air reaching the alveoli) must match perfusion (blood reaching the alveolar capillaries) for efficient exchange.</p>
+          <p><b>Spirometry:</b> FVC (forced vital capacity), FEV&#8321; (air blown out in the first second) and the FEV&#8321;/FVC ratio. <i>Obstructive</i> disease (asthma, COPD): difficulty getting air out. <i>Restrictive</i> disease: lungs cannot expand fully.</p>
+        </div>
+      </details>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Tidal volume?</div><div class="a">Air breathed in and out in quiet breathing; ~500 mL</div></div>
+          <div class="recall-card"><div class="q">IRV and ERV values?</div><div class="a">IRV 2500&#8211;3000 mL; ERV 1000&#8211;1100 mL</div></div>
+          <div class="recall-card"><div class="q">Residual volume?</div><div class="a">Air left in the lungs after forceful expiration; 1100&#8211;1200 mL</div></div>
+          <div class="recall-card"><div class="q">Vital capacity formula?</div><div class="a">ERV + TV + IRV</div></div>
+          <div class="recall-card"><div class="q">Total lung capacity formula?</div><div class="a">RV + ERV + TV + IRV (= VC + RV)</div></div>
+          <div class="recall-card"><div class="q">FRC formula?</div><div class="a">ERV + RV</div></div>
+          <div class="recall-card"><div class="q">IC and EC formulas?</div><div class="a">IC = TV + IRV; EC = TV + ERV</div></div>
+          <div class="recall-card"><div class="q">What measures lung volumes?</div><div class="a">A spirometer</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 GAS EXCHANGE & TRANSPORT -->
+    <section class="section" id="sec-exchange">
+      <div class="sec-head">
+        <div class="kicker">06 &#183; Diffusion &amp; carriage</div>
+        <h2>Gas Exchange &amp; Transport</h2>
+        <p class="dek">Gases move twice: air to blood at the lungs, blood to cells at the tissues. In between, blood carries O&#8322; on haemoglobin and CO&#8322; mostly as bicarbonate.</p>
+      </div>
+
+      <h3 class="sub"><span class="n">6A</span>Exchange at the lungs and at the tissues</h3>
+      <div class="spread wide">
+        <figure class="fig">
+          <svg viewBox="0 0 560 270" role="img" aria-label="Two panels. Lungs: alveolar air PO2 104 and PCO2 40 next to blood arriving with PO2 40 and PCO2 45; O2 diffuses into blood and CO2 diffuses out into the alveolus. Tissues: arterial blood PO2 about 95 and PCO2 40 next to tissue cells with low PO2 about 40 and high PCO2 about 45; O2 diffuses out of blood into cells and CO2 diffuses into blood.">
+            <text class="t tb" x="12" y="20">LUNGS &#183; external respiration</text>
+            <text class="t tb" x="296" y="20">TISSUES &#183; internal respiration</text>
+            <path class="lnt" d="M280 14 V260"/>
+            <!-- lung panel -->
+            <circle class="fa" cx="70" cy="120" r="52" opacity=".7"/>
+            <text class="t ts tc tb" x="70" y="104" style="font-weight:600">Alveolar air</text><text class="t ts tc" x="70" y="122">PO&#8322; 104</text><text class="t ts tc" x="70" y="138">PCO&#8322; 40</text>
+            <rect class="fw" x="128" y="70" width="14" height="100"/>
+            <rect class="ft" x="142" y="70" width="108" height="100" rx="6" opacity=".7"/>
+            <text class="t ts tc" x="196" y="104" style="font-weight:600">Blood arriving</text><text class="t ts tc" x="196" y="120">PO&#8322; 40</text><text class="t ts tc" x="196" y="136">PCO&#8322; 45</text>
+            <path d="M104 86 H176" stroke="var(--teal)" stroke-width="2.4" fill="none"/><path d="M170 81 l9 5 l-9 5z" fill="var(--teal)"/><text class="t ts" x="108" y="80" style="fill:var(--teal);font-weight:600">O&#8322; &#8594;</text>
+            <path d="M176 160 H104" stroke="var(--accent)" stroke-width="2.4" fill="none"/><path d="M110 155 l-9 5 l9 5z" fill="var(--accent)"/><text class="t ts" x="108" y="180" style="fill:var(--accent);font-weight:600">&#8592; CO&#8322;</text>
+            <text class="t ts tc" x="140" y="204">Both gases move down their own gradient</text>
+            <text class="t ts tc" x="140" y="220" style="fill:var(--muted)">by simple diffusion (no energy)</text>
+            <text class="t ts tc" x="140" y="244" style="fill:var(--ink)">Blood leaves: PO&#8322; ~100, oxygenated</text>
+            <!-- tissue panel -->
+            <rect class="fw" x="296" y="70" width="14" height="100"/>
+            <rect class="fa" x="296" y="70" width="14" height="100" opacity="0"/>
+            <rect class="fa" x="296" y="70" width="108" height="100" rx="6" opacity=".7"/>
+            <text class="t ts tc" x="350" y="104" style="font-weight:600">Arterial blood</text><text class="t ts tc" x="350" y="120">PO&#8322; ~95</text><text class="t ts tc" x="350" y="136">PCO&#8322; 40</text>
+            <circle class="ft" cx="486" cy="120" r="52" opacity=".7"/>
+            <text class="t ts tc" x="486" y="104" style="font-weight:600">Tissue cells</text><text class="t ts tc" x="486" y="122">PO&#8322; low (~40)</text><text class="t ts tc" x="486" y="138">PCO&#8322; high (~45)</text>
+            <path d="M404 86 H460" stroke="var(--teal)" stroke-width="2.4" fill="none"/><path d="M454 81 l9 5 l-9 5z" fill="var(--teal)"/><text class="t ts" x="410" y="80" style="fill:var(--teal);font-weight:600">O&#8322; &#8594;</text>
+            <path d="M460 160 H404" stroke="var(--accent)" stroke-width="2.4" fill="none"/><path d="M410 155 l-9 5 l9 5z" fill="var(--accent)"/><text class="t ts" x="410" y="180" style="fill:var(--accent);font-weight:600">&#8592; CO&#8322;</text>
+            <text class="t ts tc" x="420" y="204">Cells use O&#8322; to burn glucose and make CO&#8322;</text>
+            <text class="t ts tc" x="420" y="224" style="fill:var(--ink)">C&#8326;H&#8321;&#8322;O&#8326; + 6O&#8322; &#8594; 6CO&#8322; + 6H&#8322;O + energy</text>
+          </svg>
+          <figcaption>Same rule at both sites: each gas moves from high partial pressure to low. Values are textbook figures in mmHg.</figcaption>
+        </figure>
+      </div>
+      <div class="honest"><b>Source honesty:</b> your handwritten pages write alveolar PO&#8322; as 104&#8211;105 mmHg and tissue PO&#8322; as 95 mmHg, and one sketch labels a CO&#8322; pressure as &#8220;PO&#8322;&#8221;. Textbooks give alveolar PO&#8322; &#8776; 104, blood arriving at the lungs and tissue PO&#8322; &#8776; 40, and arterial blood PO&#8322; &#8776; 95. The figure above uses the textbook values. Check which your teacher wants.</div>
+      <figure class="fig photo" style="max-width:360px;margin:0 auto 22px">
+        <img src="assets/diagrams/gas-diffusion-sketches.jpg" alt="Hand-drawn sketches of diffusion of O2 from alveoli to pulmonary capillary and of CO2, with partial pressures marked">
+        <figcaption>Your notebook sketches of O&#8322; and CO&#8322; diffusion.</figcaption>
       </figure>
 
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      <h3 class="sub"><span class="n">6B</span>Oxygen transport and the dissociation curve</h3>
+      <div class="spread">
+        <figure class="fig">
+          <svg viewBox="0 0 400 300" role="img" aria-label="Oxygen-haemoglobin dissociation curve: S-shaped; about 97 percent saturated at PO2 100 mmHg, 90 percent at 60 mmHg and about 75 percent at 40 mmHg; a dashed right-shifted curve shows the Bohr effect">
+  <path class="lnt" d="M50 30 H370"/>
+  <path class="ln" d="M50 24 V250 H376"/>
+  <text class="t ts" x="12" y="140" transform="rotate(-90 12 140)">Haemoglobin saturation (%)</text>
+  <text class="t ts tc" x="210" y="288">Partial pressure of O&#8322; (mmHg)</text>
+  <g class="tm"><text class="t tm" x="44" y="254" style="text-anchor:end">0</text><text class="t tm" x="44" y="199" style="text-anchor:end">25</text><text class="t tm" x="44" y="144" style="text-anchor:end">50</text><text class="t tm" x="44" y="89" style="text-anchor:end">75</text><text class="t tm" x="44" y="34" style="text-anchor:end">100</text><text class="t tm tc" x="50" y="266">0</text><text class="t tm tc" x="114" y="266">20</text><text class="t tm tc" x="178" y="266">40</text><text class="t tm tc" x="242" y="266">60</text><text class="t tm tc" x="306" y="266">80</text><text class="t tm tc" x="370" y="266">100</text></g><path class="lnt" d="M178.0 250 V85.9 H50"/><path class="lnt" d="M242.0 250 V52.4 H50"/><path class="lnt" d="M370.0 250 V36.2 H50"/><path d="M50.0,250.0 L56.4,249.9 L62.8,249.3 L69.2,247.8 L75.6,245.3 L82.0,241.6 L88.4,236.5 L94.8,230.2 L101.2,222.7 L107.6,214.2 L114.0,204.8 L120.4,194.8 L126.8,184.6 L133.2,174.2 L139.6,164.0 L146.0,154.1 L152.4,144.6 L158.8,135.6 L165.2,127.1 L171.6,119.3 L178.0,112.1 L184.4,105.4 L190.8,99.3 L197.2,93.7 L203.6,88.7 L210.0,84.0 L216.4,79.8 L222.8,76.0 L229.2,72.6 L235.6,69.4 L242.0,66.5 L248.4,63.9 L254.8,61.5 L261.2,59.3 L267.6,57.4 L274.0,55.5 L280.4,53.9 L286.8,52.3 L293.2,50.9 L299.6,49.6 L306.0,48.5 L312.4,47.4 L318.8,46.3 L325.2,45.4 L331.6,44.5 L338.0,43.7 L344.4,43.0 L350.8,42.3 L357.2,41.7 L363.6,41.1 L370.0,40.5" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5 4"/><path d="M50.0,250.0 L56.4,249.8 L62.8,248.7 L69.2,246.2 L75.6,241.9 L82.0,235.6 L88.4,227.4 L94.8,217.5 L101.2,206.2 L107.6,194.0 L114.0,181.3 L120.4,168.6 L126.8,156.3 L133.2,144.5 L139.6,133.5 L146.0,123.4 L152.4,114.2 L158.8,105.8 L165.2,98.4 L171.6,91.7 L178.0,85.7 L184.4,80.4 L190.8,75.7 L197.2,71.5 L203.6,67.8 L210.0,64.5 L216.4,61.5 L222.8,58.8 L229.2,56.5 L235.6,54.3 L242.0,52.4 L248.4,50.7 L254.8,49.1 L261.2,47.7 L267.6,46.5 L274.0,45.3 L280.4,44.3 L286.8,43.3 L293.2,42.4 L299.6,41.6 L306.0,40.9 L312.4,40.2 L318.8,39.6 L325.2,39.1 L331.6,38.5 L338.0,38.0 L344.4,37.6 L350.8,37.2 L357.2,36.8 L363.6,36.4 L370.0,36.1" fill="none" stroke="var(--teal)" stroke-width="3"/><circle class="pt" cx="370.0" cy="36.2" r="4"/><circle class="pt" cx="242.0" cy="52.4" r="4"/><circle class="pt" cx="178.0" cy="85.9" r="4"/><text class="t ts" x="366" y="20" style="text-anchor:end">Lungs ~97%</text><text class="t ts" x="190" y="102">Tissues at rest ~75%</text><text class="t ts" x="204" y="193" style="fill:var(--accent)">dashed = right-shifted</text><text class="t ts" x="204" y="206" style="fill:var(--accent)">(CO&#8322;&#8593; pH&#8595; temp&#8593;)</text><g class="bd"><circle cx="370" cy="56" r="9"/><text x="370" y="60">1</text></g><g class="bd"><circle cx="241" cy="34" r="9"/><text x="241" y="38">2</text></g><g class="bd"><circle cx="164" cy="71" r="9"/><text x="164" y="75">3</text></g><g class="bd"><circle cx="108" cy="166" r="9"/><text x="108" y="170">4</text></g></svg>
+          <figcaption>Oxygen&#8211;haemoglobin dissociation curve. Teal = normal. Dashed = right-shifted (more CO&#8322;, acid or heat).</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Lungs:</b> PO&#8322; &#8776; 100 mmHg &#8594; Hb ~97&#8211;100% saturated. Plenty loaded.</li>
+          <li><b>60 mmHg:</b> still ~90% saturated. A fall from 100 to 60 costs little (the flat top is a safety margin).</li>
+          <li><b>Tissues at rest:</b> PO&#8322; &#8776; 40 mmHg &#8594; ~70&#8211;75% saturated. About a quarter of the O&#8322; has been handed over.</li>
+          <li><b>Steep part:</b> below 60 mmHg a small drop in PO&#8322; releases a lot of O&#8322; &#8211; exactly what active tissues need.</li>
+        </ol>
       </div>
 
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>Breathing (ventilation) is a cyclic process with two phases, and they work by opposite mechanics. <b>Inspiration is active</b>: muscles contract to enlarge the thoracic cavity, which drops the pressure inside the lungs below atmospheric pressure, so air rushes in. <b>Expiration in quiet breathing is passive</b>: those same muscles simply relax, the elastic lungs recoil to their smaller resting size, pressure inside rises above atmospheric, and air is pushed back out. Either way, air moves to equalise pressure &mdash; there's no separate "pump" pushing air in or sucking it out; it's all a matter of pressure following volume.</p>
-        <div class="analogy">
-          <b>Boyle's Law, in one line</b>
-          At constant temperature, when a gas's volume goes up, its pressure goes down, and vice versa. Enlarge the thoracic cavity &rarr; intrapulmonary pressure falls &rarr; air flows in. Shrink it back &rarr; pressure rises &rarr; air flows out. Every detail of the breathing mechanism is just this one rule applied to the chest.
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this &#183; O&#8322; transport</span>
+          <ul class="plain">
+            <li><b>~3% dissolved</b> in plasma (physical). <b>~97% as oxyhaemoglobin</b>, HbO&#8322; (chemical).</li>
+            <li>Haemoglobin has <b>4 haem units</b>, each carrying one O&#8322; (so 4 O&#8322; per Hb). Hb + O&#8322; &#8652; HbO&#8322;; 4Hb + 4O&#8322; &#8594; Hb&#8324;O&#8328;.</li>
+            <li><b>Tension of loading</b> = the high PO&#8322; at which Hb takes up O&#8322;. <b>Tension of unloading</b> = the low PO&#8322; at which it releases it. Saturated = every haem unit holds an O&#8322;.</li>
+            <li>1 g Hb binds <b>1.34 mL O&#8322;</b>; about <b>20 mL O&#8322; per 100 mL blood</b>. The curve depends on PO&#8322;, temperature and pH.</li>
+          </ul>
+        </div>
+        <div class="blk mem">
+          <span class="lbl">Memory aid</span>
+          <p><b>Lungs load, tissues unload.</b> High PO&#8322; &#8594; load. Low PO&#8322; (and high CO&#8322;) &#8594; unload.</p>
+          <p style="margin:0"><b>4 haem &#215; 1 O&#8322; = 4 O&#8322; per Hb</b>. The curve is <b>S-shaped (sigmoid)</b>: flat at the top, steep in the middle.</p>
         </div>
       </div>
+      <div class="honest"><b>Source honesty:</b> the notebook writes Hb &#8776; 16 g/100 mL &#215; 1.34 = 20.44 mL; 16 &#215; 1.34 is actually 21.44, so one number is likely misread (15 g &#215; 1.34 &#8776; 20.1 mL). The usual textbook value is &#8776; 20 mL O&#8322; per 100 mL blood. The O&#8322; released at rest is 4.6 mL/100 mL in the notebook; many texts give ~5 mL.</div>
 
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Q19 &middot; How do we breathe? (5 marks)</div>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:0 0 6px;">a) Inspiration (active)</p>
-        <ul class="notes">
-          <li>Diaphragm contracts and flattens (moves down) &mdash; increases the vertical diameter of the thorax.</li>
-          <li>External intercostal muscles contract &mdash; ribs move up and outward (the sternum moves up and forward), increasing the antero-posterior and transverse diameters. The antero-posterior increase is the <b>pump-handle movement</b> and the transverse increase is the <b>bucket-handle movement</b>.</li>
-          <li>Result: thoracic cavity volume increases &rarr; intrapulmonary pressure drops below atmospheric &rarr; air rushes into the lungs.</li>
-        </ul>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">b) Expiration (passive)</p>
-        <ul class="notes">
-          <li>Diaphragm and intercostal muscles relax.</li>
-          <li>Lungs recoil due to their own elasticity; thorax volume decreases.</li>
-          <li>Intrapulmonary pressure rises above atmospheric &rarr; air is expelled.</li>
-        </ul>
-        <p style="font-size:13.5px; margin-top:14px;">Labored/forced expiration recruits internal intercostals and abdominal muscles to actively push the thorax volume down further &mdash; but that's not the default quiet-breathing mechanism above.</p>
-      <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Pressure and rate (from your handwritten notes)</p>
-      <ul class="notes">
-        <li>The lung cavity (alveoli and bronchioles) is open to the outside through the air passages, so the <b>intrapulmonic pressure</b> equals atmospheric pressure at rest. Any change in it moves air in or out until the pressures equalise.</li>
-        <li>Ventilation is a cyclic process: fresh air enters the lungs and an equal volume leaves.</li>
-        <li>In quiet breathing about 6000&nbsp;mL of air moves in and out per minute. The normal rate is 12&ndash;14 per minute, measured by a <b>spirometer</b>.</li>
-        <li><b>Quiet respiration</b> is the normal rate of 12&ndash;14 per minute. In <b>laboured respiration</b> (exercise, hard labour) the rate increases because more oxygen is needed, and expiration becomes a forceful act instead of a passive one.</li>
-      </ul>
+      <h3 class="sub"><span class="n">6C</span>Carbon dioxide transport and the chloride shift</h3>
+      <div class="spread">
+        <figure class="fig">
+          <svg viewBox="0 0 440 320" role="img" aria-label="Red blood cell in a tissue capillary: CO2 enters, combines with water to form carbonic acid under carbonic anhydrase, which splits into hydrogen ion and bicarbonate; the hydrogen ion binds haemoglobin; bicarbonate leaves into plasma and chloride enters the cell, the chloride shift">
+            <rect class="fs" x="4" y="4" width="432" height="312" rx="12" opacity=".5"/>
+            <text class="t ts" x="14" y="22" style="font-weight:600">PLASMA (in the tissues)</text>
+            <rect class="fa" x="110" y="34" width="220" height="268" rx="46"/>
+            <text class="t ts tc" x="220" y="54" style="fill:var(--accent);font-weight:600">RED BLOOD CELL</text>
+            <text class="t tc" x="220" y="82">CO&#8322; + H&#8322;O</text>
+            <text class="t ts tc" x="220" y="98" style="fill:var(--muted)">&#8595; carbonic anhydrase</text>
+            <text class="t tc" x="220" y="120">H&#8322;CO&#8323;</text>
+            <text class="t ts tc" x="220" y="136" style="fill:var(--muted)">&#8595;</text>
+            <text class="t tc" x="220" y="156" style="font-weight:700">H&#8314;  +  HCO&#8323;&#8315;</text>
+            <text class="t ts tc" x="176" y="190" style="fill:var(--muted)">H&#8314; buffered:</text>
+            <text class="t tc" x="176" y="208">Hb &#8594; <tspan style="font-weight:700">HHb</tspan></text>
+            <text class="t ts tc" x="275" y="190" style="fill:var(--muted)">HCO&#8323;&#8315; moves</text>
+            <text class="t ts tc" x="275" y="204" style="fill:var(--muted)">out of the cell</text>
+            <text class="t ts tc" x="220" y="244" style="fill:var(--muted)">K&#8314; + Cl&#8315; &#8594; KCl inside</text>
+            <text class="t ts tc" x="220" y="280">CO&#8322; + HbNH&#8322; &#8594; HbNHCOOH</text>
+            <path d="M16 82 H106" stroke="var(--teal)" stroke-width="2.4" fill="none"/><path d="M100 77 l9 5 l-9 5z" fill="var(--teal)"/>
+            <text class="t ts" x="14" y="72" style="fill:var(--teal);font-weight:600">CO&#8322; from tissues</text>
+            <path d="M332 206 H420" stroke="var(--accent)" stroke-width="2.4" fill="none"/><path d="M414 201 l9 5 l-9 5z" fill="var(--accent)"/>
+            <text class="t ts" x="340" y="196" style="fill:var(--accent);font-weight:600">HCO&#8323;&#8315; to plasma</text>
+            <path d="M420 258 H332" stroke="var(--teal)" stroke-width="2.4" fill="none"/><path d="M338 253 l-9 5 l9 5z" fill="var(--teal)"/>
+            <text class="t ts" x="340" y="248" style="fill:var(--teal);font-weight:600">Cl&#8315; moves in</text>
+            <g class="bd"><circle cx="60" cy="98" r="9"/><text x="60" y="102">1</text></g><g class="bd"><circle cx="130" cy="116" r="9"/><text x="130" y="120">2</text></g><g class="bd"><circle cx="130" cy="152" r="9"/><text x="130" y="156">3</text></g><g class="bd"><circle cx="126" cy="204" r="9"/><text x="126" y="208">4</text></g><g class="bd"><circle cx="380" cy="222" r="9"/><text x="380" y="226">5</text></g><g class="bd"><circle cx="380" cy="276" r="9"/><text x="380" y="280">6</text></g><g class="bd"><circle cx="130" cy="276" r="9"/><text x="130" y="280">7</text></g>
+          </svg>
+          <figcaption>In the tissues. In the lungs every arrow reverses.</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>CO&#8322; diffuses</b> from tissue into blood and into the red blood cell (RBC).</li>
+          <li>CO&#8322; + H&#8322;O &#8594; <b>H&#8322;CO&#8323;</b>, speeded up by the enzyme <b>carbonic anhydrase</b>.</li>
+          <li>H&#8322;CO&#8323; splits into <b>H&#8314; and HCO&#8323;&#8315;</b> (bicarbonate).</li>
+          <li><b>H&#8314; binds deoxy-Hb</b> to form haemoglobinic acid (HHb) &#8211; so the blood does not turn acidic.</li>
+          <li><b>HCO&#8323;&#8315; leaves the RBC</b> into plasma (forms NaHCO&#8323; there).</li>
+          <li><b>Cl&#8315; enters the RBC</b> to restore the balance of charge: the <b>chloride shift</b> (Hamburger phenomenon).</li>
+          <li>A smaller share: CO&#8322; binds the NH&#8322; group of Hb, forming <b>carbamino-haemoglobin</b>.</li>
+        </ol>
       </div>
 
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Q20 &middot; How does breathing affect the body in yoga practice? (10 marks)</div>
-        <div class="practice-link">
-          <b>What the notes actually support</b>
-          The class notes on pranayama physiology are explicit that effects are conditional &mdash; "depend on technique, duration, breathing rate, and individual characteristics" &mdash; rather than fixed guarantees, so this section states it that way rather than promising a specific outcome.
+      <div class="table-wrap"><table>
+        <tr><th>How CO&#8322; travels</th><th>Share</th><th>Detail</th></tr>
+        <tr><td>Dissolved in plasma</td><td>~7%</td><td>Dissolves in plasma water (some as carbonic acid); released as CO&#8322; in the lungs.</td></tr>
+        <tr><td>Carbamino-haemoglobin</td><td>~23%</td><td>CO&#8322; + HbNH&#8322; &#8652; HbNHCOOH in the RBC.</td></tr>
+        <tr><td>Bicarbonate</td><td>~70% (largest)</td><td>Carbonic anhydrase makes H&#8322;CO&#8323; &#8594; H&#8314; + HCO&#8323;&#8315;; H&#8314; buffered by Hb; HCO&#8323;&#8315; to plasma; Cl&#8315; shifts in.</td></tr>
+      </table></div>
+      <div class="honest"><b>Source honesty:</b> the notebook gives different CO&#8322; shares in different places (dissolved ~5&#8211;7%, carbamino ~3&#8211;10% or possibly 30%, bicarbonate 63%, 80&#8211;85% or 85&#8211;95%). The teacher&#8217;s typed notes and standard textbooks give <b>7% / 23% / 70%</b>, which this page uses. Ask your teacher which set to write.</div>
+
+      <figure class="fig photo" style="max-width:520px;margin:0 auto 22px">
+        <img src="assets/diagrams/co2-transport-rbc.jpg" alt="Hand-drawn diagram of CO2 transport in the red blood cell, tissues on the left and lungs on the right, with the chloride shift">
+        <figcaption>Your notebook drawing: tissues (left) and lungs (right).</figcaption>
+      </figure>
+
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p><b>Think of haemoglobin as a bus with four seats</b>. In the lungs there is lots of O&#8322; around, so every seat fills. In the tissues there is little O&#8322; and plenty of CO&#8322; and acid, so the passengers get off exactly where they are needed. Active muscle, which has the lowest PO&#8322; and the most CO&#8322;, gets the most oxygen.</p>
+        <p><b>CO&#8322; is a waste gas that dissolves poorly</b>, so the body converts most of it into bicarbonate: a form that dissolves easily in plasma and also acts as a buffer. The red cell does the chemistry (using carbonic anhydrase as the catalyst), pushes bicarbonate out, and pulls chloride in so that electrical charge stays balanced. At the lungs the same steps run backwards: bicarbonate re-enters, becomes H&#8322;CO&#8323;, then CO&#8322; + water, and the CO&#8322; diffuses into the alveolus to be breathed out.</p>
+      </div>
+
+      <div class="blk conf">
+        <span class="lbl">Common confusion</span>
+        <ul class="plain">
+          <li><b>The pulmonary vein carries oxygenated blood.</b> Arteries do not always carry oxygen-rich blood &#8211; the pulmonary artery brings deoxygenated blood to the lungs.</li>
+          <li><b>The chloride shift moves chloride, not bicarbonate.</b> It is Cl&#8315; moving <i>into</i> the cell in exchange for HCO&#8323;&#8315; moving out.</li>
+          <li><b>Loading is not &#8220;absorbing&#8221; O&#8322; into Hb permanently.</b> It is reversible: Hb + O&#8322; &#8652; HbO&#8322;.</li>
+          <li><b>Most CO&#8322; is not carried by Hb.</b> It travels mainly as bicarbonate in plasma.</li>
+        </ul>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; &#8220;Explain transport of O&#8322; and CO&#8322;&#8221; (5 marks)</span>
+        <p>Use two headings: <b>O&#8322; transport</b> (3% dissolved; 97% as oxyhaemoglobin; loading and unloading; the S-curve) and <b>CO&#8322; transport</b> (3 ways: bicarbonate, carbamino, dissolved; the chloride shift reaction chain). A labelled sketch of the RBC with the reactions scores well.</p>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;Oxygen is carried by haemoglobin in your red blood cells, four oxygen per haemoglobin. In the lungs it picks them up; in the tissues, where oxygen is low, it lets them go. Carbon dioxide travels back mostly as bicarbonate: the red cell turns it into carbonic acid with an enzyme, splits it, and sends the bicarbonate into the plasma. At the lungs it all reverses, and you breathe the CO&#8322; out.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; the Bohr effect</summary>
+        <div class="inner">
+          <p>The dissociation curve moves to the <b>right</b> when CO&#8322; rises, pH falls (more acid) or temperature rises: Hb then holds O&#8322; less tightly and unloads more at the same PO&#8322;. Active muscle makes CO&#8322;, acid and heat, so it receives more oxygen. This is the <b>Bohr effect</b>. In the lungs the opposite happens, so Hb loads O&#8322; more easily.<span class="src gen">general</span></p>
+          <p>Your notebook lists that the curve &#8220;depends on PO&#8322;, temperature and pH&#8221;; the Bohr effect is the detail behind that line.</p>
         </div>
-        <p style="font-size:14.5px;">Two mechanical facts from this section carry straight into practice: (1) inspiration is an active, muscular act &mdash; deliberately slowing and deepening it is deliberately changing muscular effort, not just "relaxing"; (2) quiet-breathing expiration is passive, driven by elastic recoil, which is why a forced, effortful exhale (as in several pranayama techniques) needs active abdominal/intercostal recruitment beyond the everyday mechanism above. Diaphragmatic breathing practice works directly on the first mechanism in this section: consciously emphasising diaphragm descent (belly rises) over rib-cage-dominant breathing changes which muscles do the work of enlarging the thoracic cavity. The autonomic and lung-function effects of sustained practice are covered with their own evidence in Regulation &amp; Pranayama (Section 04), where the source material is more specific.</p>
-      </div>
+      </details>
 
       <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
         <div class="recall-strip">
-          <div class="recall-card"><div class="q">Is inspiration active or passive?</div><div class="a">Active &mdash; diaphragm and external intercostals contract</div></div>
-          <div class="recall-card"><div class="q">Is quiet-breathing expiration active or passive?</div><div class="a">Passive &mdash; muscles relax, lungs recoil elastically</div></div>
-          <div class="recall-card"><div class="q">What happens to thoracic volume and pressure during inspiration?</div><div class="a">Volume increases, intrapulmonary pressure decreases (below atmospheric)</div></div>
-          <div class="recall-card"><div class="q">What are the pump-handle and bucket-handle movements?</div><div class="a">Rib movements in inspiration: pump-handle increases the antero-posterior diameter, bucket-handle increases the transverse diameter</div></div>
-          <div class="recall-card"><div class="q">What instrument measures breathing volumes?</div><div class="a">A spirometer (respirometer)</div></div>
-          <div class="recall-card"><div class="q">What two muscles/muscle groups drive quiet inspiration?</div><div class="a">The diaphragm (contracts, flattens, moves down) and the external intercostal muscles (ribs up and out)</div></div>
+          <div class="recall-card"><div class="q">What drives gas exchange?</div><div class="a">Diffusion down a partial-pressure gradient</div></div>
+          <div class="recall-card"><div class="q">External vs internal respiration?</div><div class="a">External: alveoli &#8596; blood in the lungs. Internal: blood &#8596; tissue cells</div></div>
+          <div class="recall-card"><div class="q">How is O&#8322; carried?</div><div class="a">~97% as oxyhaemoglobin; ~3% dissolved in plasma</div></div>
+          <div class="recall-card"><div class="q">How many O&#8322; can one Hb carry?</div><div class="a">4 (four haem units, one O&#8322; each). 1 g Hb binds 1.34 mL O&#8322;</div></div>
+          <div class="recall-card"><div class="q">Tension of loading vs unloading?</div><div class="a">Loading: the high PO&#8322; where Hb takes O&#8322;. Unloading: the low PO&#8322; where it releases it</div></div>
+          <div class="recall-card"><div class="q">Shape of the dissociation curve?</div><div class="a">S-shaped (sigmoid)</div></div>
+          <div class="recall-card"><div class="q">Three ways CO&#8322; is carried?</div><div class="a">Bicarbonate ~70%, carbamino-haemoglobin ~23%, dissolved ~7%</div></div>
+          <div class="recall-card"><div class="q">Enzyme that makes carbonic acid in the RBC?</div><div class="a">Carbonic anhydrase</div></div>
+          <div class="recall-card"><div class="q">What is the chloride shift?</div><div class="a">Cl&#8315; moving into the RBC to balance HCO&#8323;&#8315; leaving it (Hamburger phenomenon)</div></div>
+          <div class="recall-card"><div class="q">What does H&#8314; bind to in the RBC?</div><div class="a">Deoxy-haemoglobin, forming haemoglobinic acid (HHb)</div></div>
         </div>
       </div>
     </section>
 
-    <!-- 02 VOLUMES & CAPACITIES -->
-    <section class="section" id="sec-volumes">
-      <div class="kicker">02 &middot; Measuring breath</div>
-      <h2>Respiratory Volumes &amp; Capacities</h2>
-      <p class="dek">Four volumes, measured directly; the capacities are just sums of two or more volumes.</p>
-
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
-      </div>
-
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>Normal quiet breathing moves a small, steady amount of air in and out &mdash; the <b>tidal volume</b>. But the lungs can do much more than that on demand: extra air can still be pulled in after a normal breath in (<b>inspiratory reserve</b>), and extra air can still be pushed out after a normal breath out (<b>expiratory reserve</b>). Even after the hardest possible exhale, some air always stays behind so the lungs never fully collapse &mdash; the <b>residual volume</b>. Capacities are just these four volumes added together in different combinations, matching different real-world questions (how much can I inhale from rest? how much can I move through the lungs at all?).</p>
-        <div class="analogy">
-          <b>One formula worth memorising</b>
-          Vital Capacity (VC) = ERV + TV + IRV &mdash; the maximum air you can expel after the maximum possible inspiration. Add the one volume VC leaves out, Residual Volume, and you get Total Lung Capacity: TLC = VC + RV.
-        </div>
-      </div>
-
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Reference</div>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Volume</th><th>Definition</th><th>Approx. value</th></tr>
-            <tr><td>Tidal Volume (TV)</td><td>Air breathed in/out during normal quiet breathing</td><td>500&nbsp;mL</td></tr>
-            <tr><td>Inspiratory Reserve Volume (IRV)</td><td>Extra air inhaled forcefully after a normal inspiration</td><td>2500&ndash;3000&nbsp;mL</td></tr>
-            <tr><td>Expiratory Reserve Volume (ERV)</td><td>Extra air exhaled forcefully after a normal expiration</td><td>1000&ndash;1100&nbsp;mL</td></tr>
-            <tr><td>Residual Volume (RV)</td><td>Air remaining in the lungs even after forceful expiration</td><td>1100&ndash;1200&nbsp;mL</td></tr>
-          </table>
-        </div>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Capacities (combinations of volumes)</p>
-        <ul class="notes">
-          <li>Inspiratory Capacity (IC) = TV + IRV &mdash; air a person can inspire after a normal expiration</li>
-          <li>Expiratory Capacity (EC) = TV + ERV &mdash; air a person can expire after a normal inspiration</li>
-          <li>Vital Capacity (VC) = ERV + TV + IRV &mdash; the maximum air a person can breathe in after a forced expiration (equivalently, expel after a maximal inspiration)</li>
-          <li>Functional Residual Capacity (FRC) = ERV + RV &mdash; air that remains in the lungs after a normal expiration</li>
-          <li>Total Lung Capacity (TLC) = RV + ERV + TV + IRV = VC + RV &mdash; total air held in the lungs at the end of a forced inspiration</li>
-        </ul>
-        <div class="stat-strip">
-          <div class="stat"><div class="v">12&ndash;14 / min</div><div class="k">Quiet respiratory rate</div></div>
-          <div class="stat"><div class="v">&asymp; 6000 mL/min</div><div class="k">Minute volume (quiet)</div></div>
-        </div>
-        <p style="font-size:13.5px;">Minute ventilation (V<sub>E</sub>) = Tidal Volume &times; Respiratory rate. Example: 500&nbsp;mL &times; 12/min = 6000&nbsp;mL/min = 6&nbsp;L/min. Not all of this reaches gas-exchanging surfaces &mdash; some fills the conducting airways (anatomical dead space) without taking part in exchange.</p>
-      </div>
-
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Applied</div>
-        <p style="font-size:14.5px;">The pranayama-physiology notes state plainly that regular appropriate breathing practice <i>may</i> influence lung volumes and breathing efficiency, but add that "specific changes depend on the population and technique" &mdash; there's no fixed number attached to how much a given practice changes VC or IRV in your notes, so none is claimed here. What the notes do connect concretely: lung <b>compliance</b> (how easily the lungs expand) is a real variable in this picture &mdash; higher compliance means the lungs expand more easily, lower compliance means they're stiffer &mdash; though your notes don't state that yoga practice changes compliance specifically.</p>
-      </div>
-
-      <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
-        <div class="recall-strip">
-          <div class="recall-card"><div class="q">Tidal Volume, approx. value?</div><div class="a">500 mL</div></div>
-          <div class="recall-card"><div class="q">Vital Capacity formula?</div><div class="a">ERV + TV + IRV</div></div>
-          <div class="recall-card"><div class="q">Total Lung Capacity formula?</div><div class="a">RV + ERV + TV + IRV (= VC + RV)</div></div>
-          <div class="recall-card"><div class="q">Normal quiet respiratory rate?</div><div class="a">12&ndash;14 breaths/minute</div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 03 GAS EXCHANGE & TRANSPORT -->
-    <section class="section" id="sec-exchange">
-      <div class="kicker">03 &middot; Diffusion &amp; carriage</div>
-      <h2>Gas Exchange &amp; Transport</h2>
-      <p class="dek">Exchange happens twice &mdash; once at the lungs, once at the tissues &mdash; and O&#8322; and CO&#8322; travel through blood by different routes.</p>
-
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
-      </div>
-
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>Gas exchange happens by simple diffusion, always moving from high pressure toward low pressure, and it happens at two separate sites. <b>External respiration</b> is the exchange between alveolar air and pulmonary capillary blood, inside the lungs. <b>Internal respiration</b> is the exchange between blood and the tissue cells it's flowing past, everywhere else in the body. Once in the blood, oxygen and carbon dioxide are carried very differently: oxygen mostly rides on haemoglobin, while carbon dioxide is mostly carried as dissolved bicarbonate.</p>
-        <div class="analogy">
-          <b>Same rule, opposite directions</b>
-          At the lungs: O&#8322; is high outside the blood (in the alveoli) and low inside it, so O&#8322; diffuses in, while CO&#8322; is high inside the blood and low in the alveoli, so CO&#8322; diffuses out. At the tissues, it's the exact mirror image &mdash; O&#8322; is high in blood and low in the tissue, CO&#8322; is high in the tissue and low in blood. One rule (diffusion down a pressure gradient), two sites, opposite outcomes.
-        </div>
-      </div>
-
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Reference</div>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:0 0 6px;">External respiration (alveoli &harr; blood)</p>
-        <ul class="notes">
-          <li>O&#8322; diffuses from alveolar air (PO&#8322; &asymp; 105&nbsp;mmHg) into pulmonary capillary blood (PO&#8322; &asymp; 40&nbsp;mmHg).</li>
-          <li>CO&#8322; diffuses from blood (PCO&#8322; &asymp; 45&nbsp;mmHg) into alveolar air (PCO&#8322; &asymp; 40&nbsp;mmHg).</li>
-        </ul>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Oxygen transport</p>
-        <ul class="notes">
-          <li>Dissolved in plasma (~3%, minor route).</li>
-          <li>As oxyhaemoglobin, HbO&#8322; (~97%, major route) &mdash; each Hb molecule has 4 heme units, each binding one O&#8322;.</li>
-          <li>The oxygen&ndash;haemoglobin dissociation curve is S-shaped (sigmoid): ~97&ndash;100% saturation at the lungs (PO&#8322; &asymp; 100&nbsp;mmHg), falling to ~70&ndash;75% at the tissues (PO&#8322; &asymp; 40&nbsp;mmHg), with a sharp drop below 60&nbsp;mmHg.</li>
-        </ul>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Carbon dioxide transport</p>
-        <ul class="notes">
-          <li>Dissolved in plasma (~7%).</li>
-          <li>As carbaminohaemoglobin, CO&#8322; + HbNH&#8322; (~23%).</li>
-          <li>As bicarbonate (~70%, major route): CO&#8322; + H&#8322;O &rarr; H&#8322;CO&#8323; (via carbonic anhydrase) &rarr; H&#8314; + HCO&#8323;&#8315;. H&#8314; buffers onto Hb; HCO&#8323;&#8315; leaves the red cell for plasma (the chloride shift, Cl&#8315; moving in to balance it). The whole reaction reverses at the lungs, releasing CO&#8322; to be exhaled.</li>
-        </ul>
-      
-        <div class="marks-tag" style="margin-top:22px;">From your handwritten class notes</div>
-        <figure>
-          <img src="assets/diagrams/gas-diffusion-sketches.jpg" alt="Hand-drawn sketches of diffusion of oxygen from alveoli to pulmonary capillary blood and of carbon dioxide, with partial pressures marked" style="max-width:360px; margin:0 auto;">
-          <figcaption>Diffusion of O&#8322; into the pulmonary capillary and of CO&#8322; (from your notebook, partial pressures as written).</figcaption>
-        </figure>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Exchange in the tissues</p>
-        <ul class="notes">
-          <li>Because of metabolic activity the PO&#8322; falls in the tissues, so O&#8322; is released from oxyhaemoglobin and diffuses from the capillary to the tissue fluid and then to the cells.</li>
-          <li>The PCO&#8322; is high in the tissue because of respiration, so CO&#8322; diffuses out of the cells to the tissue fluid and into the capillary blood.</li>
-          <li>The O&#8322; that enters the cell is used to oxidise energy-rich molecules such as glucose: C&#8326;H&#8321;&#8322;O&#8326; + 6O&#8322; &rarr; 6CO&#8322; + 6H&#8322;O + energy.</li>
-        </ul>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Haemoglobin: loading and unloading</p>
-        <ul class="notes">
-          <li><b>Oxygenation</b>: Hb + O&#8322; &rarr; HbO&#8322;. The high partial pressure at which it happens is the <b>tension of loading</b>.</li>
-          <li>Each Hb has 4 heme units, each taking one O&#8322;. When all four are filled the Hb is <b>saturated</b>; the pressure at which saturation occurs is the <b>maximum tension of loading</b>. Hb&#8324; + 4O&#8322; &rarr; Hb&#8324;O&#8328;.</li>
-          <li><b>Deoxygenation</b>: in the tissues PO&#8322; is low and PCO&#8322; high, so oxyhaemoglobin dissociates into Hb and O&#8322;. The low PO&#8322; at which this happens is the <b>tension of unloading</b>. Active tissues release far more O&#8322;; the reduced Hb returns to the lungs and the cycle repeats.</li>
-          <li>1&nbsp;g of Hb can bind 1.34&nbsp;mL of O&#8322;. The notes give Hb as about 16&nbsp;g per 100&nbsp;mL of blood and the total as 20.44&nbsp;mL O&#8322; per 100&nbsp;mL (see the note below).</li>
-        </ul>
-        <figure>
-          <img src="assets/diagrams/oxygen-dissociation-curve.jpg" alt="Hand-drawn oxygen-haemoglobin dissociation curve: percentage saturation of haemoglobin against partial pressure of oxygen in mmHg" style="max-width:420px; margin:0 auto;">
-          <figcaption>Oxygen&ndash;haemoglobin dissociation curve (from your notebook). It depends on PO&#8322;, temperature and pH; saturation is about 90% even at PO&#8322; 60&nbsp;mmHg, so a fall from 100 to 60&nbsp;mmHg causes only a small decrease.</figcaption>
-        </figure>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">CO&#8322; as bicarbonate, step by step</p>
-        <div class="flow">
-          <span class="step">CO&#8322; enters RBC</span><span class="arrow">&rarr;</span>
-          <span class="step">+ H&#8322;O (carbonic anhydrase)</span><span class="arrow">&rarr;</span>
-          <span class="step">H&#8322;CO&#8323;</span><span class="arrow">&rarr;</span>
-          <span class="step">H&#8314; + HCO&#8323;&#8315;</span>
-        </div>
-        <ul class="notes">
-          <li>H&#8314; combines with deoxy-Hb to form <b>haemoglobinic acid</b> (HHb). HCO&#8323;&#8315; diffuses out into the plasma.</li>
-          <li>This momentarily upsets the ionic balance, so chloride ions diffuse into the RBC from the plasma: the <b>chloride shift</b> (Hamburger phenomenon). The Cl&#8315; comes from dissociating NaCl or KCl.</li>
-          <li>In the RBC, Cl&#8315; combines with K&#8314; to form KCl; in the plasma, HCO&#8323;&#8315; combines with Na&#8314; to form NaHCO&#8323;.</li>
-          <li><b>In the lungs the whole process reverses</b>: HHb &rarr; H&#8314; + Hb; NaHCO&#8323; releases HCO&#8323;&#8315;, which enters the RBC and combines with H&#8314; to form H&#8322;CO&#8323;, which breaks down to CO&#8322; and water. The CO&#8322; diffuses into the plasma and is exchanged for alveolar O&#8322;, then breathed out.</li>
-        </ul>
-        <figure>
-          <img src="assets/diagrams/co2-transport-rbc.jpg" alt="Hand-drawn diagram of CO2 transport in the red blood cell: CO2 and water form H2CO3, then H+ and HCO3-, H+ binds haemoglobin, chloride shift with NaCl and KCl, and the reverse in the lungs">
-          <figcaption>CO&#8322; transport and the chloride shift in the red blood cell &mdash; tissues on the left, lungs on the right (from your notebook).</figcaption>
-        </figure>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Respiratory pigments</p>
-        <p style="font-size:14px;">Respiratory pigments are coloured proteins with a special affinity for O&#8322; and CO&#8322;; they contain a metallic ion and play the main role in carrying the gases. Haemoglobin's metallic part is iron.</p>
-        <p class="mal" style="font-size:13px; margin-bottom:0;">Where your handwritten pages differ from the figures above: they give CO&#8322; as about 7% dissolved, a small share as carbonic acid, 63% as bicarbonate and a small share as carbamino compounds (the number is cut off), and elsewhere 80&ndash;85% as bicarbonate. They also give alveolar PO&#8322; 104&ndash;105&nbsp;mmHg and arterial 95&nbsp;mmHg. The 20.44&nbsp;mL figure does not match 16 &times; 1.34 = 21.44. The 70% bicarbonate figure above is the usual textbook value; check which your syllabus wants.</p>
-
-      </div>
-
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Note</div>
-        <p style="font-size:14.5px;">No specific asana or pranayama link is stated in your notes for the gas-exchange and transport chemistry itself &mdash; it's the physiology layer underneath the breathing-mechanism and pranayama-regulation content, where the actual practice connections are drawn (Sections 01 and 04).</p>
-      </div>
-
-      <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
-        <div class="recall-strip">
-          <div class="recall-card"><div class="q">What is external respiration?</div><div class="a">Gas exchange between alveolar air and pulmonary capillary blood, in the lungs</div></div>
-          <div class="recall-card"><div class="q">What carries most of the oxygen in blood?</div><div class="a">Haemoglobin, as oxyhaemoglobin (~97%)</div></div>
-          <div class="recall-card"><div class="q">What is the major route for CO&#8322; transport?</div><div class="a">As bicarbonate (~70%), via carbonic anhydrase in the red blood cell</div></div>
-          <div class="recall-card"><div class="q">What is the chloride shift?</div><div class="a">Cl&#8315; moving into the red cell from plasma to balance HCO&#8323;&#8315; leaving it (Hamburger phenomenon)</div></div>
-          <div class="recall-card"><div class="q">Which enzyme forms carbonic acid from CO&#8322; and water in the RBC?</div><div class="a">Carbonic anhydrase</div></div>
-          <div class="recall-card"><div class="q">Tension of loading vs unloading?</div><div class="a">Loading: the high PO&#8322; at which Hb takes up O&#8322;. Unloading: the low PO&#8322; at which it gives it up.</div></div>
-          <div class="recall-card"><div class="q">How much O&#8322; can 1&nbsp;g of Hb carry?</div><div class="a">1.34&nbsp;mL</div></div>
-          <div class="recall-card"><div class="q">Shape of the oxygen&ndash;haemoglobin dissociation curve?</div><div class="a">S-shaped (sigmoid)</div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 04 REGULATION & PRANAYAMA -->
+    <!-- 07 REGULATION -->
     <section class="section" id="sec-regulation">
-      <div class="kicker">04 &middot; Control</div>
-      <h2>Regulation of Breathing &amp; Pranayama</h2>
-      <p class="dek">Breathing is normally automatic, run by brainstem centres &mdash; but it's one of the few autonomic functions we can also deliberately override, which is exactly what pranayama uses.</p>
-
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      <div class="sec-head">
+        <div class="kicker">07 &#183; Control</div>
+        <h2>Regulation of Breathing</h2>
+        <p class="dek">An automatic rhythm from the brainstem, tuned by feedback from the lungs and the blood, with a window for the will to take over.</p>
       </div>
 
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>Two brainstem regions run breathing without any conscious input. The <b>medulla</b> holds an inspiratory centre that fires to trigger each breath in, and an expiratory centre that stays switched off during quiet breathing (it only joins in for forced expiration). The <b>pons</b> fine-tunes the rhythm from above: the pneumotaxic centre switches inspiration off after a set duration, and the apneustic centre pushes the other way, prolonging inspiration. A protective reflex (Hering&ndash;Breuer) uses stretch receptors in the lungs to signal the medulla via the vagus nerve when the lungs are getting too full, so inspiration stops before over-inflation. Chemoreceptors watch the blood chemistry itself &mdash; central ones in the medulla sense CO&#8322;/H&#8314;, peripheral ones in the carotid and aortic bodies sense O&#8322;, CO&#8322;, and pH &mdash; and a rise in CO&#8322; is the main trigger that speeds breathing back up.</p>
-        <div class="analogy">
-          <b>Automatic, but not only automatic</b>
-          Breathing is normally involuntary, but higher brain centres can override the brainstem to a limited extent &mdash; holding the breath, speaking, singing. Pranayama practice works entirely inside that limited window of voluntary control: it doesn't bypass the automatic system, it deliberately drives it.
+      <div class="spread">
+        <figure class="fig">
+          <svg viewBox="0 0 440 360" role="img" aria-label="Control of breathing: the cortex (voluntary control) acts on the brainstem. The pons holds the pneumotaxic centre (switches inspiration off) and the apneustic centre (prolongs inspiration). The medulla holds the inspiratory and expiratory centres. Stretch receptors in the lungs signal via the vagus; chemoreceptors sense CO2, H+ and O2; the medulla signals the respiratory muscles.">
+            <rect class="fg" x="110" y="8" width="220" height="34" rx="8"/><text class="t tb tc" x="220" y="30">Higher brain: voluntary control</text>
+            <rect class="fs" x="110" y="64" width="220" height="104" rx="10"/><text class="t ts tb" x="120" y="80" style="font-weight:600">PONS</text>
+            <rect class="ft" x="124" y="88" width="92" height="66" rx="6"/><text class="t ts tc" x="170" y="108" style="font-weight:600">Pneumotaxic</text><text class="t ts tc" x="170" y="122">upper pons</text><text class="t ts tc" x="170" y="136" style="fill:var(--teal)">switches OFF</text><text class="t ts tc" x="170" y="148" style="fill:var(--teal)">inspiration</text>
+            <rect class="fa" x="224" y="88" width="92" height="66" rx="6"/><text class="t ts tc" x="270" y="108" style="font-weight:600">Apneustic</text><text class="t ts tc" x="270" y="122">lower pons</text><text class="t ts tc" x="270" y="136" style="fill:var(--accent)">prolongs</text><text class="t ts tc" x="270" y="148" style="fill:var(--accent)">inspiration</text>
+            <rect class="fs" x="110" y="190" width="220" height="104" rx="10"/><text class="t ts tb" x="120" y="206" style="font-weight:600">MEDULLA</text>
+            <rect class="ft" x="124" y="214" width="92" height="66" rx="6"/><text class="t ts tc" x="170" y="238" style="font-weight:600">Inspiratory</text><text class="t ts tc" x="170" y="252">centre</text><text class="t ts tc" x="170" y="268" style="fill:var(--teal)">fires each breath</text>
+            <rect class="fa" x="224" y="214" width="92" height="66" rx="6"/><text class="t ts tc" x="270" y="238" style="font-weight:600">Expiratory</text><text class="t ts tc" x="270" y="252">centre</text><text class="t ts tc" x="270" y="268" style="fill:var(--accent)">forced expiration</text>
+            <path class="lnt" d="M220 42 V64"/><path class="lnt" d="M220 168 V190"/>
+            <!-- inputs -->
+            <rect class="fw" x="6" y="212" width="86" height="70" rx="8"/><text class="t ts tc" x="49" y="232" style="font-weight:600">Lung stretch</text><text class="t ts tc" x="49" y="246">receptors</text><text class="t ts tc" x="49" y="262" style="fill:var(--teal)">Hering&#8211;Breuer</text>
+            <path d="M92 247 H108" stroke="var(--teal)" stroke-width="2.2" fill="none"/><path d="M104 242 l9 5 l-9 5z" fill="var(--teal)"/><text class="t ts" x="8" y="298" style="fill:var(--muted)">via vagus nerve</text>
+            <rect class="fw" x="6" y="316" width="250" height="38" rx="8"/><text class="t ts tc" x="131" y="332" style="font-weight:600">Chemoreceptors: CO&#8322;, H&#8314;, O&#8322;</text><text class="t ts tc" x="131" y="346">central (medulla) &#183; carotid &amp; aortic bodies</text>
+            <path d="M170 316 V296" stroke="var(--teal)" stroke-width="2.2" fill="none"/><path d="M165 300 l5 -9 l5 9z" fill="var(--teal)"/>
+            <!-- output -->
+            <rect class="fg" x="344" y="212" width="90" height="70" rx="8"/><text class="t ts tc" x="389" y="236" style="font-weight:600">Respiratory</text><text class="t ts tc" x="389" y="250">muscles</text><text class="t ts tc" x="389" y="266" style="fill:var(--gold)">diaphragm +</text><text class="t ts tc" x="389" y="278" style="fill:var(--gold)">intercostals</text>
+            <path d="M330 247 H342" stroke="var(--accent)" stroke-width="2.2" fill="none"/><path d="M338 242 l9 5 l-9 5z" fill="var(--accent)"/>
+            <g class="bd"><circle cx="122" cy="25" r="9"/><text x="122" y="29">1</text></g><g class="bd"><circle cx="130" cy="88" r="9"/><text x="130" y="92">2</text></g><g class="bd"><circle cx="230" cy="88" r="9"/><text x="230" y="92">3</text></g><g class="bd"><circle cx="130" cy="214" r="9"/><text x="130" y="218">4</text></g><g class="bd"><circle cx="230" cy="214" r="9"/><text x="230" y="218">5</text></g><g class="bd"><circle cx="14" cy="212" r="9"/><text x="14" y="216">6</text></g><g class="bd"><circle cx="14" cy="316" r="9"/><text x="14" y="320">7</text></g><g class="bd"><circle cx="352" cy="212" r="9"/><text x="352" y="216">8</text></g>
+          </svg>
+          <figcaption>The control loop at a glance.</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Higher brain</b> &#8211; can override the rhythm for a while: holding the breath, speaking, singing, pranayama.</li>
+          <li><b>Pneumotaxic centre</b> (upper pons) &#8211; sets the switch-off point of inspiration. Strong signal: ~0.5 s, shallow breath. Weak signal: 5 s or more, lungs fully filled.</li>
+          <li><b>Apneustic centre</b> (lower pons) &#8211; promotes and prolongs inspiration, opposing the pneumotaxic centre.</li>
+          <li><b>Inspiratory centre</b> (medulla) &#8211; sends impulses to the inspiratory muscles.</li>
+          <li><b>Expiratory centre</b> (medulla) &#8211; quiet in quiet breathing; joins in for forced expiration.</li>
+          <li><b>Stretch receptors</b> &#8211; in the lungs; stretched on inspiration, they signal through the <b>vagus</b>: &#8220;lungs full, stop inspiring&#8221; (Hering&#8211;Breuer reflex).</li>
+          <li><b>Chemoreceptors</b> &#8211; detect CO&#8322;, H&#8314; and O&#8322;; rising CO&#8322; speeds breathing.</li>
+          <li><b>Muscles</b> &#8211; the diaphragm and intercostals carry out the command.</li>
+        </ol>
+      </div>
+      <div class="honest"><b>Source honesty:</b> your notebook places the inspiratory and expiratory centres in the &#8220;medulla and pons&#8221; and describes a protective chemoreceptor reflex from the pharynx (the rest of the line is cut off), which stops breathing when harmful gas arrives. Textbooks put the inspiratory and expiratory centres in the <b>medulla</b> and the pneumotaxic and apneustic centres in the <b>pons</b>, and name the central (medulla) and peripheral (carotid and aortic body) chemoreceptors as the main CO&#8322;/O&#8322; sensors. This page follows the textbook arrangement and keeps your protective reflex as a separate note.</div>
+
+      <div class="table-wrap"><table>
+        <tr><th>Loop</th><th>Steps</th></tr>
+        <tr><td>Hering&#8211;Breuer reflex</td><td>Inspiratory centre fires &#8594; inspiratory muscles contract &#8594; lungs stretch &#8594; stretch receptors fire &#8594; impulses via the <b>vagus</b> &#8594; inhibit inspiration &#8594; expiration.</td></tr>
+        <tr><td>CO&#8322; loop</td><td>Blood CO&#8322; rises &#8594; chemoreceptors and respiratory centre stimulated &#8594; faster, deeper breathing &#8594; excess CO&#8322; blown off &#8594; blood CO&#8322; returns to normal.</td></tr>
+        <tr><td>Protective reflex (your notebook)</td><td>Receptors stimulated (harmful gas) &#8594; impulse &#8594; respiratory centre &#8594; breathing inhibited, so the harmful gas does not enter the lungs.</td></tr>
+      </table></div>
+
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Breathing is like <b>a thermostat with a pacemaker</b>. The medulla is the pacemaker: it sets the beat of each breath. The pons is the fine-tuner: it decides when to stop each inspiration. Feedback keeps it safe: stretch receptors say &#8220;enough, don&#8217;t over-inflate&#8221;, and chemoreceptors say &#8220;CO&#8322; is up, breathe faster&#8221;.</p>
+        <p><b>The big message:</b> the main trigger that drives your breathing is the level of <b>CO&#8322;</b> in the blood, not the lack of oxygen. That is why you feel the urge to breathe when you hold your breath.<span class="src gen">general</span></p>
+      </div>
+
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this</span>
+          <ul class="plain">
+            <li>Breathing is <b>involuntary</b>, but can be placed under the will to a certain extent (as in yogic breathing).</li>
+            <li>Respiratory centres: <b>medulla and pons</b> (brainstem).</li>
+            <li>The vagus is a <b>mixed nerve</b>. It also carries parasympathetic influence to the heart, lungs and gut.</li>
+            <li>Medulla also controls swallowing, coughing and cardiovascular regulation.<span class="src cls">Yoga &amp; Human Body</span></li>
+          </ul>
+        </div>
+        <div class="blk mem">
+          <span class="lbl">Memory aid</span>
+          <p><b>Pons = Pneumotaxic = Pace/Pause:</b> it paces the breath by pausing inspiration.</p>
+          <p><b>Apneustic</b> = &#8220;a-pneu-stic&#8221;: keeps the breath in (prolongs).</p>
+          <p style="margin:0"><b>Hering&#8211;Breuer = Stretch &#8594; Vagus &#8594; Stop.</b></p>
         </div>
       </div>
 
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Reference</div>
-        <ul class="notes">
-          <li><b>Inspiratory centre</b> (medulla) &mdash; sends impulses to inspiratory muscles to trigger contraction.</li>
-          <li><b>Expiratory centre</b> (medulla) &mdash; inactive in quiet breathing; active during forced expiration.</li>
-          <li><b>Pneumotaxic centre</b> (pons) &mdash; controls rate/pattern; switches off inspiration (usually after 0.5&ndash;5 sec), allowing expiration.</li>
-          <li><b>Apneustic centre</b> (lower pons) &mdash; promotes and prolongs inspiration, opposing the pneumotaxic centre.</li>
-          <li><b>Hering&ndash;Breuer reflex</b> &mdash; stretch receptors in the lungs detect inflation, signal via the vagus nerve to inhibit further inspiration and prevent over-inflation.</li>
-          <li><b>Central chemoreceptors</b> (medulla) &mdash; sensitive to CO&#8322;/H&#8314; in blood and CSF.</li>
-          <li><b>Peripheral chemoreceptors</b> (carotid &amp; aortic bodies) &mdash; sensitive to O&#8322;, CO&#8322;, and pH in arterial blood. Rising CO&#8322; stimulates both sets and increases respiratory rate.</li>
-          <li><b>Voluntary control</b> &mdash; higher brain centres can override the automatic rhythm for breath-holding, speaking, etc.</li>
+      <div class="blk conf">
+        <span class="lbl">Common confusion</span>
+        <ul class="plain">
+          <li><b>Pneumotaxic vs apneustic:</b> opposite jobs. Pneumotaxic <i>switches inspiration off</i>; apneustic <i>prolongs it</i>.</li>
+          <li><b>Central vs peripheral chemoreceptors:</b> central are in the medulla (sense CO&#8322;/H&#8314; in blood and CSF); peripheral are in the carotid and aortic bodies (sense O&#8322;, CO&#8322; and pH in arterial blood).<span class="src gen">general</span></li>
+          <li><b>Voluntary vs involuntary:</b> the brainstem keeps the rhythm going even when you sleep; the will can only override it for a limited time.</li>
         </ul>
-      
-        <div class="marks-tag" style="margin-top:22px;">From your handwritten class notes</div>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">The three areas of the respiratory centre</p>
-        <ul class="notes">
-          <li>Inspiratory centre</li>
-          <li>Expiratory centre</li>
-          <li>Pneumotaxic (pontine) centre &mdash; a group of neurons connected to the inspiratory and expiratory centres, located dorsally in the upper pons. A strong signal ends inspiration after about 0.5&nbsp;s (lungs only partly filled); a weak signal lets inspiration run for 5&nbsp;s or more (lungs completely filled).</li>
-        </ul>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Hering&ndash;Breuer reflex, step by step</p>
-        <div class="flow">
-          <span class="step">Inspiratory centre</span><span class="arrow">&rarr;</span>
-          <span class="step">Inspiratory muscles contract</span><span class="arrow">&rarr;</span>
-          <span class="step">Lungs stretch</span><span class="arrow">&rarr;</span>
-          <span class="step">Stretch receptors fire</span><span class="arrow">&rarr;</span>
-          <span class="step">Impulse via vagus</span><span class="arrow">&rarr;</span>
-          <span class="step">Expiratory centre</span><span class="arrow">&rarr;</span>
-          <span class="step">Inspiration inhibited</span><span class="arrow">&rarr;</span>
-          <span class="step">Expiration</span>
-        </div>
-        <p style="font-size:14px;">The stretch receptors are in the lungs and are sensitive to stretch; the vagus is a mixed nerve. Their signal tells the brain the lungs are full, the expiratory centre then inhibits the inspiratory centre, and expiration follows.</p>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">CO&#8322; loop</p>
-        <div class="flow">
-          <span class="step">CO&#8322; level rises</span><span class="arrow">&rarr;</span>
-          <span class="step">Respiratory centre stimulated</span><span class="arrow">&rarr;</span>
-          <span class="step">Excess CO&#8322; removed by expiration</span><span class="arrow">&rarr;</span>
-          <span class="step">Blood CO&#8322; normal</span>
-        </div>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Chemoreceptor protective reflex</p>
-        <div class="flow">
-          <span class="step">Receptors stimulated</span><span class="arrow">&rarr;</span>
-          <span class="step">Impulse</span><span class="arrow">&rarr;</span>
-          <span class="step">Respiratory centre</span><span class="arrow">&rarr;</span>
-          <span class="step">Breathing inhibited</span>
-        </div>
-        <p class="mal" style="font-size:13px; margin-bottom:0;">Your notes describe this as a protective mechanism to keep harmful gas out of the lungs; the receptors are those of the pharynx and a second site that is cut off at the edge of the scan.</p>
-
       </div>
 
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Q20 &middot; How does breathing affect the body in yoga practice? (10 marks) &mdash; continued from Section 01</div>
-        <div class="practice-link">
-          <b>Pranayama and the autonomic system</b>
-          Your Yoga &amp; Human Body notes state directly: slow, controlled breathing can influence respiratory rate, heart rate, heart-rate variability, autonomic balance, perceived stress, and emotional state &mdash; and that, generally, slow, comfortable breathing tends toward greater relaxation and parasympathetic influence, while rapid or forceful breathing can have different effects. The notes are equally explicit that the size of the effect "depends on technique, duration, breathing rate, and individual characteristics" &mdash; this is a directional finding, not a fixed rule to quote as universal.
-        </div>
-        <p style="font-size:14.5px;">This connects directly to the automatic vs. voluntary control covered in Layer 1: pranayama is deliberate, sustained use of the voluntary-override window on a normally automatic system. Kumbhaka (breath retention) is the clearest example of that override reaching further into the physiology &mdash; the notes flag that prolonged or forceful retention can alter blood CO&#8322;, O&#8322;, blood pressure, and intrathoracic pressure, "therefore it must be taught appropriately." On lung function specifically, the notes say regular appropriate breathing practice <i>may</i> influence respiratory muscle function, breathing efficiency, lung volumes, respiratory rate, and perceived breathlessness &mdash; again with the caveat that specific changes depend on population and technique, which is why Section 02 doesn't attach a number to it.</p>
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; &#8220;Explain the regulation of breathing&#8221; (5 marks)</span>
+        <p>Cover three heads: <b>nervous</b> (respiratory centres: inspiratory, expiratory, pneumotaxic; Hering&#8211;Breuer reflex), <b>chemical</b> (CO&#8322; and chemoreceptors) and <b>voluntary</b> (higher centres). If you get a flowchart, draw the Hering&#8211;Breuer loop in boxes.</p>
       </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;Your brainstem breathes for you, so it carries on even when you&#8217;re asleep. The medulla fires each breath in; the pons decides when to switch it off. Stretch sensors in the lungs stop you from over-filling, and sensors in the blood watch CO&#8322; &#8211; when it rises, they tell the brain to breathe faster. You can take over this system for a short time, like holding your breath or doing pranayama.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; the phrenic nerve and what &#8220;the urge to breathe&#8221; really is</summary>
+        <div class="inner">
+          <p>The diaphragm is supplied by the <b>phrenic nerve</b> and the intercostal muscles by the intercostal nerves; the medulla sends its commands down these.<span class="src gen">general</span></p>
+          <p>When you hold your breath, blood CO&#8322; and H&#8314; rise and the central chemoreceptors send a growing &#8220;breathe&#8221; signal. That is why a hard breath-hold ends on a CO&#8322; urge rather than a feeling of &#8220;no oxygen&#8221;. This is also why forceful breath retention in yoga has to be taught carefully (see <a href="#sec-yoga">Section 8</a>).<span class="src gen">general</span></p>
+        </div>
+      </details>
 
       <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
         <div class="recall-strip">
-          <div class="recall-card"><div class="q">Which brainstem regions hold the respiratory centres?</div><div class="a">The medulla oblongata and the pons</div></div>
-          <div class="recall-card"><div class="q">Where is the pneumotaxic centre and what does it do?</div><div class="a">Upper pons; controls the switch-off point of inspiration</div></div>
-          <div class="recall-card"><div class="q">Which nerve carries the Hering&ndash;Breuer signal?</div><div class="a">The vagus (a mixed nerve)</div></div>
-          <div class="recall-card"><div class="q">What does the Hering&ndash;Breuer reflex prevent?</div><div class="a">Over-inflation of the lungs &mdash; via stretch receptors and the vagus nerve</div></div>
-          <div class="recall-card"><div class="q">What is the main chemical trigger that speeds up breathing?</div><div class="a">Rising blood CO&#8322; (sensed by central and peripheral chemoreceptors)</div></div>
-          <div class="recall-card"><div class="q">Generally, which breathing style favours parasympathetic influence?</div><div class="a">Slow, comfortable/controlled breathing (per the notes, direction only &mdash; not a fixed effect size)</div></div>
+          <div class="recall-card"><div class="q">Where are the respiratory centres?</div><div class="a">In the brainstem: medulla and pons</div></div>
+          <div class="recall-card"><div class="q">What does the pneumotaxic centre do?</div><div class="a">Controls the switch-off point of inspiration (upper pons)</div></div>
+          <div class="recall-card"><div class="q">What does the apneustic centre do?</div><div class="a">Promotes and prolongs inspiration (lower pons)</div></div>
+          <div class="recall-card"><div class="q">What is the Hering&#8211;Breuer reflex?</div><div class="a">Lung stretch receptors signal via the vagus to stop inspiration and prevent over-inflation</div></div>
+          <div class="recall-card"><div class="q">Which nerve carries the Hering&#8211;Breuer signal?</div><div class="a">The vagus (a mixed nerve)</div></div>
+          <div class="recall-card"><div class="q">Main chemical trigger for faster breathing?</div><div class="a">A rise in blood CO&#8322; (sensed by chemoreceptors)</div></div>
+          <div class="recall-card"><div class="q">Where are the chemoreceptors?</div><div class="a">Central: medulla. Peripheral: carotid and aortic bodies</div></div>
+          <div class="recall-card"><div class="q">Is breathing voluntary or involuntary?</div><div class="a">Involuntary, but can be controlled to a certain extent (yogic breathing)</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 BREATHING AND YOGA -->
+    <section class="section" id="sec-yoga">
+      <div class="sec-head">
+        <div class="kicker">08 &#183; Putting it together</div>
+        <h2>Breathing &amp; Yoga Practice</h2>
+        <p class="dek">The 10-mark question: every earlier section becomes one paragraph of the answer. Tags show which claims come from your class notes and which are general physiology.</p>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Q20 &#183; &#8220;How does breathing affect the body in yoga practice?&#8221; (10 marks)</span>
+        <p>Plan a five-part answer, roughly two marks each: <b>(1) mechanics &#8594; (2) gas exchange and ventilation &#8594; (3) nervous system &#8594; (4) breath retention and safety &#8594; (5) conclusion.</b></p>
+      </div>
+
+      <div class="table-wrap"><table>
+        <tr><th>#</th><th>Point to write</th><th>Link back</th><th>Source</th></tr>
+        <tr><td>1</td><td><b>Mechanics:</b> inspiration is an active muscular act and expiration in quiet breathing is passive. Slow, deep breathing deliberately changes how much the diaphragm and intercostals work; emphasising diaphragm descent changes which muscles do the work.</td><td>Sec. 4</td><td><span class="src gen">general physiology</span></td></tr>
+        <tr><td>2</td><td><b>Ventilation and gas exchange:</b> breathing sets how much fresh air reaches the alveoli and how fast CO&#8322; is cleared. Regular appropriate breathing practice may influence respiratory muscle function, breathing efficiency, lung volumes, respiratory rate and perceived breathlessness. Specific changes depend on the population and the technique.</td><td>Sec. 5, 6</td><td><span class="src cls">Yoga &amp; Human Body</span></td></tr>
+        <tr><td>3</td><td><b>Nervous system:</b> breathing is automatic but partly voluntary, so slow, controlled breathing can influence respiratory rate, heart rate, heart-rate variability, autonomic balance, perceived stress and emotional state. Slow, comfortable breathing generally gives more relaxation and parasympathetic (vagal) influence; rapid or forceful breathing can have different effects. The effect depends on technique, duration, breathing rate and the individual.</td><td>Sec. 7</td><td><span class="src cls">Yoga &amp; Human Body</span></td></tr>
+        <tr><td>4</td><td><b>Breath retention (kumbhaka):</b> prolonged or forceful retention can alter blood CO&#8322; and O&#8322;, blood pressure and intrathoracic pressure, so it must be taught appropriately. Antar kumbhaka = retention after inhalation; bahir kumbhaka = retention after exhalation. Pressure changes in some practices can also affect venous return and abdominal organs.</td><td>Sec. 6, 7</td><td><span class="src cls">Yoga &amp; Human Body</span></td></tr>
+        <tr><td>5</td><td><b>Conclusion:</b> yoga uses the voluntary window on an automatic system. Effects are real but conditional, so the answer should separate traditional claims from established physiology.</td><td>All</td><td><span class="src cls">Yoga &amp; Human Body</span></td></tr>
+      </table></div>
+
+      <div class="blk conf">
+        <span class="lbl">Source honesty</span>
+        <p>Your class notes do <b>not</b> state a specific asana or pranayama technique for each respiratory mechanism (for example, which pranayama raises vital capacity). So this page does not invent one. Where the notes say only &#8220;may influence&#8221; or &#8220;depends on technique&#8221;, write it that way in the exam too. The Yoga &amp; Human Body notes also tell you directly to &#8220;distinguish traditional rationale from established physiology.&#8221; The mechanics link in point 1 is ordinary physiology reasoning (tagged <span class="src gen">general</span>), not a claim from your notes.</p>
+      </div>
+
+      <div class="blk know">
+        <span class="lbl">Know this &#183; one chain to remember</span>
+        <div class="flow" style="margin:6px 0 0">
+          <span class="step">Slow, controlled breath</span><span class="arrow">&#8594;</span>
+          <span class="step">Voluntary override of brainstem</span><span class="arrow">&#8594;</span>
+          <span class="step">Vagal / parasympathetic influence</span><span class="arrow">&#8594;</span>
+          <span class="step">Slower HR, calmer state</span>
+        </div>
+        <p style="margin-top:10px;font-size:13px;color:var(--muted)">Direction only, as the notes put it; the size of the effect varies between people and techniques.</p>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;Breathing is the one automatic system you can also steer. When you slow it down and breathe smoothly, you change how your chest muscles work, how much fresh air reaches the lungs, and &#8211; through the vagus nerve &#8211; you nudge the body toward relaxation. Breath-holding changes the CO&#8322; and pressure inside the chest, so it has to be learned carefully. How much it helps depends on the technique and the person.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; related lines from your Yoga &amp; Human Body notes</summary>
+        <div class="inner">
+          <p><b>Vagus nerve:</b> influences the heart, lungs and digestive tract. Some slow-breathing and relaxation practices may increase vagal influence, though responses differ between people.</p>
+          <p><b>Kapalabhati</b> is listed among the shatkarmas in your notes (with the caution that Hatha texts and modern traditions describe the practices somewhat differently).</p>
+          <p><b>Pressure changes:</b> certain respiratory and abdominal practices can alter intrathoracic and intra-abdominal pressure, which can influence venous return, abdominal organs and respiratory mechanics.</p>
+          <p><b>Kevala kumbhaka</b> is traditionally described as spontaneous suspension of breath associated with advanced states. It is not an exercise in physiology terms.</p>
+        </div>
+      </details>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Generally, which breathing style favours relaxation?</div><div class="a">Slow, comfortable, controlled breathing (parasympathetic/vagal influence)</div></div>
+          <div class="recall-card"><div class="q">What can slow, controlled breathing influence?</div><div class="a">Respiratory rate, heart rate, HRV, autonomic balance, perceived stress, emotional state</div></div>
+          <div class="recall-card"><div class="q">What can prolonged or forceful breath retention alter?</div><div class="a">CO&#8322;, O&#8322;, blood pressure and intrathoracic pressure &#8211; so teach carefully</div></div>
+          <div class="recall-card"><div class="q">Antar vs bahir kumbhaka?</div><div class="a">Antar: retention after inhalation. Bahir: retention after exhalation</div></div>
+          <div class="recall-card"><div class="q">What may regular breathing practice influence in the lungs?</div><div class="a">Respiratory muscle function, efficiency, lung volumes, rate, perceived breathlessness &#8211; depending on population and technique</div></div>
+          <div class="recall-card"><div class="q">What does the nerve vagus have to do with yoga breathing?</div><div class="a">Slow breathing may increase vagal (parasympathetic) influence</div></div>
         </div>
       </div>
 
-      <p class="source-note">Source: Respiratory System &mdash; Simple Notes (PDF); pranayama/breathing-physiology content in Yoga &amp; Human Body notes; handwritten class notes on the respiratory system (air passages, lungs, mechanism of breathing, volumes, gas transport, regulation). Hand-drawn diagrams are from the same notebook.</p>
+      <p class="src-foot">Sources: Respiratory System Handwritten Notes (class notebook, typed with the original diagrams); Respiratory System &#8211; Simple Notes (teacher&#8217;s PDF); Yoga &amp; Human Body notes (respiratory, pranayama and kumbhaka sections); Ross &amp; Wilson, Anatomy and Physiology in Health and Illness, ch. 10, and NCERT Biology, Breathing and Exchange of Gases, for the &#8220;general physiology&#8221; tags; the Semester 1 question paper (Q6, Q9, Q16, Q19, Q20). New diagrams on this page are drawn for these notes; the photographic ones are from the notebook.</p>
     </section>
 
   </main>
@@ -580,51 +1240,52 @@
   var menuBtn = document.getElementById('menuBtn');
   var searchEl = document.getElementById('search');
 
-  function activate(id, scroll){
-    sections.forEach(function(s){ s.hidden = (s.id !== 'sec-' + id); });
+  function setActive(id){
     navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
-    if (scroll) window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
-    try { history.replaceState(null, '', '#' + id); } catch(e){}
-    closeSidebar();
   }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
 
   navItems.forEach(function(btn){
-    btn.addEventListener('click', function(){ activate(btn.dataset.target, true); });
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
   });
-
-  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
-  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
   menuBtn.addEventListener('click', openSidebar);
   scrim.addEventListener('click', closeSidebar);
 
   searchEl.addEventListener('input', function(){
     var q = searchEl.value.trim().toLowerCase();
     navItems.forEach(function(btn){
-      var text = btn.textContent.toLowerCase();
-      btn.hidden = q.length > 0 && text.indexOf(q) === -1;
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
     });
   });
 
-  Array.prototype.slice.call(document.querySelectorAll('.layer-nav')).forEach(function(nav){
-    var scope = nav.closest('.section') || document;
-    var layerButtons = Array.prototype.slice.call(nav.querySelectorAll('.layer-item'));
-    var layerPanels = Array.prototype.slice.call(scope.querySelectorAll('.layer-panel'));
-    layerButtons.forEach(function(btn){
-      btn.addEventListener('click', function(){
-        var target = btn.dataset.layer;
-        layerButtons.forEach(function(b){ b.classList.toggle('active', b === btn); });
-        layerPanels.forEach(function(p){ p.hidden = (p.dataset.panel !== target); });
-      });
-    });
-  });
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
 
   Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
     card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
   });
 
-  var startId = 'overview';
   var hash = (location.hash || '').replace('#','');
-  if (hash && document.getElementById('sec-' + hash)) startId = hash;
-  activate(startId, false);
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
 })();
 </script>

@@ -1,69 +1,90 @@
 # Note format for anatomy/physiology topics
 
-Decided 2026-09-25, based on `msc-yoga/semester-1/t3-human-anatomy-physiology/digestive-system/notes.html` as the
-reference implementation. Read that file's Stomach section first if you
-want a concrete example before changing this format.
+Revised 2026-10-23 ("detailed handout" spreads). Reference implementation:
+`msc-yoga/semester-1/t3-human-anatomy-physiology/unit-4-respiratory-system/notes.html`.
+The earlier three-tab format (Understand / Explain / Connect to practice, decided
+2026-09-25) is **replaced**; topics still in that format (cell, tissues, skeletal,
+muscular, digestive) get rebuilt one at a time, in an order Anoop decides.
 
 ## Why this format
 
-Reformatting class notes with headers and color didn't help understanding —
-it just made the same facts easier to *find*, not easier to *get*. Two
-things fixed that:
+Anoop found the handout-style notes (diagram and explanation side by side, with
+real depth) clearer than tabs: seeing the picture and the words together is
+what made the concept click. Tabs hid content behind clicks and split a
+diagram from the explanation of it. The same page also has to let him
+**explain the topic to other people** (the course teacher wants him able to
+teach it), so each topic ends with a short spoken version.
 
-1. **Understanding has to come before exam-ready facts, not instead of them.**
-   Anoop needs both: real comprehension, and the ability to reproduce
-   Def/Stru/Fun-style answers on paper.
-2. **The M.Sc. question paper itself rewards graduated understanding**, not
-   just recall. See the Semester 1 question paper in the local class-material archive
-   (Semester 1, Human Anatomy and Physiology, DSCC-18):
+The M.Sc. question paper (Semester 1, DSCC-18) still shapes what goes in:
 
-   | Section | Marks | Style | Example |
-   |---|---|---|---|
-   | A (10 of 13) | 2 marks each | Recall | "What is a cell?", "Name one organelle" |
-   | B (4 of 6) | 5 marks each | Mechanism / explain | "What causes muscle fatigue?", "Draw and label the Respiratory System" |
-   | C (2 of 3) | 10 marks each | Synthesis — physiology tied to yoga practice | "How do asanas help in digestion?" |
+| Section | Marks | Style | Example |
+|---|---|---|---|
+| A (10 of 13) | 2 marks each | Recall | "Name the fluid in the lungs' cavity" |
+| B (4 of 6) | 5 marks each | Mechanism / explain | "How do we breathe?", "Draw and label the Respiratory System" |
+| C (2 of 3) | 10 marks each | Synthesis, physiology tied to yoga practice | "How does breathing affect the body in yoga practice?" |
 
-## The format: three layers + a recall strip, per organ/topic
+## The format: continuous spreads, no tabs
 
-Each topic section has three tabs:
+Each topic page is a set of numbered sections (sidebar nav scrolls to them;
+nothing is hidden behind tabs). Each section is built from these parts, in
+this order. Leave a part out only when it has nothing honest to say.
 
-1. **Understand** — plain-language narrative with at least one real analogy
-   or mechanism explanation ("why", not just "what"). This is what makes
-   Layers 2 and 3 answerable at all — it's not exam-shaped, and that's
-   intentional.
-2. **Explain** (Section B style, ~5 marks) — Def/Stru/Fun structured answer,
-   tables/diagrams as needed. This is close to how your class notes are
-   already written.
-3. **Connect to practice** (Section C style, ~10 marks) — the physiological
-   *why* behind a named asana/pranayama, not just "pose X helps". Where the
-   class notes don't state a specific link, say so plainly rather than
-   inventing one.
+1. **Spread**: a diagram and a numbered key side by side (`.spread` + `ol.key`
+   with `.fig`); stacked on phones. Numbers in the drawing match the key.
+   Use Anoop's own notebook drawing when it is clear; draw a clean inline SVG
+   (theme colours via the CSS variables, numbered `.bd` badges) where there is
+   no good drawing or his is too faint.
+2. **Understand it** (`.blk.und`): plain-language "why", with a real analogy
+   or mechanism. This is what makes everything below answerable.
+3. **Know this** (`.blk.know`): the extra depth and the exact facts and values
+   from the class notes, as bullets or a table.
+4. **Memory aid** (`.blk.mem`): a mnemonic or one-line rule. Label made-up
+   mnemonics as made up.
+5. **Common confusion** (`.blk.conf`): the pairs students mix up.
+6. **Exam angle** (`.blk.exam`): which question in the paper, how many marks,
+   and how to structure the answer. For "draw and label" questions include a
+   drawing checklist (`ul.chk`).
+7. **Explain it to someone** (`.blk.say`): a 30-second spoken version.
+8. **Go deeper** (`details.deeper`): optional, untested extras (disorders,
+   surfactant, Bohr effect...). Folded by default; opened automatically for print.
+9. **Recall cards**: flip cards (`.recall-strip` / `.recall-card`) for Section-A
+   style questions, written from the content above.
 
-Below the tabs: a **quick-recall strip** of flip cards (Section A style,
-2 marks) — short facts pulled from the content above, not written
-separately. If Layer 1 is genuinely understood, most of these should be
-answerable without memorizing them as a separate list.
+The final section of a topic is the **yoga connection** (the 10-mark answer):
+a table of points to write, each tagged with where it comes from.
 
-## Open questions / things to revisit
+## Source honesty (applies to every part)
 
-- Whether the quick-recall strip should be auto-generated from the other
-  layers instead of hand-written per topic.
-- Whether the "Connect to practice" content (asana links + physiological
-  reasoning) should be cross-checked against a real yoga-physiology
-  reference — right now that reasoning is Claude's synthesis, not
-  something confirmed by a textbook or teacher.
-- A separate `Disorders & Yoga` consolidated section currently exists
-  alongside the per-organ "Connect to practice" content, for cram-before-
-  exam use. Consider whether to keep both or merge.
+- Tag claims that go beyond the class notes: `.src.cls` for "from the class
+  notes" and `.src.gen` for "general physiology, not in the class notes".
+- Where the class notes disagree with a textbook or with each other, show it in
+  a `.honest` box and say which figure the page uses. Do not silently pick one.
+- Never invent an asana, pranayama or mechanism link. If the class notes only
+  say "may influence" or "depends on technique", write it that way.
+- Diagrams drawn by Claude say so in the page's source line.
+
+## Sources to combine
+
+Teacher's typed notes, Anoop's handwritten class notes (and their diagrams),
+the Yoga & Human Body notes, and the textbooks in `references/`
+(Ross & Wilson, NCERT), with the question paper deciding what is core and what
+goes in a Go-deeper fold. Raw sources are read from Anoop's local archive and
+are never committed (see CLAUDE.md).
 
 ## Implementation notes
 
-- Single self-contained HTML file per topic, no external framework — see
-  `msc-yoga/semester-1/t3-human-anatomy-physiology/digestive-system/notes.html`.
-- Tabs and recall-card flip are implemented generically in a shared
-  `<script>` block: any section with a `.layer-nav` + three `.layer-panel`
-  elements (`data-panel="understand|explain|practice"`) gets working tabs
-  automatically. No per-section JS needed when adding a new topic.
-- Diagrams: place image files under `<topic>/assets/diagrams/` and
-  reference them with a relative path from the topic's HTML file, so
-  image and text stay together and travel with the topic if it moves.
+- Single self-contained HTML file per topic (inline CSS/JS), same shell as
+  the other topic pages: sidebar, search box, mobile bar, light/dark themes.
+- Nav buttons scroll to `#sec-<id>`; an IntersectionObserver highlights the
+  current section. Recall cards flip on click. Print CSS hides the sidebar,
+  opens the Go-deeper folds and shows card answers.
+- Diagrams that are image files go under `<topic>/assets/diagrams/` and are
+  referenced with a relative path. Inline SVGs need no files.
+- Non-ASCII characters are written as HTML entities (`&#8322;`), so the file
+  stays ASCII-clean.
+
+## Open questions
+
+- Which topic is rebuilt next (cell, tissues, skeletal, muscular, digestive).
+- Whether the Disorders & Yoga consolidated section should be merged into the
+  per-topic Go-deeper folds.

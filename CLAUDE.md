@@ -13,12 +13,19 @@ raw gets committed here.
 ## Conventions
 
 - **Note format**: topics under `msc-yoga/` (and eventually `philosophy/`,
-  `practice/`) follow the three-layer format in `NOTE-FORMAT.md`
-  (Understand / Explain / Connect to practice + a recall strip). Use
-  `msc-yoga/semester-1/t3-human-anatomy-physiology/digestive-system/notes.html`
+  `practice/`) follow the "detailed handout" spread format in
+  `NOTE-FORMAT.md`: no tabs; each section is a diagram + numbered key
+  spread, then Understand it / Know this / Memory aid / Common confusion /
+  Exam angle / Explain it to someone, optional "Go deeper" folds, and recall
+  cards. This replaces the old three-tab format (Understand / Explain /
+  Connect to practice). Use
+  `msc-yoga/semester-1/t3-human-anatomy-physiology/unit-4-respiratory-system/notes.html`
   as the reference implementation — match its structure, CSS classes
-  (`.layer-nav`, `.layer-panel`, `.recall-card`, `.figure-grid`, etc.) and
-  JS behavior rather than reinventing it per topic.
+  (`.spread`, `ol.key`, `.blk.und|know|mem|conf|exam|say`, `details.deeper`,
+  `.recall-card`, `.src.cls|gen`, `.honest`) and JS behavior rather than
+  reinventing it per topic. Topics still in the old tab format (cell,
+  tissues, skeletal, muscular, digestive) are rebuilt one at a time, in
+  the order Anoop chooses.
 - **Folder convention for `msc-yoga/`**: `semester-<n>/<subject-slug>/<topic-slug>/`.
   Subject slugs match the person's own local archive naming exactly
   (`t1-foundations-of-yoga`, `t2-applications-of-hatha-yoga`,
@@ -52,7 +59,9 @@ raw gets committed here.
   `<subject>/<topic>/notes.html`. Diagrams for that topic live alongside it
   in `<subject>/<topic>/assets/diagrams/` and are referenced with a relative
   path (`assets/diagrams/<name>.jpg`), inserted inline near the section they
-  illustrate — not bundled at the end.
+  illustrate — not bundled at the end. Clean diagrams may instead be drawn
+  as inline SVG in the page (no file needed); say so in the page's source
+  line.
 - **Nothing raw gets committed**: class notes, question papers, textbook
   PDFs, and the full local screenshot/photo archive all stay on the local
   machine and are only read from, never copied into this repo — not even a
@@ -62,10 +71,18 @@ raw gets committed here.
 - **Question papers are a design input**, not just an archive item — when
   building or revising a topic's note format, check the local archive for
   past question papers on that topic to see how it's actually examined
-  (recall vs. explain vs. synthesis) and shape the three layers accordingly.
-- **Source honesty**: when writing the "Connect to practice" layer, if the
-  class notes don't state a specific asana/mechanism link, say so in the
-  content rather than inventing a plausible-sounding one.
+  (recall vs. explain vs. synthesis) and shape the sections (especially the
+  Exam angle blocks and recall cards) accordingly.
+- **Source honesty**: in the yoga-connection section (and anywhere else),
+  if the class notes don't state a specific asana/mechanism link, say so in
+  the content rather than inventing a plausible-sounding one. Tag claims
+  that come from outside the class notes as general physiology, and show
+  conflicts between sources (class notes vs. textbook) in an `.honest` box
+  instead of silently choosing one.
+- **Combine all sources into one page**: teacher's notes, Anoop's handwritten
+  notes, Yoga & Human Body notes and the reference textbooks go into one
+  topic page (no separate teacher/student versions); the question paper
+  decides what is core and what goes in a Go-deeper fold.
 
 ## Before adding a new topic
 
@@ -73,7 +90,7 @@ raw gets committed here.
    known, and check it for question papers and class notes/references on
    the topic.
 2. Follow the structure in
-   `msc-yoga/semester-1/t3-human-anatomy-physiology/digestive-system/notes.html`
+   `msc-yoga/semester-1/t3-human-anatomy-physiology/unit-4-respiratory-system/notes.html`
    — copy its CSS/JS scaffolding rather than rewriting it.
 3. Pick out only the diagrams/photos actually relevant to that topic, copy
    them into `<subject>/<topic>/assets/diagrams/`, and reference them inline
