@@ -1,3 +1,6 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tissues</title>
 <style>
   :root{
@@ -129,6 +132,97 @@
     .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
     .scrim.show{ display:block; }
   }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  .stat-strip{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin:0 0 14px; }
+  .stat{ background:var(--surface); border:1px solid var(--line,var(--border,rgba(128,128,128,.3))); border-radius:10px; padding:10px 12px; }
+  .stat .v{ font-family:'Fraunces',serif; font-size:18px; font-weight:600; color:var(--accent); line-height:1.25; }
+  .stat .k{ font-size:12px; color:var(--muted); margin-top:3px; }
+  @media (max-width:760px){ .stat-strip{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  ol.plain{ margin:0 0 .9em; padding-left:1.3em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  .map-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 14px; margin:0 0 14px; }
+  @media (max-width:760px){ .map-grid{ grid-template-columns:1fr; } }
+  .map-grid a{ display:block; padding:9px 12px; border:1px solid var(--line,rgba(128,128,128,.3)); border-radius:10px; background:var(--surface); color:var(--ink); text-decoration:none; font-size:14px; line-height:1.4; }
+  .map-grid a b{ color:var(--accent); }
+  .map-grid a:hover{ border-color:var(--accent); }
+
+  @media (max-width:640px){ .fig.wide-svg{ overflow-x:auto; -webkit-overflow-scrolling:touch; } .fig.wide-svg svg{ min-width:540px; } .fig.wide-svg::after{ content:"swipe sideways to see the whole diagram"; display:block; font-size:11px; color:var(--muted); text-align:center; margin-top:4px; } }
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 
@@ -147,404 +241,1056 @@
     </div>
     <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
     <nav class="tree" id="tree">
-      <button class="nav-item" data-target="overview"><span class="num">00</span><span>Four Basic Types</span></button>
-      <button class="nav-item" data-target="epithelial"><span class="num">01</span><span>Epithelial Tissue</span></button>
-      <button class="nav-item" data-target="connective"><span class="num">02</span><span>Connective Tissue</span></button>
-      <button class="nav-item" data-target="muscular"><span class="num">03</span><span>Muscular Tissue</span></button>
-      <button class="nav-item" data-target="nervous"><span class="num">04</span><span>Nervous Tissue</span></button>
+      <button class="nav-item" data-target="overview"><span class="num">01</span><span>Levels of Organisation</span></button>
+      <button class="nav-item" data-target="homeostasis"><span class="num">02</span><span>Homeostasis &amp; Feedback</span></button>
+      <button class="nav-item" data-target="epithelial"><span class="num">03</span><span>Epithelial Tissue</span></button>
+      <button class="nav-item" data-target="connective"><span class="num">04</span><span>Connective Tissue</span></button>
+      <button class="nav-item" data-target="muscular"><span class="num">05</span><span>Muscular Tissue</span></button>
+      <button class="nav-item" data-target="nervous"><span class="num">06</span><span>Nervous Tissue</span></button>
+      <button class="nav-item" data-target="yoga"><span class="num">07</span><span>Tissues &amp; Yoga</span></button>
     </nav>
     <div class="sidebar-footer">
-      Reference: Tissues &mdash; Quick Notes (PDF); Connective Tissue &mdash; Easy Notes (PDF); Tissues lecture notes (concepts, mnemonics, NCERT-level examples)
+      Reference: Tissues Detailed Study Notes; Tissues Quick Notes; Connective Tissue Notes; Cell Detailed Study Notes (homeostasis); Yoga &amp; Human Body notes; Ross &amp; Wilson; NCERT
     </div>
   </aside>
 
   <main id="main">
-
-    <!-- 00 OVERVIEW -->
+    <!-- 01 OVERVIEW -->
     <section class="section" id="sec-overview">
-      <div class="kicker">00 &middot; Foundations</div>
-      <h2>Four Basic Types</h2>
-      <p class="dek">Cells rarely work alone. Group similar cells together by structure, function, and origin, and you get a tissue &mdash; the level between "cell" and "organ."</p>
+      <div class="sec-head">
+        <div class="kicker">01 &#183; Big picture</div>
+        <h2>Levels of Organisation: From Cell to Organism</h2>
+        <p class="dek">Cells that look alike and work together form a tissue; tissues build organs; organs team up as systems. The four basic tissues are the bricks of every organ.</p>
+      </div>
 
-      <div class="card">
-        <h3><span class="tag">Def</span>Tissue</h3>
-        <div class="dsf">
-          <div class="row"><div class="label">Def</div><p>A group of cells similar in structure, function, and origin (genesis).</p></div>
-          <div class="row"><div class="label">Fun</div><p>Tissues combine to form organs; organs combine to form the organ systems covered elsewhere in this subject (digestive, muscular, and so on).</p></div>
+      <div class="spread">
+        <figure class="fig">
+          <svg viewBox="0 0 380 420" role="img" aria-label="Five levels of organisation: cell, tissue, organ, organ system, organism, each with an example, connected by arrows">
+            <rect class="ft" x="60" y="8" width="310" height="62" rx="10"/><text class="t tb" x="76" y="34">Cell</text><text class="t ts" x="76" y="52">muscle cell, nerve cell</text>
+            <rect class="ft" x="60" y="92" width="310" height="62" rx="10"/><text class="t tb" x="76" y="118">Tissue</text><text class="t ts" x="76" y="136">muscle tissue, nerve tissue, blood</text>
+            <rect class="fg" x="60" y="176" width="310" height="62" rx="10"/><text class="t tb" x="76" y="202">Organ</text><text class="t ts" x="76" y="220">stomach, liver, intestine, heart</text>
+            <rect class="fg" x="60" y="260" width="310" height="62" rx="10"/><text class="t tb" x="76" y="286">Organ system</text><text class="t ts" x="76" y="304">digestive, circulatory, respiratory</text>
+            <rect class="fa" x="60" y="344" width="310" height="62" rx="10"/><text class="t tb" x="76" y="370">Organism</text><text class="t ts" x="76" y="388">the whole body</text>
+            <g class="ca"><path d="M215 70 V90"/><path d="M215 154 V174"/><path d="M215 238 V258"/><path d="M215 322 V342"/></g>
+            <g fill="var(--accent)"><path d="M209 88 h12 l-6 8z"/><path d="M209 172 h12 l-6 8z"/><path d="M209 256 h12 l-6 8z"/><path d="M209 340 h12 l-6 8z"/></g>
+            <g class="bd"><circle cx="30" cy="39" r="9"/><text x="30" y="43">1</text></g><g class="bd"><circle cx="30" cy="123" r="9"/><text x="30" y="127">2</text></g><g class="bd"><circle cx="30" cy="207" r="9"/><text x="30" y="211">3</text></g><g class="bd"><circle cx="30" cy="291" r="9"/><text x="30" y="295">4</text></g><g class="bd"><circle cx="30" cy="375" r="9"/><text x="30" y="379">5</text></g>
+          </svg>
+          <figcaption>Read it downwards: each level is made of the one above.</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Cell</b> &#8211; the smallest living unit.</li>
+          <li><b>Tissue</b> &#8211; many <i>similar</i> cells doing <i>one</i> job.<span class="src cls">Tissues Detailed Notes</span></li>
+          <li><b>Organ</b> &#8211; several <i>different</i> tissues working as one structure (stomach, liver, intestine, pancreas).</li>
+          <li><b>Organ system</b> &#8211; many organs on one big task (digestive: mouth, food pipe, stomach, intestine, liver).</li>
+          <li><b>Organism</b> &#8211; all the systems together.</li>
+        </ol>
+      </div>
+
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Your notes explain a tissue with a <b>wedding in the house</b>. The father splits the work: four cousins who love food arrange the meals, four strong cousins carry and serve, four good talkers look after the guests. Each group is similar in ability and does one job. That is exactly a tissue: the body hands different jobs to different groups of cells.<span class="src cls">Tissues Detailed Notes</span></p>
+        <p>The two key words in the definition are <b>similar in structure</b> (they look alike and lie together) and <b>work together</b> (on one assigned job). Your quick notes add a third: similar in <b>genesis</b>, meaning they come from the same origin in the embryo.<span class="src cls">Tissues Quick Notes</span></p>
+      </div>
+
+      <h3 class="sub"><span class="n">1A</span>Why a many-celled body needs tissues</h3>
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this &#183; three points (NCERT question)</span>
+          <ul class="plain">
+            <li><b>Division of labour:</b> different groups of cells do different jobs, so work is efficient and does not get muddled.</li>
+            <li><b>Structural support:</b> tissues such as bone give the framework that lets the body stand upright.</li>
+            <li><b>Efficient functioning:</b> many cells doing one job together do it faster and better than one cell alone.</li>
+          </ul>
+        </div>
+        <div class="blk mem">
+          <span class="lbl">Memory aid</span>
+          <p><b>&#8220;Divide, Support, Team up.&#8221;</b> Three uses of tissues.</p>
+          <p style="margin:0">Cell &#8594; Tissue &#8594; Organ &#8594; System &#8594; Organism: <b>&#8220;Can Tigers Observe Silent Owls?&#8221;</b></p>
         </div>
       </div>
 
-      <div class="card">
-        <h3>Why the body needs tissues</h3>
-        <ul class="notes" style="margin-bottom:0;">
-          <li><b>Division of labour</b> &mdash; different groups of cells do different jobs, so the work gets done efficiently (muscle moves, nerve carries messages, blood transports).</li>
-          <li><b>Structural support</b> &mdash; tissues such as bone give the body its frame and let it stand upright.</li>
-          <li><b>Efficient functioning</b> &mdash; many cells doing one job together do it faster and better than one cell alone.</li>
+      <h3 class="sub"><span class="n">1B</span>The four animal tissues at a glance</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Tissue</th><th>Basic idea</th><th>Main jobs</th></tr>
+        <tr><td><b>Epithelial</b></td><td>Protective covering; tightly packed cells in thin layers</td><td>Protection, absorption, gas exchange, secretion, filtration</td></tr>
+        <tr><td><b>Connective</b></td><td>Cells scattered far apart in a matrix (jelly, fluid or solid)</td><td>Support, transport, fat storage, filling spaces, connecting parts, flexibility</td></tr>
+        <tr><td><b>Muscular</b></td><td>Long cells with contractile proteins</td><td>Movement</td></tr>
+        <tr><td><b>Nervous</b></td><td>Very long cells (neurons) forming brain, spinal cord and nerves</td><td>Carrying messages and responding to stimuli</td></tr>
+      </table></div>
+      <p class="honest" style="margin-top:-6px"><b>Source note.</b> Your two note sets agree on the four types. The quick notes use <i>genesis</i> in the definition and add that connective tissue is also called <i>mesenchymal</i> tissue (from the mesoderm) and nervous tissue is of <i>ectodermal</i> origin. The detailed notes cover animal tissues only (plant tissues are not needed for M.Sc.).</p>
+
+      <h3 class="sub"><span class="n">1C</span>The organ systems of the body</h3>
+      <div class="table-wrap"><table>
+        <tr><th>System</th><th>Main organs</th><th>Main job</th></tr>
+        <tr><td>Integumentary</td><td>Skin, hair, nails, glands</td><td>Protection, temperature control</td></tr>
+        <tr><td>Skeletal</td><td>Bones, cartilage, joints</td><td>Support, protection, movement</td></tr>
+        <tr><td>Muscular</td><td>Skeletal muscles</td><td>Movement, posture, heat</td></tr>
+        <tr><td>Nervous</td><td>Brain, spinal cord, nerves</td><td>Fast control and communication</td></tr>
+        <tr><td>Endocrine</td><td>Pituitary, thyroid, pancreas and other glands</td><td>Slow control by hormones</td></tr>
+        <tr><td>Circulatory</td><td>Heart, blood, blood vessels</td><td>Transport</td></tr>
+        <tr><td>Respiratory</td><td>Nose, trachea, lungs</td><td>Gas exchange</td></tr>
+        <tr><td>Digestive</td><td>Mouth, food pipe, stomach, intestine, liver</td><td>Digestion and absorption</td></tr>
+        <tr><td>Urinary (excretory)</td><td>Kidneys, ureters, bladder</td><td>Removing waste, water balance</td></tr>
+        <tr><td>Lymphatic / immune</td><td>Lymph nodes, spleen, thymus</td><td>Defence, fluid return</td></tr>
+        <tr><td>Reproductive</td><td>Gonads and ducts</td><td>Producing offspring</td></tr>
+      </table></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:-6px">Your notes name the digestive, circulatory, excretory and respiratory systems as examples. The full list is general anatomy.<span class="src gen">general anatomy</span></p>
+
+      <h3 class="sub"><span class="n">1D</span>Syllabus map: where each Unit 1 tissue topic lives on this page</h3>
+      <div class="map-grid">
+        <a href="#sec-overview"><b>Tissue, organs, systems</b> &#8594; Section 1</a>
+        <a href="#sec-homeostasis"><b>Homeostasis</b> and feedback &#8594; Section 2</a>
+        <a href="#sec-epithelial"><b>Four types of tissues:</b> epithelial &#8594; Section 3</a>
+        <a href="#sec-connective"><b>Connective</b> (incl. blood, cartilage, bone) &#8594; Section 4</a>
+        <a href="#sec-muscular"><b>Muscular</b> &#8594; Section 5</a>
+        <a href="#sec-nervous"><b>Nervous</b> &#8594; Section 6</a>
+        <a href="../cell/notes.html"><b>Cell anatomy</b> (organelles, membrane, transport) &#8594; Cell page</a>
+        <a href="#sec-yoga"><b>Tissues and yoga</b> &#8594; Section 7</a>
+      </div>
+
+      <div class="blk conf">
+        <span class="lbl">Common confusion</span>
+        <ul class="plain">
+          <li><b>Tissue vs organ:</b> a tissue has one type of cell; an organ has several tissues. The stomach wall has epithelial, connective, muscular and nervous tissue.</li>
+          <li><b>Organ vs organ system:</b> the stomach is an organ; the digestive system is the system.</li>
         </ul>
       </div>
 
-      <div class="card story" style="box-shadow:none;">
-        <p style="margin-bottom:0;">The human body has exactly four basic tissue types, and every organ is some combination of them: <b>epithelial</b> (covers and lines), <b>connective</b> (binds and supports), <b>muscular</b> (contracts), and <b>nervous</b> (conducts signals). This topic covers all four at the level Section A of the exam actually asks for; Muscular Tissue is covered here only briefly, since it has its own full topic elsewhere in T3.</p>
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; &#8220;What is a tissue? Give three uses.&#8221; (2&#8211;5 marks)</span>
+        <p><b>Define</b> (group of similar cells working together for one function) &#8594; <b>name the four types</b> &#8594; <b>three uses</b> (division of labour, support, efficiency) &#8594; one example for each level. A neat five-box flow chart (Figure 1) earns marks.</p>
       </div>
 
-      <div class="flow">
-        <span class="step">Cells</span><span class="arrow">&rarr;</span>
-        <span class="step">Tissues</span><span class="arrow">&rarr;</span>
-        <span class="step">Organs</span><span class="arrow">&rarr;</span>
-        <span class="step">Organ systems</span><span class="arrow">&rarr;</span>
-        <span class="step">Organism</span>
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;Your body is a huge team. Cells doing the same job sit together as a tissue, like the cooks at a wedding. Different tissues join to make an organ, like the stomach. Organs working on one task make a system. Four tissue types do all the building: covering, connecting, moving and signalling.&#8221;</p>
+      </div>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Define a tissue.</div><div class="a">A group of cells similar in structure (and origin) that work together for a particular function</div></div>
+          <div class="recall-card"><div class="q">Order the levels of organisation.</div><div class="a">Cell &#8594; tissue &#8594; organ &#8594; organ system &#8594; organism</div></div>
+          <div class="recall-card"><div class="q">Name the four basic animal tissues.</div><div class="a">Epithelial, connective, muscular, nervous</div></div>
+          <div class="recall-card"><div class="q">Three uses of tissues in a many-celled body?</div><div class="a">Division of labour, structural support, efficient functioning</div></div>
+          <div class="recall-card"><div class="q">Tissue vs organ?</div><div class="a">Tissue: similar cells, one job. Organ: several different tissues</div></div>
+          <div class="recall-card"><div class="q">Name tissue examples from your notes.</div><div class="a">Muscle (movement), nerve (messages), blood (transport)</div></div>
+        </div>
       </div>
     </section>
 
-    <!-- 01 EPITHELIAL -->
+    <!-- 02 HOMEOSTASIS -->
+    <section class="section" id="sec-homeostasis">
+      <div class="sec-head">
+        <div class="kicker">02 &#183; Staying steady</div>
+        <h2>Homeostasis &amp; Feedback</h2>
+        <p class="dek">Every tissue works only within a narrow range of temperature, water, sugar and pH. Homeostasis is the body noticing a drift and pulling itself back.</p>
+      </div>
+
+      <div class="spread">
+        <figure class="fig">
+          <svg viewBox="0 0 380 390" role="img" aria-label="Control loop: stimulus, receptor, control centre, effector, response, with a return arrow showing negative feedback; example given is a rise in body temperature">
+            <rect class="fa" x="24" y="8" width="230" height="52" rx="9"/><text class="t tb" x="40" y="30">Stimulus (a change)</text><text class="t ts" x="40" y="48">body temperature rises</text>
+            <rect class="ft" x="24" y="84" width="230" height="52" rx="9"/><text class="t tb" x="40" y="106">Receptor</text><text class="t ts" x="40" y="124">skin and brain sense the change</text>
+            <rect class="fg" x="24" y="160" width="230" height="52" rx="9"/><text class="t tb" x="40" y="182">Control centre</text><text class="t ts" x="40" y="200">hypothalamus compares with ~37 &#176;C</text>
+            <rect class="ft" x="24" y="236" width="230" height="52" rx="9"/><text class="t tb" x="40" y="258">Effector</text><text class="t ts" x="40" y="276">sweat glands, skin blood vessels</text>
+            <rect class="fa" x="24" y="312" width="230" height="52" rx="9"/><text class="t tb" x="40" y="334">Response</text><text class="t ts" x="40" y="352">sweating, heat loss, temp falls</text>
+            <g class="ca"><path d="M139 60 V82"/><path d="M139 136 V158"/><path d="M139 212 V234"/><path d="M139 288 V310"/></g>
+            <g fill="var(--accent)"><path d="M133 80 h12 l-6 8z"/><path d="M133 156 h12 l-6 8z"/><path d="M133 232 h12 l-6 8z"/><path d="M133 308 h12 l-6 8z"/></g>
+            <path class="ct" d="M254 338 H318 V34 H258"/><path d="M262 28 l-10 6 l10 6z" fill="var(--teal)"/>
+            <text class="t ts" x="344" y="200" transform="rotate(-90 344 200)" style="text-anchor:middle;fill:var(--teal)">negative feedback: response reverses the change</text>
+            <g class="bd"><circle cx="10" cy="34" r="9"/><text x="10" y="38">1</text></g><g class="bd"><circle cx="10" cy="110" r="9"/><text x="10" y="114">2</text></g><g class="bd"><circle cx="10" cy="186" r="9"/><text x="10" y="190">3</text></g><g class="bd"><circle cx="10" cy="262" r="9"/><text x="10" y="266">4</text></g><g class="bd"><circle cx="10" cy="338" r="9"/><text x="10" y="342">5</text></g>
+          </svg>
+          <figcaption>One loop, shown with body temperature. Every example below has the same five steps.</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Stimulus:</b> something pushes a variable away from its normal value.</li>
+          <li><b>Receptor:</b> a sensor detects the change.</li>
+          <li><b>Control centre:</b> compares it with the set point and decides. The hypothalamus regulates homeostasis in many cases.<span class="src cls">Yoga &amp; Human Body</span></li>
+          <li><b>Effector:</b> the muscle or gland that acts.</li>
+          <li><b>Response:</b> the action; in negative feedback it cancels the original change.</li>
+        </ol>
+      </div>
+
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p><b>Homeostasis</b> is the maintenance of a relatively stable internal environment despite changes outside the body.<span class="src cls">Cell Study Notes; Yoga &amp; Human Body</span> It is not a fixed number; it is a narrow range. Healthy body temperature is about 37 &#176;C (98.6 &#176;F), and within about a degree is still normal. If it drifts too far, crucial molecules change shape and stop working. That is why the body fights even small drifts.<span class="src cls">Cell Detailed Notes</span></p>
+        <p>Think of a <b>thermostat</b> at home: the room cools, the sensor notices, the heater switches on, the room warms, the heater switches off. The body does the same thing with many variables at once: temperature, blood glucose, blood pressure, blood pH, fluid balance, calcium level, oxygen and carbon dioxide levels.<span class="src cls">Cell Study Notes; Yoga &amp; Human Body</span></p>
+        <p><b>Why it matters to a cell:</b> a cell works properly only when its surroundings stay within limits, and the cell membrane helps by controlling water, ions, nutrients and waste. Chain: membrane &#8594; transport &#8594; internal environment &#8594; homeostasis. (See the <a href="../cell/notes.html">Cell page</a>.)<span class="src cls">Cell Study Notes</span></p>
+      </div>
+
+      <h3 class="sub"><span class="n">2A</span>Negative and positive feedback</h3>
+      <div class="table-wrap"><table>
+        <tr><th></th><th>Negative feedback</th><th>Positive feedback</th></tr>
+        <tr><td>Effect</td><td>Opposes the change, brings the variable back toward normal</td><td>Strengthens the change</td></tr>
+        <tr><td>Purpose</td><td>Maintains stability</td><td>Drives a process to completion</td></tr>
+        <tr><td>How common</td><td>Very common</td><td>Less common</td></tr>
+        <tr><td>Examples</td><td>Body temperature; blood glucose (insulin); blood pressure</td><td>Childbirth (oxytocin); blood clotting</td></tr>
+        <tr><td>Rule</td><td>&#8220;Too much? Reduce it. Too little? Increase it.&#8221;</td><td>&#8220;More &#8594; more &#8594; more, until the event is complete.&#8221;</td></tr>
+      </table></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:-6px"><span class="src cls">Cell Study Notes; Yoga &amp; Human Body</span></p>
+
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this &#183; glucose loop (negative)</span>
+          <p>Blood glucose rises after a meal &#8594; pancreas releases <b>insulin</b> &#8594; cells take up glucose &#8594; blood glucose falls. Diabetes is the disease of this loop.<span class="src cls">Yoga &amp; Human Body; Cell Detailed Notes</span></p>
+        </div>
+        <div class="blk know">
+          <span class="lbl">Know this &#183; labour loop (positive)</span>
+          <p>Uterine contractions &#8594; <b>oxytocin</b> released &#8594; stronger contractions &#8594; more oxytocin &#8230; until delivery. Clotting works the same way: each step activates more clotting reactions until the clot forms.<span class="src cls">Cell Study Notes</span></p>
+        </div>
+      </div>
+
+      <h3 class="sub"><span class="n">2B</span>How the body answers a disturbance</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Disturbance</th><th>Response</th></tr>
+        <tr><td>Cold</td><td>Shivering (small muscle movements make heat); blood directed to the core, away from skin and extremities (so the arm looks pale); goosebumps (raised hairs trap an insulating layer)</td></tr>
+        <tr><td>Heat</td><td>Blood moves near the skin surface (skin looks pink); tiredness urges you to stop moving; sweating, since evaporating sweat takes heat from the body</td></tr>
+        <tr><td>Sudden fall in blood pressure (standing up quickly)</td><td>Blood vessels constrict and bring pressure back up</td></tr>
+        <tr><td>Blood sugar rises after eating</td><td>Pancreas releases insulin; blood sugar falls</td></tr>
+      </table></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:-6px"><span class="src cls">Cell Detailed Notes, section 9</span> Every row follows the same pattern: <b>detect a drift, then counteract it.</b></p>
+
+      <div class="honest"><b>Wording to check.</b> The Cell Study Notes use the word &#8220;balance&#8221; loosely; the question paper (Q14, 5 marks) asks <i>&#8220;What is balance in the body? Explain&#8221;</i>, which is almost certainly <b>homeostasis</b> (the Malayalam/English wording is ambiguous, so confirm with your teacher). Answer with the definition, the five-step chain and two examples.</div>
+
+      <div class="blk mem">
+        <span class="lbl">Memory aid</span>
+        <p><b>S-R-C-E-R:</b> Stimulus, Receptor, Control centre, Effector, Response. &#8220;Some Rabbits Chew Every Root.&#8221;</p>
+        <p style="margin:0">Negative = <b>N</b>ormalises. Positive = <b>P</b>ushes on.</p>
+      </div>
+
+      <div class="blk conf">
+        <span class="lbl">Common confusion</span>
+        <ul class="plain">
+          <li><b>&#8220;Negative&#8221; does not mean bad.</b> It means the response goes against the change. It is the stable, healthy kind.</li>
+          <li><b>Positive feedback is not a malfunction</b> in labour or clotting; it is a deliberate booster that ends when the job is done.</li>
+          <li><b>Homeostasis is a range, not a single value.</b></li>
+        </ul>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; Q14 (5 marks) &#8220;What is balance in the body? Explain&#8221; (likely homeostasis)</span>
+        <p><b>Define</b> &#8594; <b>list variables</b> (temperature, glucose, BP, pH, fluid, calcium) &#8594; <b>five-step chain</b> (Figure 2) &#8594; <b>one negative</b> (temperature or glucose) and <b>one positive</b> (labour or clotting) &#8594; <b>role of the hypothalamus</b>. Add the yoga line below only in a 10-mark answer.</p>
+      </div>
+
+      <h3 class="sub"><span class="n">2C</span>Link to yoga practice</h3>
+      <div class="blk know">
+        <span class="lbl">What your notes say, and how far to push it</span>
+        <ul class="plain">
+          <li>Slow breathing and relaxation practices <b>may</b> shift autonomic balance toward parasympathetic (rest-and-digest) influence; this supports the same loops that keep heart rate and blood pressure steady.<span class="src cls">Yoga &amp; Human Body</span></li>
+          <li>Sweating during a vigorous practice is homeostasis at work: the body is cooling itself.<span class="src cls">Cell Detailed Notes</span></li>
+          <li>Claims that yoga changes gene expression are still emerging research; treat them as such in answers.<span class="src cls">Cell Detailed Notes</span></li>
+          <li>Your notes name no specific asana for any homeostatic loop. Practices such as savasana and slow breathing fit the &#8220;relaxation&#8221; line, but that match is <span class="src gen">added reasoning</span>.</li>
+        </ul>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;Your body keeps itself in a narrow comfort zone, like a thermostat. When something drifts, a sensor notices, the brain compares it with the normal setting, and a muscle or gland corrects it. Sweating when hot and insulin after a meal are examples. Only a few jobs, like childbirth and clotting, use the opposite kind of loop that speeds a process up until it is finished.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; which tissue does which job in the loop?</summary>
+        <div class="inner">
+          <p><b>Receptors and control centre</b> are nervous tissue (and special endocrine cells); <b>effectors</b> are muscle tissue (shivering, vessel walls) or glandular epithelium (sweat glands, pancreas). That is why homeostasis ties all four tissues together.<span class="src gen">general physiology</span></p>
+          <p><b>Fever</b> is the set point being raised on purpose, not homeostasis failing.<span class="src gen">general physiology</span></p>
+        </div>
+      </details>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Define homeostasis.</div><div class="a">Maintenance of a relatively stable internal environment despite external changes</div></div>
+          <div class="recall-card"><div class="q">Name the five steps of a control loop.</div><div class="a">Stimulus &#8594; receptor &#8594; control centre &#8594; effector &#8594; response</div></div>
+          <div class="recall-card"><div class="q">Which brain part regulates homeostasis?</div><div class="a">Hypothalamus</div></div>
+          <div class="recall-card"><div class="q">Negative vs positive feedback?</div><div class="a">Negative reverses the change (stability). Positive amplifies it (to completion)</div></div>
+          <div class="recall-card"><div class="q">Two examples of positive feedback.</div><div class="a">Childbirth (oxytocin) and blood clotting</div></div>
+          <div class="recall-card"><div class="q">What does insulin do?</div><div class="a">Lowers blood glucose after a meal</div></div>
+          <div class="recall-card"><div class="q">Normal body temperature?</div><div class="a">About 37 &#176;C (98.6 &#176;F)</div></div>
+          <div class="recall-card"><div class="q">Name the body's response to cold.</div><div class="a">Shivering, blood to the core, goosebumps</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 EPITHELIAL -->
     <section class="section" id="sec-epithelial">
-      <div class="kicker">01 &middot; Covers &amp; lines</div>
-      <h2>Epithelial Tissue</h2>
-      <p class="dek">Every surface of the body &mdash; outside and in &mdash; is epithelium of one kind or another.</p>
-
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      <div class="sec-head">
+        <div class="kicker">03 &#183; The covering tissue</div>
+        <h2>Epithelial Tissue</h2>
+        <p class="dek">Cells packed edge to edge like tiles, lining every surface and cavity. The names tell you the layers and the shape; the shape tells you the job.</p>
       </div>
 
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>Epithelial tissue covers external surfaces (skin) and lines internal ones (gut, blood vessels, glands). Cells sit close together, cemented by a mucoprotein "glue," resting on a base layer (the lamina propria). Its four jobs: <b>protection, absorption, secretion, excretion</b>.</p>
-        <p>Three features to remember: the cells are packed <b>tightly with no intercellular spaces</b>; a cementing material sticks them together; and the layer rests on a <b>non-cellular basement membrane</b> that separates it from the tissue below.</p>
-        <div class="analogy">
-          <b>Reading the names</b>
-          <b>Simple</b> = one layer; <b>stratified</b> = many layers. <b>Squamous</b> = thin and flat; <b>cuboidal</b> = cube-shaped; <b>columnar</b> = tall and pillar-like; <b>ciliated</b> = has hair-like cilia; <b>glandular</b> = folded inward to form a gland. Put the two halves together and the name explains itself (stratified squamous = many layers of flat cells).
+      <div class="table-wrap"><table>
+        <tr><th>Where</th><th>What that organ does</th><th>What the epithelium does there</th></tr>
+        <tr><td>Skin</td><td>Protects the body</td><td>Protection</td></tr>
+        <tr><td>Inner lining of the intestine</td><td>Absorbs digested food into the blood</td><td>Absorption</td></tr>
+        <tr><td>Tubules of the kidney</td><td>Filtration</td><td>Filtration</td></tr>
+        <tr><td>Liver and glands</td><td>Make a juice</td><td>Secretion</td></tr>
+        <tr><td>Alveoli of the lungs</td><td>Take O&#8322; in, send CO&#8322; out</td><td>Exchange of gases</td></tr>
+      </table></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:-6px"><span class="src cls">Tissues Detailed Notes, 3.1</span></p>
+
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Epithelium is <b>the protective covering tissue of animals</b>, found in almost all organs, and it does a different job in different places.<span class="src cls">Tissues Detailed Notes</span> Its three general features explain this:</p>
+        <ul class="plain">
+          <li><b>No intercellular space.</b> The cells are very tightly packed, so nothing leaks between them; materials must pass <i>through</i> the cells. That is what makes it a good barrier.</li>
+          <li><b>A cementing material</b> sticks the cells together, the way a mason uses cement to join bricks (your quick notes name it as mucoprotein: hyaluronic acid with calcium salts).<span class="src cls">Tissues Detailed + Quick Notes</span></li>
+          <li><b>A basement membrane</b> separates it from the tissue below. It is non-cellular (it has no cells).<span class="src cls">Tissues Detailed Notes</span></li>
+        </ul>
+        <p>Because epithelium has no blood vessels of its own in most places, it takes food from the connective tissue below, which is why that connective layer sits so close.<span class="src gen">general histology</span></p>
+      </div>
+
+      <div class="honest"><b>Two layers under the epithelium.</b> The detailed notes say the epithelium sits on a non-cellular <i>basement membrane</i>. The quick notes say it rests on the <i>lamina propria</i>, a loose vascular connective tissue. Both are right: the basement membrane is the thin non-cellular sheet directly under the cells, and the lamina propria is the connective layer beneath that. For the exam write the basement membrane (and name the lamina propria if the question says &#8220;membrane&#8221;).</div>
+
+      <h3 class="sub"><span class="n">3A</span>Reading the names</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Word</th><th>Meaning</th><th>Describes</th></tr>
+        <tr><td>Simple</td><td>Single layer of cells</td><td>Layers</td></tr>
+        <tr><td>Stratified (compound)</td><td>Many layers of cells</td><td>Layers</td></tr>
+        <tr><td>Squamous</td><td>Thin and flat</td><td>Shape</td></tr>
+        <tr><td>Cuboidal</td><td>Cube-shaped</td><td>Shape</td></tr>
+        <tr><td>Columnar</td><td>Tall, pillar-like</td><td>Shape</td></tr>
+        <tr><td>Ciliated</td><td>Has hair-like cilia</td><td>Added to columnar (airway)</td></tr>
+        <tr><td>Glandular</td><td>Folded inward to form a gland</td><td>Location and job</td></tr>
+      </table></div>
+      <div class="blk mem">
+        <span class="lbl">Memory aid</span>
+        <p><b>Simple = single layer, stratified = many layers.</b> Squamous = flat (scales), cuboidal = cube, columnar = pillar.<span class="src cls">Tissues Detailed Notes</span></p>
+      </div>
+
+      <h3 class="sub"><span class="n">3B</span>Types of epithelium, side by side</h3>
+      <div class="spread">
+        <figure class="fig">
+          <svg viewBox="0 0 420 200" role="img" aria-label="Six epithelial types drawn side by side on a basement membrane: simple squamous, simple cuboidal, simple columnar with a goblet cell, ciliated columnar, stratified squamous, and transitional"><text class="t tb" x="34" y="24" style="font-size:11.5px">Simple squamous</text><g class="bd"><circle cx="20" cy="20" r="9"/><text x="20" y="24">1</text></g><g transform="translate(0,-34)"><path class="ca" d="M10 120 H130"/><rect class="ft" x="16" y="112" width="22" height="8"/><ellipse cx="27" cy="116" rx="4" ry="1.8" class="pt"/><rect class="ft" x="38" y="112" width="22" height="8"/><ellipse cx="49" cy="116" rx="4" ry="1.8" class="pt"/><rect class="ft" x="60" y="112" width="22" height="8"/><ellipse cx="71" cy="116" rx="4" ry="1.8" class="pt"/><rect class="ft" x="82" y="112" width="22" height="8"/><ellipse cx="93" cy="116" rx="4" ry="1.8" class="pt"/><rect class="ft" x="104" y="112" width="22" height="8"/><ellipse cx="115" cy="116" rx="4" ry="1.8" class="pt"/></g><text class="t tb" x="174" y="24" style="font-size:11.5px">Simple cuboidal</text><g class="bd"><circle cx="160" cy="20" r="9"/><text x="160" y="24">2</text></g><g transform="translate(0,-34)"><path class="ca" d="M150 120 H270"/><rect class="ft" x="156" y="98" width="22" height="22"/><circle cx="167" cy="109" r="4" class="pt"/><rect class="ft" x="178" y="98" width="22" height="22"/><circle cx="189" cy="109" r="4" class="pt"/><rect class="ft" x="200" y="98" width="22" height="22"/><circle cx="211" cy="109" r="4" class="pt"/><rect class="ft" x="222" y="98" width="22" height="22"/><circle cx="233" cy="109" r="4" class="pt"/><rect class="ft" x="244" y="98" width="22" height="22"/><circle cx="255" cy="109" r="4" class="pt"/></g><text class="t tb" x="314" y="24" style="font-size:11.5px">Simple columnar</text><g class="bd"><circle cx="300" cy="20" r="9"/><text x="300" y="24">3</text></g><g transform="translate(0,-34)"><path class="ca" d="M290 120 H410"/><rect class="ft" x="296" y="74" width="18" height="46"/><ellipse cx="305" cy="108" rx="4" ry="6" class="pt"/><rect class="ft" x="314" y="74" width="18" height="46"/><ellipse cx="323" cy="108" rx="4" ry="6" class="pt"/><rect class="ft" x="332" y="74" width="18" height="46"/><ellipse cx="341" cy="108" rx="4" ry="6" class="pt"/><rect class="ft" x="350" y="74" width="18" height="46"/><ellipse cx="359" cy="108" rx="4" ry="6" class="pt"/><rect class="ft" x="368" y="74" width="18" height="46"/><ellipse cx="377" cy="108" rx="4" ry="6" class="pt"/><rect class="ft" x="386" y="74" width="18" height="46"/><ellipse cx="395" cy="108" rx="4" ry="6" class="pt"/><circle class="fg" cx="341" cy="86" r="6"/></g><g transform="translate(0,-48)"><text class="t tb" x="34" y="166" style="font-size:11.5px">Ciliated columnar</text><g class="bd"><circle cx="20" cy="162" r="9"/><text x="20" y="166">4</text></g></g><g transform="translate(0,-82)"><path class="ca" d="M10 262 H130"/><rect class="ft" x="16" y="224" width="18" height="38"/><ellipse cx="25" cy="250" rx="4" ry="6" class="pt"/><path class="ln" d="M20 224 v-9 M25 224 v-10 M30 224 v-9"/><rect class="ft" x="34" y="224" width="18" height="38"/><ellipse cx="43" cy="250" rx="4" ry="6" class="pt"/><path class="ln" d="M38 224 v-9 M43 224 v-10 M48 224 v-9"/><rect class="ft" x="52" y="224" width="18" height="38"/><ellipse cx="61" cy="250" rx="4" ry="6" class="pt"/><path class="ln" d="M56 224 v-9 M61 224 v-10 M66 224 v-9"/><rect class="ft" x="70" y="224" width="18" height="38"/><ellipse cx="79" cy="250" rx="4" ry="6" class="pt"/><path class="ln" d="M74 224 v-9 M79 224 v-10 M84 224 v-9"/><rect class="ft" x="88" y="224" width="18" height="38"/><ellipse cx="97" cy="250" rx="4" ry="6" class="pt"/><path class="ln" d="M92 224 v-9 M97 224 v-10 M102 224 v-9"/><rect class="ft" x="106" y="224" width="18" height="38"/><ellipse cx="115" cy="250" rx="4" ry="6" class="pt"/><path class="ln" d="M110 224 v-9 M115 224 v-10 M120 224 v-9"/></g><g transform="translate(0,-48)"><text class="t tb" x="174" y="166" style="font-size:11.5px">Stratified squamous</text><g class="bd"><circle cx="160" cy="162" r="9"/><text x="160" y="166">5</text></g></g><g transform="translate(0,-82)"><path class="ca" d="M150 262 H270"/><rect class="ft" x="156" y="246" width="22" height="16"/><circle cx="167" cy="254" r="3.5" class="pt"/><rect class="ft" x="178" y="246" width="22" height="16"/><circle cx="189" cy="254" r="3.5" class="pt"/><rect class="ft" x="200" y="246" width="22" height="16"/><circle cx="211" cy="254" r="3.5" class="pt"/><rect class="ft" x="222" y="246" width="22" height="16"/><circle cx="233" cy="254" r="3.5" class="pt"/><rect class="ft" x="244" y="246" width="22" height="16"/><circle cx="255" cy="254" r="3.5" class="pt"/><rect class="ft" x="167" y="232" width="22" height="14"/><circle cx="178" cy="239" r="3.5" class="pt"/><rect class="ft" x="189" y="232" width="22" height="14"/><circle cx="200" cy="239" r="3.5" class="pt"/><rect class="ft" x="211" y="232" width="22" height="14"/><circle cx="222" cy="239" r="3.5" class="pt"/><rect class="ft" x="233" y="232" width="22" height="14"/><circle cx="244" cy="239" r="3.5" class="pt"/><rect class="fa" x="156" y="224" width="22" height="8"/><ellipse cx="167" cy="228" rx="4" ry="1.8" class="pt"/><rect class="fa" x="178" y="224" width="22" height="8"/><ellipse cx="189" cy="228" rx="4" ry="1.8" class="pt"/><rect class="fa" x="200" y="224" width="22" height="8"/><ellipse cx="211" cy="228" rx="4" ry="1.8" class="pt"/><rect class="fa" x="222" y="224" width="22" height="8"/><ellipse cx="233" cy="228" rx="4" ry="1.8" class="pt"/><rect class="fa" x="244" y="224" width="22" height="8"/><ellipse cx="255" cy="228" rx="4" ry="1.8" class="pt"/></g><g transform="translate(0,-48)"><text class="t tb" x="314" y="166" style="font-size:11.5px">Transitional</text><g class="bd"><circle cx="300" cy="162" r="9"/><text x="300" y="166">6</text></g></g><g transform="translate(0,-82)"><path class="ca" d="M290 262 H410"/><rect class="ft" x="296" y="248" width="22" height="14"/><circle cx="307" cy="255" r="3" class="pt"/><rect class="ft" x="318" y="248" width="22" height="14"/><circle cx="329" cy="255" r="3" class="pt"/><rect class="ft" x="340" y="248" width="22" height="14"/><circle cx="351" cy="255" r="3" class="pt"/><rect class="ft" x="362" y="248" width="22" height="14"/><circle cx="373" cy="255" r="3" class="pt"/><rect class="ft" x="384" y="248" width="22" height="14"/><circle cx="395" cy="255" r="3" class="pt"/><rect class="ft" x="307" y="234" width="22" height="14"/><circle cx="318" cy="241" r="3" class="pt"/><rect class="ft" x="329" y="234" width="22" height="14"/><circle cx="340" cy="241" r="3" class="pt"/><rect class="ft" x="351" y="234" width="22" height="14"/><circle cx="362" cy="241" r="3" class="pt"/><rect class="ft" x="373" y="234" width="22" height="14"/><circle cx="384" cy="241" r="3" class="pt"/><rect class="fa" x="300" y="216" width="34" height="18" rx="9"/><circle cx="317" cy="225" r="3.5" class="pt"/><rect class="fa" x="334" y="216" width="34" height="18" rx="9"/><circle cx="351" cy="225" r="3.5" class="pt"/><rect class="fa" x="368" y="216" width="34" height="18" rx="9"/><circle cx="385" cy="225" r="3.5" class="pt"/></g></svg>
+          <figcaption>All six sit on a thick line (the basement membrane). Dots are nuclei; the gold circle in 3 is a goblet cell.</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Simple squamous:</b> one layer of thin, flat cells. Blood vessels, alveoli, serous membranes (pleura, peritoneum), nephron, heart lining. Very thin so O&#8322; and food pass out and CO&#8322; comes in: transport, exchange, filtration.</li>
+          <li><b>Simple cuboidal:</b> one layer of cubes. Kidney tubules, salivary-gland ducts, thyroid. Filtration, secretion, support. <i>Asked often.</i></li>
+          <li><b>Simple columnar:</b> tall pillars. Stomach, intestine, gland ducts; goblet cells make mucus. Absorption and secretion.</li>
+          <li><b>Ciliated columnar:</b> columnar with cilia. Trachea and respiratory tract, fallopian tube. Cilia push mucus (with trapped dust) onward so it is cleared.</li>
+          <li><b>Stratified squamous:</b> many layers, flat on top. Skin, mouth, pharynx, oesophagus. Protection against rubbing, e.g. sharp food in the mouth. <i>Asked often.</i></li>
+          <li><b>Transitional:</b> stretchable, with rounded surface cells. Renal pelvis, ureter, bladder, urethra. Lets the organ stretch and shrink.</li>
+        </ol>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-top:-6px"><span class="src cls">Tissues Detailed + Quick Notes</span> The drawing is a schematic for revision, not a microscope slide.</p>
+
+      <div class="table-wrap"><table>
+        <tr><th>Type (simple = one layer)</th><th>Location</th><th>Function</th></tr>
+        <tr><td>Squamous / pavement</td><td>Alveoli, serous membranes (peritoneum, pleura), nephron, heart lining, blood vessels</td><td>Diffusion and filtration; passage of liquids; protection</td></tr>
+        <tr><td>Cuboidal</td><td>Thyroid, salivary glands, kidney tubules</td><td>Protection, secretion, storage, mechanical support</td></tr>
+        <tr><td>Columnar</td><td>Stomach, intestines, gland ducts (goblet cells make mucus)</td><td>Absorption, secretion</td></tr>
+        <tr><td>Ciliated (columnar / cuboidal)</td><td>Trachea, fallopian tube, central nervous system</td><td>Movement of mucus, eggs or CSF by ciliary action</td></tr>
+        <tr><td>Glandular</td><td>Lines the alveoli and ducts of salivary, sebaceous and mammary glands</td><td>Formation and secretion of substances</td></tr>
+      </table></div>
+      <div class="table-wrap"><table>
+        <tr><th>Compound (stratified) type</th><th>Feature</th><th>Location</th></tr>
+        <tr><td>Transitional</td><td>Several layers, stretchable (your quick notes say 4 layers)</td><td>Renal pelvis, ureter, bladder, urethra</td></tr>
+        <tr><td>Stratified squamous, cornified</td><td>Keratinised (horny)</td><td>Skin, hair, nails</td></tr>
+        <tr><td>Stratified squamous, non-cornified</td><td>Not keratinised</td><td>Cornea, mouth, pharynx, oesophagus, vagina, cervix</td></tr>
+        <tr><td>Stratified columnar</td><td>Several columnar layers</td><td>Conjunctiva, pharynx, epiglottis</td></tr>
+        <tr><td>Stratified columnar ciliated</td><td>Ciliated columnar layers</td><td>Larynx, soft palate</td></tr>
+      </table></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:-6px"><span class="src cls">Tissues Quick Notes</span> The quick notes also list &#8220;teeth enamel&#8221; under cornified epithelium; enamel is a hard mineral layer made by epithelial cells rather than living keratinised epithelium, so keep that line as a note-wording point and confirm with your teacher.</p>
+
+      <div class="honest"><b>Villi vs columnar.</b> Your lecture gives &#8220;villi&#8221; as the special name for intestinal columnar epithelium. Villi are the finger-like folds of the intestinal lining; the <i>epithelium covering them</i> is columnar. Write &#8220;columnar epithelium lining the villi&#8221;.</div>
+
+      <h3 class="sub"><span class="n">3C</span>Glands, goblet cells and body membranes</h3>
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this &#183; glandular epithelium</span>
+          <ul class="plain">
+            <li>A gland is epithelium folded inward to make and release a substance: sweat, salivary and tear glands (your notes).<span class="src cls">Tissues Detailed Notes</span></li>
+            <li><b>Exocrine</b> glands release through ducts (sweat, salivary); <b>endocrine</b> glands release hormones into the blood (thyroid, pancreatic islets).<span class="src gen">general histology</span></li>
+            <li><b>Goblet cells</b> are single mucus-secreting cells within columnar epithelium (intestine, airway).<span class="src cls">Tissues Quick Notes</span></li>
+          </ul>
         </div>
-        <div class="analogy">
-          <b>Simple vs compound, one idea</b>
-          <b>Simple epithelium</b> is one cell layer thick &mdash; built for exchange, where things need to pass through easily (alveoli, kidney tubules, gut lining). <b>Compound epithelium</b> is many layers thick &mdash; built for protection, where the tissue takes wear and tear (skin, mouth, vagina).
+        <div class="blk know">
+          <span class="lbl">Know this &#183; body membranes (not in your notes yet)</span>
+          <ul class="plain">
+            <li><b>Mucous:</b> epithelium + connective tissue lining tubes that open to the outside (mouth, airway, gut); makes mucus.</li>
+            <li><b>Serous:</b> thin, watery lining of closed cavities (pleura, pericardium, peritoneum).</li>
+            <li><b>Synovial:</b> lines joint cavities and releases lubricating synovial fluid.</li>
+            <li><b>Cutaneous:</b> the skin.</li>
+          </ul>
+          <p style="margin:0;font-size:13px;color:var(--muted)"><span class="src gen">general histology</span> Your notes list membranes as &#8220;not covered yet&#8221;.</p>
         </div>
       </div>
 
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Reference &middot; Def/Stru/Fun style</div>
-        <div class="dsf">
-          <div class="row"><div class="label">Def</div><p>The covering and lining tissue of the body; found on external surfaces and lining internal organs, ducts and cavities.</p></div>
-          <div class="row"><div class="label">Stru</div><p>Tightly packed cells with no intercellular space, cemented together and resting on a non-cellular basement membrane. Classified by number of layers (simple / compound) and cell shape (squamous, cuboidal, columnar).</p></div>
-          <div class="row"><div class="label">Fun</div><p>Protection (skin), absorption (intestine), secretion (glands), filtration (kidney tubules) and gas exchange (alveoli).</p></div>
-        </div>
-        <div class="marks-tag" style="margin-top:18px;">Reference &middot; simple epithelium</div>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Type</th><th>Location</th><th>Function</th></tr>
-            <tr><td>Squamous (pavement)</td><td>Alveoli, serous membranes, nephron, heart lining</td><td>Dialysis, passage of liquids, protection</td></tr>
-            <tr><td>Cuboidal</td><td>Thyroid, salivary glands, kidney tubules</td><td>Protection, secretion, storage</td></tr>
-            <tr><td>Columnar</td><td>Stomach, intestines, gland ducts</td><td>Absorption, secretion (goblet cells &rarr; mucus)</td></tr>
-            <tr><td>Ciliated columnar/cuboidal</td><td>Trachea, fallopian tube, CNS</td><td>Ciliary movement, CSF circulation</td></tr>
-            <tr><td>Glandular</td><td>Salivary, sebaceous, mammary glands</td><td>Formation &amp; secretion of substances</td></tr>
-          </table>
-        </div>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Compound (multi-layer) epithelium</p>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Type</th><th>Feature</th><th>Location</th></tr>
-            <tr><td>Transitional</td><td>4 layers, stretchable</td><td>Kidney pelvis, ureter, bladder, urethra</td></tr>
-            <tr><td>Stratified squamous, cornified</td><td>Keratinised (horny)</td><td>Skin, hair, nails, teeth enamel</td></tr>
-            <tr><td>Stratified squamous, non-cornified</td><td>Not keratinised</td><td>Cornea, mouth, pharynx, oesophagus, vagina, cervix</td></tr>
-            <tr><td>Stratified columnar</td><td>Several columnar layers</td><td>Conjunctiva, pharynx, epiglottis</td></tr>
-            <tr><td>Stratified columnar, ciliated</td><td>Ciliated columnar layers</td><td>Larynx, soft palate</td></tr>
-          </table>
-        </div>
-        <p class="mal" style="font-size:13px;">Not in your class notes: many textbooks call the ciliated lining of the trachea <b>pseudostratified ciliated columnar</b> epithelium (it looks layered but every cell touches the basement membrane). Your notes list it under "ciliated columnar"; check which name your syllabus wants.</p>
+      <h3 class="sub"><span class="n">3D</span>NCERT: &#8220;Identify the tissue&#8221;</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Tissue to identify</th><th>Answer</th></tr>
+        <tr><td>Skin</td><td>Stratified squamous epithelium</td></tr>
+        <tr><td>Lining of kidney tubules</td><td>Cuboidal epithelium</td></tr>
+        <tr><td>Ducts of salivary glands</td><td>Cuboidal epithelium</td></tr>
+      </table></div>
+
+      <div class="blk conf">
+        <span class="lbl">Common confusion</span>
+        <ul class="plain">
+          <li><b>Squamous vs stratified:</b> one describes shape, the other layers. Skin is <i>stratified</i> squamous (many layers of flat cells); alveoli are <i>simple</i> squamous.</li>
+          <li><b>Basement membrane is not a cell layer.</b> It is non-cellular.</li>
+          <li><b>Ciliated is not a separate shape.</b> It is a columnar epithelium with cilia.</li>
+        </ul>
       </div>
 
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Note</div>
-        <p style="font-size:14.5px;">No specific asana link is stated in your notes for epithelial tissue on its own &mdash; it's structural groundwork for the organ systems (digestive, respiratory) where the practice connections are actually drawn.</p>
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; Q10 (2 marks) &#8220;Write any two functions of epithelial cells&#8221;; Q5 (2) &#8220;Name any two types of tissues&#8221;</span>
+        <p><b>Q10:</b> any two of protection (skin), absorption (intestine), secretion (glands), filtration (kidney tubules), gas exchange (alveoli). <b>Q5:</b> epithelial and connective (or any two of the four). For a 5-mark question on epithelium: <b>definition &#8594; three features &#8594; table of types with location and function &#8594; one drawing (Figure 3B)</b>.</p>
       </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;Epithelium is the body&#8217;s wall-paper and wrapping. Where it needs to be a thin window, like the lung air sacs, it is one flat layer. Where it takes wear, like skin, it is many layers. Where it absorbs or secretes, like the gut, it is tall cells, and in the airway the tall cells have little hairs that sweep dirt out.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; why shape equals job</summary>
+        <div class="inner">
+          <p><b>Flat</b> cells are thin, so gases and liquids cross in a short distance (alveoli, vessel lining). <b>Cube</b> cells have more cytoplasm and organelles for pumping and secreting (kidney tubules, glands). <b>Tall</b> cells have room for many organelles and a large surface: absorbing and secreting (gut). <b>Layers</b> add protection from wear (skin, mouth). <b>Stretchy layers</b> allow filling (bladder).<span class="src gen">general histology</span></p>
+        </div>
+      </details>
 
       <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
         <div class="recall-strip">
-          <div class="recall-card"><div class="q">Name any two functions of epithelial cells.</div><div class="a">Any two of: protection, absorption, secretion, excretion</div></div>
-          <div class="recall-card"><div class="q">Simple epithelium is how many cells thick?</div><div class="a">One layer</div></div>
-          <div class="recall-card"><div class="q">Which epithelium type lines the alveoli?</div><div class="a">Squamous (pavement)</div></div>
-          <div class="recall-card"><div class="q">Which epithelium covers the skin?</div><div class="a">Stratified squamous, cornified (keratinised)</div></div>
-          <div class="recall-card"><div class="q">What separates epithelium from the tissue below it?</div><div class="a">The basement membrane (non-cellular)</div></div>
-          <div class="recall-card"><div class="q">Which epithelium lines kidney tubules and salivary gland ducts?</div><div class="a">Cuboidal</div></div>
-          <div class="recall-card"><div class="q">What do the cilia of ciliated columnar epithelium do?</div><div class="a">Move and push mucus (with trapped dust) along the respiratory tract</div></div>
+          <div class="recall-card"><div class="q">What is epithelial tissue?</div><div class="a">The protective covering tissue of animals; tightly packed cells in thin layers</div></div>
+          <div class="recall-card"><div class="q">Three features of epithelium?</div><div class="a">No intercellular spaces; cementing material; basement membrane below</div></div>
+          <div class="recall-card"><div class="q">What is the basement membrane?</div><div class="a">A non-cellular layer separating the epithelium from the tissue below</div></div>
+          <div class="recall-card"><div class="q">Simple vs stratified?</div><div class="a">Simple: one layer. Stratified: many layers</div></div>
+          <div class="recall-card"><div class="q">Where is simple squamous found?</div><div class="a">Blood vessels, alveoli, serous membranes; transport and gas exchange</div></div>
+          <div class="recall-card"><div class="q">Tissue of skin / kidney tubules / salivary ducts?</div><div class="a">Stratified squamous / cuboidal / cuboidal</div></div>
+          <div class="recall-card"><div class="q">What do cilia in the airway do?</div><div class="a">Push mucus with trapped dust forward so it can be cleared</div></div>
+          <div class="recall-card"><div class="q">Where is transitional epithelium?</div><div class="a">Renal pelvis, ureter, bladder, urethra; it stretches</div></div>
+          <div class="recall-card"><div class="q">What do goblet cells make?</div><div class="a">Mucus</div></div>
+          <div class="recall-card"><div class="q">Name the four body membranes.</div><div class="a">Mucous, serous, synovial, cutaneous</div></div>
         </div>
       </div>
     </section>
 
-    <!-- 02 CONNECTIVE -->
+    <!-- 04 CONNECTIVE -->
     <section class="section" id="sec-connective">
-      <div class="kicker">02 &middot; Binds &amp; supports</div>
-      <h2>Connective Tissue</h2>
-      <p class="dek">The opposite design principle from epithelium: few cells, and an abundant matrix between them.</p>
-
-      <figure>
-        <img src="assets/diagrams/connective-tissue-types.jpg" alt="Types of connective tissue: areolar, adipose, white fibrous, yellow elastic, reticular, blood, haemopoietic, cartilage, and osseous (bone) tissue">
-        <figcaption>The eleven types of connective tissue, from packing tissue to bone.</figcaption>
-      </figure>
-
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      <div class="sec-head">
+        <div class="kicker">04 &#183; The connecting and supporting tissue</div>
+        <h2>Connective Tissue</h2>
+        <p class="dek">Few cells scattered far apart in plenty of matrix. The matrix decides the job: jelly, fluid, flexible or rock-hard.</p>
       </div>
 
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>Connective tissue's whole job is binding &mdash; holding other tissues and organs together, supporting them, packing the spaces between them. Where epithelium is packed with cells, connective tissue is the reverse: cells are few and scattered, and most of the volume is <b>matrix</b>, the material between the cells. How much matrix, and what kind, is what gives each of the eleven types its very different character &mdash; from soft packing tissue all the way to bone, the hardest connective tissue of all.</p>
-        <div class="analogy">
-          <b>From soft to hard, one family</b>
-          <b>Areolar tissue</b> is the general-purpose packing material under the skin and around organs. <b>Adipose tissue</b> is the same idea, specialised for fat storage. <b>White fibrous</b> (tendons, ligaments) and <b>yellow elastic</b> (arterial walls, vocal ligaments) trade flexibility for strength or stretch. <b>Cartilage</b> is firmer still &mdash; a shock absorber at joint surfaces. <b>Bone (osseous tissue)</b> is the hardest of all, mineralised for a rigid skeleton. Blood counts as connective tissue too, just with a liquid matrix (plasma) instead of a solid one.
-        </div>
-        <div class="analogy">
-          <b>Matrix, by analogy</b>
-          The cells lie far apart, like peanuts in a piece of chikki; the jaggery that holds them together is the matrix. The matrix can be <b>fluid</b> (blood), <b>jelly-like</b> (areolar, cartilage) or <b>rigid</b> (bone).
-        </div>
-        <div class="analogy">
-          <b>Memory aid &mdash; CAT LAB&sup2;</b>
-          <b>C</b>artilage, <b>A</b>dipose, <b>T</b>endons, <b>L</b>igaments, <b>A</b>reolar, <b>B</b>one, <b>B</b>lood &mdash; the seven everyday connective tissues. (The reference table below has the longer eleven-type list.)
-        </div>
+      <h3 class="sub"><span class="n">4A</span>What makes a tissue &#8220;connective&#8221;</h3>
+      <div class="spread">
+        <figure class="fig">
+          <svg viewBox="0 0 380 250" role="img" aria-label="Schematic of areolar connective tissue: collagen fibres, elastic fibres, a fibroblast, a macrophage and a mast cell scattered far apart in a jelly-like matrix">
+<rect class="fs" x="4" y="4" width="372" height="242" rx="12"/>
+<g fill="none" stroke="var(--muted)" stroke-width="4" stroke-linecap="round"><path d="M18 40 L170 78"/><path d="M40 176 L205 140"/><path d="M296 118 L366 160"/><path d="M215 24 L345 28"/></g>
+<path d="M20 228 q12 -14 24 0 t24 0 t24 0 t24 0 t24 0 t24 0 t24 0" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+<ellipse class="ft" cx="104" cy="122" rx="34" ry="10" transform="rotate(-12 104 122)"/><ellipse class="pt" cx="104" cy="122" rx="12" ry="5" transform="rotate(-12 104 122)"/>
+<circle class="fa" cx="268" cy="78" r="18"/><circle class="pt" cx="265" cy="76" r="6"/><g class="ln"><path d="M286 70 l12 -6 M286 84 l12 6 M250 70 l-12 -8 M255 94 l-8 10"/></g>
+<circle class="fg" cx="282" cy="196" r="16"/><g fill="var(--gold)"><circle cx="276" cy="190" r="2.2"/><circle cx="287" cy="188" r="2.2"/><circle cx="282" cy="198" r="2.2"/><circle cx="274" cy="202" r="2.2"/><circle cx="290" cy="203" r="2.2"/></g>
+<text class="t ts" x="214" y="238">jelly-like ground substance</text>
+<g class="bd"><circle cx="96" cy="56" r="9"/><text x="96" y="60">1</text></g><g class="bd"><circle cx="104" cy="206" r="9"/><text x="104" y="210">2</text></g><g class="bd"><circle cx="104" cy="96" r="9"/><text x="104" y="100">3</text></g><g class="bd"><circle cx="298" cy="48" r="9"/><text x="298" y="52">4</text></g><g class="bd"><circle cx="282" cy="170" r="9"/><text x="282" y="174">5</text></g><g class="bd"><circle cx="200" cy="234" r="9"/><text x="200" y="238">6</text></g>
+</svg>
+          <figcaption>Areolar tissue as a model for connective tissue: few cells, many fibres, lots of matrix.</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Collagen (white) fibres:</b> strong, non-branching bundles, made by fibroblasts. Resist pulling.</li>
+          <li><b>Elastic (yellow) fibres:</b> thin, wavy, made of elastin. Stretch and spring back.</li>
+          <li><b>Fibroblast:</b> the cell that makes the fibres and matrix.</li>
+          <li><b>Macrophage (histiocyte):</b> eats germs and debris.</li>
+          <li><b>Mast cell:</b> releases chemicals in inflammation (histamine, general physiology).</li>
+          <li><b>Ground substance:</b> the jelly-like matrix in which everything sits.</li>
+        </ol>
       </div>
 
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Reference</div>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Type</th><th>Feature / location</th></tr>
-            <tr><td>Areolar</td><td>Packing/supporting tissue &mdash; subcutaneous, subserous, submucous layers</td></tr>
-            <tr><td>Adipose</td><td>Fat storage &mdash; below skin, mesentery, omentum; shape, energy, thermoregulation</td></tr>
-            <tr><td>White fibrous</td><td>Non-branching collagen bundles &mdash; tendons &amp; ligaments</td></tr>
-            <tr><td>Yellow elastic</td><td>Elastin fibres &mdash; ligamentum nuchae/flava, bronchi, larynx, arterial walls</td></tr>
-            <tr><td>Reticular</td><td>Fine fibrous network, forms basement membrane &mdash; spleen, liver, lymph nodes, bone marrow</td></tr>
-            <tr><td>Blood</td><td>Fluid connective tissue</td></tr>
-            <tr><td>Haemopoietic (myeloid)</td><td>Bone marrow &mdash; blood-forming + phagocytic</td></tr>
-            <tr><td>Cartilage</td><td>Hyaline / fibrocartilage / elastic &mdash; see below</td></tr>
-            <tr><td>Jelly-like</td><td>Embryonic areolar tissue with a mucin ground substance &mdash; Wharton's jelly (umbilical cord), vitreous humour</td></tr>
-            <tr><td>Reticuloendothelial</td><td>Widely distributed; phagocytosis, antibody formation, erythropoiesis, haemolysis</td></tr>
-            <tr><td>Osseous (bone)</td><td>Hardest connective tissue &mdash; forms the skeleton (see Skeletal System topic)</td></tr>
-            <tr><td>Lymphatic (grouped here in some texts)</td><td>Non-capsulated lymph nodules, and capsulated tissue: lymph nodes, spleen, thymus, tonsils</td></tr>
-          </table>
-        </div>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Blood &mdash; fluid connective tissue</p>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Component</th><th>Function</th></tr>
-            <tr><td>Plasma</td><td>Fluid matrix, about 90% water; carries digested food, waste and carbon dioxide</td></tr>
-            <tr><td>Red blood cells (RBCs)</td><td>Haemoglobin gives blood its red colour and carries oxygen</td></tr>
-            <tr><td>White blood cells (WBCs)</td><td>Fight infection; five types &mdash; neutrophils, eosinophils, basophils, lymphocytes, monocytes</td></tr>
-            <tr><td>Platelets</td><td>Blood clotting</td></tr>
-          </table>
-        </div>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Tendon vs ligament</p>
-        <div class="table-wrap">
-          <table>
-            <tr><th></th><th>Tendon</th><th>Ligament</th></tr>
-            <tr><td>Joins</td><td>Muscle to bone</td><td>Bone to bone</td></tr>
-            <tr><td>Job</td><td>Transmits the muscle's pull to move the bone</td><td>Holds bones together; supports the joint</td></tr>
-            <tr><td>Property</td><td>Very strong, non-elastic</td><td>Strong but elastic</td></tr>
-          </table>
-        </div>
-        <p class="mal" style="font-size:13px;">Memory trick: "bone loves bone" &mdash; the L in the middle is for ligament.</p>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Bone vs cartilage</p>
-        <div class="table-wrap">
-          <table>
-            <tr><th></th><th>Bone</th><th>Cartilage</th></tr>
-            <tr><td>Hardness</td><td>Hard, not flexible</td><td>Flexible, not very hard</td></tr>
-            <tr><td>Matrix</td><td>Hard &mdash; calcium and phosphorus</td><td>Softer &mdash; proteins and sugars</td></tr>
-            <tr><td>Function</td><td>Shape, skeletal support, protects vital organs</td><td>Flexibility, cushioning, reduces friction at joints</td></tr>
-            <tr><td>Examples</td><td>Skull, vertebral column, rib cage</td><td>Ear, nose, knee and elbow joints</td></tr>
-          </table>
-        </div>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Areolar and adipose tissue &mdash; two more facts</p>
-        <ul class="notes">
-          <li><b>Areolar</b> &mdash; the "filling tissue": fills spaces inside the body, sits between the skin and the muscle, and helps repair tissue after injury.</li>
-          <li><b>Adipose</b> &mdash; its cells are fat cells (<b>adipocytes</b>), each with one large fat globule; stores energy as fat and insulates against cold.</li>
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Epithelium is a crowd packed shoulder to shoulder. Connective tissue is the opposite: <b>the cells are loosely packed and lie far apart, with a lot of space between them</b>, and that space is filled with a <b>matrix</b> that holds the cells together. The matrix can be jelly-like, fluid or rigid.<span class="src cls">Tissues Detailed Notes</span></p>
+        <p><b>Chikki analogy:</b> the peanuts lie far apart and are stuck together by jaggery. Peanuts = cells, jaggery = matrix.<span class="src cls">Tissues Detailed Notes</span> Your quick notes also call connective tissue <i>mesenchymal</i> tissue (it develops from the mesoderm), with <b>few cells and abundant matrix</b>, the opposite of epithelium.<span class="src cls">Connective Tissue Notes</span></p>
+        <p>Functions: protection, support, transport, storing fat, filling spaces, connecting tissues and giving flexibility.<span class="src cls">Tissues Detailed Notes</span></p>
+      </div>
+
+      <h3 class="sub"><span class="n">4B</span>Two lists, one family: CAT LAB and the 11-type classification</h3>
+      <p style="font-size:14px;color:var(--ink-soft)">Your notes give two lists. The school list <b>CAT LAB squared</b> has seven items. The quick notes give an <b>11-type</b> classification. Here is how they match.</p>
+      <div class="table-wrap"><table>
+        <tr><th>CAT LAB (school list)</th><th>11-type list (quick notes)</th><th>Main job</th></tr>
+        <tr><td><b>C</b> Cartilage</td><td>Cartilaginous tissue</td><td>Flexibility, cushioning, smoother joints</td></tr>
+        <tr><td><b>A</b> Adipose</td><td>Adipose tissue</td><td>Stores fat, insulates</td></tr>
+        <tr><td><b>T</b> Tendons</td><td>White fibrous tissue</td><td>Muscle to bone</td></tr>
+        <tr><td><b>L</b> Ligaments</td><td>White fibrous (and some yellow elastic)</td><td>Bone to bone</td></tr>
+        <tr><td><b>A</b> Areolar</td><td>Areolar tissue</td><td>Fills spaces, packing, repair</td></tr>
+        <tr><td><b>B</b> Bone</td><td>Osseous tissue</td><td>Shape, support, protection</td></tr>
+        <tr><td><b>B</b> Blood</td><td>Blood (fluid connective tissue)</td><td>Transport, defence</td></tr>
+        <tr><td colspan="3" style="color:var(--muted)"><b>Extra in the 11-type list only:</b> yellow elastic, reticular, haemopoietic (marrow), jelly-like, reticuloendothelial (and lymphatic tissue, grouped here in some texts).</td></tr>
+      </table></div>
+      <div class="honest"><b>Two lists, not a conflict.</b> CAT LAB is the school-level list in your lecture; the 11-type list is the more detailed one in the quick notes. In an exam, use CAT LAB for a short answer and the 11-type list for a 5- or 10-mark answer, and say which you are using. Tendons and ligaments are both listed under white fibrous tissue in the quick notes (collagen fibres); the detailed notes also say ligaments are elastic, which is true of some ligaments (those with yellow elastic fibres, e.g. ligamentum flavum).<span class="src cls">Tissues Detailed + Quick Notes</span></div>
+
+      <div class="blk mem">
+        <span class="lbl">Memory aid</span>
+        <p><b>CAT LAB squared</b> (the cat in the school lab, two B&#8217;s): Cartilage, Adipose, Tendons, Ligaments, Areolar, Bone, Blood.</p>
+        <p style="margin:0"><b>Areolar&#8217;s eight cells: FHB-PPM-LM</b> = Fibroblasts, Histiocytes, Basophilic (mast-type) cells, Plasma cells, Pigment cells, Mast cells, Lymphocytes, Monocytes.<span class="src cls">Connective Tissue Notes</span></p>
+      </div>
+
+      <h3 class="sub"><span class="n">4C</span>Blood: the fluid connective tissue</h3>
+      <div class="spread rev">
+        <figure class="fig">
+          <svg viewBox="0 0 380 260" role="img" aria-label="Blood as a fluid connective tissue: red blood cells, white blood cells and platelets floating in plasma"><rect class="fg" x="6" y="6" width="368" height="248" rx="14"/><circle class="fa" cx="70" cy="74" r="14"/><circle cx="70" cy="74" r="6" fill="var(--surface)" opacity=".7"/><circle class="fa" cx="150" cy="64" r="14"/><circle cx="150" cy="64" r="6" fill="var(--surface)" opacity=".7"/><circle class="fa" cx="120" cy="150" r="14"/><circle cx="120" cy="150" r="6" fill="var(--surface)" opacity=".7"/><circle class="fa" cx="240" cy="176" r="14"/><circle cx="240" cy="176" r="6" fill="var(--surface)" opacity=".7"/><circle class="fa" cx="318" cy="94" r="14"/><circle cx="318" cy="94" r="6" fill="var(--surface)" opacity=".7"/><circle class="fa" cx="62" cy="196" r="14"/><circle cx="62" cy="196" r="6" fill="var(--surface)" opacity=".7"/><circle class="fa" cx="318" cy="206" r="14"/><circle cx="318" cy="206" r="6" fill="var(--surface)" opacity=".7"/><circle class="fa" cx="200" cy="226" r="14"/><circle cx="200" cy="226" r="6" fill="var(--surface)" opacity=".7"/><circle class="ft" cx="206" cy="108" r="20"/><circle cx="200" cy="102" r="6" fill="var(--teal)"/><circle cx="212" cy="106" r="6" fill="var(--teal)"/><circle cx="204" cy="115" r="6" fill="var(--teal)"/><circle class="ft" cx="330" cy="150" r="17"/><circle cx="330" cy="150" r="9" fill="var(--teal)"/><ellipse class="fa" cx="172" cy="28" rx="6" ry="3.5"/><ellipse class="fa" cx="262" cy="126" rx="6" ry="3.5"/><ellipse class="fa" cx="36" cy="132" rx="6" ry="3.5"/><ellipse class="fa" cx="268" cy="34" rx="6" ry="3.5"/><ellipse class="fa" cx="150" cy="206" rx="6" ry="3.5"/><text class="t tb" x="40" y="246">Plasma (the fluid matrix)</text><g class="bd"><circle cx="70" cy="48" r="9"/><text x="70" y="52">1</text></g><g class="bd"><circle cx="206" cy="76" r="9"/><text x="206" y="80">2</text></g><g class="bd"><circle cx="330" cy="124" r="9"/><text x="330" y="128">2</text></g><g class="bd"><circle cx="262" cy="106" r="9"/><text x="262" y="110">3</text></g><g class="bd"><circle cx="22" cy="246" r="9"/><text x="22" y="250">4</text></g></svg>
+          <figcaption>Blood under the microscope (schematic, not to scale).</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Red blood cells (RBCs, red corpuscles):</b> contain haemoglobin, which gives blood its red colour and sticks to oxygen to carry it. No nucleus and no mitochondria in the mature cell; they live about 120 days and are made in bone marrow.<span class="src cls">Tissues Detailed + Cell Detailed Notes</span></li>
+          <li><b>White blood cells (WBCs):</b> fight infection. Five types: neutrophils, eosinophils, basophils, lymphocytes, monocytes.</li>
+          <li><b>Platelets:</b> help the blood clot where there is bleeding.</li>
+          <li><b>Plasma:</b> the fluid matrix, about 90% water, carrying digested food, hormones and waste.</li>
+        </ol>
+      </div>
+
+      <div class="table-wrap"><table>
+        <tr><th>Component</th><th>What it is</th><th>Function</th></tr>
+        <tr><td>Plasma</td><td>Fluid matrix, about 90% water</td><td>Carries digested food to the body and brings back CO&#8322; and waste</td></tr>
+        <tr><td>RBC</td><td>Haemoglobin-filled cells</td><td>Carry oxygen</td></tr>
+        <tr><td>WBC</td><td>Five types</td><td>Fight infection, protect us when ill</td></tr>
+        <tr><td>Platelets</td><td>Cell fragments</td><td>Clotting</td></tr>
+      </table></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:-6px"><span class="src cls">Tissues Detailed Notes, 5.3</span> Typical counts (general physiology, check your textbook): RBC about 4.5&#8211;5.5 million per &#181;L, WBC about 4,000&#8211;11,000, platelets about 150,000&#8211;400,000.<span class="src gen">general physiology</span></p>
+      <p style="font-size:14px;color:var(--ink-soft)"><b>Why is blood a connective tissue?</b> Its cells are scattered far apart in a fluid matrix (the plasma), exactly like other connective tissues, and it connects the whole body by transporting materials.</p>
+
+      <h3 class="sub"><span class="n">4D</span>Cartilage</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Type</th><th>Feature</th><th>Where</th></tr>
+        <tr><td><b>Hyaline</b></td><td>Clear, homogeneous (glassy) matrix</td><td>Articular ends of bones; also nose and tracheal rings<span class="src gen">general</span></td></tr>
+        <tr><td><b>Fibrocartilage</b></td><td>Great tensile strength, flexibility and rigidity; resists shearing forces</td><td>Intervertebral discs, knee menisci, pubic symphysis, mandibular joint</td></tr>
+        <tr><td><b>Elastic</b></td><td>Yellow, many elastic fibres</td><td>External ear, epiglottis, eustachian tube, some laryngeal cartilages</td></tr>
+      </table></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:-6px"><span class="src cls">Connective Tissue Notes; Tissues Quick Notes</span></p>
+      <div class="blk know">
+        <span class="lbl">Know this &#183; cartilage</span>
+        <ul class="plain">
+          <li>Intermediate in firmness and elasticity between fibrous tissue and bone. Cells: <b>chondrocytes</b> (sitting in spaces called <b>lacunae</b>) and chondroblasts (young cells). The matrix has two proteins, chondromucoid and chondroalbumoid; chondromucoid breaks down to chondroitin sulphate.<span class="src cls">Connective Tissue Notes</span></li>
+          <li>Found in the nose, ear and at joints such as the knee and elbow. The cells are widely spaced, which gives the flexibility. At joints it works like a <b>mattress</b>: it cushions the bones, reduces friction and smooths the surfaces.<span class="src cls">Tissues Detailed Notes</span></li>
         </ul>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Cartilage &mdash; three types</p>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Type</th><th>Feature</th><th>Location</th></tr>
-            <tr><td>Hyaline</td><td>Clear, homogeneous matrix</td><td>Articular ends of bones</td></tr>
-            <tr><td>Fibrocartilage</td><td>High tensile strength, resists shear</td><td>Intervertebral discs, menisci, pubic symphysis</td></tr>
-            <tr><td>Elastic</td><td>Yellow, elastic fibres</td><td>External ear, epiglottis, eustachian tube</td></tr>
-          </table>
+      </div>
+      <div class="table-wrap"><table>
+        <tr><th>Feature</th><th>Bone</th><th>Cartilage</th></tr>
+        <tr><td>Hardness</td><td>Hard, not flexible (breaks if forced)</td><td>Not very hard, flexible (you can fold your ear)</td></tr>
+        <tr><td>Matrix</td><td>Hard: calcium and phosphorus</td><td>Softer: proteins and sugars</td></tr>
+        <tr><td>Function</td><td>Shape, support, protection (skull protects brain, vertebrae the cord, ribs heart and lungs)</td><td>Flexibility at joints, cushioning, less friction, smooth joint surfaces</td></tr>
+      </table></div>
+      <div class="honest"><b>Matrix wording.</b> Your lecture says bone matrix is &#8220;calcium and phosphorus&#8221; and cartilage matrix is &#8220;proteins and sugars&#8221;. More exactly, bone matrix is mainly <b>calcium phosphate crystals on collagen fibres</b> (your quick notes: osteocollagenous fibres bound by ossein), and cartilage matrix is collagen plus sugar-protein compounds. The simple form is fine for a 2-mark answer.</div>
+
+      <h3 class="sub"><span class="n">4E</span>Bone (osseous tissue)</h3>
+      <div class="spread">
+        <figure class="fig">
+          <svg viewBox="0 0 420 240" role="img" aria-label="Cross-section of compact bone showing one Haversian system (osteon): central canal, concentric lamellae, lacunae and canaliculi"><circle class="fg" cx="104" cy="120" r="87"/><circle cx="104" cy="120" r="74.9" fill="none" stroke="var(--gold)" stroke-width="1.5"/><circle cx="104" cy="120" r="57.7" fill="none" stroke="var(--gold)" stroke-width="1.5"/><circle cx="104" cy="120" r="40.6" fill="none" stroke="var(--gold)" stroke-width="1.5"/><circle cx="104" cy="120" r="26.5" fill="none" stroke="var(--gold)" stroke-width="1.5"/><circle class="fa" cx="104" cy="120" r="12.5"/><circle cx="101" cy="118" r="4" fill="var(--accent)"/><ellipse cx="166.3" cy="97.3" rx="4.5" ry="2.6" fill="var(--ink-soft)" transform="rotate(70 166.3 97.3)"/><ellipse cx="98.2" cy="54.0" rx="4.5" ry="2.6" fill="var(--ink-soft)" transform="rotate(-5 98.2 54.0)"/><ellipse cx="38.7" cy="108.5" rx="4.5" ry="2.6" fill="var(--ink-soft)" transform="rotate(-80 38.7 108.5)"/><ellipse cx="76.0" cy="180.1" rx="4.5" ry="2.6" fill="var(--ink-soft)" transform="rotate(-155 76.0 180.1)"/><ellipse cx="154.8" cy="162.6" rx="4.5" ry="2.6" fill="var(--ink-soft)" transform="rotate(-230 154.8 162.6)"/><ellipse cx="132.2" cy="79.7" rx="4.5" ry="2.6" fill="var(--ink-soft)" transform="rotate(35 132.2 79.7)"/><ellipse cx="72.4" cy="82.4" rx="4.5" ry="2.6" fill="var(--ink-soft)" transform="rotate(-40 72.4 82.4)"/><ellipse cx="59.5" cy="140.8" rx="4.5" ry="2.6" fill="var(--ink-soft)" transform="rotate(-115 59.5 140.8)"/><ellipse cx="112.5" cy="168.4" rx="4.5" ry="2.6" fill="var(--ink-soft)" transform="rotate(-190 112.5 168.4)"/><ellipse cx="152.4" cy="128.5" rx="4.5" ry="2.6" fill="var(--ink-soft)" transform="rotate(-260 152.4 128.5)"/><ellipse cx="133.0" cy="103.2" rx="4.5" ry="2.6" fill="var(--ink-soft)" transform="rotate(60 133.0 103.2)"/><ellipse cx="92.5" cy="88.5" rx="4.5" ry="2.6" fill="var(--ink-soft)" transform="rotate(-20 92.5 88.5)"/><ellipse cx="71.0" cy="125.8" rx="4.5" ry="2.6" fill="var(--ink-soft)" transform="rotate(-100 71.0 125.8)"/><ellipse cx="104.0" cy="153.5" rx="4.5" ry="2.6" fill="var(--ink-soft)" transform="rotate(-180 104.0 153.5)"/><ellipse cx="135.5" cy="131.5" rx="4.5" ry="2.6" fill="var(--ink-soft)" transform="rotate(-250 135.5 131.5)"/><path d="M98.2 54.0 L72.4 82.4" stroke="var(--ink-soft)" stroke-width="1" fill="none"/><path d="M38.7 108.5 L59.5 140.8" stroke="var(--ink-soft)" stroke-width="1" fill="none"/><path d="M76.0 180.1 L112.5 168.4" stroke="var(--ink-soft)" stroke-width="1" fill="none"/><path class="lnt" d="M104 120 L196 34"/><circle cx="104" cy="120" r="2.5" class="pt"/><g class="bd"><circle cx="208" cy="34" r="9"/><text x="208" y="38">1</text></g><text class="t tb" x="224" y="38" style="font-size:11.5px">Central (Haversian) canal</text><path class="lnt" d="M148 83 L196 90"/><circle cx="148" cy="83" r="2.5" class="pt"/><g class="bd"><circle cx="208" cy="90" r="9"/><text x="208" y="94">2</text></g><text class="t tb" x="224" y="94" style="font-size:11.5px">Lamellae (concentric layers)</text><path class="lnt" d="M166 97 L196 146"/><circle cx="166" cy="97" r="2.5" class="pt"/><g class="bd"><circle cx="208" cy="146" r="9"/><text x="208" y="150">3</text></g><text class="t tb" x="224" y="150" style="font-size:11.5px">Lacunae (spaces for cells)</text><path class="lnt" d="M85 68 L196 202"/><circle cx="85" cy="68" r="2.5" class="pt"/><g class="bd"><circle cx="208" cy="202" r="9"/><text x="208" y="206">4</text></g><text class="t tb" x="224" y="206" style="font-size:11.5px">Canaliculi (tiny channels)</text></svg>
+          <figcaption>One Haversian system (osteon) seen in a cross-section of compact bone.</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Central (Haversian) canal:</b> holds blood vessels, nerves and lymph vessels.</li>
+          <li><b>Lamellae:</b> concentric layers of bone around the canal.</li>
+          <li><b>Lacunae:</b> the small spaces between lamellae where bone cells sit.</li>
+          <li><b>Canaliculi:</b> tiny canals joining lacunae to each other and to the central canal, so cells are fed.</li>
+        </ol>
+      </div>
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this &#183; bone</span>
+          <ul class="plain">
+            <li>The <b>hardest connective tissue</b>; it forms the skeleton. Bone cells plus a hard ground substance.</li>
+            <li><b>Three bone cells:</b> osteoblasts, osteocytes, osteoclasts. Organic matrix: osteocollagenous fibres bound by ossein.<span class="src cls">Connective Tissue Notes</span></li>
+            <li><b>Compact bone:</b> outer layer of all bones and shaft of long bones. <b>Spongy bone:</b> inside flat bones, ends of long bones, body of vertebrae.</li>
+          </ul>
         </div>
+        <div class="blk know">
+          <span class="lbl">Know this &#183; bone coverings</span>
+          <ul class="plain">
+            <li><b>Periosteum:</b> covers the outside; outer fibrous layer plus inner <i>cambium</i> layer that makes osteoblasts and osteoclasts.</li>
+            <li><b>Endosteum:</b> lines the marrow cavity; also bone-forming and blood-forming.</li>
+            <li><b>Bursae:</b> small connective-tissue sacs of synovial fluid that cushion moving parts.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="blk mem">
+        <span class="lbl">Memory aid</span>
+        <p><b>Osteo-Blast Builds, Osteo-Cyte Caretakes, Osteo-Clast Clears.</b> (Roles: general physiology.)<span class="src gen">general physiology</span></p>
+        <p style="margin:0"><b>Haversian: C-L-L-C</b> = Canal, Lamellae, Lacunae, Canaliculi.</p>
+      </div>
+      <p style="font-size:13px;color:var(--muted)">Bone structure and growth are covered in full on the <a href="../../unit-2-skeletal-muscular/skeletal-system/notes.html">Skeletal System page</a>.</p>
+
+      <h3 class="sub"><span class="n">4F</span>Tendons and ligaments</h3>
+      <div class="spread rev">
+        <figure class="fig">
+          <svg viewBox="0 0 400 210" role="img" aria-label="A muscle joined by a tendon to one bone, and two bones joined across a joint by a ligament"><rect class="fw" x="28" y="128" width="150" height="34" rx="8"/><rect class="fw" x="198" y="128" width="174" height="34" rx="8"/><text class="t ts tc" x="103" y="149">Bone A</text><text class="t ts tc" x="285" y="149">Bone B</text><ellipse class="fa" cx="96" cy="62" rx="70" ry="22"/><text class="t tb tc" x="96" y="66">Muscle</text><path d="M164 62 Q280 56 286 126" fill="none" stroke="var(--gold)" stroke-width="6" stroke-linecap="round"/><path d="M140 150 H236" fill="none" stroke="var(--teal)" stroke-width="7" stroke-linecap="round" opacity=".85"/><text class="t ts tc" x="188" y="190" style="fill:var(--muted)">joint gap</text><g class="bd"><circle cx="30" cy="62" r="9"/><text x="30" y="66">1</text></g><g class="bd"><circle cx="250" cy="58" r="9"/><text x="250" y="62">2</text></g><g class="bd"><circle cx="188" cy="172" r="9"/><text x="188" y="176">3</text></g><g class="bd"><circle cx="60" cy="110" r="9"/><text x="60" y="114">4</text></g></svg>
+          <figcaption>Tendon: muscle to bone. Ligament: bone to bone.</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Muscle</b> contracts and pulls.</li>
+          <li><b>Tendon:</b> connects muscle to bone; very strong and non-elastic, so when the muscle moves the bone moves with no delay.</li>
+          <li><b>Ligament:</b> connects bone to bone, holds bones together and supports joints; strong but elastic, so a bent finger can be brought back.</li>
+          <li><b>Bone</b> moves as the muscle pulls through the tendon.</li>
+        </ol>
+      </div>
+      <div class="blk mem"><span class="lbl">Memory aid</span><p><b>&#8220;Bone loves bone&#8221;</b>: the L in the middle of LIGAMENT. So tendons are the ones that join muscle to bone.<span class="src cls">Tissues Detailed Notes</span></p></div>
+
+      <h3 class="sub"><span class="n">4G</span>The other connective tissues</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Tissue</th><th>Key points</th><th>Where / job</th></tr>
+        <tr><td><b>Areolar</b></td><td>Fibres (white collagen + yellow elastic), cells (eight kinds), ground substance. Called the filling tissue.</td><td>Under the skin (subcutaneous), under mucous and serous layers; between muscles, vessels and nerves. Fills spaces, packs organs, helps repair.</td></tr>
+        <tr><td><b>Adipose</b></td><td>Fat cells (adipocytes), each with one large fat globule.</td><td>Below the skin, around organs, mesentery, omentum. Stores energy, insulates (polar bear), shapes limbs, protects organs.</td></tr>
+        <tr><td><b>White fibrous</b></td><td>Non-branching collagen bundles, made by fibroblasts.</td><td>Tendons and ligaments.</td></tr>
+        <tr><td><b>Yellow elastic</b></td><td>Thick, wavy elastin fibres; very resistant to chemicals.</td><td>Ligamentum flavum, ligamentum nuchae, bronchi, larynx, artery walls. Elastic recoil helps maintain blood pressure.</td></tr>
+        <tr><td><b>Reticular</b></td><td>Fine fibre network; forms basement membrane.</td><td>Spleen, liver, lymph nodes, bone marrow.</td></tr>
+        <tr><td><b>Haemopoietic (myeloid)</b></td><td>Bone marrow. Red marrow = active, makes blood cells; yellow marrow = inactive, fatty.</td><td>Adult red marrow: upper ends of humerus and femur, skull, thorax, vertebrae, pelvis. Foetal life: most bones have red marrow.</td></tr>
+        <tr><td><b>Jelly-like</b></td><td>Embryonic form of areolar tissue; mucin ground substance.</td><td>Wharton&#8217;s jelly of the umbilical cord; vitreous humour of the eye.</td></tr>
+        <tr><td><b>Reticuloendothelial</b></td><td>Various connective-tissue cells spread through the body.</td><td>Phagocytosis, antibody formation, erythropoiesis, haemolysis.</td></tr>
+        <tr><td><b>Lymphatic</b></td><td>Non-capsulated nodules in loose connective tissue; capsulated organs.</td><td>Lymph node, spleen, thymus, tonsils.</td></tr>
+      </table></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:-6px"><span class="src cls">Connective Tissue Notes; Tissues Quick + Detailed Notes</span></p>
+
+      <div class="honest"><b>Points to verify (from your notes).</b>
+        <ul class="plain" style="margin:6px 0 0">
+          <li><b>Areolar and repair.</b> The lecture says areolar cells &#8220;become skin&#8221; after injury. Textbooks say areolar (loose connective) tissue supports and helps repair; the epidermis regenerates from its own deeper cells. Treat the lecture wording as a simplification.</li>
+          <li><b>&#8220;Most abundant tissue.&#8221;</b> The lecture calls areolar tissue the most abundant tissue in animals. Many textbooks say it is the <i>most widely distributed</i> connective tissue. Check the wording for your exam.</li>
+          <li><b>Adipose</b> is described in the quick notes as a &#8220;loose connective tissue containing fat&#8221;; adipocytes fill almost the whole tissue.</li>
+        </ul>
       </div>
 
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Applied &mdash; cross-reference</div>
-        <div class="practice-link">
-          <b>Connective tissue is what stretch tolerance actually changes</b>
-          The Muscular System topic's "Exercise Physiology in Yoga" section notes that regular sustained stretching raises stretch tolerance mainly by modulating muscle spindle and Golgi tendon organ sensitivity &mdash; not by permanently lengthening muscle fibres. The connective-tissue component (fascia, tendons, ligaments) is the other half of that picture: its viscoelastic properties adapt gradually with consistent practice, which is part of why flexibility gains in yoga build up over months rather than single sessions.
-        </div>
+      <div class="blk conf">
+        <span class="lbl">Common confusion</span>
+        <ul class="plain">
+          <li><b>Tendon vs ligament:</b> tendon = muscle to bone and non-elastic; ligament = bone to bone and elastic.</li>
+          <li><b>Bone vs cartilage:</b> bone is hard (calcium phosphate); cartilage is flexible.</li>
+          <li><b>Blood is a tissue,</b> not just a liquid: cells in a fluid matrix.</li>
+          <li><b>Bone cells vs bone matrix:</b> the cells are few; most of bone is matrix.</li>
+        </ul>
       </div>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; 5-mark &#8220;Describe connective tissue / name its types&#8221; (likely form)</span>
+        <p><b>Define</b> (few cells in abundant matrix) &#8594; <b>general functions</b> &#8594; <b>list</b> (CAT LAB squared or the 11 types) &#8594; <b>one line each</b> (location + function) &#8594; <b>one diagram</b> (a labelled osteon, Figure 4E, or blood, Figure 4C). Short 2-mark forms: &#8220;Differentiate tendon and ligament&#8221;, &#8220;Why is blood a connective tissue?&#8221;, &#8220;Name the cells of blood&#8221;.</p>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;Connective tissue is the body&#8217;s glue, padding and scaffolding. Its cells sit far apart in a matrix. When the matrix is a fluid you get blood; a jelly, you get areolar and fat; a rubbery gel, cartilage; and when it&#8217;s hardened with calcium, bone. Tendons tie muscle to bone and ligaments tie bone to bone.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; what fibroblasts, osteoblasts and chondroblasts have in common</summary>
+        <div class="inner">
+          <p>The &#8220;-blast&#8221; cells are the young, active builders of a tissue (fibroblast: fibres; chondroblast: cartilage; osteoblast: bone), and when they get walled in by their own matrix they become the resting &#8220;-cyte&#8221; cells (chondrocyte, osteocyte). That is why cartilage and bone cells are found in lacunae.<span class="src gen">general histology</span></p>
+          <p>Cartilage has no blood vessels, so it heals slowly; bone is rich in vessels, so it heals well.<span class="src gen">general histology</span></p>
+        </div>
+      </details>
 
       <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
         <div class="recall-strip">
-          <div class="recall-card"><div class="q">Name any two types of tissue.</div><div class="a">Any two of: epithelial, connective, muscular, nervous</div></div>
-          <div class="recall-card"><div class="q">What's abundant in connective tissue that's scarce in epithelium?</div><div class="a">Matrix (intercellular substance)</div></div>
-          <div class="recall-card"><div class="q">Which cartilage type is at the ends of bones?</div><div class="a">Hyaline cartilage</div></div>
-          <div class="recall-card"><div class="q">Which connective tissue has a liquid matrix?</div><div class="a">Blood (plasma)</div></div>
-          <div class="recall-card"><div class="q">Tendon vs ligament?</div><div class="a">Tendon: muscle to bone. Ligament: bone to bone.</div></div>
-          <div class="recall-card"><div class="q">What are fat cells called?</div><div class="a">Adipocytes</div></div>
-          <div class="recall-card"><div class="q">Which pigment carries oxygen in blood?</div><div class="a">Haemoglobin (in red blood cells)</div></div>
+          <div class="recall-card"><div class="q">What is the matrix?</div><div class="a">The substance between connective-tissue cells that holds them together; jelly, fluid or solid</div></div>
+          <div class="recall-card"><div class="q">Expand CAT LAB squared.</div><div class="a">Cartilage, Adipose, Tendons, Ligaments, Areolar, Bone, Blood</div></div>
+          <div class="recall-card"><div class="q">Why is blood a connective tissue?</div><div class="a">Cells scattered far apart in a fluid matrix (plasma)</div></div>
+          <div class="recall-card"><div class="q">Blood components?</div><div class="a">Plasma (~90% water), RBCs, WBCs (5 types), platelets</div></div>
+          <div class="recall-card"><div class="q">Tendon vs ligament?</div><div class="a">Tendon: muscle to bone, non-elastic. Ligament: bone to bone, elastic</div></div>
+          <div class="recall-card"><div class="q">Bone vs cartilage?</div><div class="a">Bone hard, calcium-rich matrix. Cartilage flexible, protein and sugar matrix</div></div>
+          <div class="recall-card"><div class="q">Three types of cartilage?</div><div class="a">Hyaline, fibrocartilage, elastic</div></div>
+          <div class="recall-card"><div class="q">Parts of the Haversian system?</div><div class="a">Central canal, lamellae, lacunae, canaliculi</div></div>
+          <div class="recall-card"><div class="q">Three bone cells?</div><div class="a">Osteoblasts, osteocytes, osteoclasts</div></div>
+          <div class="recall-card"><div class="q">Which tissue stores fat? Cell name?</div><div class="a">Adipose tissue; adipocytes (fat cells)</div></div>
+          <div class="recall-card"><div class="q">Red vs yellow marrow?</div><div class="a">Red: active, makes blood cells. Yellow: inactive, fatty</div></div>
+          <div class="recall-card"><div class="q">Where is Wharton&#8217;s jelly?</div><div class="a">Umbilical cord (jelly-like connective tissue; mucin matrix)</div></div>
         </div>
       </div>
     </section>
 
-    <!-- 03 MUSCULAR -->
+    <!-- 05 MUSCULAR -->
     <section class="section" id="sec-muscular">
-      <div class="kicker">03 &middot; Contracts</div>
-      <h2>Muscular Tissue</h2>
-      <p class="dek">Long cells built to contract &mdash; the three types at tissue level. Full depth is in the Muscular System topic.</p>
-
-      <figure>
-        <img src="assets/diagrams/muscular-tissue-types.jpg" alt="Muscular tissue chart: classification by striation, control and distribution, with skeletal, cardiac and visceral (smooth) muscle fibres and a comparison table">
-        <figcaption>Muscular tissue &mdash; the three types compared by striation, control, fibre shape and nuclei.</figcaption>
-      </figure>
-
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      <div class="sec-head">
+        <div class="kicker">05 &#183; The moving tissue</div>
+        <h2>Muscular Tissue</h2>
+        <p class="dek">Long cells packed with contractile proteins that shorten when told to. Three kinds: skeletal, smooth and cardiac.</p>
       </div>
 
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>Muscle cells are long, fibre-like cells packed with <b>contractile proteins</b> that shorten (contraction) and return to normal (relaxation). Shortening is what pulls &mdash; and a muscle can only <b>pull</b>, never push. That is why skeletal muscles work in <b>pairs</b>: the biceps bends the arm, and the triceps straightens it again.</p>
-        <p>Because movement costs energy, muscle cells are packed with <b>mitochondria</b>. The same contractions also make heat &mdash; shivering is rapid contraction and relaxation that warms the body.</p>
-        <div class="analogy">
-          <b>Three types, three answers to "who's in charge?"</b>
-          <b>Skeletal</b> muscle is attached to bone and obeys your will (voluntary, striated). <b>Smooth</b> muscle lines the gut, vessels and other internal organs and works involuntarily in the background. <b>Cardiac</b> muscle is in the heart only: also involuntary, but it must beat continuously from birth to death, so it has its own design &mdash; branched cells joined by <b>intercalated discs</b> that keep the contraction rhythmic.
-        </div>
-        <p style="margin-bottom:0;">Muscular tissue has the property of <b>contractility</b> (on excitation) plus <b>conductivity</b>. The contractile filaments are myosin (thick) and actin (thin), organised into myofibrils.</p>
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Muscles are specialised tissues built for movement: walking, writing, food moving down the oesophagus, the beating of the heart. Four facts explain everything:<span class="src cls">Tissues Detailed Notes</span></p>
+        <ul class="plain">
+          <li><b>Muscles only pull.</b> Contraction shortens the muscle and pulls in one direction. To move back the other way another muscle is needed, so skeletal muscles <b>work in pairs</b>: the triceps straightens the arm, the biceps bends it back.</li>
+          <li><b>Contractile proteins.</b> Muscle cells are long fibre-like cells containing proteins that shorten and lengthen; shortening is contraction, returning is relaxation. Plants have none, so they do not show this movement.</li>
+          <li><b>Energy.</b> Movement needs a lot, so muscle cells are packed with <b>mitochondria</b>.</li>
+          <li><b>Heat.</b> Shivering is rapid contraction and relaxation, producing heat.</li>
+        </ul>
+        <p>Quick notes: the two key properties are <b>contractility</b> (on excitation) and <b>conductivity</b>.<span class="src cls">Tissues Quick Notes</span></p>
       </div>
 
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Reference &middot; Def/Stru/Fun style</div>
-        <div class="dsf">
-          <div class="row"><div class="label">Def</div><p>Tissue made of long contractile cells, with the properties of contractility (on excitation) and conductivity; it produces movement.</p></div>
-          <div class="row"><div class="label">Stru</div><p>Long cells with contractile proteins (actin and myosin in myofibrils) and many mitochondria. Three types: skeletal, smooth (visceral) and cardiac, classified by striation, control and distribution.</p></div>
-          <div class="row"><div class="label">Fun</div><p>Body movement and locomotion (skeletal); involuntary movement of food and blood (smooth); pumping blood (cardiac); heat production.</p></div>
-        </div>
-        <div class="table-wrap" style="margin-top:18px;">
-          <table>
-            <tr><th></th><th>Skeletal</th><th>Smooth (visceral)</th><th>Cardiac</th></tr>
-            <tr><td>Control</td><td>Voluntary</td><td>Involuntary</td><td>Involuntary</td></tr>
-            <tr><td>Striations</td><td>Present</td><td>Absent</td><td>Present</td></tr>
-            <tr><td>Cell shape</td><td>Long, cylindrical, unbranched</td><td>Spindle-shaped, tapering</td><td>Cylindrical, branched</td></tr>
-            <tr><td>Nuclei</td><td>Many (multinucleate)</td><td>One</td><td>One (sometimes two), central</td></tr>
-            <tr><td>Location</td><td>Attached to bones</td><td>Walls of gut, blood vessels, iris, bronchi, ureters, uterus, bladder</td><td>Heart wall only (myocardium)</td></tr>
-            <tr><td>Function</td><td>Body movement, locomotion</td><td>Involuntary movements: food, blood flow</td><td>Pumps blood by rhythmic contraction; intercalated discs help the rhythm</td></tr>
-            <tr><td>Tires?</td><td>Easily</td><td>Highly resistant</td><td>Does not tire</td></tr>
-          </table>
-        </div>
-        <p class="mal" style="font-size:13px; margin-bottom:0;">Your notes differ on cardiac nuclei (one vs one to two) and on how clearly cardiac muscle is striated; textbooks describe it as clearly striated with one or two nuclei. Check the wording your syllabus uses.</p>
+      <h3 class="sub"><span class="n">5A</span>The three types</h3>
+      <div class="spread wide">
+        <figure class="fig">
+          <svg viewBox="0 0 450 220" role="img" aria-label="Three muscle cell types side by side: skeletal (long, striated, many nuclei), smooth (spindle-shaped, one central nucleus), cardiac (branched, striated, intercalated discs)"><text class="t tb" x="36" y="20">Skeletal</text><g class="bd"><circle cx="20" cy="16" r="9"/><text x="20" y="20">1</text></g><rect class="ft" x="10" y="34" width="136" height="24" rx="5"/><rect x="16" y="36" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="24" y="36" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="32" y="36" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="40" y="36" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="48" y="36" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="56" y="36" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="64" y="36" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="72" y="36" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="80" y="36" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="88" y="36" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="96" y="36" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="104" y="36" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="112" y="36" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="120" y="36" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="128" y="36" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="136" y="36" width="3" height="20" fill="var(--accent)" opacity=".28"/><ellipse cx="40" cy="38" rx="7" ry="2.6" class="pt"/><ellipse cx="90" cy="38" rx="7" ry="2.6" class="pt"/><ellipse cx="130" cy="38" rx="7" ry="2.6" class="pt"/><rect class="ft" x="10" y="66" width="136" height="24" rx="5"/><rect x="16" y="68" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="24" y="68" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="32" y="68" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="40" y="68" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="48" y="68" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="56" y="68" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="64" y="68" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="72" y="68" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="80" y="68" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="88" y="68" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="96" y="68" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="104" y="68" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="112" y="68" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="120" y="68" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="128" y="68" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="136" y="68" width="3" height="20" fill="var(--accent)" opacity=".28"/><ellipse cx="60" cy="70" rx="7" ry="2.6" class="pt"/><ellipse cx="114" cy="70" rx="7" ry="2.6" class="pt"/><rect class="ft" x="10" y="98" width="136" height="24" rx="5"/><rect x="16" y="100" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="24" y="100" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="32" y="100" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="40" y="100" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="48" y="100" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="56" y="100" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="64" y="100" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="72" y="100" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="80" y="100" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="88" y="100" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="96" y="100" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="104" y="100" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="112" y="100" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="120" y="100" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="128" y="100" width="3" height="20" fill="var(--accent)" opacity=".28"/><rect x="136" y="100" width="3" height="20" fill="var(--accent)" opacity=".28"/><ellipse cx="40" cy="102" rx="7" ry="2.6" class="pt"/><ellipse cx="90" cy="102" rx="7" ry="2.6" class="pt"/><ellipse cx="130" cy="102" rx="7" ry="2.6" class="pt"/><text class="t ts" x="10" y="150">Long, striped</text><text class="t ts" x="10" y="164">Many nuclei, voluntary</text><text class="t tb" x="186" y="20">Smooth</text><g class="bd"><circle cx="170" cy="16" r="9"/><text x="170" y="20">2</text></g><path class="fg" d="M164 50 q32 -22 62 0 q-30 22 -62 0z"/><ellipse class="pt" cx="195" cy="50" rx="7" ry="3.5"/><path class="fg" d="M232 50 q32 -22 62 0 q-30 22 -62 0z"/><ellipse class="pt" cx="263" cy="50" rx="7" ry="3.5"/><path class="fg" d="M198 80 q32 -22 62 0 q-30 22 -62 0z"/><ellipse class="pt" cx="229" cy="80" rx="7" ry="3.5"/><path class="fg" d="M164 110 q32 -22 62 0 q-30 22 -62 0z"/><ellipse class="pt" cx="195" cy="110" rx="7" ry="3.5"/><path class="fg" d="M232 110 q32 -22 62 0 q-30 22 -62 0z"/><ellipse class="pt" cx="263" cy="110" rx="7" ry="3.5"/><text class="t ts" x="160" y="150">Spindle, no stripes</text><text class="t ts" x="160" y="164">1 nucleus, involuntary</text><text class="t tb" x="336" y="20">Cardiac</text><g class="bd"><circle cx="320" cy="16" r="9"/><text x="320" y="20">3</text></g><rect class="fa" x="310" y="36" width="66" height="26" rx="5"/><rect class="fa" x="380" y="36" width="66" height="26" rx="5"/><rect class="fa" x="330" y="62" width="26" height="44" rx="5"/><rect class="fa" x="400" y="62" width="26" height="44" rx="5"/><rect class="fa" x="330" y="106" width="96" height="24" rx="5"/><rect x="314" y="40" width="3" height="18" fill="var(--ink)" opacity=".15"/><rect x="323" y="40" width="3" height="18" fill="var(--ink)" opacity=".15"/><rect x="332" y="40" width="3" height="18" fill="var(--ink)" opacity=".15"/><rect x="341" y="40" width="3" height="18" fill="var(--ink)" opacity=".15"/><rect x="350" y="40" width="3" height="18" fill="var(--ink)" opacity=".15"/><rect x="359" y="40" width="3" height="18" fill="var(--ink)" opacity=".15"/><rect x="368" y="40" width="3" height="18" fill="var(--ink)" opacity=".15"/><ellipse cx="343" cy="49" rx="7" ry="4" class="pt" style="fill:var(--accent)"/><ellipse cx="413" cy="49" rx="7" ry="4" class="pt" style="fill:var(--accent)"/><ellipse cx="378" cy="118" rx="8" ry="4" class="pt"/><g class="ca" style="stroke-width:3"><path d="M378 36 V62"/><path d="M343 106 V108"/><path d="M330 106 H356"/><path d="M400 106 H426"/></g><text class="t ts" x="310" y="150">Branched, striped</text><text class="t ts" x="310" y="164">Discs, involuntary</text><text class="t ts tc" x="225" y="204" style="fill:var(--muted)">Dark bars in cardiac = intercalated discs (cell-to-cell joints)</text></svg>
+          <figcaption>The three muscle cell types (schematic).</figcaption>
+        </figure>
       </div>
+      <div class="table-wrap"><table>
+        <tr><th>Feature</th><th>Skeletal</th><th>Smooth</th><th>Cardiac</th></tr>
+        <tr><td>Other names</td><td>Striated, voluntary</td><td>Unstriated, involuntary, visceral</td><td>Heart muscle</td></tr>
+        <tr><td>Location</td><td>Attached to bones (arms, legs, face)</td><td>Walls of food canal, blood vessels, iris, bronchi, ureters, uterus, bladder</td><td>Only in the wall of the heart (myocardium)</td></tr>
+        <tr><td>Control</td><td>Voluntary</td><td>Involuntary</td><td>Involuntary</td></tr>
+        <tr><td>Striations</td><td>Yes (dark and light bands)</td><td>No</td><td>Yes</td></tr>
+        <tr><td>Cell shape</td><td>Long, cylindrical, unbranched</td><td>Spindle-shaped, pointed ends, unbranched</td><td>Short, cylindrical, branched</td></tr>
+        <tr><td>Nuclei</td><td>Many (multinucleate), at the edge, flat</td><td>One, central (oval or rod)</td><td>One or two, central, oval</td></tr>
+        <tr><td>Special feature</td><td>Striped, multinucleate; fibre has sarcolemma, sarcoplasm</td><td>The &#8220;silent worker&#8221; in the background</td><td>Intercalated discs for rhythmic contraction; 3-D network (syncytium-like)</td></tr>
+        <tr><td>Function</td><td>Body movement, locomotion</td><td>Movement of food, flow of blood, bladder and uterus</td><td>Pumping blood</td></tr>
+        <tr><td>Fatigue</td><td>Tires easily</td><td>Does not tire easily</td><td>Never tires</td></tr>
+      </table></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:-6px"><span class="src cls">Tissues Detailed + Quick Notes</span></p>
 
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Applied &mdash; cross-reference</div>
-        <p style="font-size:14.5px;">Your tissue notes don't state an asana link for muscular tissue itself. The yoga connections are worked out in the Muscular System topic, and the tissue facts above are what they build on:</p>
-        <ul class="notes">
-          <li><b>Voluntary skeletal muscle in a held pose</b> &mdash; the contraction cycle (calcium, ATP, cross-bridges) keeps running for as long as a pose is held, which is why sustained holds are metabolically demanding. See <i>Sliding Filament Theory</i>.</li>
-          <li><b>Tone and fatigue</b> &mdash; resting tone, kept up by the stretch reflex, is what most postural and gentle asana work trains; fatigue is a separate, reversible drop in force. See <i>Muscle Tone &amp; Fatigue</i>.</li>
-          <li><b>Stretch tolerance</b> &mdash; gained mainly by muscle spindles and Golgi tendon organs adapting, not by lengthening the fibres. See <i>Exercise Physiology in Yoga</i>.</li>
+      <div class="honest"><b>Source conflicts to settle with your teacher.</b>
+        <ul class="plain" style="margin:6px 0 0">
+          <li><b>Cardiac striations and nuclei.</b> The muscle video in your notes says cardiac cells are striated with one or two nuclei and short, cylindrical, branched; the Class 9 lecture says &#8220;faintly striated&#8221; and one nucleus; your quick notes say striated with a single central nucleus. Standard textbooks say cardiac muscle is <b>clearly striated, branched, with typically one or two nuclei</b>. This page uses the textbook form; check which your syllabus wants.</li>
+          <li><b>Smooth muscle nuclei.</b> An earlier note says intestinal smooth muscle cells have more than one nucleus. Textbooks say smooth muscle cells have <b>one</b> nucleus; skeletal fibres are the multinucleate ones.</li>
+          <li><b>Smooth muscle and tiredness.</b> &#8220;Does not get tired&#8221; is the school-level statement. Physiology texts say smooth muscle is highly <b>fatigue-resistant</b> rather than never tiring.</li>
+          <li><b>Fibre size.</b> The quick notes give skeletal fibre size as &#8220;1&#8211;40 &#215; 0.01&#8211;0.1 mm&#178;&#8221;; this is probably length &#215; width in mm.</li>
         </ul>
       </div>
 
-      <div class="card">
-        <h3>See the full topic</h3>
-        <p style="margin-bottom:0; font-size:14.5px;">Structure, the sliding filament mechanism, tone, fatigue, biomechanics, and the yoga/exercise-physiology connections all live in the dedicated <b>Muscular System</b> topic &mdash; this section exists only so Tissues covers all four basic types in one place.</p>
+      <div class="blk mem">
+        <span class="lbl">Memory aid</span>
+        <p><b>Skeletal, smooth, cardiac = voluntary, involuntary, involuntary.</b> Only skeletal gets tired easily.<span class="src cls">Tissues Detailed Notes</span></p>
+        <p style="margin:0"><b>Striated does not mean voluntary:</b> cardiac is striated but involuntary.</p>
       </div>
 
+      <h3 class="sub"><span class="n">5B</span>Draw a muscle cell (Q8, 2 marks)</h3>
+      <div class="spread">
+        <figure class="fig">
+          <svg viewBox="0 0 440 230" role="img" aria-label="A skeletal muscle cell (fibre): long cylinder with sarcolemma, several nuclei at the edge, myofibrils with dark and light striations, and mitochondria in the sarcoplasm"><rect x="20" y="66" width="400" height="90" rx="16" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="3.5"/><rect x="38" y="71" width="6" height="80" fill="var(--accent)" opacity=".28"/><rect x="58" y="71" width="6" height="80" fill="var(--accent)" opacity=".28"/><rect x="78" y="71" width="6" height="80" fill="var(--accent)" opacity=".28"/><rect x="98" y="71" width="6" height="80" fill="var(--accent)" opacity=".28"/><rect x="118" y="71" width="6" height="80" fill="var(--accent)" opacity=".28"/><rect x="138" y="71" width="6" height="80" fill="var(--accent)" opacity=".28"/><rect x="158" y="71" width="6" height="80" fill="var(--accent)" opacity=".28"/><rect x="178" y="71" width="6" height="80" fill="var(--accent)" opacity=".28"/><rect x="198" y="71" width="6" height="80" fill="var(--accent)" opacity=".28"/><rect x="218" y="71" width="6" height="80" fill="var(--accent)" opacity=".28"/><rect x="238" y="71" width="6" height="80" fill="var(--accent)" opacity=".28"/><rect x="258" y="71" width="6" height="80" fill="var(--accent)" opacity=".28"/><rect x="278" y="71" width="6" height="80" fill="var(--accent)" opacity=".28"/><rect x="298" y="71" width="6" height="80" fill="var(--accent)" opacity=".28"/><rect x="318" y="71" width="6" height="80" fill="var(--accent)" opacity=".28"/><rect x="338" y="71" width="6" height="80" fill="var(--accent)" opacity=".28"/><rect x="358" y="71" width="6" height="80" fill="var(--accent)" opacity=".28"/><rect x="378" y="71" width="6" height="80" fill="var(--accent)" opacity=".28"/><rect x="398" y="71" width="6" height="80" fill="var(--accent)" opacity=".28"/><path d="M26 92 H414" stroke="var(--muted)" stroke-width=".8" fill="none"/><path d="M26 111 H414" stroke="var(--muted)" stroke-width=".8" fill="none"/><path d="M26 130 H414" stroke="var(--muted)" stroke-width=".8" fill="none"/><ellipse cx="96" cy="77" rx="15" ry="5" class="pt"/><ellipse cx="216" cy="77" rx="15" ry="5" class="pt"/><ellipse cx="336" cy="77" rx="15" ry="5" class="pt"/><ellipse cx="70" cy="101" rx="11" ry="5" class="fg"/><ellipse cx="150" cy="121" rx="11" ry="5" class="fg"/><ellipse cx="230" cy="101" rx="11" ry="5" class="fg"/><ellipse cx="310" cy="121" rx="11" ry="5" class="fg"/><ellipse cx="390" cy="101" rx="11" ry="5" class="fg"/><text class="t tb" x="36" y="32">Nuclei (many, at the edge)</text><path class="lnt" d="M96 38 V72"/><text class="t tb" x="252" y="32">Myofibrils and striations</text><path class="lnt" d="M298 38 V92"/><text class="t tb" x="36" y="204">Sarcolemma (cell membrane)</text><path class="lnt" d="M60 194 V157"/><text class="t tb" x="252" y="204">Mitochondria</text><path class="lnt" d="M310 194 V125"/><g class="bd"><circle cx="20" cy="28" r="9"/><text x="20" y="32">2</text></g><g class="bd"><circle cx="236" cy="28" r="9"/><text x="236" y="32">3</text></g><g class="bd"><circle cx="20" cy="200" r="9"/><text x="20" y="204">1</text></g><g class="bd"><circle cx="236" cy="200" r="9"/><text x="236" y="204">4</text></g></svg>
+          <figcaption>A skeletal muscle cell (fibre): the simple diagram to reproduce in the exam.</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Sarcolemma:</b> the cell membrane of a muscle fibre.</li>
+          <li><b>Nuclei:</b> many, flat, lying at the periphery just under the sarcolemma.</li>
+          <li><b>Myofibrils with striations:</b> thread-like bundles along the cell made of <b>myosin</b> (thick, about 100 &#197;) and <b>actin</b> (thin, about 50 &#197;) filaments. Their overlap gives the dark and light bands.</li>
+          <li><b>Mitochondria (sarcosomes):</b> many, for ATP.</li>
+          <li class="" style="padding-left:34px"><b>Sarcoplasm</b> (not numbered): cytoplasm containing myoglobin (oxygen store), glycogen and the organelles.<span class="src cls">Tissues Quick Notes</span></li>
+        </ol>
+      </div>
+
+      <h3 class="sub"><span class="n">5C</span>How a skeletal muscle is wrapped</h3>
+      <div class="spread rev">
+        <figure class="fig">
+          <svg viewBox="0 0 410 270" role="img" aria-label="Cross-section of a skeletal muscle: epimysium around the whole muscle, perimysium around each fascicle, endomysium around each fibre"><circle cx="120" cy="136" r="112" class="fa" style="stroke-width:3"/><circle cx="120" cy="84" r="46" class="fg" style="stroke-width:2.5"/><circle cx="148.0" cy="84.0" r="10" class="ft"/><circle cx="134.0" cy="108.2" r="10" class="ft"/><circle cx="106.0" cy="108.2" r="10" class="ft"/><circle cx="92.0" cy="84.0" r="10" class="ft"/><circle cx="106.0" cy="59.8" r="10" class="ft"/><circle cx="134.0" cy="59.8" r="10" class="ft"/><circle cx="120.0" cy="84.0" r="10" class="ft"/><circle cx="72" cy="170" r="46" class="fg" style="stroke-width:2.5"/><circle cx="100.0" cy="170.0" r="10" class="ft"/><circle cx="86.0" cy="194.2" r="10" class="ft"/><circle cx="58.0" cy="194.2" r="10" class="ft"/><circle cx="44.0" cy="170.0" r="10" class="ft"/><circle cx="58.0" cy="145.8" r="10" class="ft"/><circle cx="86.0" cy="145.8" r="10" class="ft"/><circle cx="72.0" cy="170.0" r="10" class="ft"/><circle cx="168" cy="170" r="46" class="fg" style="stroke-width:2.5"/><circle cx="196.0" cy="170.0" r="10" class="ft"/><circle cx="182.0" cy="194.2" r="10" class="ft"/><circle cx="154.0" cy="194.2" r="10" class="ft"/><circle cx="140.0" cy="170.0" r="10" class="ft"/><circle cx="154.0" cy="145.8" r="10" class="ft"/><circle cx="182.0" cy="145.8" r="10" class="ft"/><circle cx="168.0" cy="170.0" r="10" class="ft"/><path class="lnt" d="M120 24 L252 38"/><circle cx="120" cy="24" r="2.5" class="pt"/><path class="lnt" d="M155 114 L252 98"/><circle cx="155" cy="114" r="2.5" class="pt"/><path class="lnt" d="M203 190 L252 158"/><circle cx="203" cy="190" r="2.5" class="pt"/><path class="lnt" d="M206 170 L252 218"/><circle cx="206" cy="170" r="2.5" class="pt"/><g class="bd"><circle cx="264" cy="38" r="9"/><text x="264" y="42">1</text></g><text class="t tb" x="280" y="42" style="font-size:12.5px">Epimysium</text><text class="t ts" x="280" style="font-size:11px" y="55">(whole muscle)</text><g class="bd"><circle cx="264" cy="98" r="9"/><text x="264" y="102">2</text></g><text class="t tb" x="280" y="102" style="font-size:12.5px">Perimysium</text><text class="t ts" x="280" style="font-size:11px" y="115">(round a fascicle)</text><g class="bd"><circle cx="264" cy="158" r="9"/><text x="264" y="162">3</text></g><text class="t tb" x="280" y="162" style="font-size:12.5px">Fascicle</text><text class="t ts" x="280" style="font-size:11px" y="175">(bundle of fibres)</text><g class="bd"><circle cx="264" cy="218" r="9"/><text x="264" y="222">4</text></g><text class="t tb" x="280" y="222" style="font-size:12.5px">Endomysium</text><text class="t ts" x="280" style="font-size:11px" y="235">(round a fibre)</text></svg>
+          <figcaption>Cross-section: three connective-tissue wrappings, outside to inside.</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Epimysium:</b> outer covering of the whole muscle.</li>
+          <li><b>Perimysium:</b> covers each bundle (fascicle).</li>
+          <li><b>Fascicle:</b> a bundle of muscle fibres.</li>
+          <li><b>Endomysium:</b> covers each single fibre.</li>
+        </ol>
+      </div>
+      <div class="blk mem"><span class="lbl">Memory aid</span><p><b>Epi = outside, Peri = around a bundle, Endo = inside</b> (around one fibre).<span class="src cls">Tissues Quick Notes</span></p></div>
+      <p style="font-size:13px;color:var(--muted)">These wrappings are connective tissue, and they merge at the ends into the <b>tendon</b> (Section 4F). Contraction (sliding filament theory), sarcomere and motor units are covered on the <a href="../../unit-2-skeletal-muscular/muscular-system/notes.html">Muscular System page</a>.</p>
+
+      <div class="blk und">
+        <span class="lbl">Understand it &#183; why the heart has its own muscle</span>
+        <p>The heart&#8217;s movement is involuntary, so you might expect smooth muscle. But the heartbeat is continuous: it starts at birth and does not stop until death. That needs a muscle that never takes a break, and that is <b>cardiac muscle</b>. Its <b>intercalated discs</b> join the cells so they contract together in a rhythm; the cells also form a 3-D network that can start its own beat (spontaneous rhythmicity).<span class="src cls">Tissues Detailed + Quick Notes</span></p>
+        <p><b>Why skeletal muscle moves bones:</b> a signal from the brain reaches the muscle; the muscle is attached to bone by the tendon, so the bone moves with it.<span class="src cls">Tissues Detailed Notes</span></p>
+      </div>
+
+      <div class="blk conf">
+        <span class="lbl">Common confusion</span>
+        <ul class="plain">
+          <li><b>Muscles push?</b> No, they only pull. Pushing comes from a partner muscle pulling the other way.</li>
+          <li><b>Voluntary vs striated.</b> Two separate ideas. Cardiac is striated but involuntary.</li>
+          <li><b>Smooth muscle is not weak.</b> It moves food and controls blood flow, just without conscious control.</li>
+        </ul>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; Q8 (2 marks) &#8220;Draw a simple diagram of a muscle cell&#8221;</span>
+        <p>Draw a long, cylindrical skeletal fibre; add <b>striations</b>, <b>nuclei at the edge</b>, <b>sarcolemma</b> and <b>mitochondria</b>, and label four parts. Then for a 5-mark &#8220;differentiate the three muscles&#8221;: use the table (location, control, striations, nuclei, function). For muscle in a 10-mark yoga answer see Section 7.</p>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;Muscle is the body&#8217;s engine. Its cells are long threads full of two proteins that slide past each other and shorten the cell. Skeletal muscle is the one you control and is tied to bones by tendons. Smooth muscle runs the gut and blood vessels without you thinking. Cardiac muscle is the heart&#8217;s tireless pump.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; red and white fibres, and why shivering warms you</summary>
+        <div class="inner">
+          <p>Muscle contraction burns ATP and a good deal of the energy is released as <b>heat</b>; shivering is rapid contraction for that purpose, which is why it is part of the homeostatic response to cold (Section 2B).<span class="src cls">Tissues Detailed + Cell Detailed Notes</span></p>
+          <p><b>Myoglobin</b> stores oxygen in muscle (it gives red fibres their colour); fibres with more myoglobin and mitochondria resist fatigue better.<span class="src gen">general physiology</span></p>
+        </div>
+      </details>
+
       <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
         <div class="recall-strip">
-          <div class="recall-card"><div class="q">How many main types of muscle are there?</div><div class="a">Three &mdash; skeletal, cardiac, visceral (smooth)</div></div>
-          <div class="recall-card"><div class="q">Which muscle type is striated and voluntary?</div><div class="a">Skeletal</div></div>
-          <div class="recall-card"><div class="q">Why do skeletal muscles work in pairs?</div><div class="a">Muscles can only pull, so a second muscle is needed to move the same part back</div></div>
-          <div class="recall-card"><div class="q">What is special about cardiac muscle cells?</div><div class="a">Branched cells joined by intercalated discs, giving rhythmic contraction</div></div>
-          <div class="recall-card"><div class="q">Which muscle type has many nuclei per cell?</div><div class="a">Skeletal (multinucleate)</div></div>
+          <div class="recall-card"><div class="q">Why do skeletal muscles work in pairs?</div><div class="a">Muscles only pull; a partner pulls the opposite way (biceps and triceps)</div></div>
+          <div class="recall-card"><div class="q">What are contractile proteins?</div><div class="a">Proteins in muscle cells that shorten and lengthen (actin and myosin)</div></div>
+          <div class="recall-card"><div class="q">Why are muscle cells rich in mitochondria?</div><div class="a">Movement needs a lot of energy (ATP)</div></div>
+          <div class="recall-card"><div class="q">Name the three muscle types.</div><div class="a">Skeletal, smooth, cardiac</div></div>
+          <div class="recall-card"><div class="q">Which muscle is voluntary?</div><div class="a">Skeletal only</div></div>
+          <div class="recall-card"><div class="q">What are intercalated discs?</div><div class="a">Cell-to-cell joints in cardiac muscle that help rhythmic contraction</div></div>
+          <div class="recall-card"><div class="q">Name the three muscle coverings.</div><div class="a">Epimysium (muscle), perimysium (fascicle), endomysium (fibre)</div></div>
+          <div class="recall-card"><div class="q">What is the sarcolemma?</div><div class="a">The cell membrane of a muscle fibre</div></div>
+          <div class="recall-card"><div class="q">Thick and thin myofilaments?</div><div class="a">Myosin (thick) and actin (thin)</div></div>
+          <div class="recall-card"><div class="q">Which muscle never tires?</div><div class="a">Cardiac (smooth is highly fatigue-resistant)</div></div>
         </div>
       </div>
     </section>
 
-    <!-- 04 NERVOUS -->
+    <!-- 06 NERVOUS -->
     <section class="section" id="sec-nervous">
-      <div class="kicker">04 &middot; Conducts</div>
-      <h2>Nervous Tissue</h2>
-      <p class="dek">Excitable tissue built to receive and transmit signals &mdash; the neuron is its structural and functional unit.</p>
-
-      <figure>
-        <img src="assets/diagrams/neuron-structure.jpg" alt="Structure of a neuron: dendrites, cell body/soma, nucleus, axon, myelin sheath, axon terminals">
-        <figcaption>A neuron &mdash; dendrites receive, the axon (often myelin-insulated) transmits, terminals hand the signal on.</figcaption>
-      </figure>
-
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      <div class="sec-head">
+        <div class="kicker">06 &#183; The signalling tissue</div>
+        <h2>Nervous Tissue</h2>
+        <p class="dek">Neurons: the longest cells in the body, built to carry messages quickly from one part to another. Supported by neuroglia.</p>
       </div>
 
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>Nervous tissue is made of two components: <b>neurons</b> (the actual signal-carrying cells) and <b>neuroglia</b> (support cells that hold everything together and insulate it). Every neuron has a <b>cell body</b> (soma) plus two kinds of processes reaching out from it: <b>dendrites</b>, which carry impulses <i>toward</i> the cell body, and a single <b>axon</b>, which carries the impulse <i>away</i> from it &mdash; often toward another neuron or a muscle fibre.</p>
-        <p>Neurons are the longest cells in the body &mdash; up to about a metre. A <b>stimulus</b> is any change in the surroundings; the nerve <b>impulse</b> is the electrical signal the neuron sends in response.</p>
-        <div class="analogy">
-          <b>Path of an impulse</b>
-          Take picking up a hot cup. The dendrites of the first neuron receive the message, the <b>cell body</b> passes it on, the <b>axon</b> carries it along, and the <b>nerve ending</b> hands it across a tiny gap &mdash; the <b>synapse</b> &mdash; to the dendrites of the next neuron. Repeating this, the message reaches the brain in microseconds.
-        </div>
-        <div class="analogy">
-          <b>Why myelin matters</b>
-          Many axons are wrapped in a fatty <b>myelin sheath</b>, which insulates the fibre and speeds up signal transmission &mdash; with small gaps along the way called <b>Nodes of Ranvier</b> where the signal effectively "jumps" ahead. This is the same myelin sheath referenced in the neuromuscular junction, in the Muscular System topic: the speed of a movement signal depends on this insulation being intact.
-        </div>
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Nervous tissue is found in the <b>brain, spinal cord and nerves</b>. The &#8220;wires&#8221; that come out of the brain and spinal cord and carry signals around the body are nerves, and they are made of nervous tissue.<span class="src cls">Tissues Detailed Notes</span> It is an <b>excitable</b> tissue that receives and transmits impulses, made of <b>neurons</b> (the cells that signal) and <b>neuroglia</b> (the cells that support and insulate).<span class="src cls">Tissues Quick Notes</span></p>
+        <p>Neurons are the <b>longest cells in the body</b>, up to about a metre. The job: carry messages from the brain and spinal cord to the parts of the body, and from the body back to the brain. When you hold a cup of tea, a signal travels along nerves to say &#8220;hot&#8221;.<span class="src cls">Tissues Detailed Notes</span></p>
+        <p>Three kinds of &#8220;matter&#8221; in the nervous system: <b>grey matter</b> (nerve cells), <b>white matter</b> (nerve fibres) and neuroglia (support). Nervous tissue comes from the embryonic ectoderm.<span class="src cls">Tissues Quick Notes</span></p>
       </div>
 
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Reference &middot; Def/Stru/Fun style</div>
-        <div class="dsf">
-          <div class="row"><div class="label">Def</div><p>Excitable tissue specialised to receive and transmit impulses; composed of neurons and neuroglia, of ectodermal origin.</p></div>
-          <div class="row"><div class="label">Stru</div><p>Neuron = cell body (soma, with neuroplasm/Nissl bodies) + dendrites (toward the cell body) + one axon (away from it, with axoplasm).</p></div>
-          <div class="row"><div class="label">Fun</div><p>Grey matter (cell bodies) processes; white matter (fibres) conducts; neuroglia supports and insulates.</p></div>
-        </div>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Axon coverings &amp; nerve coverings</p>
-        <ul class="notes">
-          <li><b>Myelin sheath</b> &mdash; insulation, present in white matter, absent in grey matter</li>
-          <li><b>Nodes of Ranvier</b> &mdash; gaps in the myelin sheath</li>
-          <li><b>Neurolemma</b> &mdash; covers peripheral nerve fibres</li>
-          <li>Nerve ending &mdash; the root-like end of the axon, where the impulse passes across the synapse to the next neuron's dendrites</li>
-          <li>Whole-nerve wrapping (parallel to muscle's epi/peri/endomysium): <b>endoneurium</b> (each fibre) &middot; <b>perineurium</b> (fibre bundles) &middot; <b>epineurium</b> (whole nerve trunk)</li>
+      <h3 class="sub"><span class="n">6A</span>The neuron</h3>
+      <div class="spread">
+        <figure class="fig">
+          <svg viewBox="0 0 450 215" role="img" aria-label="A neuron: branched dendrites, cell body with nucleus and Nissl bodies, a long axon wrapped in myelin segments with nodes of Ranvier, and branched nerve endings"><g class="ln" style="stroke-width:2.4"><path d="M84 100 L40 70 M40 70 L30 52 M40 70 L52 56"/><path d="M82 110 L18 110 M18 110 L8 98 M18 110 L8 122"/><path d="M84 122 L40 152 M40 152 L28 164 M40 152 L56 168"/><path d="M96 84 L70 52 M70 52 L60 42"/><path d="M98 136 L78 168"/></g><circle class="ft" cx="112" cy="110" r="32"/><circle cx="108" cy="108" r="12" fill="var(--accent)" opacity=".85"/><g fill="var(--ink-soft)"><circle cx="130" cy="96" r="2.2"/><circle cx="134" cy="112" r="2.2"/><circle cx="126" cy="126" r="2.2"/><circle cx="98" cy="130" r="2.2"/></g><path d="M144 110 H372" stroke="var(--ink-soft)" stroke-width="4" fill="none"/><rect class="fg" x="168" y="98" width="58" height="24" rx="10"/><rect class="fg" x="236" y="98" width="58" height="24" rx="10"/><rect class="fg" x="304" y="98" width="58" height="24" rx="10"/><g class="ln" style="stroke-width:2.4"><path d="M372 110 L420 78 M372 110 L424 110 M372 110 L420 142"/></g><g fill="var(--accent)"><circle cx="422" cy="76" r="4.5"/><circle cx="428" cy="110" r="4.5"/><circle cx="422" cy="144" r="4.5"/></g><text class="t tb" x="30" y="22">Dendrites</text><g class="bd"><circle cx="16" cy="18" r="9"/><text x="16" y="22">1</text></g><text class="t tb" x="124" y="198">Cell body (nucleus, Nissl bodies)</text><path class="lnt" d="M112 142 V186"/><g class="bd"><circle cx="112" cy="194" r="9"/><text x="112" y="198">2</text></g><text class="t tb" x="168" y="66">Axon</text><path class="lnt" d="M154 72 V106"/><g class="bd"><circle cx="154" cy="66" r="9"/><text x="154" y="70">3</text></g><text class="t tb" x="274" y="66">Myelin sheath</text><path class="lnt" d="M262 72 V98"/><g class="bd"><circle cx="262" cy="66" r="9"/><text x="262" y="70">4</text></g><text class="t tb" x="244" y="158">Node of Ranvier</text><path class="lnt" d="M232 150 V114"/><g class="bd"><circle cx="232" cy="152" r="9"/><text x="232" y="156">5</text></g><text class="t tb" x="340" y="190">Nerve endings</text><path class="lnt" d="M380 176 L420 148"/><g class="bd"><circle cx="326" cy="186" r="9"/><text x="326" y="190">6</text></g></svg>
+          <figcaption>A neuron (schematic). Impulses travel left to right.</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Dendrites:</b> short, branched, thread-like projections that catch the signal and carry it <i>towards</i> the cell body.</li>
+          <li><b>Cell body (cyton, soma, perikaryon):</b> the round part with the nucleus (control centre). Its cytoplasm (neuroplasm) holds Nissl bodies (rough ER and ribosomes for making proteins), mitochondria, Golgi and neurofibrils.</li>
+          <li><b>Axon:</b> the single long, fibre-like tail that carries the impulse <i>away</i> from the cell body.</li>
+          <li><b>Myelin sheath:</b> fatty insulating wrapping on many axons; makes conduction faster.</li>
+          <li><b>Node of Ranvier:</b> the small gaps between myelin segments.</li>
+          <li><b>Nerve endings:</b> the root-like ends of the axon, where the impulse passes to the next cell.</li>
+        </ol>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-top:-6px"><span class="src cls">Tissues Detailed + Quick Notes</span> Myelin extras: myelin is present in white matter and absent in grey matter; the <b>neurolemma</b> covers peripheral nerve fibres (absent on myelinated fibres in the brain and spinal cord).</p>
+      <div class="honest"><b>Myelin: a scope note.</b> Your lecture shows the myelin sheath in yellow and says it is not in the school syllabus, so leave it for now; your quick notes include it (with nodes of Ranvier and neurolemma). For M.Sc. include it, but know it is the &#8220;extra&#8221; part. Also, &#8220;up to one metre&#8221; is an approximation; some neurons are longer in tall people.</div>
+
+      <div class="blk mem">
+        <span class="lbl">Memory aid</span>
+        <p><b>Neuron, in order: Dendrites &#8594; Cell body &#8594; Axon &#8594; Nerve ending.</b> (&#8220;Dogs Catch All Noise.&#8221;)<span class="src cls">Tissues Detailed Notes</span></p>
+        <p style="margin:0"><b>Dendrites carry <u>to</u> the body, axons carry <u>away</u>.</b> (&#8220;A for Away.&#8221;)</p>
+      </div>
+
+      <h3 class="sub"><span class="n">6B</span>Stimulus, impulse and the path of a signal</h3>
+      <div class="spread rev">
+        <figure class="fig">
+          <svg viewBox="0 0 430 210" role="img" aria-label="A synapse: the axon terminal of one neuron with vesicles releases neurotransmitter across the gap to receptors on the next neuron"><path class="ft" d="M20 70 Q20 40 70 40 H170 Q200 40 200 70 V120 Q200 150 170 150 H70 Q20 150 20 120Z"/><circle cx="60" cy="80" r="8" class="fg"/><circle cx="60" cy="80" r="2" fill="var(--gold)"/><circle cx="90" cy="100" r="8" class="fg"/><circle cx="90" cy="100" r="2" fill="var(--gold)"/><circle cx="120" cy="76" r="8" class="fg"/><circle cx="120" cy="76" r="2" fill="var(--gold)"/><circle cx="150" cy="104" r="8" class="fg"/><circle cx="150" cy="104" r="2" fill="var(--gold)"/><circle cx="100" cy="66" r="8" class="fg"/><circle cx="100" cy="66" r="2" fill="var(--gold)"/><circle cx="70" cy="118" r="8" class="fg"/><circle cx="70" cy="118" r="2" fill="var(--gold)"/><circle cx="140" cy="128" r="8" class="fg"/><circle cx="140" cy="128" r="2" fill="var(--gold)"/><path d="M200 95 H20" stroke="none"/><path class="fs" d="M244 36 H410 V160 H244Z" style="fill:var(--accent-soft);stroke:var(--accent)"/><path d="M244 52 l-9 8 l9 8" class="ca" style="stroke-width:2"/><path d="M244 82 l-9 8 l9 8" class="ca" style="stroke-width:2"/><path d="M244 112 l-9 8 l9 8" class="ca" style="stroke-width:2"/><path d="M244 142 l-9 8 l9 8" class="ca" style="stroke-width:2"/><circle cx="214" cy="64" r="2.6" fill="var(--gold)"/><circle cx="226" cy="94" r="2.6" fill="var(--gold)"/><circle cx="216" cy="114" r="2.6" fill="var(--gold)"/><circle cx="228" cy="132" r="2.6" fill="var(--gold)"/><circle cx="212" cy="84" r="2.6" fill="var(--gold)"/><g class="ca" style="stroke:var(--gold);stroke-width:1.5"><path d="M202 70 L212 70"/><path d="M202 100 L224 100"/></g><text class="t tb" x="36" y="26">Axon terminal</text><g class="bd"><circle cx="20" cy="22" r="9"/><text x="20" y="26">1</text></g><text class="t tb" x="34" y="182">Vesicles of neurotransmitter</text><g class="bd"><circle cx="18" cy="178" r="9"/><text x="18" y="182">2</text></g><text class="t tb tc" x="288" y="22">Synapse (the gap)</text><path class="lnt" d="M262 30 L224 76"/><g class="bd"><circle cx="204" cy="18" r="9"/><text x="204" y="22">3</text></g><text class="t tb" x="256" y="100">Receptors on the</text><text class="t tb" x="256" y="116">next neuron</text><g class="bd"><circle cx="256" cy="60" r="9"/><text x="256" y="64">4</text></g></svg>
+          <figcaption>Where one neuron hands the message to the next.</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Axon terminal</b> of the first neuron.</li>
+          <li><b>Vesicles</b> store the chemical messenger (neurotransmitter). They fuse with the membrane by exocytosis and release it.<span class="src cls">Cell Detailed Notes</span></li>
+          <li><b>Synapse:</b> the tiny gap crossed by the chemical.</li>
+          <li><b>Receptors</b> on the next neuron (lock and key) pick up the message and start a new impulse.</li>
+        </ol>
+      </div>
+      <div class="blk know">
+        <span class="lbl">Know this &#183; path of an impulse (the hot-tea example)</span>
+        <p><b>Dendrite</b> of the first neuron (receives &#8220;hot&#8221;) &#8594; <b>cell body</b> &#8594; <b>axon</b> &#8594; <b>nerve ending</b> &#8594; across the <b>synapse</b> &#8594; dendrite of the next neuron &#8594; its cell body, axon and nerve ending &#8230; until the message reaches the brain, all within microseconds.<span class="src cls">Tissues Detailed Notes</span></p>
+        <ul class="plain">
+          <li>A <b>stimulus</b> is any change in surroundings (feeling cold). An <b>impulse</b> is the signal (sometimes called an electric impulse because it passes along a nerve like current along a wire).</li>
+          <li>Functions: moving muscles; letting animals respond quickly to a stimulus.</li>
         </ul>
       </div>
 
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Note</div>
-        <p style="font-size:14.5px;">Your notes don't draw a specific asana link for nervous tissue itself &mdash; it underlies concepts covered with their yoga connections elsewhere (the stretch reflex and neuromuscular junction in the Muscular System topic, and breathing regulation in the Respiratory System topic).</p>
+      <h3 class="sub"><span class="n">6C</span>The resting potential and the action potential</h3>
+      <div class="spread">
+        <figure class="fig">
+          <svg viewBox="0 0 420 220" role="img" aria-label="Action potential curve: resting potential about minus 70 millivolts, rapid depolarisation to about plus 30, repolarisation, a small undershoot (hyperpolarisation) and return to rest"><path class="ln" d="M50 20 V180 H400"/><path class="lnt" d="M50 78 H400"/><path class="lnt" d="M50 150 H400"/><text class="t ts te" x="44" y="82">0</text><text class="t ts te" x="44" y="154">-70</text><text class="t ts te" x="44" y="46">+30</text><text class="t ts" x="6" y="16">mV</text><text class="t ts tc" x="225" y="200">time</text><path d="M50 150 H110 C120 150 126 44 142 44 C158 44 160 166 184 166 C200 166 204 150 226 150 H396" fill="none" stroke="var(--teal)" stroke-width="3"/><g class="bd"><circle cx="80" cy="134" r="9"/><text x="80" y="138">1</text></g><g class="bd"><circle cx="116" cy="100" r="9"/><text x="116" y="104">2</text></g><g class="bd"><circle cx="166" cy="100" r="9"/><text x="166" y="104">3</text></g><g class="bd"><circle cx="196" cy="182" r="9"/><text x="196" y="186">4</text></g></svg>
+          <figcaption>An action potential (schematic, not to scale).</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Resting potential:</b> at rest the inside of a neuron is negative compared with the outside, about <b>-70 mV</b>. It depends on ion gradients, membrane permeability, the Na&#8314;/K&#8314; pump and K&#8314; leak channels.<span class="src cls">Yoga &amp; Human Body</span></li>
+          <li><b>Depolarisation:</b> the membrane suddenly turns less negative and then positive inside (Na&#8314; enters).<span class="src gen">general physiology</span></li>
+          <li><b>Repolarisation:</b> the inside returns toward negative (K&#8314; leaves).<span class="src gen">general physiology</span></li>
+          <li><b>Hyperpolarisation:</b> a brief overshoot below the resting value before settling back.</li>
+        </ol>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-top:-6px">The four-step order is from your Yoga &amp; Human Body notes; which ions cross at each step is textbook physiology (see the Cell page for the Na&#8314;/K&#8314; pump).</p>
+
+      <h3 class="sub"><span class="n">6D</span>Neuroglia, nerve coverings and neuron types</h3>
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this &#183; neuroglia</span>
+          <ul class="plain">
+            <li>Support and hold the nerve cells and fibres together; they do not carry the main signal.</li>
+            <li><b>Astrocytes</b> (support), <b>oligodendrocytes</b> (insulation: make myelin in the CNS), <b>microglia</b> (cleaners).<span class="src cls">Tissues Quick Notes</span> The role details are general histology.<span class="src gen">general histology</span></li>
+          </ul>
+        </div>
+        <div class="blk know">
+          <span class="lbl">Know this &#183; nerve coverings (peripheral nerve)</span>
+          <ul class="plain">
+            <li><b>Endoneurium</b> around each individual fibre</li>
+            <li><b>Perineurium</b> around each bundle of fibres</li>
+            <li><b>Epineurium</b> around the whole nerve trunk</li>
+          </ul>
+          <p style="margin:0;font-size:13px;color:var(--muted)">Same pattern as muscle: endo (one fibre), peri (bundle), epi (whole).<span class="src cls">Tissues Quick Notes</span></p>
+        </div>
+      </div>
+      <div class="table-wrap"><table>
+        <tr><th>Neuron type</th><th>Carries</th><th>From &#8594; to</th></tr>
+        <tr><td>Sensory (afferent)</td><td>Information about stimuli</td><td>Receptors &#8594; brain / spinal cord</td></tr>
+        <tr><td>Motor (efferent)</td><td>Commands</td><td>Brain / spinal cord &#8594; muscles and glands</td></tr>
+        <tr><td>Interneuron</td><td>Links sensory and motor neurons</td><td>Within brain and spinal cord</td></tr>
+      </table></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:-6px"><span class="src gen">general physiology</span> Your notes list neuron types as &#8220;not covered yet&#8221;.</p>
+
+      <div class="blk conf">
+        <span class="lbl">Common confusion</span>
+        <ul class="plain">
+          <li><b>Neuron vs nerve:</b> a neuron is one cell; a nerve is a bundle of many nerve fibres wrapped in connective tissue.</li>
+          <li><b>Dendrite vs axon:</b> one catches the message, the other sends it on.</li>
+          <li><b>Impulse vs stimulus:</b> the stimulus is the change outside; the impulse is the electrical signal inside the nerve.</li>
+        </ul>
       </div>
 
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; &#8220;Draw and label a neuron. How does an impulse pass from one neuron to the next?&#8221; (5 marks, from your practice questions)</span>
+        <p>Draw Figure 6A with six labels &#8594; state <b>dendrite &#8594; cell body &#8594; axon &#8594; nerve ending &#8594; synapse &#8594; next dendrite</b> &#8594; say the gap is crossed by a chemical (neurotransmitter, released by exocytosis) &#8594; one line on function. For 2 marks: &#8220;name the parts of a neuron&#8221;, &#8220;what is a synapse&#8221;.</p>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;A neuron is a cell with a long tail. Its branches at one end listen, the tail carries the message, and at the far end the message crosses a tiny gap to the next neuron. A chain of them lets a touch on your finger reach your brain in a blink. The cells around them keep them fed, insulated and tidy.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; how the nervous tissue forms in the embryo</summary>
+        <div class="inner">
+          <p>Ectoderm &#8594; medullary plate &#8594; medulloblasts &#8594; <b>neuroblasts</b> (which become neurons) and <b>spongioblasts</b> (which become glial cells).<span class="src cls">Tissues Quick Notes</span></p>
+          <p>Mature neurons generally do not divide, which is why nerve injuries heal slowly. (Some repair is possible in peripheral nerves.)<span class="src gen">general physiology</span></p>
+        </div>
+      </details>
+
       <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
         <div class="recall-strip">
-          <div class="recall-card"><div class="q">What carries impulses toward the cell body?</div><div class="a">Dendrites</div></div>
-          <div class="recall-card"><div class="q">What carries impulses away from the cell body?</div><div class="a">The axon</div></div>
-          <div class="recall-card"><div class="q">What insulates an axon?</div><div class="a">The myelin sheath</div></div>
-          <div class="recall-card"><div class="q">What are the two components of nervous tissue?</div><div class="a">Neurons and neuroglia</div></div>
-          <div class="recall-card"><div class="q">What is the gap between two neurons called?</div><div class="a">The synapse</div></div>
-          <div class="recall-card"><div class="q">Order of parts an impulse passes through in a neuron?</div><div class="a">Dendrites &rarr; cell body &rarr; axon &rarr; nerve ending</div></div>
+          <div class="recall-card"><div class="q">What is the cell of nervous tissue?</div><div class="a">The neuron (nerve cell)</div></div>
+          <div class="recall-card"><div class="q">Parts of a neuron, in order?</div><div class="a">Dendrites, cell body, axon, nerve ending</div></div>
+          <div class="recall-card"><div class="q">Dendrite vs axon?</div><div class="a">Dendrite carries towards the cell body; axon carries away</div></div>
+          <div class="recall-card"><div class="q">What is a synapse?</div><div class="a">The gap between two neurons, crossed by a chemical messenger</div></div>
+          <div class="recall-card"><div class="q">What is an impulse?</div><div class="a">The electrical signal that travels along a nerve</div></div>
+          <div class="recall-card"><div class="q">What is the resting potential?</div><div class="a">About -70 mV, inside negative</div></div>
+          <div class="recall-card"><div class="q">Order of an action potential?</div><div class="a">Resting &#8594; depolarisation &#8594; repolarisation &#8594; hyperpolarisation</div></div>
+          <div class="recall-card"><div class="q">Name the three neuroglia.</div><div class="a">Astrocytes, oligodendrocytes, microglia</div></div>
+          <div class="recall-card"><div class="q">Grey vs white matter?</div><div class="a">Grey: nerve cells. White: nerve fibres (myelinated)</div></div>
+          <div class="recall-card"><div class="q">Nerve coverings?</div><div class="a">Endoneurium, perineurium, epineurium</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 YOGA -->
+    <section class="section" id="sec-yoga">
+      <div class="sec-head">
+        <div class="kicker">07 &#183; Putting it together</div>
+        <h2>Tissues &amp; Yoga Practice</h2>
+        <p class="dek">Every asana loads muscle, tendon, ligament, cartilage and bone, and every breath uses epithelium and nerves. Here is how each tissue meets the practice, and how far your notes let you go.</p>
+      </div>
+
+      <div class="honest"><b>Where this section comes from.</b> Your Unit 1 tissue notes do <b>not</b> name any asana or pranayama. The Yoga &amp; Human Body notes give the physiology (asana categories, reciprocal inhibition, isometric contraction, proprioception, tendon and ligament roles, exercise effects, vagus and relaxation). I used only those as the <span class="src cls">class notes</span> base. Any asana <i>example</i> (such as tree pose for balance) and any &#8220;why&#8221; that joins a tissue to a posture is <span class="src gen">added reasoning</span>: please confirm those with your teacher before you rely on them in an exam. Where your notes say &#8220;may&#8221;, write &#8220;may&#8221;.</div>
+
+      <h3 class="sub"><span class="n">7A</span>The six mechanical categories of asana</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Category (your syllabus)</th><th>What it means</th><th>Tissues mostly involved</th><th>Example <span class="src gen">added reasoning</span></th></tr>
+        <tr><td>Stretching</td><td>Lengthens tissues and improves flexibility</td><td>Muscle, tendon, fascia and ligament (connective tissue)</td><td>Forward bend (hamstrings)</td></tr>
+        <tr><td>Pivoting</td><td>Movement around a joint axis</td><td>Joint cartilage, ligaments, muscles</td><td>Standing twist</td></tr>
+        <tr><td>Strengthening</td><td>Increases muscle force production</td><td>Skeletal muscle, tendons</td><td>Chair pose, plank</td></tr>
+        <tr><td>Inverted</td><td>Head lower than or relatively lower than the heart</td><td>Blood vessels (connective and muscle tissue), nervous control of pressure</td><td>Shoulder-supported postures (teacher to confirm)</td></tr>
+        <tr><td>Pressing</td><td>Compression or loading of body tissues</td><td>Bone, muscle, soft tissue loaded by body weight</td><td>Arm-supported balances</td></tr>
+        <tr><td>Equilibration</td><td>Balance-oriented practice</td><td>Nervous tissue (proprioception), muscle</td><td>Tree pose</td></tr>
+      </table></div>
+      <p style="font-size:13px;color:var(--muted);margin-top:-6px"><span class="src cls">Yoga &amp; Human Body</span> for the categories and meanings; the last column is not in your notes.</p>
+
+      <h3 class="sub"><span class="n">7B</span>Tissue by tissue</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Tissue</th><th>What your notes say</th><th>The link to practice</th></tr>
+        <tr><td><b>Skeletal muscle</b></td><td>Muscles only pull; they work in pairs. When an agonist contracts, the antagonist is neurologically inhibited (<b>reciprocal inhibition</b>), relevant to stretching and movement control. <b>Isometric</b> contraction: tension without a change in length (holding a posture; bandha practice may involve sustained activation). Regular appropriate practice <b>may</b> improve flexibility, strength, balance, postural control and joint mobility.<span class="src cls">Yoga &amp; Human Body</span></td><td>In a forward bend the hamstrings are being stretched while the quadriceps contract (agonist and antagonist). Holding a standing posture is isometric. <span class="src gen">added reasoning</span></td></tr>
+        <tr><td><b>Tendon</b></td><td>Connects muscle to bone; transfers muscle force to bone and produces movement.<span class="src cls">Yoga &amp; Human Body</span></td><td>It carries the load every time a muscle works in a posture. It is non-elastic, so gradual loading is wiser than sudden force.<span class="src gen">added reasoning</span></td></tr>
+        <tr><td><b>Ligament</b></td><td>Connects bone to bone; <b>stabilises joints and prevents excessive movement</b>.<span class="src cls">Yoga &amp; Human Body</span> Elastic enough to return after bending (your tissue notes).</td><td>Because ligaments protect the joint from going too far, &#8220;stretching to the end of the range&#8221; is better done through muscles than by hanging on the ligaments. <span class="src gen">added reasoning</span></td></tr>
+        <tr><td><b>Cartilage</b></td><td>Cushions bones, reduces friction, smooths joint surfaces.<span class="src cls">Tissues Detailed Notes</span> Joint mobility <b>may</b> improve with practice.<span class="src cls">Yoga &amp; Human Body</span></td><td>Smooth movement through a comfortable range uses the cartilage as it is designed to be used. Your notes do not claim yoga repairs cartilage. <span class="src gen">added reasoning</span></td></tr>
+        <tr><td><b>Bone</b></td><td>Hardest connective tissue; gives shape, support, protection.<span class="src cls">Tissues Notes</span> &#8220;Pressing&#8221; asanas are defined as compression or loading of body tissues.<span class="src cls">Yoga &amp; Human Body</span></td><td>Weight-bearing postures load the bones. Your notes do <b>not</b> state that yoga increases bone density, so word it as &#8220;loading may support bone health&#8221;, not as a result. <span class="src gen">added reasoning</span></td></tr>
+        <tr><td><b>Blood and heart</b></td><td>Exercise increases heart rate, cardiac output and blood flow to active muscles.<span class="src cls">Yoga &amp; Human Body</span></td><td>A flowing practice (surya namaskara type) is exercise, so the blood and cardiac muscle respond like any exercise. <span class="src gen">added reasoning</span></td></tr>
+        <tr><td><b>Nervous tissue</b></td><td><b>Proprioception</b> = awareness of body position and movement, using muscle spindles, Golgi tendon organs and joint receptors. &#8220;Yoga balance practices strongly involve proprioceptive control.&#8221; Slow breathing and relaxation <b>may</b> increase vagal (parasympathetic) influence.<span class="src cls">Yoga &amp; Human Body</span></td><td>Balance postures train the nervous system&#8217;s reading of position; that is why a wobbling tree pose improves with practice. <span class="src gen">added reasoning</span></td></tr>
+        <tr><td><b>Smooth muscle</b></td><td>Peristalsis is the rhythmic contraction of GI smooth muscle. Some respiratory and abdominal practices alter pressure, influencing venous return and abdominal organs.<span class="src cls">Yoga &amp; Human Body</span></td><td>Smooth muscle cannot be directly willed, so any effect of twists or abdominal practices on the gut is indirect (pressure, relaxation).<span class="src gen">added reasoning</span></td></tr>
+        <tr><td><b>Epithelium</b></td><td>Ciliated columnar epithelium lines the airway and moves mucus; skin epithelium protects.<span class="src cls">Tissues Detailed Notes</span> Sweating during practice is homeostasis at work.<span class="src cls">Cell Detailed Notes</span></td><td>Nasal breathing in pranayama uses the nose&#8217;s lining to filter and warm the air (see the <a href="../../unit-4-respiratory-system/notes.html">Respiratory page</a>).<span class="src gen">added reasoning</span></td></tr>
+        <tr><td><b>Adipose</b></td><td>Stores energy and insulates. Energy expenditure depends on duration, intensity, muscle mass, body weight, posture and individual fitness; not every asana has the same demand.<span class="src cls">Yoga &amp; Human Body</span></td><td>No specific asana is linked to fat tissue in your notes.</td></tr>
+      </table></div>
+
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this &#183; proprioception</span>
+          <p>Receptors: <b>muscle spindles</b> (muscle length), <b>Golgi tendon organs</b> (tension in the tendon) and <b>joint receptors</b>. They are the sensors of the body&#8217;s own position; balance practice trains how the nervous system uses them.<span class="src cls">Yoga &amp; Human Body</span></p>
+        </div>
+        <div class="blk know">
+          <span class="lbl">Know this &#183; reciprocal inhibition</span>
+          <p>When the biceps contracts to bend the elbow, the triceps is neurologically inhibited so it lets go. Used in stretching: contracting the opposite muscle can make a stretch easier.<span class="src cls">Yoga &amp; Human Body</span></p>
         </div>
       </div>
 
-      <p class="source-note">Source: Tissues &mdash; Quick Notes (PDF), Connective Tissue &mdash; Easy Notes (PDF), and the tissues lecture notes (definition, division of labour, epithelial features, blood, tendon/ligament, bone/cartilage, adipose, neuron impulse path).</p>
+      <h3 class="sub"><span class="n">7C</span>Model answer: &#8220;Explain how asanas and pranayama are good for muscles and bones&#8221; (Q22, 10 marks)</h3>
+      <div class="blk exam">
+        <span class="lbl">Plan (5 parts, about 2 marks each)</span>
+        <p><b>(1) Muscle</b> (stretch, strengthen, reciprocal inhibition, isometric holds) &#8594; <b>(2) Bone and joints</b> (loading, tendons and ligaments stabilise, cartilage cushions) &#8594; <b>(3) Nervous control</b> (proprioception, balance, vagal relaxation) &#8594; <b>(4) Pranayama</b> (breathing, oxygen supply, relaxation of muscle tension) &#8594; <b>(5) Conclusion and caution</b> (may, depends on technique and individual).</p>
+      </div>
+      <div class="blk exam">
+        <span class="lbl">About 220 words you can adapt</span>
+        <p>Asanas act on muscle, tendon, ligament, cartilage and bone. Stretching postures lengthen muscle and connective tissue and may improve flexibility; strengthening postures raise muscle force, and holding a posture is an isometric contraction. In stretching, reciprocal inhibition lets the opposite muscle relax. Tendons transfer muscle force to bone, and ligaments stabilise joints and prevent excessive movement, so postures should be built up gradually. &#8220;Pressing&#8221; postures load body tissues, including bone, so regular, appropriate practice may support bone and joint health; joint mobility may improve.</p>
+        <p>Balance postures train proprioception (muscle spindles, Golgi tendon organs and joint receptors), improving postural control. Slow, comfortable breathing in pranayama may increase vagal (parasympathetic) influence and helps release muscular tension, and good breathing supports the oxygen that muscle mitochondria need.</p>
+        <p>The effect depends on the technique, duration and the individual; claims should be separated from established physiology, and practice should be guided to avoid injury.</p>
+      </div>
+
+      <h3 class="sub"><span class="n">7D</span>A 10-mark &#8220;Tissues and yoga&#8221; plan</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Mark block</th><th>Write</th></tr>
+        <tr><td>2</td><td>Define tissue; name the four types.</td></tr>
+        <tr><td>4</td><td>One line per tissue with its yoga link: epithelium (skin/sweat, nasal lining), connective (tendon, ligament, cartilage, bone), muscle (pairs, isometric), nerve (proprioception, vagus).</td></tr>
+        <tr><td>2</td><td>Homeostasis: relaxation and slow breathing may support autonomic balance; sweating cools.</td></tr>
+        <tr><td>2</td><td>Caution: effects depend on technique and person; &#8220;may&#8221;; separate tradition from physiology.</td></tr>
+      </table></div>
+
+      <div class="blk conf">
+        <span class="lbl">Common confusion</span>
+        <ul class="plain">
+          <li><b>&#8220;Stretching stretches the ligament.&#8221;</b> Ligaments stabilise; the muscle should do the work in a safe stretch (added reasoning, confirm).</li>
+          <li><b>&#8220;Yoga builds bone.&#8221;</b> Not stated in your notes. Say &#8220;loading may support bone health&#8221;.</li>
+          <li><b>&#8220;Smooth muscle can be trained like biceps.&#8221;</b> It is involuntary; effects are indirect.</li>
+        </ul>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;Every pose is a conversation between your tissues. Muscles pull in pairs, tendons carry the pull to the bones, ligaments stop a joint from going too far, cartilage keeps the surfaces smooth, and the nerves keep reporting where your body is. Slow breathing calms the system. How much each of these improves depends on how you practise.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; lines from your Yoga &amp; Human Body notes worth knowing</summary>
+        <div class="inner">
+          <p><b>Psychosomatic mechanism:</b> yoga can influence body and mind through movement, breathing, attention, relaxation, autonomic regulation and behaviour change.<span class="src cls">Yoga &amp; Human Body</span></p>
+          <p><b>Exercise physiology:</b> increases in heart rate, cardiac output, blood flow to active muscles, ventilation, oxygen uptake, muscle activity, joint mobility and body awareness.<span class="src cls">Yoga &amp; Human Body</span></p>
+          <p>For muscle and skeletal detail, see the <a href="../../unit-2-skeletal-muscular/muscular-system/notes.html">Muscular</a> and <a href="../../unit-2-skeletal-muscular/skeletal-system/notes.html">Skeletal</a> pages.</p>
+        </div>
+      </details>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Six mechanical categories of asana?</div><div class="a">Stretching, pivoting, strengthening, inverted, pressing, equilibration</div></div>
+          <div class="recall-card"><div class="q">What is reciprocal inhibition?</div><div class="a">When the agonist contracts the antagonist is neurologically inhibited</div></div>
+          <div class="recall-card"><div class="q">What is isometric contraction?</div><div class="a">Tension without a significant change in muscle length (holding a posture)</div></div>
+          <div class="recall-card"><div class="q">What is proprioception?</div><div class="a">Awareness of body position and movement (spindles, Golgi tendon organs, joint receptors)</div></div>
+          <div class="recall-card"><div class="q">Ligament function in practice?</div><div class="a">Stabilises joints; prevents excessive movement</div></div>
+          <div class="recall-card"><div class="q">What does &#8220;pressing&#8221; mean?</div><div class="a">Compression or loading of body tissues</div></div>
+          <div class="recall-card"><div class="q">Which tissue does slow breathing influence?</div><div class="a">Nervous: may increase vagal (parasympathetic) influence</div></div>
+          <div class="recall-card"><div class="q">How to word benefits in an exam?</div><div class="a">&#8220;May improve&#8230; depends on technique and individual&#8221;</div></div>
+        </div>
+      </div>
+
+      <p class="src-foot">Sources: Tissues Detailed Study Notes (Oct 2026 version); Tissues Quick Notes; Connective Tissue Notes; Cell Study Notes and Cell Detailed Study Notes (homeostasis, feedback, blood-cell facts); Yoga &amp; Human Body notes (tissue, homeostasis, tendon, ligament, proprioception, resting potential and asana-physiology sections); general physiology and histology for items tagged <i>general</i> (Ross &amp; Wilson, NCERT Biology: Tissues); the Semester 1 question paper (Q5, Q8, Q10, Q14, Q22). Diagrams on this page are drawn for these notes.</p>
     </section>
 
   </main>
@@ -559,51 +1305,52 @@
   var menuBtn = document.getElementById('menuBtn');
   var searchEl = document.getElementById('search');
 
-  function activate(id, scroll){
-    sections.forEach(function(s){ s.hidden = (s.id !== 'sec-' + id); });
+  function setActive(id){
     navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
-    if (scroll) window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
-    try { history.replaceState(null, '', '#' + id); } catch(e){}
-    closeSidebar();
   }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
 
   navItems.forEach(function(btn){
-    btn.addEventListener('click', function(){ activate(btn.dataset.target, true); });
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
   });
-
-  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
-  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
   menuBtn.addEventListener('click', openSidebar);
   scrim.addEventListener('click', closeSidebar);
 
   searchEl.addEventListener('input', function(){
     var q = searchEl.value.trim().toLowerCase();
     navItems.forEach(function(btn){
-      var text = btn.textContent.toLowerCase();
-      btn.hidden = q.length > 0 && text.indexOf(q) === -1;
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
     });
   });
 
-  Array.prototype.slice.call(document.querySelectorAll('.layer-nav')).forEach(function(nav){
-    var scope = nav.closest('.section') || document;
-    var layerButtons = Array.prototype.slice.call(nav.querySelectorAll('.layer-item'));
-    var layerPanels = Array.prototype.slice.call(scope.querySelectorAll('.layer-panel'));
-    layerButtons.forEach(function(btn){
-      btn.addEventListener('click', function(){
-        var target = btn.dataset.layer;
-        layerButtons.forEach(function(b){ b.classList.toggle('active', b === btn); });
-        layerPanels.forEach(function(p){ p.hidden = (p.dataset.panel !== target); });
-      });
-    });
-  });
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
 
   Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
     card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
   });
 
-  var startId = 'overview';
   var hash = (location.hash || '').replace('#','');
-  if (hash && document.getElementById('sec-' + hash)) startId = hash;
-  activate(startId, false);
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
 })();
 </script>
