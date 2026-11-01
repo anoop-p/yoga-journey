@@ -1,513 +1,218 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Digestive System</title>
 <style>
   :root{
-    --bg:#f3f1ea;
-    --surface:#ffffff;
-    --surface-2:#ebe7db;
-    --border:#d9d3c2;
-    --ink:#1e231f;
-    --ink-soft:#4d5449;
-    --muted:#7a8072;
-    --accent:#b1502e;
-    --accent-soft:#f0dccd;
-    --teal:#2f6a5e;
-    --teal-soft:#dde9e4;
-    --gold:#a9822c;
-    --gold-soft:#f1e6c9;
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
     --code-bg:#eae5d6;
     --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --bg:#181a16;
-      --surface:#212420;
-      --surface-2:#262924;
-      --border:#3a3d35;
-      --ink:#ece8dd;
-      --ink-soft:#c3c2b5;
-      --muted:#8d9285;
-      --accent:#e0895f;
-      --accent-soft:#3a2a20;
-      --teal:#7fbfae;
-      --teal-soft:#213330;
-      --gold:#d9b862;
-      --gold-soft:#3a3016;
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
       --code-bg:#2a2c24;
       --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"]{
-    --bg:#181a16;
-    --surface:#212420;
-    --surface-2:#262924;
-    --border:#3a3d35;
-    --ink:#ece8dd;
-    --ink-soft:#c3c2b5;
-    --muted:#8d9285;
-    --accent:#e0895f;
-    --accent-soft:#3a2a20;
-    --teal:#7fbfae;
-    --teal-soft:#213330;
-    --gold:#d9b862;
-    --gold-soft:#3a3016;
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
     --code-bg:#2a2c24;
     --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
     color-scheme: dark;
   }
-
   *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3,h4{
-    font-family:"Fraunces", Georgia, serif;
-    font-weight:600;
-    text-wrap:balance;
-    margin:0 0 .4em;
-    color:var(--ink);
-  }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
   p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
   code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
   a{ color:var(--accent); }
-
-  .app{
-    display:flex;
-    min-height:100%;
-  }
-
-  /* ---------- Sidebar ---------- */
-  .sidebar{
-    width:280px;
-    flex-shrink:0;
-    background:var(--surface);
-    border-right:1px solid var(--border);
-    position:sticky;
-    top:0;
-    height:100vh;
-    overflow-y:auto;
-    padding:20px 14px 40px;
-  }
-  .brand{
-    display:flex;
-    flex-direction:column;
-    gap:2px;
-    padding:6px 10px 18px;
-    border-bottom:1px solid var(--border);
-    margin-bottom:14px;
-  }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
   .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
   .back-link:hover{ color:var(--accent); }
-  .brand .eyebrow{
-    font-size:11px;
-    letter-spacing:.09em;
-    text-transform:uppercase;
-    color:var(--teal);
-    font-weight:600;
-  }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
   .brand h1{ font-size:20px; margin:2px 0 0; }
-
-  .search{
-    width:100%;
-    padding:9px 12px;
-    border-radius:8px;
-    border:1px solid var(--border);
-    background:var(--surface-2);
-    color:var(--ink);
-    font-size:13px;
-    font-family:inherit;
-    margin-bottom:14px;
-  }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
   .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
   .search::placeholder{ color:var(--muted); }
-
   nav.tree{ display:flex; flex-direction:column; gap:2px; }
-  .tree button.nav-item{
-    all:unset;
-    cursor:pointer;
-    display:flex;
-    align-items:baseline;
-    gap:8px;
-    padding:8px 10px;
-    border-radius:7px;
-    font-size:13.5px;
-    color:var(--ink-soft);
-    line-height:1.35;
-  }
-  .tree button.nav-item .num{
-    font-family:"IBM Plex Mono", monospace;
-    font-size:11px;
-    color:var(--muted);
-    min-width:16px;
-  }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
   .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
-  .tree button.nav-item.active{
-    background:var(--accent-soft);
-    color:var(--accent);
-    font-weight:600;
-  }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
   .tree button.nav-item.active .num{ color:var(--accent); }
   .tree .nav-item[hidden]{ display:none; }
-
-  .sidebar-footer{
-    margin-top:22px;
-    padding-top:14px;
-    border-top:1px solid var(--border);
-    font-size:11.5px;
-    color:var(--muted);
-    line-height:1.5;
-  }
-
-  /* ---------- Main ---------- */
-  main{
-    flex:1;
-    min-width:0;
-    padding:36px clamp(18px, 5vw, 64px) 100px;
-  }
-  .section{
-    max-width:760px;
-    margin:0 auto 88px;
-    scroll-margin-top:24px;
-  }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
   .section[hidden]{ display:none; }
-  .kicker{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    font-size:11.5px;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    color:var(--teal);
-    font-weight:600;
-    margin-bottom:10px;
-  }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
   .section h2{ font-size:30px; margin-bottom:6px; }
-  .section .dek{
-    font-size:15px;
-    color:var(--muted);
-    margin-bottom:28px;
-    max-width:60ch;
-  }
-
-  .card{
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:20px 22px;
-    box-shadow:var(--shadow);
-    margin-bottom:18px;
-  }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
   .card h3{ font-size:16px; margin-bottom:10px; }
-  .card h3 .tag{
-    display:inline-block;
-    font-family:"IBM Plex Mono", monospace;
-    font-size:10.5px;
-    letter-spacing:.04em;
-    text-transform:uppercase;
-    background:var(--teal-soft);
-    color:var(--teal);
-    padding:2px 7px;
-    border-radius:5px;
-    margin-right:9px;
-    vertical-align:middle;
-    position:relative;
-    top:-1px;
-  }
-
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
   .dsf{ display:flex; flex-direction:column; gap:10px; }
   .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
-  .dsf .row .label{
-    font-family:"IBM Plex Mono", monospace;
-    font-size:11px;
-    letter-spacing:.05em;
-    text-transform:uppercase;
-    color:var(--accent);
-    padding-top:2px;
-  }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
   .dsf .row p{ margin:0; font-size:14.5px; }
-  @media (max-width:480px){
-    .dsf .row{ grid-template-columns:1fr; gap:3px; }
-  }
-
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
   ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
   ul.notes li{ margin-bottom:5px; }
   ul.notes ul{ margin-top:5px; }
   .mal{ color:var(--muted); font-style:italic; }
-
   .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
   @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
-
-  .stat-strip{
-    display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px;
-  }
-  .stat{
-    background:var(--surface-2);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:10px 14px;
-    min-width:120px;
-  }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
   .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
   .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
-
   table{ width:100%; border-collapse:collapse; font-size:13.5px; }
   th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
-  th{
-    font-family:"IBM Plex Mono", monospace;
-    font-size:10.5px;
-    letter-spacing:.05em;
-    text-transform:uppercase;
-    color:var(--muted);
-    font-weight:600;
-  }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
   td{ color:var(--ink-soft); }
   .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
   .table-wrap table{ margin:0; }
   .table-wrap th, .table-wrap td{ padding:11px 14px; }
-
-  .flow{
-    display:flex; flex-wrap:wrap; align-items:center; gap:6px;
-    margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace;
-  }
-  .flow .step{
-    background:var(--teal-soft); color:var(--teal);
-    border-radius:7px; padding:6px 11px; font-weight:600;
-  }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
   .flow .arrow{ color:var(--muted); }
-
-  .disorder{
-    border-left:3px solid var(--accent);
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-left-width:3px;
-    border-left-color:var(--accent);
-    border-radius:10px;
-    padding:16px 18px;
-    margin-bottom:14px;
-    box-shadow:var(--shadow);
-  }
-  .disorder h4{ font-size:15.5px; margin-bottom:8px; display:flex; justify-content:space-between; gap:10px; align-items:baseline; flex-wrap:wrap;}
-  .disorder .cause{ font-size:12px; color:var(--muted); font-weight:400; font-family:"IBM Plex Sans"; }
-  .disorder .field{ font-size:13.5px; margin-bottom:6px; }
-  .disorder .field b{
-    font-family:"IBM Plex Mono", monospace;
-    font-size:10.5px;
-    text-transform:uppercase;
-    letter-spacing:.04em;
-    color:var(--teal);
-    font-weight:600;
-    display:block;
-    margin-bottom:2px;
-  }
-  .disorder .yoga{
-    background:var(--gold-soft);
-    border-radius:8px;
-    padding:9px 12px;
-    margin-top:8px;
-    font-size:13.5px;
-    color:var(--ink);
-  }
-  .disorder .yoga b{
-    font-family:"IBM Plex Mono", monospace;
-    font-size:10.5px;
-    text-transform:uppercase;
-    letter-spacing:.04em;
-    color:var(--gold);
-    display:block;
-    margin-bottom:3px;
-  }
-
   figure{ margin:0 0 22px; }
-  figure img{
-    width:100%;
-    border-radius:12px;
-    border:1px solid var(--border);
-    box-shadow:var(--shadow);
-    display:block;
-  }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
   figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
-
   .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
   .figure-grid figure{ margin:0; }
   @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
-
-  .source-note{
-    font-size:12px;
-    color:var(--muted);
-    border-top:1px dashed var(--border);
-    padding-top:12px;
-    margin-top:6px;
-  }
-
-  /* ---------- Layer model (prototype) ---------- */
-  .proto-flag{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    font-size:11px;
-    font-family:"IBM Plex Mono", monospace;
-    letter-spacing:.04em;
-    text-transform:uppercase;
-    color:var(--gold);
-    background:var(--gold-soft);
-    padding:4px 9px;
-    border-radius:6px;
-    margin-bottom:14px;
-  }
-  .layer-nav{
-    display:flex;
-    gap:4px;
-    background:var(--surface-2);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:4px;
-    margin-bottom:18px;
-  }
-  .layer-nav button{
-    all:unset;
-    cursor:pointer;
-    flex:1;
-    text-align:center;
-    padding:9px 6px;
-    border-radius:7px;
-    font-size:12.5px;
-    font-weight:600;
-    color:var(--muted);
-  }
-  .layer-nav button .n{
-    display:block;
-    font-family:"IBM Plex Mono", monospace;
-    font-size:9.5px;
-    letter-spacing:.05em;
-    text-transform:uppercase;
-    font-weight:500;
-    opacity:.75;
-    margin-bottom:2px;
-  }
-  .layer-nav button.active{
-    background:var(--surface);
-    color:var(--accent);
-    box-shadow:var(--shadow);
-  }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
   .layer-panel[hidden]{ display:none; }
-  .layer-panel{
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:22px 24px;
-    box-shadow:var(--shadow);
-    margin-bottom:18px;
-  }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
   .layer-panel .story p{ font-size:14.5px; max-width:none; }
   .layer-panel .story p b{ color:var(--ink); }
-  .analogy{
-    background:var(--teal-soft);
-    border-radius:9px;
-    padding:12px 15px;
-    font-size:13.5px;
-    color:var(--ink);
-    margin:14px 0;
-  }
-  .analogy b{
-    display:block;
-    font-family:"IBM Plex Mono", monospace;
-    font-size:10px;
-    text-transform:uppercase;
-    letter-spacing:.05em;
-    color:var(--teal);
-    margin-bottom:4px;
-  }
-  .explain-diagram{ display:flex; flex-wrap:wrap; gap:6px; margin:14px 0; font-size:13px; font-family:"IBM Plex Mono", monospace; }
-  .explain-diagram .step{ background:var(--surface-2); border:1px solid var(--border); border-radius:7px; padding:6px 10px; }
-  .explain-diagram .arrow{ color:var(--muted); }
-  .marks-tag{
-    display:inline-block;
-    font-family:"IBM Plex Mono", monospace;
-    font-size:10px;
-    text-transform:uppercase;
-    letter-spacing:.04em;
-    color:var(--accent);
-    background:var(--accent-soft);
-    padding:2px 8px;
-    border-radius:5px;
-    margin-bottom:12px;
-  }
-  .practice-link{
-    border-left:3px solid var(--gold);
-    background:var(--gold-soft);
-    border-radius:8px;
-    padding:12px 15px;
-    margin:12px 0;
-    font-size:13.5px;
-  }
-  .practice-link b{
-    display:block;
-    font-family:"IBM Plex Mono", monospace;
-    font-size:10px;
-    text-transform:uppercase;
-    letter-spacing:.04em;
-    color:var(--gold);
-    margin-bottom:4px;
-  }
-  .recall-strip{
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
-    gap:10px;
-  }
-  .recall-card{
-    background:var(--surface-2);
-    border:1px solid var(--border);
-    border-radius:9px;
-    padding:11px 13px;
-    cursor:pointer;
-    user-select:none;
-  }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
   .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
   .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
   .recall-card.flipped .a{ display:block; }
   .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
   .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
-
-  .mobile-bar{
-    display:none;
-    position:sticky; top:0; z-index:20;
-    background:var(--surface);
-    border-bottom:1px solid var(--border);
-    padding:12px 16px;
-    padding-top: calc(12px + env(safe-area-inset-top, 0px));
-    align-items:center;
-    gap:10px;
-  }
-  .mobile-bar button{
-    all:unset; cursor:pointer;
-    display:flex; flex-direction:column; gap:3px;
-    padding:6px;
-  }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
   .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
   .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
-
   @media (max-width: 860px){
-    .sidebar{
-      position:fixed; left:0; top:0; bottom:0; z-index:30;
-      transform:translateX(-100%);
-      transition:transform .22s ease;
-      width:82vw; max-width:320px;
-      box-shadow:0 0 0 100vmax rgba(0,0,0,0);
-    }
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
     .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
     .mobile-bar{ display:flex; }
     main{ padding-top:28px; }
-    .scrim{
-      display:none;
-      position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25;
-    }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
     .scrim.show{ display:block; }
   }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  @media (max-width:640px){ .fig.wide-svg{ overflow-x:auto; -webkit-overflow-scrolling:touch; } .fig.wide-svg svg{ min-width:540px; } .fig.wide-svg::after{ content:"swipe sideways to see the whole diagram"; display:block; font-size:11px; color:var(--muted); text-align:center; margin-top:4px; } }
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .fig.photo img{ max-width:100%; height:auto; border-radius:8px; }
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 
@@ -526,691 +231,1221 @@
     </div>
     <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
     <nav class="tree" id="tree">
-      <button class="nav-item" data-target="overview"><span class="num">00</span><span>Overview</span></button>
-      <button class="nav-item" data-target="mouth"><span class="num">01</span><span>Mouth &amp; Oral Cavity</span></button>
-      <button class="nav-item" data-target="pharynx"><span class="num">02</span><span>Pharynx &amp; Oesophagus</span></button>
-      <button class="nav-item" data-target="stomach"><span class="num">03</span><span>Stomach</span></button>
-      <button class="nav-item" data-target="small-intestine"><span class="num">04</span><span>Small Intestine</span></button>
-      <button class="nav-item" data-target="large-intestine"><span class="num">05</span><span>Large Intestine</span></button>
-      <button class="nav-item" data-target="liver"><span class="num">06</span><span>Liver &amp; Accessory Organs</span></button>
-      <button class="nav-item" data-target="absorption"><span class="num">07</span><span>Nutrient Absorption</span></button>
-      <button class="nav-item" data-target="disorders"><span class="num">08</span><span>Disorders &amp; Yoga</span></button>
+      <button class="nav-item" data-target="overview"><span class="num">01</span><span>Big Picture &amp; Gut Wall</span></button>
+      <button class="nav-item" data-target="mouth"><span class="num">02</span><span>Mouth, Teeth &amp; Saliva</span></button>
+      <button class="nav-item" data-target="swallow"><span class="num">03</span><span>Pharynx &amp; Oesophagus</span></button>
+      <button class="nav-item" data-target="stomach"><span class="num">04</span><span>Stomach &amp; Gastric Juice</span></button>
+      <button class="nav-item" data-target="small"><span class="num">05</span><span>Small Intestine</span></button>
+      <button class="nav-item" data-target="glands"><span class="num">06</span><span>Pancreas, Liver &amp; Bile</span></button>
+      <button class="nav-item" data-target="absorb"><span class="num">07</span><span>Digestion &amp; Absorption</span></button>
+      <button class="nav-item" data-target="large"><span class="num">08</span><span>Large Intestine &amp; Elimination</span></button>
+      <button class="nav-item" data-target="yoga"><span class="num">09</span><span>Disorders &amp; Yoga</span></button>
     </nav>
     <div class="sidebar-footer">
-      Class notes &middot; 10&ndash;16 Sep 2026<br>Reference: Anatomy &amp; Physiology &mdash; Digestive System (PDF)
+      Reference: class notes 10&ndash;16 Sep 2026; Anatomy &amp; Physiology Notes &ndash; Digestive System (PDF); Yoga &amp; Human Body notes; Ross &amp; Wilson digestive chapter (general physiology)
     </div>
   </aside>
 
   <main id="main">
-
-    <!-- 00 OVERVIEW -->
+    <!-- 01 OVERVIEW -->
     <section class="section" id="sec-overview">
-      <div class="kicker">00 &middot; Foundations</div>
-      <h2>Overview</h2>
-      <p class="dek">Food contains carbohydrates, protein, fat, vitamins, minerals and water &mdash; none of it usable until it is broken into molecules small enough for a cell to absorb. That breakdown is the job of this whole system.</p>
+      <div class="sec-head">
+        <div class="kicker">01 &#183; Big picture</div>
+        <h2>The Digestive System: One Tube and Its Helpers</h2>
+        <p class="dek">A long tube from mouth to anus does the work; a few glands pour juices into it. Food becomes small molecules the blood can carry to every cell.</p>
+      </div>
 
-      <figure>
-        <img src="assets/diagrams/overview.jpg" alt="Digestive system overview showing main organs, the digestion and absorption process step by step, nutrient absorption pathways in the small intestine, and major digestive enzymes">
-        <figcaption>Main organs, the process step-by-step, and the major enzymes at each stage.</figcaption>
-      </figure>
+      <div class="stat-strip">
+        <div class="stat"><div class="v">~9 m</div><div class="k">mouth to anus (&#8220;30 feet&#8221;, PDF)</div></div>
+        <div class="stat"><div class="v">5</div><div class="k">activities of digestion</div></div>
+        <div class="stat"><div class="v">4</div><div class="k">layers of the gut wall</div></div>
+        <div class="stat"><div class="v">6</div><div class="k">accessory organs</div></div>
+      </div>
 
-      <div class="card">
-        <h3><span class="tag">Def</span>Digestive system</h3>
-        <div class="dsf">
-          <div class="row"><div class="label">Def</div><p>The organ system that breaks down food into simple nutrients the body's cells can absorb and use.</p></div>
-          <div class="row"><div class="label">Stru</div><p>Two working parts &mdash; the alimentary canal (a continuous tube) and a set of accessory organs that assist but don't carry food.</p></div>
-          <div class="row"><div class="label">Fun</div><p>Converts complex food into absorbable nutrients, then delivers them into blood and lymph for use by every cell.</p></div>
+      <div class="table-wrap"><table>
+        <tr><th>Your syllabus line</th><th>Where it is on this page</th></tr>
+        <tr><td>Gross anatomy: GI tract, mouth, pharynx, stomach, intestines</td><td>1 (this section), 2, 3, 4, 5, 8</td></tr>
+        <tr><td>Physiology of digestion, acid production, gastric juices</td><td>4 (stomach, HCl, gastric juice), 7 (digestion and absorption)</td></tr>
+        <tr><td>Salivary glands, pancreas, liver</td><td>2 (salivary glands), 6 (pancreas, liver, bile)</td></tr>
+        <tr><td>Relevance to yogic practices, asanas, pranayama</td><td>9 (disorders and yoga)</td></tr>
+      </table></div>
+
+      <div class="spread">
+        <figure class="fig">
+          <svg viewBox="0 0 380 480" role="img" aria-label="Schematic of the digestive system: mouth with salivary gland, pharynx, oesophagus, stomach, liver with gallbladder, pancreas, coiled small intestine, framed by the large intestine, rectum and anus">
+            <!-- mouth, salivary, pharynx, oesophagus -->
+            <ellipse class="ft" cx="190" cy="30" rx="32" ry="18"/>
+            <ellipse class="fs" cx="140" cy="40" rx="11" ry="8"/>
+            <rect class="ft" x="180" y="48" width="20" height="30" rx="4"/>
+            <path d="M190 78 L190 152" fill="none" stroke="var(--teal)" stroke-width="10" stroke-linecap="round"/>
+            <!-- liver + gallbladder -->
+            <path class="fa" d="M70 160 C100 140 170 146 190 162 C192 192 170 208 128 208 C94 208 72 192 70 160Z"/>
+            <ellipse class="ft" cx="160" cy="218" rx="8" ry="12"/>
+            <!-- stomach -->
+            <path class="fg" d="M192 150 C222 140 272 152 274 192 C276 234 242 248 218 234 C208 228 212 214 218 206 C196 202 188 172 192 150Z"/>
+            <!-- pancreas -->
+            <ellipse class="fs" cx="215" cy="262" rx="52" ry="9"/>
+            <!-- large intestine frame -->
+            <path d="M118 400 L118 288 L262 288 L262 400 C262 424 232 428 214 420 C196 412 190 424 190 440" fill="none" stroke="var(--accent)" stroke-width="13" stroke-linejoin="round" stroke-linecap="round" opacity=".85"/>
+            <!-- small intestine coil -->
+            <path d="M146 308 H236 Q250 308 250 322 Q250 334 236 334 H146 Q132 334 132 346 Q132 358 146 358 H236 Q250 358 250 370 Q250 382 236 382 H146" fill="none" stroke="var(--teal)" stroke-width="10" stroke-linecap="round"/>
+            <!-- anus -->
+            <circle cx="190" cy="452" r="7" fill="var(--accent)"/>
+            <!-- labels -->
+            <text class="t tb" x="254" y="34">Mouth</text>
+            <text class="t tb" x="6" y="30">Salivary</text><text class="t tb" x="6" y="43">glands</text><path class="lnt" d="M54 38 H128"/>
+            <text class="t tb" x="214" y="118">Oesophagus</text><path class="lnt" d="M196 114 H210"/>
+            <text class="t tb" x="6" y="180">Liver</text><text class="t tb" x="6" y="232">Gallbladder</text><path class="lnt" d="M70 228 H150"/>
+            <text class="t tb" x="288" y="196">Stomach</text><path class="lnt" d="M262 192 H284"/>
+            <text class="t tb" x="288" y="266">Pancreas</text><path class="lnt" d="M268 262 H284"/>
+            <text class="t tb" x="270" y="330">Small</text><text class="t tb" x="270" y="343">intestine</text><path class="lnt" d="M252 336 H266"/>
+            <text class="t tb" x="6" y="350">Large</text><text class="t tb" x="6" y="363">intestine</text><path class="lnt" d="M58 356 H112"/>
+            <text class="t tb" x="214" y="456">Rectum &amp; anus</text>
+            <g class="bd"><circle cx="236" cy="18" r="9"/><text x="236" y="22">1</text></g><g class="bd"><circle cx="120" cy="52" r="9"/><text x="120" y="56">2</text></g><g class="bd"><circle cx="190" cy="100" r="9"/><text x="190" y="104">3</text></g><g class="bd"><circle cx="240" cy="176" r="9"/><text x="240" y="180">4</text></g><g class="bd"><circle cx="110" cy="180" r="9"/><text x="110" y="184">5</text></g><g class="bd"><circle cx="160" cy="238" r="9"/><text x="160" y="242">6</text></g><g class="bd"><circle cx="215" cy="277" r="9"/><text x="215" y="281">7</text></g><g class="bd"><circle cx="190" cy="320" r="9"/><text x="190" y="324">8</text></g><g class="bd"><circle cx="130" cy="300" r="9"/><text x="130" y="304">9</text></g><g class="bd"><circle cx="190" cy="432" r="9"/><text x="190" y="436">10</text></g>
+          </svg>
+          <figcaption>The whole tract on one page. Numbers match the key.</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Mouth</b> &#8211; chewing, mixing with saliva, bolus formation; starch digestion begins.<span class="src cls">class</span></li>
+          <li><b>Salivary glands</b> &#8211; three pairs pour saliva into the mouth (accessory).<span class="src cls">class</span></li>
+          <li><b>Pharynx and oesophagus</b> &#8211; the passage; peristalsis pushes the bolus down (~25 cm).<span class="src cls">class</span></li>
+          <li><b>Stomach</b> &#8211; J-shaped bag; stores, churns, starts protein digestion with acid and pepsin.</li>
+          <li><b>Liver</b> &#8211; largest internal gland; makes bile (accessory).</li>
+          <li><b>Gallbladder</b> &#8211; stores bile until fat arrives.</li>
+          <li><b>Pancreas</b> &#8211; sends enzyme-rich juice and bicarbonate into the duodenum.</li>
+          <li><b>Small intestine</b> &#8211; ~6 m; duodenum, jejunum, ileum; main site of digestion and absorption.</li>
+          <li><b>Large intestine</b> &#8211; absorbs water and electrolytes, forms faeces, houses gut bacteria.</li>
+          <li><b>Rectum and anus</b> &#8211; store and release faeces (elimination).</li>
+        </ol>
+      </div>
+
+      <h3 class="sub"><span class="n">1A</span>Alimentary canal vs accessory organs</h3>
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Alimentary canal (GI tract)</span>
+          <p>The tube food <b>passes through</b>: mouth &#8594; pharynx &#8594; oesophagus &#8594; stomach &#8594; small intestine &#8594; large intestine &#8594; rectum &#8594; anus.<span class="src cls">class</span></p>
+        </div>
+        <div class="blk know">
+          <span class="lbl">Accessory organs</span>
+          <p>They <b>help digestion but food never enters them</b>: teeth, tongue, salivary glands, liver, gallbladder, pancreas.<span class="src cls">class</span></p>
         </div>
       </div>
 
-      <div class="grid2">
-        <div class="card">
-          <h3>Alimentary canal (GI tract)</h3>
-          <p style="font-size:13.5px; margin-bottom:10px;">Mouth to anus &mdash; <span class="mal">vaayil ella bhaagam</span>. Food physically passes through every part of this tube.</p>
-          <div class="flow">
-            <span class="step">Mouth</span><span class="arrow">&rarr;</span>
-            <span class="step">Pharynx</span><span class="arrow">&rarr;</span>
-            <span class="step">Oesophagus</span><span class="arrow">&rarr;</span>
-            <span class="step">Stomach</span><span class="arrow">&rarr;</span>
-            <span class="step">Small intestine</span><span class="arrow">&rarr;</span>
-            <span class="step">Large intestine</span><span class="arrow">&rarr;</span>
-            <span class="step">Rectum</span><span class="arrow">&rarr;</span>
-            <span class="step">Anus</span>
-          </div>
+      <h3 class="sub"><span class="n">1B</span>The five activities</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Activity</th><th>Meaning</th><th>Example</th></tr>
+        <tr><td><b>Ingestion</b></td><td>Taking food or water into the mouth</td><td>Eating, drinking</td></tr>
+        <tr><td><b>Digestion</b></td><td>Breaking complex food into simple substances (mechanical + chemical)</td><td>Chewing; amylase on starch</td></tr>
+        <tr><td><b>Absorption</b></td><td>Nutrients move from the gut into blood (or lymph)</td><td>Glucose through villi</td></tr>
+        <tr><td><b>Assimilation</b></td><td>Cells take up and use the absorbed nutrients</td><td>Glucose burned for energy</td></tr>
+        <tr><td><b>Elimination</b></td><td>Undigested material leaves as faeces (defaecation)</td><td>Rectum &#8594; anus</td></tr>
+      </table></div>
+
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Food is mostly <b>big molecules</b> (starch, protein, fat) that cannot cross the gut wall. The body therefore runs a <b>disassembly line</b>: each station does one job, the right chemical is added just where it is needed, and the pieces are only taken into the blood once they are small enough (glucose, amino acids, fatty acids). Everything that is not broken down or absorbed simply travels to the end and leaves.</p>
+        <p>The tube itself is a <b>conveyor belt with a wall of smooth muscle</b>. The muscle squeezes in coordinated waves (peristalsis) so the contents always move forward.</p>
+      </div>
+
+      <div class="cols2">
+        <div class="blk mem">
+          <span class="lbl">Memory aid</span>
+          <p><b>I-D-A-A-E:</b> Ingest &#8594; Digest &#8594; Absorb &#8594; Assimilate &#8594; Eliminate.</p>
+          <p style="margin:0"><b>Tract in order:</b> <i>&#8220;My Perfect Old Sports Shirt Looks Really Awesome.&#8221;</i> (Mouth, Pharynx, Oesophagus, Stomach, Small, Large, Rectum, Anus &#8211; a made-up sentence.)</p>
         </div>
-        <div class="card">
-          <h3>Accessory organs</h3>
-          <p style="font-size:13.5px; margin-bottom:10px;">Help digestion, but food never passes through them.</p>
-          <ul class="notes">
-            <li>Teeth</li>
-            <li>Tongue</li>
-            <li>Salivary glands</li>
-            <li>Liver</li>
-            <li>Gallbladder</li>
-            <li>Pancreas</li>
-          </ul>
+        <div class="blk conf">
+          <span class="lbl">Common confusion</span>
+          <p><b>Absorption &#8800; assimilation.</b> Absorption = nutrients <i>enter the blood</i>. Assimilation = cells <i>use</i> them. And <b>liver and pancreas are not part of the tube</b>: they are accessory glands that deliver juices into it.</p>
         </div>
       </div>
 
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; Section B &#8220;What is the digestive process?&#8221;</span>
+        <p>Answer in five steps: ingestion &#8594; digestion (mechanical in the mouth and stomach, chemical by saliva, gastric juice, pancreatic juice, bile and intestinal juice) &#8594; absorption (mainly in the small intestine) &#8594; assimilation &#8594; elimination of the undigested residue as faeces.</p>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;Your gut is a nine-metre tube. Food goes in, gets chewed, then stirred in an acid bath in the stomach, and then in the small intestine juices from the liver and pancreas chop it into tiny pieces. Those pieces go through the gut wall into the blood. What is left goes on to the large intestine, which takes back the water, and the rest leaves as stool.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; the four layers of the gut wall</summary>
+        <div class="inner">
+          <svg viewBox="0 0 360 150" role="img" aria-label="Cross-section of the gut wall: lumen in the centre, then mucosa, submucosa, muscularis (circular and longitudinal) and serosa" style="max-width:360px;width:100%;display:block;margin:0 auto 10px">
+            <circle cx="80" cy="75" r="62" class="fw" stroke="var(--border)"/>
+            <circle cx="80" cy="75" r="56" fill="none" stroke="var(--accent)" stroke-width="6" opacity=".35"/>
+            <circle cx="80" cy="75" r="44" fill="none" stroke="var(--gold)" stroke-width="8" opacity=".55"/>
+            <circle cx="80" cy="75" r="34" fill="none" stroke="var(--teal)" stroke-width="8" opacity=".6"/>
+            <circle cx="80" cy="75" r="22" class="ft"/>
+            <text class="t ts tc" x="80" y="78" style="font-weight:600">Lumen</text>
+            <path class="lnt" d="M80 13 H150"/><text class="t ts" x="154" y="17">Serosa (outermost)</text>
+            <path class="lnt" d="M104 40 L150 48"/><text class="t ts" x="154" y="52">Muscularis: outer longitudinal, inner circular</text>
+            <path class="lnt" d="M110 68 L150 82"/><text class="t ts" x="154" y="86">Submucosa: connective tissue, vessels, nerves</text>
+            <path class="lnt" d="M100 82 L150 116"/><text class="t ts" x="154" y="120">Mucosa: epithelium, secretes and absorbs</text>
+          </svg>
+          <p><b>Mucosa</b> (innermost, moist lining with secretory and absorptive cells) &#8594; <b>submucosa</b> (soft, highly vascular connective tissue with nerves) &#8594; <b>muscularis externa</b> (inner circular + outer longitudinal muscle) &#8594; <b>serosa</b> (outer covering).<span class="src cls">PDF</span> Circular muscle narrows the tube; longitudinal muscle shortens it; together they make peristalsis. The stomach adds a third, oblique layer (section 4).</p>
+        </div>
+      </details>
+
       <div class="card">
-        <h3>The five major activities of digestion</h3>
-        <ul class="notes">
-          <li><b>Ingestion</b> &mdash; putting food or water into the mouth</li>
-          <li><b>Digestion</b> &mdash; breaking complex food into simple substances</li>
-          <li><b>Absorption</b> &mdash; nutrients move from the GI tract into blood</li>
-          <li><b>Assimilation</b> &mdash; cells take up and use the absorbed nutrients</li>
-          <li><b>Elimination</b> &mdash; undigested material expelled as feces (<span class="mal">malam</span>)</li>
-        </ul>
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Name the five activities of digestion.</div><div class="a">Ingestion, digestion, absorption, assimilation, elimination</div></div>
+          <div class="recall-card"><div class="q">Alimentary canal vs accessory organs?</div><div class="a">Canal: food passes through (mouth to anus). Accessory: help digestion, food does not enter (teeth, tongue, salivary glands, liver, gallbladder, pancreas)</div></div>
+          <div class="recall-card"><div class="q">Order of the GI tract?</div><div class="a">Mouth, pharynx, oesophagus, stomach, small intestine, large intestine, rectum, anus</div></div>
+          <div class="recall-card"><div class="q">Four layers of the gut wall?</div><div class="a">Mucosa, submucosa, muscularis, serosa (inside to outside)</div></div>
+          <div class="recall-card"><div class="q">Absorption vs assimilation?</div><div class="a">Absorption: nutrients enter blood. Assimilation: cells use them</div></div>
+        </div>
       </div>
     </section>
 
-    <!-- 01 MOUTH -->
+    <!-- 02 MOUTH -->
     <section class="section" id="sec-mouth">
-      <div class="kicker">01 &middot; Ingestion</div>
-      <h2>Mouth &amp; Oral Cavity</h2>
-      <p class="dek">Digestion begins here &mdash; three things happen at once: mastication, mixing with saliva, and bolus formation.</p>
-
-      <div class="figure-grid">
-        <figure>
-          <img src="assets/diagrams/teeth-types.jpg" alt="The four types of human teeth: incisor, canine, premolar, molar">
-          <figcaption>Incisor, canine, premolar, molar &mdash; each shaped for a different job.</figcaption>
-        </figure>
-        <figure>
-          <img src="assets/diagrams/salivary-glands.jpg" alt="Salivary glands: parotid, submandibular, sublingual, with their ducts">
-          <figcaption>Parotid, submandibular and sublingual glands and their ducts.</figcaption>
-        </figure>
+      <div class="sec-head">
+        <div class="kicker">02 &#183; Where digestion starts</div>
+        <h2>Mouth, Teeth, Tongue &amp; Saliva</h2>
+        <p class="dek">Three things happen together in the mouth: chewing, mixing with saliva, and shaping a bolus. Starch digestion starts here.</p>
       </div>
 
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
-      </div>
-
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>The mouth isn't just an entry point &mdash; three separate jobs happen here at once, and they overlap on purpose. Teeth cut food into smaller pieces (<b>mastication</b>), saliva soaks into it as you chew (<b>mixing</b>), and the tongue gathers the result into a soft ball called a <b>bolus</b>, ready to swallow.</p>
-        <p>Why bother with saliva this early, when the stomach is going to do most of the real digesting? Saliva carries an enzyme, <b>salivary amylase</b>, that starts breaking down starch immediately &mdash; so by the time food reaches the stomach, carbohydrate digestion already has a head start. Smaller pieces from chewing also give that enzyme more surface area to work on, the same reason chopped vegetables cook faster than whole ones.</p>
-        <div class="analogy">
-          <b>Why you salivate before you even taste anything</b>
-          Saliva release is controlled by the autonomic nervous system in two modes. The <b>unconditioned reflex</b> fires when food is already in your mouth. The <b>conditioned reflex</b> fires just from seeing or smelling food &mdash; your body starts preparing for digestion before a single bite happens, the same reflex that makes your mouth water at the smell of cooking food.
-        </div>
-        <p>The palate matters more than it looks like it should: the soft palate lifts during swallowing specifically to seal off the nasal cavity, which is why food doesn't usually come out your nose when you swallow. When that seal fails mid-swallow, it usually does.</p>
-      </div>
-
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Reference &middot; supports Section B digestion questions</div>
-        <div class="dsf">
-          <div class="row"><div class="label">Def</div><p>The oral cavity where food enters the body and mechanical + early chemical digestion begins.</p></div>
-          <div class="row"><div class="label">Stru</div><p>Bounded by the hard and soft palate above, teeth and tongue within, opening into the pharynx behind.</p></div>
-          <div class="row"><div class="label">Fun</div><p>Mastication (teeth break food into small pieces), mixing with saliva, and bolus formation &mdash; the tongue collects chewed food into a soft mass and pushes it toward the pharynx.</p></div>
-        </div>
-
-        <div class="grid2" style="margin-top:16px;">
-          <div>
-            <p style="font-size:13px; font-weight:600; color:var(--ink); margin-bottom:6px;">Palate</p>
-            <ul class="notes">
-              <li><b>Hard palate</b> &mdash; bony, rigid, anterior</li>
-              <li><b>Soft palate</b> &mdash; movable, muscular, posterior</li>
-              <li><b>Uvula</b> (<span class="mal">annaku</span>) &mdash; where the soft palate ends</li>
-            </ul>
-          </div>
-          <div>
-            <p style="font-size:13px; font-weight:600; color:var(--ink); margin-bottom:6px;">Tongue</p>
-            <ul class="notes">
-              <li>Mixes food with saliva</li>
-              <li>Pushes the bolus during swallowing</li>
-              <li>Roles in taste and speech</li>
-            </ul>
-          </div>
-        </div>
-
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Teeth</p>
-        <div class="stat-strip">
-          <div class="stat"><div class="v">20</div><div class="k">Milk teeth</div></div>
-          <div class="stat"><div class="v">32</div><div class="k">Permanent teeth</div></div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Type</th><th>Count</th><th>Role</th></tr>
-            <tr><td>Incisor</td><td>8</td><td>Bite</td></tr>
-            <tr><td>Canine</td><td>4</td><td>Tear</td></tr>
-            <tr><td>Premolar</td><td>8</td><td>Grind &amp; crush</td></tr>
-            <tr><td>Molar</td><td>12</td><td>Grind &amp; crush</td></tr>
-          </table>
-        </div>
-        <ul class="notes">
-          <li><b>Crown</b> &mdash; the visible part &middot; <b>Root</b> &mdash; anchored below the gum &middot; <b>Apex</b> &mdash; the root tip</li>
-          <li><b>Enamel</b> &mdash; the hardest tissue in the body &middot; <b>Dentin</b> &mdash; the bulk of the tooth &middot; <b>Pulp</b> &mdash; vessels, connective tissue, nerves</li>
-        </ul>
-        <figure style="margin-top:14px;">
-          <img src="assets/diagrams/tooth-cross-section.jpg" alt="Labeled cross-section of a tooth showing crown, root, enamel, dentin, pulp, gum, cementum, blood vessels and nerve">
-          <figcaption>Crown to root &mdash; enamel, dentin, pulp, cementum, and the nerve/blood supply.</figcaption>
-        </figure>
-
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Salivary glands</p>
-        <ul class="notes">
-          <li><b>Parotid</b> (near the ear) &middot; <b>Submandibular</b> (beneath the mandible) &middot; <b>Sublingual</b> (near the tongue)</li>
-        </ul>
-        <div class="stat-strip">
-          <div class="stat"><div class="v">6&ndash;7</div><div class="k">Saliva pH</div></div>
-        </div>
-        <p class="source-note">Unlike humans, an elephant regrows a new set of teeth throughout life, until its final set wears out.</p>
-      </div>
-
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Note</div>
-        <p style="font-size:14.5px;">Your class notes don't link a named asana specifically to the mouth or salivary glands &mdash; the connection here is more general than the Section C answers for stomach or intestines.</p>
-        <div class="practice-link">
-          <b>Calm state, better first-stage digestion</b>
-          Since saliva release is partly reflex-driven through the autonomic nervous system, eating in a relaxed (parasympathetic-dominant) state versus a rushed, stressed one plausibly affects how much saliva &mdash; and therefore how much salivary amylase &mdash; is available before food ever reaches the stomach. This is consistent with the general yoga-and-digestion principle used across the other sections, but it isn't something your notes state explicitly for the mouth, so don't present it as a memorized fact without checking with your teacher.
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
-        <div class="recall-strip">
-          <div class="recall-card"><div class="q">How many permanent teeth does an adult have?</div><div class="a">32</div></div>
-          <div class="recall-card"><div class="q">Which tooth type bites?</div><div class="a">Incisor</div></div>
-          <div class="recall-card"><div class="q">What is the hardest tissue in the body?</div><div class="a">Enamel</div></div>
-          <div class="recall-card"><div class="q">What enzyme in saliva starts carb digestion?</div><div class="a">Salivary amylase</div></div>
-          <div class="recall-card"><div class="q">What is saliva's pH range?</div><div class="a">6&ndash;7</div></div>
-          <div class="recall-card"><div class="q">Name the three salivary glands.</div><div class="a">Parotid, submandibular, sublingual</div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 02 PHARYNX / OESOPHAGUS -->
-    <section class="section" id="sec-pharynx">
-      <div class="kicker">02 &middot; Transport</div>
-      <h2>Pharynx &amp; Oesophagus</h2>
-      <p class="dek">A shared passage, then a one-way muscular tube &mdash; this is how the bolus travels from mouth to stomach.</p>
-
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
-      </div>
-
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>The pharynx is a shared corridor &mdash; the same passage carries both air and food, which sounds risky, and it is: this is the junction where choking happens if timing goes wrong. Its three regions divide the traffic: the nasopharynx handles only air, the oropharynx carries both, and the laryngopharynx is where the routes finally split, sending food into the oesophagus and air into the larynx.</p>
-        <p>Once the bolus is in the oesophagus, it doesn't just fall down to the stomach &mdash; gravity alone wouldn't work if you were lying down or upside-down. Instead, the oesophagus squeezes itself in a travelling wave called <b>peristalsis</b>, the same way you'd move a marble along a length of tubing by pinching and releasing behind it, one section at a time.</p>
-        <div class="analogy">
-          <b>Why the entry to the stomach needs a one-way valve</b>
-          At the bottom of the oesophagus sits a ring of muscle (the lower oesophageal sphincter) that opens to let food through, then closes to keep stomach contents &mdash; and stomach acid &mdash; from coming back up. When that sphincter loosens or opens at the wrong times, acid escapes upward into a part of the body with none of the stomach's protective mucus lining. That's the entire mechanism behind acid reflux (GERD), covered in Layer 3.
-        </div>
-      </div>
-
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Reference</div>
-        <div class="dsf">
-          <div class="row"><div class="label">Def</div><p>Pharynx: a muscular passage shared by the respiratory and digestive systems. Oesophagus: the muscular tube connecting pharynx to stomach.</p></div>
-          <div class="row"><div class="label">Stru</div><p>Pharynx has three regions, front to back. Oesophagus is about 25 cm long.</p></div>
-          <div class="row"><div class="label">Fun</div><p>Pharynx routes air to the larynx and food to the oesophagus without letting the two cross. Oesophagus transports food to the stomach via peristalsis &mdash; coordinated, wave-like muscular contractions.</p></div>
-        </div>
-        <div class="table-wrap" style="margin-top:14px;">
-          <table>
-            <tr><th>Region</th><th>Role</th></tr>
-            <tr><td>Nasopharynx</td><td>Near respiration</td></tr>
-            <tr><td>Oropharynx</td><td>Shared by food and air</td></tr>
-            <tr><td>Laryngopharynx</td><td>Leads into the oesophagus</td></tr>
-          </table>
-        </div>
-      </div>
-
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Section C style</div>
-        <div class="practice-link">
-          <b>Gastro-oesophageal Reflux (GERD)</b>
-          Symptoms: heartburn, chest congestion, throat infection. Happens when the lower oesophageal sphincter loosens and acid moves back up &mdash; often driven by stress or irregular meal timing (see Layer 1's "one-way valve" explanation).
-        </div>
-        <div class="practice-link">
-          <b>Yoga support</b>
-          Pavana Muktasana, Janu Shirshasana, gentle hand in-out movement, cooling pranayama, and meditation to release stress. The physiological link: chronic stress keeps the nervous system in a state that both increases acid production and can affect sphincter tone, so stress-reduction practices target the root cause, not just the symptom.
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
-        <div class="recall-strip">
-          <div class="recall-card"><div class="q">What are the three regions of the pharynx?</div><div class="a">Nasopharynx, oropharynx, laryngopharynx</div></div>
-          <div class="recall-card"><div class="q">How long is the oesophagus?</div><div class="a">About 25 cm</div></div>
-          <div class="recall-card"><div class="q">What is peristalsis?</div><div class="a">Coordinated, wave-like muscular contractions that push food forward</div></div>
-          <div class="recall-card"><div class="q">What causes GERD?</div><div class="a">A loosened lower oesophageal sphincter letting acid rise</div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 03 STOMACH &mdash; LAYERED PROTOTYPE -->
-    <section class="section" id="sec-stomach">
-      <div class="kicker">03 &middot; Storage &amp; chemical digestion</div>
-      <h2>Stomach</h2>
-      <p class="dek">A J-shaped muscular organ &mdash; part storage tank, part grinder, part acid bath.</p>
-
-      <figure>
-        <img src="assets/diagrams/stomach-anatomy.jpg" alt="Anatomy of the stomach showing cardia, fundus, body, pyloric region, duodenum">
-        <figcaption>Regions of the stomach: cardia, fundus, body (corpus), and pyloric region leading into the duodenum.</figcaption>
-      </figure>
-
-      <div class="layer-nav" id="stomachLayers">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3 &middot; 10-mark</span>Connect to practice</button>
-      </div>
-
-      <!-- LAYER 1 &mdash; UNDERSTAND -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>Once food is a soft, chewed mass, it drops into the stomach &mdash; and the stomach is where the body stops treating food gently. Everything here is designed to break it apart, both physically and chemically.</p>
-        <p><b>Physically</b>, the stomach wall squeezes and churns like a front-loading washing machine. Its J-shape and layered muscle let it fold the food back on itself over and over, mixing it far more thoroughly than the mouth ever could.</p>
-        <p><b>Chemically</b>, three different cell types in the stomach lining each add one ingredient to a deliberately harsh mix: mucous cells lay down a protective coating, chief cells release a harmless, inactive enzyme called pepsinogen, and parietal cells pump out hydrochloric acid &mdash; strong enough to dissolve metal, roughly pH 1&ndash;2.</p>
-        <div class="analogy">
-          <b>Why the acid is inactive-enzyme-first, not enzyme-first</b>
-          If the stomach released pepsin directly, it would start digesting the stomach's own lining the moment it was made. Instead it releases pepsinogen &mdash; enzyme with its "safety catch" still on &mdash; and only the acid, once it's actually in the stomach cavity, switches that catch off by converting it to active pepsin. It's a deliberately two-step process so the dangerous enzyme is never active until it's already where it's supposed to be.
-        </div>
-        <p>That's also why the mucus layer matters so much: it's the only thing standing between HCl strong enough to dissolve metal and the stomach's own tissue. When that barrier weakens &mdash; from stress, irregular eating, or excess acid &mdash; you get gastritis or a peptic ulcer. This is the direct physiological reason yoga's stress-reduction practices are considered protective here: chronic stress keeps acid secretion elevated and can thin that protective layer over time.</p>
-        <p>By the time this process is done, the bolus has become <b>chyme</b> &mdash; a semi-fluid, acidic mix, ready to move into the small intestine in controlled amounts.</p>
-      </div>
-
-      <!-- LAYER 2 &mdash; EXPLAIN (5-mark) -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Section B style &middot; 5 marks</div>
-        <div class="dsf">
-          <div class="row"><div class="label">Def</div><p>The stomach is a J-shaped muscular organ of the alimentary canal, positioned between the oesophagus and small intestine, functioning in storage, mechanical mixing, and chemical digestion.</p></div>
-          <div class="row"><div class="label">Stru</div><p>Four regions &mdash; cardia, fundus, body (corpus), and pyloric region &mdash; with an oblique inner muscle layer and a mucosal lining containing gastric glands.</p></div>
-          <div class="row"><div class="label">Fun</div><p>Gastric glands hold three cell types: mucous cells (protective mucus), chief cells (pepsinogen), and parietal cells (HCl and intrinsic factor). HCl activates pepsinogen into pepsin, which digests protein; the resulting acidic, semi-fluid mix is called chyme.</p></div>
-        </div>
-        <div class="explain-diagram">
-          <span class="step">Cardia</span><span class="arrow">&rarr;</span>
-          <span class="step">Fundus</span><span class="arrow">&rarr;</span>
-          <span class="step">Body</span><span class="arrow">&rarr;</span>
-          <span class="step">Pyloric region</span><span class="arrow">&rarr;</span>
-          <span class="step">Duodenum</span>
-        </div>
-        <div class="stat-strip">
-          <div class="stat"><div class="v">0&ndash;3</div><div class="k">HCl pH</div></div>
-          <div class="stat"><div class="v">Chief cells</div><div class="k">&rarr; pepsinogen</div></div>
-          <div class="stat"><div class="v">Parietal cells</div><div class="k">&rarr; HCl + intrinsic factor</div></div>
-        </div>
-        <p style="font-size:13.5px; margin:10px 0 0;"><b>Also worth a line each:</b> gastrin (a G-cell hormone that promotes gastric secretion) and intrinsic factor (parietal-cell secretion needed to absorb Vitamin B12 later in the small intestine).</p>
-      </div>
-
-      <!-- LAYER 3 &mdash; CONNECT TO PRACTICE (10-mark) -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Section C style &middot; 10 marks</div>
-        <p style="font-size:14.5px;">Typical question: <i>"How do asanas help in digestion?"</i> &mdash; for the stomach specifically, the answer needs a physiological mechanism, not just a pose name.</p>
-        <div class="practice-link">
-          <b>Vajrasana after meals</b>
-          Sitting upright with mild forward pressure on the abdomen is believed to aid gastric motility and reduce reflux risk, by keeping the stomach in a position that discourages acid moving back up the oesophagus.
-        </div>
-        <div class="practice-link">
-          <b>Cooling pranayama (Sheetali/Sheetkari) for acidity</b>
-          Cooling breath practices activate the parasympathetic ("rest-and-digest") nervous system, which counters the stress-driven oversecretion of HCl that underlies GERD and gastritis.
-        </div>
-        <div class="practice-link">
-          <b>Meditation / stress-reduction, generally</b>
-          Because gastric acid secretion is partly under nervous system control, chronic stress is a direct mechanical cause of excess acidity &mdash; so any practice that lowers sympathetic activation protects the mucus barrier described in Layer 1.
-        </div>
-        <p style="font-size:13px; color:var(--muted); margin-top:14px; margin-bottom:0;">This is the section that rewards understanding Layer 1 &mdash; you can't explain <i>why</i> Vajrasana or cooling pranayama help without knowing what they're counteracting.</p>
-      </div>
-
-      <div class="card">
-        <div class="recall-hint">Quick recall (Section A style, 2 marks) &mdash; tap a card to reveal the answer.</div>
-        <div class="recall-strip">
-          <div class="recall-card"><div class="q">What converts pepsinogen to pepsin?</div><div class="a">Hydrochloric acid (HCl)</div></div>
-          <div class="recall-card"><div class="q">Which cells produce HCl?</div><div class="a">Parietal cells</div></div>
-          <div class="recall-card"><div class="q">Which cells produce pepsinogen?</div><div class="a">Chief cells</div></div>
-          <div class="recall-card"><div class="q">What is chyme?</div><div class="a">The semi-fluid, acidic mix of bolus + gastric secretions</div></div>
-          <div class="recall-card"><div class="q">What is intrinsic factor for?</div><div class="a">Binding Vitamin B12 for absorption</div></div>
-          <div class="recall-card"><div class="q">What hormone promotes gastric secretion?</div><div class="a">Gastrin, from G cells</div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 04 SMALL INTESTINE -->
-    <section class="section" id="sec-small-intestine">
-      <div class="kicker">04 &middot; Digestion &amp; absorption</div>
-      <h2>Small Intestine</h2>
-      <p class="dek">5&ndash;6 metres long, in three parts. Most digestion &mdash; and almost all absorption &mdash; happens here.</p>
-
-      <figure>
-        <img src="assets/diagrams/small-intestine-regions.jpg" alt="The three regions of the small intestine: duodenum, jejunum, ileum">
-        <figcaption>Duodenum &rarr; jejunum &rarr; ileum, in order along the tube.</figcaption>
-      </figure>
-
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
-      </div>
-
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>Chyme leaves the stomach in small, controlled amounts and enters the <b>duodenum</b>, the first and shortest part of the small intestine. This is where two other organs' outputs arrive to finish the job the stomach started: pancreatic juice (enzymes for carbs, protein, fat and nucleic acids) and bile from the liver (which handles fat). Nothing that happens later in the small intestine is possible without these two inputs meeting the chyme here first.</p>
-        <p>By the time the mix reaches the <b>jejunum</b>, digestion is essentially complete, and this middle section becomes the main site of absorption. The <b>ileum</b>, the last stretch, mostly mops up whatever's left and hands the remainder to the large intestine.</p>
-        <div class="analogy">
-          <b>Why the small intestine is 5&ndash;6 metres long but fits inside you</b>
-          A flat tube 5&ndash;6 metres long wouldn't absorb nearly enough &mdash; so the inner wall is covered in millions of finger-like projections called <b>villi</b>, each of which is itself covered in even smaller <b>microvilli</b>. It's the same principle as a rolled towel having more surface area than a flat sheet of the same material: folding the surface inward and outward repeatedly multiplies the absorptive area without needing more length. Each villus has its own blood capillary (for sugars and amino acids) and a lacteal, a small lymph vessel reserved specifically for absorbed fat.</p>
-        </div>
-      </div>
-
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Section B style &middot; supports "What is the digestive process?"</div>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Part</th><th>Length / position</th><th>Role</th></tr>
-            <tr><td>Duodenum</td><td>~25 cm, connects to stomach</td><td>Receives chyme, pancreatic juice, and bile</td></tr>
-            <tr><td>Jejunum</td><td>Middle part</td><td>Major site of digestion and absorption</td></tr>
-            <tr><td>Ileum</td><td>Last part</td><td>Continues absorption, connects to the large intestine</td></tr>
-          </table>
-        </div>
-
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Villi &amp; microvilli</p>
-        <p style="font-size:13.5px;">Finger-like mucosal projections lining the small intestine, each containing a blood capillary and a lacteal (lymph vessel for fat) &mdash; this is what turns the intestinal wall into a huge absorptive surface.</p>
-
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Pancreatic juice &mdash; enzymes by target</p>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Target</th><th>Enzyme</th><th>Effect</th></tr>
-            <tr><td>Carbohydrate</td><td>Pancreatic amylase</td><td>Breaks carbs toward simple sugars</td></tr>
-            <tr><td>Protein</td><td>Trypsin, chymotrypsin, carboxypeptidase</td><td>Breaks protein into amino acids</td></tr>
-            <tr><td>Fat</td><td>Pancreatic lipase</td><td>Breaks fat into fatty acids / lipids</td></tr>
-            <tr><td>Nucleic acid</td><td>Nucleases</td><td>Digests nucleic acids</td></tr>
-          </table>
-        </div>
-
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Digestion end-to-end, by nutrient</p>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Food</th><th>Digested by</th><th>Final product</th></tr>
-            <tr><td>Carbohydrate</td><td>Amylases + disaccharidases</td><td>Glucose (monosaccharides)</td></tr>
-            <tr><td>Protein</td><td>Pepsin + pancreatic proteases</td><td>Amino acids, small peptides</td></tr>
-            <tr><td>Fat</td><td>Bile salts + lipases</td><td>Fatty acids + monoglycerides</td></tr>
-          </table>
-        </div>
-      </div>
-
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Section C style &middot; "How do asanas help in digestion?"</div>
-        <div class="practice-link">
-          <b>Twisting asanas (e.g. Ardha Matsyendrasana)</b>
-          A twist physically compresses and releases the abdominal cavity, which is thought to encourage intestinal motility &mdash; helping move contents along the small intestine and supporting more complete digestion and absorption.
-        </div>
-        <div class="practice-link">
-          <b>Peptic ulcer &mdash; duodenum</b>
-          Symptoms: burning abdominal pain, nausea, indigestion. Because the duodenum is the first target of stomach acid leaving the stomach, ulcers here follow the same acid-barrier logic covered in the Stomach section. Yoga support: cooling pranayama, Ardha Matsyendrasana, Pada Hastasana, yoga nidra, cyclic meditation &mdash; all aimed at lowering the stress response that drives excess acid.
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
-        <div class="recall-strip">
-          <div class="recall-card"><div class="q">What are the three parts of the small intestine?</div><div class="a">Duodenum, jejunum, ileum</div></div>
-          <div class="recall-card"><div class="q">Which part is the major site of digestion and absorption?</div><div class="a">Jejunum</div></div>
-          <div class="recall-card"><div class="q">What does a lacteal absorb?</div><div class="a">Fat, into the lymph</div></div>
-          <div class="recall-card"><div class="q">What breaks fat into fatty acids?</div><div class="a">Bile salts + pancreatic lipase</div></div>
-          <div class="recall-card"><div class="q">What's the final product of protein digestion?</div><div class="a">Amino acids / small peptides</div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 05 LARGE INTESTINE -->
-    <section class="section" id="sec-large-intestine">
-      <div class="kicker">05 &middot; Water recovery &amp; elimination</div>
-      <h2>Large Intestine</h2>
-      <p class="dek">What's left after the small intestine is done &mdash; mostly water, electrolytes, and undigested fibre.</p>
-
-      <figure>
-        <img src="assets/diagrams/large-intestine.jpg" alt="Large intestine and colon showing ascending, transverse, descending, sigmoid colon, cecum and rectum">
-        <figcaption>Ascending &rarr; transverse &rarr; descending &rarr; sigmoid colon, ending at the rectum.</figcaption>
-      </figure>
-
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
-      </div>
-
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>By the time material reaches the large intestine, almost every usable nutrient is already gone &mdash; what's left is mostly water, electrolytes, and fibre the body can't digest. The large intestine's job isn't digestion anymore, it's recovery and cleanup: pulling back the water and electrolytes so they aren't lost, and compacting what's left into feces.</p>
-        <div class="analogy">
-          <b>The last wringing-out stage</b>
-          Think of it like the final spin cycle of a washing machine &mdash; the "washing" (digestion) is done, and now the goal is just to extract as much water as possible before what's left is discarded. If this stage moves too fast, not enough water gets reabsorbed and stools stay loose (diarrhea). If it moves too slow, too much water gets pulled out and stools become hard (constipation).
-        </div>
-        <p>The colon isn't sterile, either &mdash; it hosts a large population of <b>gut microbiota</b>, bacteria that ferment the fibre your own enzymes couldn't break down, in the process producing some vitamins (like K and certain B vitamins) that the body then absorbs as a side benefit.</p>
-        <p>Storage happens in the rectum until enough material builds up to stretch its walls &mdash; that stretch (distension) is what triggers the urge to go, technically called the defecation reflex.</p>
-      </div>
-
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Reference</div>
-        <div class="card" style="box-shadow:none; border:none; padding:0; margin-bottom:0;">
-          <ul class="notes">
-            <li>Absorption of water</li>
-            <li>Absorption of electrolytes</li>
-            <li>Formation and storage of feces</li>
-            <li><b>Gut microbiota</b> &mdash; bacteria metabolise undigested substances</li>
+      <h3 class="sub"><span class="n">2A</span>The mouth and palate</h3>
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this &#183; mouth (oral cavity)</span>
+          <ul class="plain">
+            <li><b>Mastication</b> &#8211; teeth break food into small pieces.<span class="src cls">class</span></li>
+            <li><b>Mixing with saliva</b> &#8211; softens food and begins starch digestion.<span class="src cls">class</span></li>
+            <li><b>Bolus formation</b> &#8211; the tongue collects the chewed food into a soft mass and pushes it toward the pharynx.<span class="src cls">class</span></li>
+            <li>Lined throughout with <b>mucous membrane</b>.<span class="src cls">PDF</span></li>
           </ul>
         </div>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Rectum &amp; anus</p>
-        <p style="font-size:13.5px;">The rectum stores feces temporarily. Distension triggers the defecation reflex &mdash; coordinated rectal contraction plus anal sphincter relaxation.</p>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Appendix</p>
-        <p style="font-size:13.5px; margin-bottom:0;">The vermiform appendix, a narrow projection of the cecum, contains lymphoid tissue. Its inflammation is appendicitis.</p>
-      </div>
-
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Section C style</div>
-        <div class="practice-link">
-          <b>Constipation</b> &mdash; difficulty passing stools.
-          Yoga support: Chakki Chalanasana, Pavana Muktasana, Nadi Shuddhi &mdash; these encourage abdominal movement and peristalsis, directly addressing the "moving too slow" mechanism from Layer 1.
-        </div>
-        <div class="practice-link">
-          <b>Diarrhea</b> &mdash; frequent, loose stools.
-          Yoga support: Varuna Mudra, breathing practices.
-        </div>
-        <div class="practice-link">
-          <b>Irritable Bowel Syndrome (IBS)</b>
-          A gut&ndash;brain interaction disorder: bloating, abdominal pain, diarrhoea or constipation. Yoga support: relaxation techniques to calm the autonomic nervous system &mdash; directly relevant since IBS is defined by that gut&ndash;brain link, not a structural problem in the colon itself.
+        <div class="blk know">
+          <span class="lbl">Know this &#183; palate</span>
+          <ul class="plain">
+            <li><b>Hard palate</b> &#8211; bony, rigid, in front.</li>
+            <li><b>Soft palate</b> &#8211; muscular and movable, behind.</li>
+            <li><b>Uvula</b> &#8211; the hanging end of the soft palate. Together they stop food entering the nasal cavity.<span class="src cls">class</span></li>
+          </ul>
         </div>
       </div>
 
-      <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
-        <div class="recall-strip">
-          <div class="recall-card"><div class="q">What are the two main things the large intestine absorbs?</div><div class="a">Water and electrolytes</div></div>
-          <div class="recall-card"><div class="q">What triggers the defecation reflex?</div><div class="a">Distension of the rectum</div></div>
-          <div class="recall-card"><div class="q">What is the appendix's inflammation called?</div><div class="a">Appendicitis</div></div>
-          <div class="recall-card"><div class="q">What vitamins does gut microbiota help produce?</div><div class="a">Vitamin K and some B vitamins</div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 06 LIVER -->
-    <section class="section" id="sec-liver">
-      <div class="kicker">06 &middot; Accessory organs</div>
-      <h2>Liver &amp; Accessory Organs</h2>
-      <p class="dek">The organs that support digestion without food ever passing through them.</p>
-
-      <figure>
-        <img src="assets/diagrams/liver.jpg" alt="Liver anatomy showing right and left lobes, bile duct, gallbladder, hepatic artery and vein">
-        <figcaption>Liver lobes, bile duct and gallbladder &mdash; the source and storage route for bile.</figcaption>
-      </figure>
-
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      <h3 class="sub"><span class="n">2B</span>Teeth</h3>
+      <div class="spread">
+        <figure class="fig photo">
+          <img src="assets/diagrams/tooth-cross-section-detailed.jpg" alt="Section through a tooth showing enamel, dentin, pulp, gum, cementum, blood vessels, periodontal ligament and nerve; crown above the gum and root below">
+          <figcaption>A tooth cut in half (from your diagram folder): crown above the gum, root below.</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Enamel</b> &#8211; covers the crown; the <b>hardest tissue in the body</b>.<span class="src cls">class</span></li>
+          <li><b>Dentin</b> &#8211; the bulk of the tooth; hard, ivory-like.<span class="src cls">class</span></li>
+          <li><b>Pulp cavity</b> &#8211; blood vessels, connective tissue and nerves; they enter through canals in the root.<span class="src cls">class</span></li>
+          <li><b>Cementum</b> &#8211; covers the root; the periodontal ligament anchors it in the jaw socket.<span class="src gen">general</span></li>
+          <li><b>Crown / neck / root / apex</b> &#8211; crown is the visible part; neck lies between crown and root; root sits in the socket; apex is the root tip.<span class="src cls">class</span></li>
+        </ol>
       </div>
 
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>None of these three organs ever touch food directly &mdash; they're accessory organs, working from the outside by injecting their products into the duodenum exactly when needed.</p>
-        <div class="analogy">
-          <b>Why fat needs bile before an enzyme can even start</b>
-          Fat and water don't mix &mdash; in the intestine, fat naturally clumps into large globules, and pancreatic lipase (the fat-digesting enzyme) can only work on the surface of a globule, not its interior. Bile, produced by the liver and released via the gallbladder, acts like dish soap on a greasy pan: it breaks large fat globules into many tiny droplets (<b>emulsification</b>), massively increasing the surface area lipase can act on. Without bile, fat digestion would be extremely slow, however much lipase is present.
-        </div>
-        <p>The liver itself does far more than make bile &mdash; it's the largest internal gland in the body, and unusually, it can regenerate even after part of it is removed or damaged. The pancreas, meanwhile, is the source of most of the actual digestive enzymes used in the small intestine (see the Small Intestine section) as well as bicarbonate, which neutralises the acidic chyme arriving from the stomach so those enzymes can work &mdash; they don't function well in an acidic environment.</p>
+      <div class="spread rev">
+        <ol class="key">
+          <li><b>Incisors</b> &#8211; 8 &#183; cut or bite.</li>
+          <li><b>Canines</b> &#8211; 4 &#183; tear (the sharpest).</li>
+          <li><b>Premolars</b> &#8211; 8 &#183; grind and crush.</li>
+          <li><b>Molars</b> &#8211; 12 &#183; grind and crush.</li>
+          <li><b>Total 32</b> in the permanent set (class notes). <b>Milk teeth: 20</b>, which fall out and are replaced.</li>
+        </ol>
+        <figure class="fig photo">
+          <img src="assets/diagrams/teeth-types-outline.jpg" alt="Outline drawings of the four types of human teeth: canine, incisor, premolar and molar">
+          <figcaption>The four types: incisor, canine, premolar, molar.</figcaption>
+        </figure>
       </div>
 
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Reference &middot; supports "Name one main function of the liver"</div>
-        <div class="dsf">
-          <div class="row"><div class="label">Def</div><p>The liver is the largest internal gland in the body.</p></div>
-          <div class="row"><div class="label">Stru</div><p>Two lobes &mdash; right and left. Its functional unit is the hepatic lobule.</p></div>
-          <div class="row"><div class="label">Fun</div><p>Produces bile, a salty digestive juice used to emulsify fats.</p></div>
-        </div>
-        <div class="flow" style="margin-top:14px;">
-          <span class="step">Liver</span><span class="arrow">&rarr;</span>
-          <span class="step">Hepatic ducts</span><span class="arrow">&rarr;</span>
-          <span class="step">Gallbladder</span><span class="arrow">&rarr;</span>
-          <span class="step">Common bile duct</span><span class="arrow">&rarr;</span>
-          <span class="step">Duodenum</span>
-        </div>
-        <div class="grid2" style="margin-top:16px;">
-          <div>
-            <p style="font-size:13px; font-weight:600; color:var(--ink); margin-bottom:6px;">Gallbladder</p>
-            <p style="font-size:13.5px; margin-bottom:0;">Stores and concentrates bile produced by the liver, releasing it into the duodenum to emulsify fats.</p>
-          </div>
-          <div>
-            <p style="font-size:13px; font-weight:600; color:var(--ink); margin-bottom:6px;">Pancreas</p>
-            <p style="font-size:13.5px; margin-bottom:0;">Secretes digestive enzymes (amylase, proteases, lipase) and bicarbonate into the duodenum via pancreatic juice.</p>
-          </div>
-        </div>
-      </div>
+      <p class="honest"><b>Source note.</b> The PDF writes the dental formula as 2&#183;1&#183;2&#183;3 and labels it &#8220;upper jaw / lower jaw&#8221;. That formula is for <b>one half</b> of each jaw: (2+1+2+3) &#215; 2 sides &#215; 2 jaws = 32. The class notes&#8217; counts (8+4+8+12 = 32) agree with it. Milk teeth have no premolars (formula 2&#183;1&#183;0&#183;2 per half jaw = 20).<span class="src gen">general</span></p>
 
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Section C style</div>
-        <div class="practice-link">
-          <b>Fatty liver</b>
-          Excess fat in liver cells, linked to insulin resistance, sugar intake, alcohol, and obesity. Yoga support: Surya Namaskar &mdash; a full-body, metabolically active practice, alongside its broader benefit for mental health, which matters given the lifestyle/stress factors involved.
-        </div>
-        <div class="practice-link">
-          <b>Hepatitis</b>
-          Liver inflammation, with autoimmune causes, alcohol, or medication side effects among its triggers.
-        </div>
-        <p style="font-size:13px; color:var(--muted); margin-top:14px; margin-bottom:0;">Your notes don't specify a targeted asana sequence for liver disorders beyond the general obesity-linked practice above &mdash; worth asking your teacher if this comes up as a likely exam angle.</p>
-      </div>
+      <div class="table-wrap"><table>
+        <tr><th>Term</th><th>Meaning</th><th>Applies to humans?</th></tr>
+        <tr><td>Monophyodont</td><td>Teeth appear once in a lifetime</td><td>No</td></tr>
+        <tr><td>Diphyodont</td><td>Teeth appear twice: milk then permanent</td><td><b>Yes</b></td></tr>
+        <tr><td>Heterodont</td><td>Teeth of four kinds with different shapes and jobs</td><td><b>Yes</b></td></tr>
+      </table></div>
 
-      <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
-        <div class="recall-strip">
-          <div class="recall-card"><div class="q">What does the liver produce?</div><div class="a">Bile</div></div>
-          <div class="recall-card"><div class="q">Where is bile stored and concentrated?</div><div class="a">The gallbladder</div></div>
-          <div class="recall-card"><div class="q">What does bile do to fat?</div><div class="a">Emulsifies it &mdash; breaks it into smaller droplets</div></div>
-          <div class="recall-card"><div class="q">What does pancreatic bicarbonate do?</div><div class="a">Neutralises acidic chyme from the stomach</div></div>
-          <div class="recall-card"><div class="q">What is the liver's functional unit?</div><div class="a">The hepatic lobule</div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 07 ABSORPTION -->
-    <section class="section" id="sec-absorption">
-      <div class="kicker">07 &middot; Where nutrients enter the body</div>
-      <h2>Nutrient Absorption</h2>
-      <p class="dek">Each nutrient class has its own route out of the intestine and into circulation.</p>
-
-      <div class="card story">
-        <p style="margin-bottom:0;">Once a nutrient is small enough to cross the intestinal wall, it doesn't all travel the same way. Think of it like a sorting office: water-soluble nutrients (glucose, amino acids, water itself) go straight into the blood &mdash; the fast, direct route. Fat is different: it's not water-soluble, so it can't just dissolve into blood plasma. Instead it gets packaged into fatty particles that enter the lymphatic system first (via the lacteal in each villus) and only joins the bloodstream later, further along. That's why fat absorption is structurally slower and more involved than sugar or protein absorption.</p>
-      </div>
-
-      <div class="table-wrap">
-        <table>
-          <tr><th>Nutrient</th><th>Pathway</th></tr>
-          <tr><td>Glucose</td><td>Sodium-dependent transport into epithelial cells &rarr; blood</td></tr>
-          <tr><td>Amino acids</td><td>Carrier-mediated transport &rarr; blood</td></tr>
-          <tr><td>Water</td><td>Osmosis</td></tr>
-          <tr><td>Fat</td><td>Fatty acids / monoglycerides + bile salts &rarr; micelles &rarr; enter epithelial cells &rarr; packaged as chylomicrons &rarr; lacteals &rarr; lymph &rarr; bloodstream</td></tr>
-        </table>
-      </div>
-
-      <figure>
-        <img src="assets/diagrams/villi-microvilli.jpg" alt="Colourised electron micrograph of intestinal villi and their brush border of microvilli">
-        <figcaption>Electron micrograph of the villi and microvilli (brush border) that give the small intestine its huge absorptive surface.</figcaption>
-      </figure>
-
-      <div class="card">
-        <h3>Villus cross-section &mdash; what's inside</h3>
-        <ul class="notes">
-          <li><b>Epithelial cell</b> &mdash; lines the villus, the absorbing surface</li>
-          <li><b>Microvilli (brush border)</b> &mdash; increase surface area further</li>
-          <li><b>Capillary (blood vessel)</b> &mdash; carries away sugars and amino acids</li>
-          <li><b>Lacteal (lymph vessel)</b> &mdash; carries away absorbed fat</li>
-          <li><b>Goblet cell</b> &mdash; secretes protective mucus</li>
+      <h3 class="sub"><span class="n">2C</span>Tongue</h3>
+      <div class="blk know">
+        <span class="lbl">Know this &#183; tongue</span>
+        <ul class="plain">
+          <li>A <b>muscular organ</b> on the floor of the mouth, attached at the back and free at the front.<span class="src cls">class</span></li>
+          <li>Mixes food with saliva, pushes the bolus during swallowing (deglutition), carries <b>taste buds</b>, helps in <b>speech</b>.<span class="src cls">class</span></li>
+          <li>Taste buds sense sweet, salt, sour, bitter; food chemicals must be dissolved in saliva to reach them.<span class="src cls">PDF</span></li>
+          <li>Tonsils (lymphatic tissue) lie at the back of the mouth on either side of the tongue.<span class="src cls">PDF</span></li>
         </ul>
       </div>
-    </section>
 
-    <!-- 08 DISORDERS -->
-    <section class="section" id="sec-disorders">
-      <div class="kicker">08 &middot; Applied &mdash; pathology &amp; yoga</div>
-      <h2>Common Disorders &amp; Yoga</h2>
-      <p class="dek">For each: what it is, its symptoms, and the asanas / practices the notes link to it. <span class="mal">(Exam format: disease &rarr; symptoms &rarr; how yoga supports.)</span></p>
-
-      <div class="disorder">
-        <h4>Gastro-oesophageal Reflux (GERD) <span class="cause">Loosened lower oesophageal sphincter</span></h4>
-        <div class="field"><b>What happens</b>Acid rises back up when the sphincter loosens &mdash; a higher form of acidity, often from stress or irregular meal timing.</div>
-        <div class="field"><b>Symptoms</b>Heartburn, chest congestion, throat infection.</div>
-        <div class="yoga"><b>Yoga support</b>Pavana Muktasana, Janu Shirshasana, hand in-out movement, cooling pranayama, meditation to release stress.</div>
+      <h3 class="sub"><span class="n">2D</span>Salivary glands and saliva</h3>
+      <div class="spread">
+        <figure class="fig photo">
+          <img src="assets/diagrams/salivary-glands-anatomy.jpg" alt="Side view of the face showing the parotid gland near the ear, submandibular gland under the jaw, sublingual gland under the tongue and the salivary gland ducts">
+          <figcaption>Three pairs of glands and their ducts (from your diagram folder).</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Parotid</b> &#8211; just below and in front of the ear; largest; duct = Stensen&#8217;s duct.<span class="src cls">PDF</span></li>
+          <li><b>Submandibular</b> &#8211; under the angle of the jaw; duct (Wharton&#8217;s) opens on the floor of the mouth.<span class="src cls">PDF</span></li>
+          <li><b>Sublingual</b> &#8211; under the tongue, in front of the submandibular gland; smallest; several small ducts (of Rivinus).<span class="src cls">PDF</span></li>
+          <li>All three are <b>exocrine glands</b>: they secrete through ducts.<span class="src cls">PDF</span></li>
+        </ol>
       </div>
 
-      <div class="disorder">
-        <h4>Gastritis <span class="cause">Inflammation of the stomach lining</span></h4>
-        <div class="field"><b>Where</b>Upper abdomen.</div>
-        <div class="field"><b>Symptoms</b>Bloating, vomiting tendencies.</div>
-        <div class="yoga"><b>Yoga support</b>Vajrasana after food.</div>
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this &#183; saliva</span>
+          <ul class="plain">
+            <li><b>Composition:</b> water 99.5%, solids 0.5% (amylase, lipase, lysozyme, mucin; sodium, calcium, potassium).<span class="src cls">PDF</span></li>
+            <li><b>Volume:</b> 1000&#8211;1500 mL a day.<span class="src cls">PDF</span></li>
+            <li><b>pH 6&#8211;7.</b><span class="src cls">class</span></li>
+            <li><b>Salivary amylase</b> starts starch digestion; saliva lipase matters mainly in newborns.<span class="src cls">PDF</span></li>
+          </ul>
+        </div>
+        <div class="blk know">
+          <span class="lbl">Know this &#183; functions</span>
+          <ul class="plain">
+            <li><b>Lubrication</b> &#8211; for swallowing and speech.</li>
+            <li><b>Digestion</b> &#8211; amylase on starch.</li>
+            <li><b>Defence</b> &#8211; cleansing action; lysozyme attacks microbes.</li>
+            <li><b>Taste</b> &#8211; dissolves food chemicals for the taste buds.</li>
+            <li><b>Protection</b> of the mouth lining; <b>gustin</b> supports taste-bud development.<span class="src cls">PDF</span></li>
+          </ul>
+        </div>
       </div>
 
-      <div class="disorder">
-        <h4>Peptic Ulcer <span class="cause">Open sore in the stomach lining</span></h4>
-        <div class="field"><b>Symptoms</b>Burning abdominal pain, nausea, indigestion.</div>
-        <div class="yoga"><b>Yoga support</b>Cooling pranayama, Ardha Matsyendrasana, Pada Hastasana, yoga nidra, cyclic meditation.</div>
+      <p class="honest"><b>Source note.</b> Class notes give saliva pH 6&#8211;7; the PDF just says &#8220;acidic in nature&#8221;. Both fit the usual textbook value (about 6.2&#8211;7.4, slightly acid to neutral), so write <b>&#8220;pH 6&#8211;7, slightly acidic&#8221;</b>.<span class="src gen">general</span> The class line &#8220;salivary glands help to control ANS&#8221; is reversed: the <b>autonomic nervous system controls the glands</b>.</p>
+
+      <div class="blk und">
+        <span class="lbl">Understand it &#183; the salivary reflex</span>
+        <p>Saliva flows because of a reflex, with the salivation centre in the <b>medulla</b>. In the <b>unconditioned (normal) reflex</b>, food in the mouth triggers chewing and taste receptors, signals go to the medulla, and the glands respond. In the <b>conditioned (learned) reflex</b>, the sight, smell, sound or even the thought of food is enough. Both run through the autonomic nervous system (parasympathetic and sympathetic).<span class="src cls">class</span><span class="src cls">PDF</span></p>
       </div>
 
-      <div class="disorder">
-        <h4>Constipation <span class="cause">Difficulty passing stools</span></h4>
-        <div class="yoga"><b>Yoga support</b>Chakki Chalanasana, Pavana Muktasana, Nadi Shuddhi.</div>
+      <div class="cols2">
+        <div class="blk mem">
+          <span class="lbl">Memory aid</span>
+          <p><b>Teeth 8-4-8-12:</b> Incisor <b>8</b> bite, Canine <b>4</b> tear, Premolar <b>8</b> and Molar <b>12</b> grind. 8+4+8+12 = 32.</p>
+          <p style="margin:0"><b>Glands:</b> <b>P</b>arotid = <b>P</b>ar (ear), <b>Sub</b>mandibular = <b>sub</b> jaw, <b>Sub</b>lingual = <b>sub</b> tongue.</p>
+        </div>
+        <div class="blk conf">
+          <span class="lbl">Common confusion</span>
+          <p><b>Chewing is mechanical, amylase is chemical.</b> Teeth only make the pieces smaller. Digestion by chemistry begins when salivary amylase starts splitting starch, and it stops in the stomach when the acid destroys the enzyme.<span class="src gen">general</span></p>
+        </div>
       </div>
 
-      <div class="disorder">
-        <h4>Diarrhea <span class="cause">Frequent, loose stools</span></h4>
-        <div class="yoga"><b>Yoga support</b>Varuna Mudra, breathing practices.</div>
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; short answers</span>
+        <p>&#8220;Name the salivary glands&#8221;: parotid, submandibular, sublingual. &#8220;Function of saliva&#8221;: lubrication, starch digestion by amylase, antimicrobial action, taste. &#8220;Name the types of teeth&#8221;: incisor, canine, premolar, molar (32 in adults).</p>
       </div>
 
-      <div class="disorder">
-        <h4>Irritable Bowel Syndrome (IBS) <span class="cause">Gut&ndash;brain interaction disorder</span></h4>
-        <div class="field"><b>Symptoms</b>Bloating, abdominal pain, diarrhoea or constipation.</div>
-        <div class="yoga"><b>Yoga support</b>Relaxation techniques to calm the autonomic nervous system.</div>
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;Teeth cut and grind, the tongue stirs, and three pairs of glands add saliva. Saliva wets the food, starts breaking starch into sugars (that is why bread tastes sweeter the longer you chew), and carries flavour to the taste buds. The tongue then shapes it into a soft ball and pushes it back to be swallowed.&#8221;</p>
       </div>
 
-      <div class="disorder">
-        <h4>Obesity</h4>
-        <div class="yoga"><b>Yoga support</b>Surya Namaskar &mdash; also supports mental health.</div>
-      </div>
-
-      <div class="disorder">
-        <h4>Liver Disorders</h4>
-        <div class="field"><b>Fatty liver</b>Excess fat in liver cells &mdash; linked to insulin resistance, sugar intake, alcohol, obesity.</div>
-        <div class="field" style="margin-bottom:0;"><b>Hepatitis</b>Liver inflammation &mdash; autoimmune causes, alcohol, or medication side effects.</div>
-      </div>
+      <details class="deeper">
+        <summary>Go deeper &#183; class aside on elephants</summary>
+        <div class="inner">
+          <p>Class mentioned that an elephant keeps getting new teeth until death. More exactly, elephants replace their huge grinding molars several times (up to six sets) across a lifetime, and when the last set wears down the animal can no longer feed.<span class="src gen">general</span> Humans, by contrast, get just two sets (diphyodont).</p>
+        </div>
+      </details>
 
       <div class="card">
-        <h3>Asanas &amp; practices referenced across this topic</h3>
-        <p style="font-size:13.5px; margin-bottom:8px;"><b>Asanas &mdash;</b> Pavana Muktasana, Paschimottanasana, Vajrasana, Ardha Matsyendrasana, Bhujangasana, Janu Shirshasana, Pada Hastasana</p>
-        <p style="font-size:13.5px; margin-bottom:0;"><b>Breathing / meditation &mdash;</b> Nadi Shuddhi, yogic breathing, Bhramari, cooling pranayama, yoga nidra, cyclic meditation</p>
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Hardest tissue in the body?</div><div class="a">Enamel</div></div>
+          <div class="recall-card"><div class="q">Teeth numbers: milk and permanent?</div><div class="a">20 milk, 32 permanent (8 incisors, 4 canines, 8 premolars, 12 molars)</div></div>
+          <div class="recall-card"><div class="q">Three pairs of salivary glands?</div><div class="a">Parotid, submandibular, sublingual</div></div>
+          <div class="recall-card"><div class="q">Enzyme in saliva and its job?</div><div class="a">Salivary amylase: starts breaking starch into sugars</div></div>
+          <div class="recall-card"><div class="q">Unconditioned vs conditioned salivary reflex?</div><div class="a">Unconditioned: food in the mouth. Conditioned: sight, smell, sound or thought of food</div></div>
+          <div class="recall-card"><div class="q">What do the hard palate, soft palate and uvula do?</div><div class="a">Roof of the mouth; together they stop food entering the nasal cavity</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 SWALLOW -->
+    <section class="section" id="sec-swallow">
+      <div class="sec-head">
+        <div class="kicker">03 &#183; The passage</div>
+        <h2>Pharynx &amp; Oesophagus: Swallowing and Peristalsis</h2>
+        <p class="dek">The pharynx is a crossroads shared with breathing; the oesophagus is a 25 cm muscular tube that squeezes the bolus down to the stomach.</p>
       </div>
 
-      <p class="source-note">Source: class notes, 10&ndash;16 Sep 2026, and Anatomy &amp; Physiology Notes &mdash; Digestive System (PDF).</p>
+      <div class="spread">
+        <figure class="fig">
+          <svg viewBox="0 0 340 380" role="img" aria-label="Side view of the throat: nasal cavity and mouth open into the pharynx, which has nasopharynx, oropharynx and laryngopharynx parts; below it the trachea lies in front and the oesophagus behind, with the epiglottis between">
+            <rect class="ft" x="60" y="40" width="112" height="34" rx="8"/>
+            <text class="t ts" x="68" y="61">Nasal cavity</text>
+            <path class="fs" d="M96 84 H176 V94 H96 Q90 94 90 89 Q90 84 96 84Z"/>
+            <text class="t ts" x="104" y="104" style="fill:var(--muted)">soft palate</text>
+            <path class="fa" d="M40 112 H172 V150 H70 Q40 150 40 130Z"/>
+            <text class="t ts" x="62" y="136">Mouth + tongue</text>
+            <rect class="ft" x="172" y="32" width="28" height="56" rx="6"/>
+            <rect class="fg" x="172" y="92" width="28" height="66" rx="6"/>
+            <rect class="ft" x="172" y="162" width="28" height="36" rx="6"/>
+            <path class="fa" d="M172 160 q-18 4 -22 22 q16 -2 24 -10z"/>
+            <rect class="fs" x="130" y="202" width="40" height="164" rx="10"/>
+            <g class="ln"><path d="M130 220h40M130 238h40M130 256h40M130 274h40M130 292h40"/></g>
+            <text class="t ts tc" x="150" y="330">Trachea</text>
+            <path d="M186 202 V366" fill="none" stroke="var(--teal)" stroke-width="14" stroke-linecap="round"/>
+            <text class="t tb" x="222" y="64">Nasopharynx</text><path class="lnt" d="M202 60 H218"/>
+            <text class="t tb" x="222" y="130">Oropharynx</text><path class="lnt" d="M202 126 H218"/>
+            <text class="t tb" x="222" y="178">Laryngopharynx</text><path class="lnt" d="M202 174 H218"/>
+            <text class="t tb" x="222" y="300">Oesophagus</text><path class="lnt" d="M196 296 H218"/>
+            <text class="t ts" x="40" y="196" style="fill:var(--accent);font-weight:600">Epiglottis</text><path class="lnt" d="M92 194 L152 184"/>
+            <g class="bd"><circle cx="212" cy="60" r="9"/><text x="212" y="64">1</text></g><g class="bd"><circle cx="212" cy="126" r="9"/><text x="212" y="130">2</text></g><g class="bd"><circle cx="212" cy="174" r="9"/><text x="212" y="178">3</text></g><g class="bd"><circle cx="30" cy="196" r="9"/><text x="30" y="200">4</text></g><g class="bd"><circle cx="210" cy="296" r="9"/><text x="210" y="300">5</text></g><g class="bd"><circle cx="110" cy="330" r="9"/><text x="110" y="334">6</text></g>
+          </svg>
+          <figcaption>The throat from the side. Air and food paths cross in the pharynx.</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Nasopharynx</b> &#8211; behind the nasal cavity, above the soft palate; for respiration only.<span class="src cls">class</span></li>
+          <li><b>Oropharynx</b> &#8211; from the soft palate down to the epiglottis; carries food and air.<span class="src cls">class</span></li>
+          <li><b>Laryngopharynx</b> &#8211; leads on into the oesophagus.<span class="src cls">class</span></li>
+          <li><b>Epiglottis</b> &#8211; the lid that closes the airway while swallowing.<span class="src gen">general</span></li>
+          <li><b>Oesophagus</b> &#8211; muscular tube, ~25 cm; behind the trachea.</li>
+          <li><b>Trachea</b> &#8211; the windpipe, in front of the oesophagus.</li>
+        </ol>
+      </div>
+
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this &#183; pharynx</span>
+          <ul class="plain">
+            <li>A funnel-shaped muscular passage <b>shared by the respiratory and digestive systems</b>, from the nasal cavity to the oesophagus.<span class="src cls">class</span></li>
+            <li>Three regions: nasopharynx, oropharynx, laryngopharynx. The Eustachian tube opens into it.<span class="src cls">PDF</span></li>
+          </ul>
+        </div>
+        <div class="blk know">
+          <span class="lbl">Know this &#183; oesophagus</span>
+          <ul class="plain">
+            <li><b>~25 cm</b> muscular tube from pharynx to stomach.<span class="src cls">class</span></li>
+            <li>Moves food by <b>peristalsis</b>: coordinated wave-like contractions.<span class="src cls">class</span></li>
+            <li>Secretes <b>mucus</b> only; <b>no enzymes, no absorption</b>.<span class="src cls">PDF</span></li>
+            <li>A muscular <b>sphincter</b> at its lower end guards the opening into the stomach.<span class="src cls">PDF</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="sub"><span class="n">3A</span>What happens when you swallow</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Stage</th><th>What happens</th><th>Control</th></tr>
+        <tr><td>1 &#183; Mouth</td><td>The tongue pushes the bolus back toward the pharynx.</td><td>Voluntary</td></tr>
+        <tr><td>2 &#183; Pharynx</td><td>The soft palate lifts to seal the nasal cavity; the larynx rises and the epiglottis covers the airway; breathing pauses briefly.</td><td>Reflex</td></tr>
+        <tr><td>3 &#183; Oesophagus</td><td>Peristaltic waves carry the bolus down; the lower sphincter relaxes to let it into the stomach, then closes.</td><td>Involuntary</td></tr>
+      </table></div>
+      <p style="font-size:12.5px;color:var(--muted)">Stage details are general physiology; the class notes give the regions, the length, peristalsis and the sphincter.<span class="src gen">general</span></p>
+
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Peristalsis works like <b>squeezing toothpaste along a tube</b>: the muscle ring behind the bolus contracts, the ring in front relaxes, and the wave moves on. It is why you can swallow lying down or even upside down: gravity is not what moves food. The same wave pattern then carries food along the whole gut.</p>
+        <p>The sphincter at the lower end is a <b>one-way valve</b>. If it loosens, stomach acid rises back up, which is <b>GERD</b> (section 9).<span class="src cls">class</span></p>
+      </div>
+
+      <div class="cols2">
+        <div class="blk mem">
+          <span class="lbl">Memory aid</span>
+          <p><b>N-O-L:</b> Naso (nose, air only) &#8594; Oro (mouth, food + air) &#8594; Laryngo (larynx, leads to oesophagus).</p>
+        </div>
+        <div class="blk conf">
+          <span class="lbl">Common confusion</span>
+          <p>Class notes label the oropharynx as &#8220;food and air&#8221; and the nasopharynx as &#8220;near respiration&#8221;. In practice, mouth-breathing also sends air through the oropharynx. And <b>the oesophagus does not digest or absorb</b>: it only transports.</p>
+        </div>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle</span>
+        <p>&#8220;What is peristalsis?&#8221; &#8211; wave-like muscular contractions of the gut wall that push food forward; first seen in the oesophagus (YHB glossary: rhythmic coordinated contractions of smooth muscle that move contents through the tract).<span class="src cls">YHB</span> &#8220;Length of the oesophagus?&#8221; &#8211; about 25 cm.</p>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;The throat is a shared crossroads for air and food. When you swallow, a little flap, the epiglottis, closes the windpipe so the food goes down the food pipe. The food pipe then squeezes in waves, like a hand squeezing toothpaste, and delivers the ball of food to the stomach.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; why the respiratory notes matter here</summary>
+        <div class="inner">
+          <p>The epiglottis and the C-shaped tracheal rings are described on the Respiratory page (<a href="../unit-4-respiratory-system/notes.html#passages">air passages</a>). The open back of those rings lets the oesophagus bulge forward slightly as a bolus passes.<span class="src gen">general</span></p>
+        </div>
+      </details>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Three regions of the pharynx?</div><div class="a">Nasopharynx, oropharynx, laryngopharynx</div></div>
+          <div class="recall-card"><div class="q">Length and job of the oesophagus?</div><div class="a">~25 cm; carries food from pharynx to stomach by peristalsis</div></div>
+          <div class="recall-card"><div class="q">Does the oesophagus digest or absorb?</div><div class="a">No: it only secretes mucus and transports</div></div>
+          <div class="recall-card"><div class="q">What stops food entering the windpipe?</div><div class="a">The epiglottis closes over the airway while swallowing</div></div>
+          <div class="recall-card"><div class="q">What happens if the lower oesophageal sphincter loosens?</div><div class="a">Acid rises back up: GERD (reflux)</div></div>
+        </div>
+      </div>
     </section>
+
+    <!-- 04 STOMACH -->
+    <section class="section" id="sec-stomach">
+      <div class="sec-head">
+        <div class="kicker">04 &#183; The acid bath</div>
+        <h2>Stomach &amp; Gastric Juice</h2>
+        <p class="dek">A stretchy J-shaped bag that stores, churns, and starts protein digestion, using acid that its own mucus layer keeps from harming it.</p>
+      </div>
+
+      <h3 class="sub"><span class="n">4A</span>Gross anatomy</h3>
+      <div class="spread">
+        <figure class="fig photo">
+          <img src="assets/diagrams/stomach-anatomy-detailed.jpg" alt="Labelled stomach: abdominal part of oesophagus, cardiac part, cardiac notch, fundus, body, angular notch, pyloric part, pylorus and duodenum">
+          <figcaption>Regions of the stomach (from your diagram folder).</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Cardia (cardiac part)</b> &#8211; where the oesophagus enters.<span class="src cls">class</span></li>
+          <li><b>Fundus</b> &#8211; the upper dome.<span class="src cls">class</span></li>
+          <li><b>Body (corpus)</b> &#8211; the large central part.<span class="src cls">class</span></li>
+          <li><b>Pyloric region</b> &#8211; the narrow end leading to the small intestine; the <b>pylorus</b> is the opening, guarded by a sphincter.<span class="src cls">class</span></li>
+          <li><b>Rugae</b> &#8211; folds of the lining; they flatten as the stomach fills.<span class="src cls">PDF</span></li>
+        </ol>
+      </div>
+
+      <div class="stat-strip">
+        <div class="stat"><div class="v">J-shaped</div><div class="k">left side of abdomen</div></div>
+        <div class="stat"><div class="v">~25 cm</div><div class="k">length (PDF)</div></div>
+        <div class="stat"><div class="v">1.5&#8211;2 L</div><div class="k">adult capacity (PDF)</div></div>
+        <div class="stat"><div class="v">3</div><div class="k">muscle layers</div></div>
+      </div>
+
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this &#183; functions</span>
+          <ul class="plain">
+            <li><b>Storage</b> &#8211; a reservoir; food stays some hours (PDF: 5&#8211;7 h) so enzymes have time.</li>
+            <li><b>Mechanical mixing</b> &#8211; class notes call it &#8220;like a grinder&#8221;.<span class="src cls">class</span></li>
+            <li><b>Chemical digestion</b> &#8211; protein begins here (pepsin); limited absorption of water, sugar, alcohol.<span class="src cls">PDF</span></li>
+          </ul>
+        </div>
+        <div class="blk know">
+          <span class="lbl">Know this &#183; wall</span>
+          <ul class="plain">
+            <li><b>Three muscle layers</b>: oblique (inner), circular, longitudinal (outer).<span class="src cls">PDF</span> Extra layer = stronger churning.</li>
+            <li>The class note on the layers is incomplete (&#8220;inner oblique, outer &#8230;&#8221;), so use the PDF list.</li>
+            <li>Lining has millions of <b>gastric glands</b> opening through <b>gastric pits</b> (~35 million).<span class="src cls">PDF</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="sub"><span class="n">4B</span>Gastric glands and acid production</h3>
+      <div class="spread rev">
+        <ol class="key">
+          <li><b>Gastric pit</b> &#8211; the opening on the surface; secretions flow out through it into the lumen.</li>
+          <li><b>Mucous (neck) cells</b> &#8211; make <b>mucus + bicarbonate</b>, the protective barrier.<span class="src cls">class</span></li>
+          <li><b>Parietal (oxyntic) cells</b> &#8211; make <b>HCl</b> and <b>intrinsic factor</b>.<span class="src cls">class</span></li>
+          <li><b>Chief (zymogen) cells</b> &#8211; make <b>pepsinogen</b>, the inactive enzyme.<span class="src cls">class</span></li>
+          <li><b>G cells</b> &#8211; release the hormone <b>gastrin</b> into the blood to boost gastric secretion.<span class="src cls">class</span></li>
+        </ol>
+        <figure class="fig">
+          <svg viewBox="0 0 340 380" role="img" aria-label="A gastric gland opening into the stomach lumen through a gastric pit; mucous cells at the neck, parietal cells in the middle, chief cells at the base, and a G cell releasing gastrin into the blood">
+            <rect class="fs" x="0" y="0" width="340" height="70" opacity=".55"/>
+            <text class="t ts" x="8" y="16" style="fill:var(--muted)">Stomach lumen</text>
+            <text class="t ts" x="8" y="36" style="fill:var(--accent);font-weight:600">HCl + pepsinogen &#8594; pepsin</text>
+            <rect x="140" y="62" width="60" height="306" rx="22" class="fw" stroke="var(--border)"/>
+            <path d="M170 62 V350" stroke="var(--border)" stroke-width="10" stroke-linecap="round" fill="none" opacity=".6"/>
+            <ellipse class="ft" cx="146" cy="96" rx="8" ry="14"/><ellipse class="ft" cx="194" cy="96" rx="8" ry="14"/>
+            <ellipse class="ft" cx="146" cy="124" rx="8" ry="14"/><ellipse class="ft" cx="194" cy="124" rx="8" ry="14"/>
+            <circle class="fa" cx="148" cy="170" r="14"/><circle class="fa" cx="192" cy="190" r="14"/><circle class="fa" cx="148" cy="212" r="14"/><circle class="fa" cx="192" cy="234" r="14"/>
+            <ellipse class="fg" cx="150" cy="300" rx="12" ry="16"/><ellipse class="fg" cx="190" cy="308" rx="12" ry="16"/><ellipse class="fg" cx="170" cy="336" rx="14" ry="14"/>
+            <circle cx="262" cy="140" r="11" fill="var(--gold)"/>
+            <path d="M251 140 H206" stroke="var(--gold)" stroke-width="2" stroke-dasharray="4 3" fill="none"/>
+            <text class="t ts" x="278" y="144">G cell</text><text class="t ts" x="226" y="168" style="fill:var(--muted)">gastrin &#8594; blood</text>
+            <text class="t ts" x="6" y="100" style="font-weight:600">Mucus +</text><text class="t ts" x="6" y="113" style="font-weight:600">bicarbonate</text>
+            <text class="t ts" x="6" y="192" style="font-weight:600;fill:var(--accent)">HCl +</text><text class="t ts" x="6" y="205" style="font-weight:600;fill:var(--accent)">intrinsic</text><text class="t ts" x="6" y="218" style="font-weight:600;fill:var(--accent)">factor</text>
+            <text class="t ts" x="6" y="306" style="font-weight:600">Pepsinogen</text>
+            <path class="lnt" d="M62 104 H130"/><path class="lnt" d="M62 200 H130"/><path class="lnt" d="M62 306 H132"/>
+            <g class="bd"><circle cx="170" cy="52" r="9"/><text x="170" y="56">1</text></g><g class="bd"><circle cx="224" cy="110" r="9"/><text x="224" y="114">2</text></g><g class="bd"><circle cx="226" cy="212" r="9"/><text x="226" y="216">3</text></g><g class="bd"><circle cx="226" cy="310" r="9"/><text x="226" y="314">4</text></g><g class="bd"><circle cx="300" cy="126" r="9"/><text x="300" y="130">5</text></g>
+          </svg>
+          <figcaption>One gastric gland, simplified. Acid and pepsinogen meet in the lumen, not inside the cells.</figcaption>
+        </figure>
+      </div>
+
+      <div class="blk und">
+        <span class="lbl">Understand it &#183; why the stomach does not digest itself</span>
+        <p>Pepsin is a protein-cutting enzyme, and the stomach wall is made of protein. The body avoids self-digestion with <b>three safeguards</b>: (1) pepsin is made as an <b>inactive precursor (pepsinogen)</b> and is only switched on <b>in the lumen</b> by HCl; (2) the surface is coated with a <b>mucus + bicarbonate layer</b> that keeps the acid away from the cells;<span class="src cls">class</span> (3) the lining cells are replaced quickly.<span class="src gen">general</span></p>
+        <p><b>Acid has three jobs:</b> activate pepsinogen into pepsin, give the low pH pepsin needs (best around pH 1&#8211;2), and kill microbes that came in with the food.<span class="src cls">PDF</span></p>
+      </div>
+
+      <div class="table-wrap"><table>
+        <tr><th>Product</th><th>Cell</th><th>What it does</th></tr>
+        <tr><td>HCl</td><td>Parietal</td><td>Converts pepsinogen to pepsin; acid medium; kills microbes</td></tr>
+        <tr><td>Intrinsic factor</td><td>Parietal</td><td>Binds vitamin B12 so it can be absorbed (in the ileum)</td></tr>
+        <tr><td>Pepsinogen &#8594; pepsin</td><td>Chief</td><td>Proteins &#8594; proteoses and peptones (shorter chains)</td></tr>
+        <tr><td>Mucus + bicarbonate</td><td>Mucous</td><td>Protective barrier against acid and pepsin</td></tr>
+        <tr><td>Gastrin (hormone)</td><td>G cells</td><td>Stimulates gastric secretion; released into blood</td></tr>
+        <tr><td>Rennin, gastric lipase</td><td>(infants)</td><td>Milk casein clotting; start of fat digestion</td></tr>
+      </table></div>
+
+      <p class="honest"><b>Source notes.</b> (1) <b>pH:</b> class notes say HCl pH 0&#8211;3; the PDF says gastric juice is pH 1&#8211;1.5. Write <b>&#8220;strongly acidic, about pH 1&#8211;3&#8221;</b> and quote the source in an answer.<span class="src gen">general</span> (2) <b>Gastrin:</b> the PDF lists it among the juice&#8217;s organic parts, but it is a hormone carried by blood from G cells (class notes). (3) <b>Intrinsic factor:</b> a garbled PDF line links it to baby fat and casein; the correct role, in both sources&#8217; other lines, is <b>vitamin B12 binding</b>. (4) <b>&#8220;Yoga poses help strengthen the mucus barrier&#8221;</b> (class notes): no mechanism is given and it is not established physiology. Treat it as a traditional claim and do not write it as fact in an exam.</p>
+
+      <div class="blk know">
+        <span class="lbl">Know this &#183; gastric juice</span>
+        <ul class="plain">
+          <li><b>Volume</b> 1200&#8211;1500 mL a day; <b>water 99.5%</b>, solids 0.5%.<span class="src cls">PDF</span></li>
+          <li><b>Organic:</b> pepsin, mucus, intrinsic factor. <b>Inorganic:</b> HCl, sodium, calcium.<span class="src cls">PDF</span></li>
+          <li><b>Chyme</b> = bolus + gastric secretions, mixed into a thick semi-fluid acidic paste. The stomach releases it in small squirts through the pylorus.<span class="src cls">class</span></li>
+        </ul>
+      </div>
+
+      <h3 class="sub"><span class="n">4C</span>How gastric secretion is controlled</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Control</th><th>What drives it</th></tr>
+        <tr><td><b>Nervous</b></td><td>Autonomic reflexes: the sight, smell or thought of food, and chewing and swallowing, send vagal signals that start acid flow before food even arrives.<span class="src cls">PDF</span></td></tr>
+        <tr><td><b>Hormonal</b></td><td>Food in the stomach (especially protein) makes G cells release <b>gastrin</b>, which boosts acid and pepsinogen secretion.<span class="src cls">class</span></td></tr>
+      </table></div>
+
+      <div class="cols2">
+        <div class="blk mem">
+          <span class="lbl">Memory aid</span>
+          <p><b>&#8220;MCP&#8221; cells:</b> <b>M</b>ucous &#8594; <b>M</b>ucus; <b>C</b>hief &#8594; <b>C</b>ore enzyme (pepsinogen); <b>P</b>arietal &#8594; <b>P</b>ower acid (HCl) + intrinsic factor. Parietal = Pours acid, <b>B12 passport</b>.</p>
+        </div>
+        <div class="blk conf">
+          <span class="lbl">Common confusion</span>
+          <p><b>Pepsinogen is not pepsin.</b> Chief cells release the inactive form; HCl activates it. And <b>HCl does not digest protein itself</b>: it provides the right conditions and switches pepsin on.</p>
+        </div>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; acid production and gastric juice</span>
+        <p>Name the three cells and their products; state that HCl converts pepsinogen to pepsin and kills microbes; mention mucus protects the wall; mention intrinsic factor binds B12; mention gastrin and nervous control. Add that chyme leaves through the pylorus into the duodenum.</p>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;The stomach is a stretchy bag that churns your food in acid. Three kinds of cells in its walls make mucus, acid, and an inactive enzyme. The acid wakes the enzyme up, which starts cutting protein. The mucus layer keeps the stomach from digesting itself. After a few hours the mix, now a thick paste called chyme, is released in small amounts into the small intestine.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; how a parietal cell makes HCl</summary>
+        <div class="inner">
+          <p>Inside the cell, CO&#8322; and water form carbonic acid (enzyme: carbonic anhydrase), which splits into H&#8314; and HCO&#8323;&#8315;. A pump (H&#8314;/K&#8314; ATPase) pushes H&#8314; into the lumen, Cl&#8315; follows, so the lumen gets HCl. HCO&#8323;&#8315; goes into the blood, so blood leaving a busy stomach is slightly more alkaline (the &#8220;alkaline tide&#8221;).<span class="src gen">general</span> Drugs that block this pump (proton-pump inhibitors) are used for reflux and ulcers.</p>
+          <p>Three triggers drive the parietal cell: gastrin (G cells), acetylcholine (vagus nerve) and histamine (local cells).<span class="src gen">general</span> The stomach also has three phases of control: <b>cephalic</b> (brain: sight, smell), <b>gastric</b> (food stretching the stomach), <b>intestinal</b> (chyme in the duodenum slows the stomach down).</p>
+        </div>
+      </details>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Four parts of the stomach?</div><div class="a">Cardia, fundus, body, pyloric region</div></div>
+          <div class="recall-card"><div class="q">Three cell types in a gastric gland?</div><div class="a">Mucous (mucus), chief (pepsinogen), parietal (HCl + intrinsic factor)</div></div>
+          <div class="recall-card"><div class="q">What does HCl do?</div><div class="a">Activates pepsinogen to pepsin, provides acid medium, kills microbes</div></div>
+          <div class="recall-card"><div class="q">What does intrinsic factor do?</div><div class="a">Binds vitamin B12 for absorption in the ileum</div></div>
+          <div class="recall-card"><div class="q">What is chyme?</div><div class="a">Bolus mixed with gastric secretions: semi-fluid acidic paste</div></div>
+          <div class="recall-card"><div class="q">What is gastrin?</div><div class="a">Hormone from G cells that stimulates gastric secretion</div></div>
+          <div class="recall-card"><div class="q">Why doesn&#8217;t the stomach digest itself?</div><div class="a">Inactive pepsinogen, mucus-bicarbonate barrier, quick cell replacement</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 SMALL INTESTINE -->
+    <section class="section" id="sec-small">
+      <div class="sec-head">
+        <div class="kicker">05 &#183; Where most of it happens</div>
+        <h2>Small Intestine: Digestion and Absorption</h2>
+        <p class="dek">About 6 m of coiled tube, folded and fringed with villi so that its inner surface is vast, and fed by juices from the liver, pancreas and its own wall.</p>
+      </div>
+
+      <h3 class="sub"><span class="n">5A</span>Three parts</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Part</th><th>Facts</th><th>Role</th></tr>
+        <tr><td><b>Duodenum</b></td><td>First part, about 25 cm; shortest, widest, C-shaped; joins the stomach at the pyloric sphincter.<span class="src cls">class</span><span class="src cls">PDF</span></td><td>Receives <b>chyme, pancreatic juice and bile</b> (through the hepatopancreatic duct).</td></tr>
+        <tr><td><b>Jejunum</b></td><td>Middle part; about 2/5 of the rest.<span class="src cls">PDF</span></td><td>Major site of digestion and absorption (class notes).</td></tr>
+        <tr><td><b>Ileum</b></td><td>Last part; about 3/5; ends at the ileocaecal junction.<span class="src cls">PDF</span></td><td>Continues absorption; takes up B12 and bile salts.<span class="src gen">general</span></td></tr>
+      </table></div>
+
+      <p class="honest"><b>Source note.</b> Class notes say the jejunum is &#8220;the major site of digestion and absorption&#8221;. Many textbooks say most <b>chemical digestion</b> happens in the <b>duodenum</b> (where the juices arrive) and most <b>absorption</b> in the <b>jejunum</b>. Both agree that &#8220;most digestion happens in the small intestine&#8221;, which is the safe exam statement.<span class="src gen">general</span></p>
+
+      <h3 class="sub"><span class="n">5B</span>The villus: built for absorption</h3>
+      <div class="spread">
+        <figure class="fig">
+          <svg viewBox="0 0 340 400" role="img" aria-label="One intestinal villus: finger-like projection with microvilli on its surface, an epithelial layer containing a goblet cell, a capillary network, a central lacteal, and an arteriole and venule at the base">
+            <path class="fw" stroke="var(--accent)" stroke-width="2.5" d="M110 330 V70 Q110 30 160 30 Q210 30 210 70 V330Z"/>
+            <g class="ln" style="stroke-width:1.5"><path d="M118 52 l-8 -3 M116 72 l-8 -2 M116 94 l-8 -2 M116 116 l-8 -2 M116 138 l-8 -2 M116 160 l-8 -2 M202 52 l8 -3 M204 72 l8 -2 M204 94 l8 -2 M204 116 l8 -2 M204 138 l8 -2 M204 160 l8 -2 M136 36 l-3 -8 M160 30 v-9 M184 36 l3 -8"/></g>
+            <ellipse class="ft" cx="206" cy="210" rx="9" ry="16"/>
+            <path d="M140 80 Q128 140 142 200 Q152 260 140 320" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/>
+            <path d="M180 80 Q192 140 178 200 Q168 260 180 320" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+            <path d="M140 110 H180 M142 160 H178 M142 216 H178 M142 270 H176" stroke="var(--accent)" stroke-width="3" fill="none" opacity=".6"/>
+            <path d="M160 52 V332" stroke="var(--teal)" stroke-width="12" stroke-linecap="round" fill="none"/>
+            <path d="M160 332 V380" stroke="var(--teal)" stroke-width="12" stroke-linecap="round" fill="none"/>
+            <path d="M140 320 V380" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" fill="none"/>
+            <path d="M180 320 V380" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" fill="none" opacity=".6"/>
+            <text class="t ts" x="226" y="96">Epithelium</text><text class="t ts" x="226" y="109">(one cell thick)</text>
+            <text class="t ts" x="226" y="214">Goblet cell</text>
+            <text class="t ts" x="226" y="26">Microvilli</text>
+            <text class="t ts" x="226" y="300">Capillaries</text>
+            <text class="t ts" x="20" y="150" style="font-weight:600;fill:var(--teal)">Lacteal</text><text class="t ts" x="20" y="164" style="fill:var(--muted)">(lymph)</text>
+            <text class="t ts" x="20" y="372" style="fill:var(--muted)">to blood / lymph</text>
+            <path class="lnt" d="M70 150 H152"/>
+            <g class="bd"><circle cx="222" cy="16" r="9"/><text x="222" y="20">1</text></g><g class="bd"><circle cx="218" cy="100" r="9"/><text x="218" y="104">2</text></g><g class="bd"><circle cx="222" cy="200" r="9"/><text x="222" y="204">3</text></g><g class="bd"><circle cx="222" cy="292" r="9"/><text x="222" y="296">4</text></g><g class="bd"><circle cx="96" cy="150" r="9"/><text x="96" y="154">5</text></g><g class="bd"><circle cx="170" cy="372" r="9"/><text x="170" y="376">6</text></g>
+          </svg>
+          <figcaption>One villus (simplified). Capillaries take the water-soluble nutrients; the lacteal takes fat.</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Microvilli</b> &#8211; tiny hair-like folds on each surface cell (the &#8220;brush border&#8221;); they also carry digestive enzymes.<span class="src cls">PDF</span></li>
+          <li><b>Epithelium</b> &#8211; a single layer of absorptive cells covering the villus.</li>
+          <li><b>Goblet cell</b> &#8211; secretes mucus, which lubricates and protects.<span class="src cls">PDF</span></li>
+          <li><b>Capillary network</b> &#8211; blood vessels that carry glucose, amino acids, minerals and water-soluble vitamins to the liver.</li>
+          <li><b>Lacteal</b> &#8211; a lymph vessel in the centre; it carries absorbed fat (as chylomicrons) into the lymph.<span class="src cls">class</span></li>
+          <li><b>Arteriole and venule</b> &#8211; the blood supply in and out of each villus.<span class="src cls">PDF</span></li>
+        </ol>
+      </div>
+
+      <div class="blk und">
+        <span class="lbl">Understand it &#183; surface area</span>
+        <p>Absorption depends on <b>surface area</b>. The small intestine is long (~6 m), its wall is thrown into <b>circular folds</b>, covered in <b>villi</b>, and each cell is fringed with <b>microvilli</b>. Each step multiplies the area many times, so a tube about the size of a garden hose has an absorbing surface commonly compared to a tennis court.<span class="src gen">general</span> Each villus also has its own blood vessels and lymph vessel so nutrients are carried away at once, which keeps the concentration gradient steep.</p>
+      </div>
+
+      <h3 class="sub"><span class="n">5C</span>Intestinal juice (succus entericus)</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Substrate</th><th>Enzyme</th><th>Product</th></tr>
+        <tr><td>Dipeptides</td><td>Dipeptidase</td><td>Amino acids</td></tr>
+        <tr><td>Maltose</td><td>Maltase</td><td>Glucose + glucose</td></tr>
+        <tr><td>Lactose</td><td>Lactase</td><td>Glucose + galactose</td></tr>
+        <tr><td>Sucrose</td><td>Sucrase</td><td>Glucose + fructose</td></tr>
+        <tr><td>Nucleotides / nucleosides</td><td>Nucleotidase / nucleosidase</td><td>Nucleosides; sugar + nitrogen base</td></tr>
+        <tr><td>Di- and monoglycerides</td><td>Lipases</td><td>Fatty acid + glycerol</td></tr>
+      </table></div>
+      <p style="font-size:12.5px;color:var(--muted)">Source: PDF. The class note &#8220;sucrase&#8221; and &#8220;peptides &#8594; amino acids&#8221; refer to these same intestinal-wall enzymes. Mucus and bicarbonate from goblet and mucosal cells make the juice alkaline and protect the lining. <b>Enterokinase</b> in this juice activates trypsinogen (section 6).<span class="src cls">PDF</span></p>
+
+      <div class="cols2">
+        <div class="blk mem">
+          <span class="lbl">Memory aid</span>
+          <p><b>D-J-I</b> &#8211; &#8220;<b>D</b>on&#8217;t <b>J</b>ump <b>I</b>n&#8221;: Duodenum, Jejunum, Ileum. <b>Duodenum = 25 cm.</b></p>
+          <p style="margin:0"><b>Brush border</b> = microvilli = enzymes + surface.</p>
+        </div>
+        <div class="blk conf">
+          <span class="lbl">Common confusion</span>
+          <p><b>Villi vs microvilli.</b> Villi are visible finger-like projections of the wall; microvilli are tiny projections on each single cell (seen only with an electron microscope). And <b>lacteals carry fat, not glucose</b>: class notes&#8217; line &#8220;lacteal &#8211; water soluble nutrient&#8221; is garbled; capillaries carry water-soluble nutrients.</p>
+        </div>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; &#8220;Describe the small intestine&#8221;</span>
+        <p>~6 m long; three parts (duodenum 25 cm, jejunum, ileum); lined with villi and microvilli that increase the surface; each villus has capillaries and a lacteal; receives bile and pancreatic juice in the duodenum and secretes intestinal juice; completes digestion and absorbs nearly all nutrients.</p>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;The small intestine is the main absorbing organ. It is about six metres long, folded and covered in millions of tiny finger-like villi, so its surface is enormous. Juices from the liver and pancreas arrive in the first part. The last bits of chopping are done by enzymes on the surface. Then sugars and amino acids go into the blood, and fats go into the lymph.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; the microvilli under an electron microscope</summary>
+        <div class="inner">
+          <figure class="fig photo" style="margin:0">
+            <img src="assets/diagrams/villi-microvilli-em.jpg" alt="Electron micrograph of intestinal epithelial cells with the dense, hair-like microvilli forming the brush border along one edge">
+            <figcaption>Microvilli (the fine bristles) on intestinal cells, from your diagram folder.</figcaption>
+          </figure>
+          <p>Also in the wall: <b>crypts</b> (small glands between villi that make intestinal juice and new cells) and <b>Peyer&#8217;s patches</b> (lymphoid tissue, most in the ileum).<span class="src gen">general</span> The PDF&#8217;s duodenum breakdown: superior 5 cm, descending 7.5 cm, horizontal 10 cm, ascending 2.5 cm. Males&#8217; small intestine is stated as longer than females&#8217;.<span class="src cls">PDF</span></p>
+        </div>
+      </details>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Three parts of the small intestine?</div><div class="a">Duodenum (~25 cm), jejunum, ileum</div></div>
+          <div class="recall-card"><div class="q">What enters the duodenum?</div><div class="a">Chyme, pancreatic juice and bile</div></div>
+          <div class="recall-card"><div class="q">What does a villus contain?</div><div class="a">Capillary network, a lacteal, arteriole and venule, covered with epithelium and microvilli</div></div>
+          <div class="recall-card"><div class="q">What carries fat away from a villus?</div><div class="a">The lacteal (lymph), as chylomicrons</div></div>
+          <div class="recall-card"><div class="q">Lactase splits lactose into?</div><div class="a">Glucose + galactose</div></div>
+          <div class="recall-card"><div class="q">Why villi and microvilli?</div><div class="a">To multiply the absorbing surface</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 PANCREAS LIVER BILE -->
+    <section class="section" id="sec-glands">
+      <div class="sec-head">
+        <div class="kicker">06 &#183; The accessory glands</div>
+        <h2>Pancreas, Liver, Gallbladder &amp; Bile</h2>
+        <p class="dek">Food never enters these organs, yet fat and protein digestion depend on them. They pour their juices into the duodenum through one shared opening.</p>
+      </div>
+
+      <h3 class="sub"><span class="n">6A</span>Pancreas</h3>
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this &#183; pancreatic juice</span>
+          <ul class="plain">
+            <li>Released into the duodenum through the <b>hepatopancreatic duct</b>.<span class="src cls">PDF</span></li>
+            <li>Contains <b>enzymes</b> for all three major foods, plus <b>bicarbonate</b> to neutralise acidic chyme.<span class="src cls">YHB</span></li>
+            <li>Protein enzymes are made <b>inactive</b> (zymogens): trypsinogen, chymotrypsinogen, procarboxypeptidase.<span class="src cls">PDF</span></li>
+            <li>The intestine&#8217;s <b>enterokinase</b> turns trypsinogen into <b>trypsin</b>, and trypsin activates the others.<span class="src cls">PDF</span></li>
+          </ul>
+        </div>
+        <div class="blk know">
+          <span class="lbl">Know this &#183; enzymes by job</span>
+          <ul class="plain">
+            <li><b>Carbohydrate:</b> pancreatic amylase &#8594; starch to disaccharides (maltose).</li>
+            <li><b>Protein:</b> trypsin, chymotrypsin, carboxypeptidase &#8594; peptides (small chains, dipeptides).</li>
+            <li><b>Fat:</b> pancreatic lipase &#8594; fatty acids + monoglycerides (class: &#8220;fat to lipid&#8221;).</li>
+            <li><b>Nucleic acids:</b> nucleases &#8594; nucleotides.</li>
+          </ul>
+          <p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Class notes list enzymes by job; the end products are from the PDF.<span class="src cls">class</span></p>
+        </div>
+      </div>
+      <p class="honest"><b>Source note.</b> The class line &#8220;amylase helps to break carbs to starch&#8221; is reversed: <b>amylase breaks starch into smaller sugars</b>. Likewise &#8220;protein to amino acid&#8221; is completed by the intestinal peptidases; trypsin and its partners leave <b>peptides</b>. The pancreas is also an endocrine gland (insulin, glucagon); the PDF calls it a &#8220;heterocrine&#8221; (exocrine + endocrine) organ.<span class="src gen">general</span></p>
+
+      <h3 class="sub"><span class="n">6B</span>Liver</h3>
+      <div class="spread">
+        <figure class="fig photo">
+          <img src="assets/diagrams/liver-anatomy.jpg" alt="Liver with right lobe, left lobe, falciform ligament, inferior vena cava, hepatic artery, hepatic vein, bile duct and gallbladder, with an inset showing its position in the abdomen">
+          <figcaption>The liver and gallbladder (from your diagram folder).</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Largest internal gland</b>; reddish-brown, about 1&#8211;1.5 kg, upper right abdomen.<span class="src cls">class</span><span class="src cls">PDF</span></li>
+          <li><b>Two lobes</b>: large right, small left, split by the falciform ligament.<span class="src cls">class</span></li>
+          <li><b>Hepatic lobules</b> &#8211; the functional units: hepatic cells radiating around a central vein.<span class="src cls">PDF</span></li>
+          <li><b>Regenerates</b> &#8211; &#8220;liver grows even if we cut&#8221;.<span class="src cls">class</span></li>
+          <li><b>Gallbladder</b> &#8211; a small sac under the liver that stores and concentrates bile.</li>
+        </ol>
+      </div>
+
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this &#183; liver functions</span>
+          <ul class="plain">
+            <li><b>Makes bile</b> (its digestive role): emulsifies fat.<span class="src cls">class</span></li>
+            <li>Processes absorbed nutrients; stores glycogen and vitamins; makes plasma proteins; detoxifies drugs and alcohol; makes heat.<span class="src gen">general</span></li>
+            <li>Breaks down old red cells to make <b>bile pigments</b> (bilirubin).<span class="src cls">PDF</span></li>
+          </ul>
+        </div>
+        <div class="blk know">
+          <span class="lbl">Know this &#183; bile</span>
+          <ul class="plain">
+            <li>About 800&#8211;1200 mL a day; water 97.6%.<span class="src cls">PDF</span></li>
+            <li><b>No enzymes</b>: bile salts, pigments, cholesterol, fatty acids.<span class="src cls">PDF</span><span class="src cls">YHB</span></li>
+            <li><b>Emulsification</b> = splitting large fat globules into tiny droplets so lipase can work; bile also helps fat absorption (micelles).<span class="src cls">PDF</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="sub"><span class="n">6C</span>The bile pathway</h3>
+      <div class="spread rev">
+        <ol class="key">
+          <li><b>Liver cells</b> make bile continuously.</li>
+          <li><b>Hepatic ducts</b> (right and left) collect it and join into the common hepatic duct.</li>
+          <li><b>Cystic duct &#8594; gallbladder</b> &#8211; bile is stored and concentrated between meals.</li>
+          <li><b>Common bile duct</b> &#8211; formed by hepatic duct + cystic duct; carries bile to the duodenum.</li>
+          <li><b>Pancreatic duct</b> joins it; the <b>sphincter of Oddi</b> guards the shared opening into the duodenum.<span class="src cls">PDF</span></li>
+          <li><b>Duodenum</b> &#8211; receives bile and pancreatic juice. Fatty food makes the gut hormone <b>CCK (cholecystokinin)</b> squeeze the gallbladder and relax the sphincter; <b>secretin</b> boosts bicarbonate.<span class="src cls">PDF</span></li>
+        </ol>
+        <figure class="fig">
+          <svg viewBox="0 0 340 340" role="img" aria-label="Bile pathway: liver sends bile along right and left hepatic ducts that join the common hepatic duct; the cystic duct leads to the gallbladder; the common bile duct meets the pancreatic duct at the sphincter of Oddi and opens into the duodenum">
+            <path class="fa" d="M16 14 C70 0 170 4 190 30 C192 62 160 90 100 90 C44 90 14 64 16 14Z"/>
+            <text class="t tb tc" x="110" y="48" style="fill:var(--accent)">LIVER</text>
+            <path d="M60 86 L96 124 M140 84 L96 124" stroke="var(--gold)" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M96 124 V176" stroke="var(--gold)" stroke-width="7" fill="none" stroke-linecap="round"/>
+            <path d="M96 176 L46 186" stroke="var(--gold)" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <ellipse class="ft" cx="34" cy="218" rx="18" ry="32"/>
+            <path d="M96 176 V256" stroke="var(--gold)" stroke-width="9" fill="none" stroke-linecap="round"/>
+            <rect class="fs" x="150" y="226" width="170" height="40" rx="18"/>
+            <text class="t ts tc" x="238" y="250" style="font-weight:600">Pancreas</text>
+            <path d="M152 246 H100" stroke="var(--teal)" stroke-width="4" fill="none"/>
+            <circle cx="96" cy="262" r="7" fill="var(--accent)"/>
+            <rect class="ft" x="40" y="288" width="280" height="34" rx="16"/>
+            <text class="t ts tc" x="180" y="310" style="font-weight:600">Duodenum</text>
+            <path d="M96 262 V288" stroke="var(--gold)" stroke-width="9" fill="none"/>
+            <text class="t ts" x="148" y="108">Hepatic ducts</text>
+            <text class="t ts" x="112" y="156">Common hepatic duct</text>
+            <text class="t ts" x="112" y="206">Common bile duct</text>
+            <text class="t ts" x="6" y="270" style="font-weight:600">Gallbladder</text>
+            <text class="t ts" x="108" y="278" style="fill:var(--accent);font-weight:600">Sphincter of Oddi</text>
+            <text class="t ts" x="116" y="240" style="fill:var(--muted)">pancreatic duct</text>
+            <g class="bd"><circle cx="40" cy="40" r="9"/><text x="40" y="44">1</text></g><g class="bd"><circle cx="56" cy="108" r="9"/><text x="56" y="112">2</text></g><g class="bd"><circle cx="70" cy="172" r="9"/><text x="70" y="176">3</text></g><g class="bd"><circle cx="96" cy="206" r="9"/><text x="96" y="210">4</text></g><g class="bd"><circle cx="96" cy="262" r="9"/><text x="96" y="266">5</text></g><g class="bd"><circle cx="300" cy="305" r="9"/><text x="300" y="309">6</text></g>
+          </svg>
+          <figcaption>Liver &#8594; hepatic ducts &#8594; gallbladder &#8594; common bile duct &#8594; duodenum.</figcaption>
+        </figure>
+      </div>
+
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Fat does not mix with water, and the gut is watery. Bile works like <b>washing-up liquid on a greasy pan</b>: it breaks big fat blobs into tiny droplets, giving lipase a far larger surface to work on. That is why bile is needed but is not an enzyme. The gallbladder is simply the <b>storage tank</b>: the liver makes bile all day, but the gut needs it only after a fatty meal.</p>
+        <p>The pancreas does the opposite chemical job: it brings the <b>enzymes</b> and a <b>base (bicarbonate)</b>. Acidic chyme would stop these enzymes working, so bicarbonate raises the pH to about neutral&#8211;alkaline in the duodenum.</p>
+      </div>
+
+      <div class="cols2">
+        <div class="blk mem">
+          <span class="lbl">Memory aid</span>
+          <p><b>Bile path:</b> <b>L</b>iver &#8594; <b>H</b>epatic duct &#8594; <b>G</b>allbladder &#8594; <b>C</b>ommon bile duct &#8594; <b>D</b>uodenum. (&#8220;<b>L</b>et <b>H</b>im <b>G</b>et <b>C</b>offee <b>D</b>aily.&#8221;)</p>
+          <p style="margin:0"><b>Pancreas A-P-L-N:</b> Amylase, Proteases, Lipase, Nucleases.</p>
+        </div>
+        <div class="blk conf">
+          <span class="lbl">Common confusion</span>
+          <p><b>Bile has no enzymes.</b> It emulsifies fat and helps absorption. The enzyme that digests fat is <b>lipase</b> (mainly pancreatic). And the <b>gallbladder stores bile; it does not make it</b>.</p>
+        </div>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; Q12 &#8220;Name one main function of the liver.&#8221; (Section A, short answer)</span>
+        <p>&#8220;The liver produces bile, which emulsifies fats in the small intestine.&#8221; That is the class-notes answer. Add one extra for safety if marks allow: it also processes absorbed nutrients and detoxifies the blood. Also be ready for &#8220;bile pathway&#8221; (a diagram question) and &#8220;functions of pancreatic juice&#8221;.</p>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;Two helper glands feed the first part of the small intestine. The pancreas sends enzymes that break down starch, protein and fat, and a base that cancels the stomach acid. The liver makes bile, a kind of detergent, stored in the gallbladder until a fatty meal arrives. The bile breaks fat into tiny droplets so the enzymes can reach it.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; more liver anatomy</summary>
+        <div class="inner">
+          <p>The liver has a <b>double blood supply</b>: the hepatic portal vein brings nutrient-rich blood from the gut, and the hepatic artery brings oxygenated blood; the hepatic veins carry blood out to the inferior vena cava.<span class="src gen">general</span> This is why everything absorbed by the capillaries passes through the liver first.</p>
+          <p>Textbooks describe four lobes (right, left, caudate, quadrate); the class notes and PDF use the simpler right and left. Each lobule is wrapped in a thin capsule (Glisson&#8217;s capsule, PDF).</p>
+        </div>
+      </details>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Main function of the liver?</div><div class="a">Makes bile (emulsifies fat); also processes nutrients, detoxifies</div></div>
+          <div class="recall-card"><div class="q">Bile pathway?</div><div class="a">Liver &#8594; hepatic ducts &#8594; gallbladder &#8594; common bile duct &#8594; duodenum</div></div>
+          <div class="recall-card"><div class="q">Does bile contain enzymes?</div><div class="a">No. Bile salts and pigments; it emulsifies fat</div></div>
+          <div class="recall-card"><div class="q">Name the pancreatic enzymes.</div><div class="a">Amylase, trypsin, chymotrypsin, carboxypeptidase, lipase, nucleases</div></div>
+          <div class="recall-card"><div class="q">What activates trypsinogen?</div><div class="a">Enterokinase from the intestinal wall</div></div>
+          <div class="recall-card"><div class="q">Functional unit of the liver?</div><div class="a">The hepatic lobule</div></div>
+          <div class="recall-card"><div class="q">What does the gallbladder do?</div><div class="a">Stores and concentrates bile</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 DIGESTION & ABSORPTION -->
+    <section class="section" id="sec-absorb">
+      <div class="sec-head">
+        <div class="kicker">07 &#183; The chemistry</div>
+        <h2>Digestion of Nutrients &amp; Absorption</h2>
+        <p class="dek">Which juice cuts which food, what the final products are, and how each one crosses into the blood or lymph.</p>
+      </div>
+
+      <h3 class="sub"><span class="n">7A</span>The big three: start to finish</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Food</th><th>Digested by</th><th>Final product</th></tr>
+        <tr><td><b>Carbohydrate</b></td><td>Salivary amylase &#8594; pancreatic amylase &#8594; disaccharidases (maltase, sucrase, lactase)</td><td><b>Glucose</b> (and other monosaccharides)</td></tr>
+        <tr><td><b>Protein</b></td><td>Pepsin (stomach) &#8594; pancreatic proteases (trypsin, chymotrypsin, carboxypeptidase) &#8594; intestinal peptidases</td><td><b>Amino acids</b> (and small peptides)</td></tr>
+        <tr><td><b>Fat</b></td><td>Bile salts (emulsify) + lipases (mainly pancreatic)</td><td><b>Fatty acids + monoglycerides</b></td></tr>
+      </table></div>
+      <p style="font-size:12.5px;color:var(--muted)">Source: class notes table; intermediate steps from the PDF.<span class="src cls">class</span><span class="src cls">PDF</span></p>
+
+      <h3 class="sub"><span class="n">7B</span>Where does each digestive step happen?</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Place</th><th>Juice</th><th>What it does</th></tr>
+        <tr><td>Mouth</td><td>Saliva</td><td>Salivary amylase starts starch &#8594; sugars (about 30% of starch, PDF); lysozyme kills microbes</td></tr>
+        <tr><td>Stomach</td><td>Gastric juice</td><td>HCl + pepsin: protein &#8594; proteoses and peptones; no carbohydrate digestion, since acid stops amylase<span class="src gen">general</span></td></tr>
+        <tr><td>Duodenum</td><td>Bile + pancreatic juice</td><td>Fat emulsified; starch, protein, fat, nucleic acids all digested</td></tr>
+        <tr><td>Small intestine wall</td><td>Intestinal juice</td><td>Final splitting of disaccharides and dipeptides at the brush border</td></tr>
+        <tr><td>Large intestine</td><td>No enzymes</td><td>Water absorption; bacteria ferment leftovers</td></tr>
+      </table></div>
+
+      <h3 class="sub"><span class="n">7C</span>How each nutrient crosses into the body</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Nutrient</th><th>Route into the cell</th><th>Then to&#8230;</th></tr>
+        <tr><td><b>Glucose</b></td><td>Sodium-dependent transport (carrier moves glucose with sodium)</td><td>Blood capillary</td></tr>
+        <tr><td><b>Amino acids</b></td><td>Carrier-mediated transport</td><td>Blood capillary</td></tr>
+        <tr><td><b>Water</b></td><td>Osmosis, following absorbed solutes</td><td>Blood</td></tr>
+        <tr><td><b>Fat</b></td><td>Fatty acids and monoglycerides + bile salts &#8594; <b>micelles</b> &#8594; into epithelial cells &#8594; repackaged as <b>chylomicrons</b></td><td>Lacteal &#8594; lymph &#8594; blood</td></tr>
+      </table></div>
+      <p style="font-size:12.5px;color:var(--muted)">From the class notes and PDF. The PDF also notes that small amounts of glucose and amino acids move by simple diffusion, some by facilitated transport, and that active transport uses energy.<span class="src cls">class</span><span class="src cls">PDF</span></p>
+
+      <h3 class="sub"><span class="n">7D</span>Following a fat molecule</h3>
+      <figure class="fig wide-svg">
+        <svg viewBox="0 0 640 170" role="img" aria-label="Fat absorption in six steps: big fat droplet, bile emulsifies it, lipase splits it to fatty acids and monoglycerides, these join bile salts as micelles, are absorbed and rebuilt into chylomicrons inside the epithelial cell, and leave through the lacteal into lymph then blood">
+          <g class="fa"><rect x="6" y="40" width="90" height="70" rx="10"/></g>
+          <g class="fs"><rect x="112" y="40" width="90" height="70" rx="10"/></g>
+          <g class="ft"><rect x="218" y="40" width="90" height="70" rx="10"/></g>
+          <g class="fg"><rect x="324" y="40" width="90" height="70" rx="10"/></g>
+          <g class="fs"><rect x="430" y="40" width="90" height="70" rx="10"/></g>
+          <g class="fa"><rect x="536" y="40" width="98" height="70" rx="10"/></g>
+          <g class="ln" style="stroke-width:2"><path d="M98 75 H110 M204 75 H216 M310 75 H322 M416 75 H428 M522 75 H534"/></g>
+          <text class="t ts tc" x="51" y="70" style="font-weight:600">Big fat</text><text class="t ts tc" x="51" y="84">droplet</text>
+          <text class="t ts tc" x="157" y="70" style="font-weight:600">Bile</text><text class="t ts tc" x="157" y="84">emulsifies</text>
+          <text class="t ts tc" x="263" y="70" style="font-weight:600">Lipase</text><text class="t ts tc" x="263" y="84">splits fat</text>
+          <text class="t ts tc" x="369" y="70" style="font-weight:600">Micelles</text><text class="t ts tc" x="369" y="84">(+ bile salts)</text>
+          <text class="t ts tc" x="475" y="70" style="font-weight:600">Absorbed:</text><text class="t ts tc" x="475" y="84">rebuilt as</text><text class="t ts tc" x="475" y="97">chylomicrons</text>
+          <text class="t ts tc" x="585" y="70" style="font-weight:600">Lacteal</text><text class="t ts tc" x="585" y="84">&#8594; lymph</text><text class="t ts tc" x="585" y="97">&#8594; blood</text>
+          <text class="t ts tc" x="263" y="138" style="fill:var(--muted)">fatty acids + monoglycerides</text>
+          <g class="bd"><circle cx="51" cy="24" r="9"/><text x="51" y="28">1</text></g><g class="bd"><circle cx="157" cy="24" r="9"/><text x="157" y="28">2</text></g><g class="bd"><circle cx="263" cy="24" r="9"/><text x="263" y="28">3</text></g><g class="bd"><circle cx="369" cy="24" r="9"/><text x="369" y="28">4</text></g><g class="bd"><circle cx="475" cy="24" r="9"/><text x="475" y="28">5</text></g><g class="bd"><circle cx="585" cy="24" r="9"/><text x="585" y="28">6</text></g>
+        </svg>
+        <figcaption>Fat takes the lymph route; glucose and amino acids go straight to the blood.</figcaption>
+      </figure>
+
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Every nutrient follows one rule: <b>the cell wall of the gut accepts only small, usable molecules</b>. Water-soluble ones (glucose, amino acids) go through the epithelium straight into capillaries and travel to the liver. Fats are different: they cannot dissolve in blood, so they are carried in tiny protein-coated packages called <b>chylomicrons</b> that enter the <b>lymph</b> first and reach the blood later.</p>
+      </div>
+
+      <div class="table-wrap"><table>
+        <tr><th>Region</th><th>Absorbs (PDF)</th></tr>
+        <tr><td>Mouth</td><td>Certain drugs</td></tr>
+        <tr><td>Stomach</td><td>Water, sugar, alcohol (limited)</td></tr>
+        <tr><td>Small intestine</td><td>All digested food, minerals, vitamins</td></tr>
+        <tr><td>Large intestine</td><td>Water and some drugs</td></tr>
+      </table></div>
+
+      <div class="cols2">
+        <div class="blk mem">
+          <span class="lbl">Memory aid</span>
+          <p><b>C-P-F &#8594; G-A-F:</b> <b>C</b>arbs &#8594; <b>G</b>lucose; <b>P</b>rotein &#8594; <b>A</b>mino acids; <b>F</b>at &#8594; <b>F</b>atty acids + monoglycerides.</p>
+          <p style="margin:0"><b>&#8220;Fat flies through lymph.&#8221;</b> Everything else rides the blood.</p>
+        </div>
+        <div class="blk conf">
+          <span class="lbl">Common confusion</span>
+          <p><b>Digestion &#8800; absorption.</b> Digestion is chemical splitting; absorption is crossing the wall. Also <b>most absorption is in the small intestine, not the stomach or colon</b>; the stomach absorbs only water, sugar, alcohol; the colon only water.</p>
+        </div>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; 5&#8211;10 mark digestion answers</span>
+        <p>Walk the food: mouth (amylase, 30% starch) &#8594; stomach (HCl, pepsin, proteoses/peptones, chyme) &#8594; duodenum (bile, pancreatic juice) &#8594; small intestine (intestinal juice, absorption by villi) &#8594; large intestine (water). Finish with final products: glucose, amino acids, fatty acids + glycerol. Keep the three-row table from 7A as the spine of the answer.</p>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;Starch starts to break down in the mouth, protein in the stomach, and everything else in the small intestine. In the end starch becomes glucose, protein becomes amino acids and fat becomes fatty acids. Glucose and amino acids go through the gut wall into blood; fat takes a side route through the lymph first.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; how glucose follows sodium</summary>
+        <div class="inner">
+          <p>Cells on the gut surface pump sodium out on their blood side, keeping the inside low in sodium. A carrier on the lumen side then lets sodium drift in and drags glucose along with it (secondary active transport); glucose leaves on the blood side by facilitated diffusion. This is why the class notes call it &#8220;sodium-dependent&#8221;. Oral rehydration solutions use the same trick.<span class="src gen">general</span></p>
+        </div>
+      </details>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Final products of carbs, protein, fat?</div><div class="a">Glucose; amino acids; fatty acids + monoglycerides</div></div>
+          <div class="recall-card"><div class="q">How is glucose absorbed?</div><div class="a">Sodium-dependent transport into epithelial cells, then into blood</div></div>
+          <div class="recall-card"><div class="q">What is a micelle?</div><div class="a">Small water-soluble droplet of fatty acids/monoglycerides with bile salts</div></div>
+          <div class="recall-card"><div class="q">What are chylomicrons?</div><div class="a">Protein-coated fat packages that enter the lacteal and lymph</div></div>
+          <div class="recall-card"><div class="q">Where is most absorption?</div><div class="a">Small intestine</div></div>
+          <div class="recall-card"><div class="q">What does the stomach absorb?</div><div class="a">Water, sugar, alcohol (limited)</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 LARGE INTESTINE -->
+    <section class="section" id="sec-large">
+      <div class="sec-head">
+        <div class="kicker">08 &#183; The final stretch</div>
+        <h2>Large Intestine, Rectum &amp; Elimination</h2>
+        <p class="dek">No enzymes, no villi: the large intestine dries the leftovers into faeces, lets friendly bacteria work on them, and stores them until you go.</p>
+      </div>
+
+      <div class="spread">
+        <figure class="fig photo">
+          <img src="assets/diagrams/large-intestine-colon.jpg" alt="Abdomen showing the large intestine: caecum, ascending colon, transverse colon, descending colon, sigmoid colon and rectum, with the small intestine inside the frame">
+          <figcaption>The large intestine frames the small intestine (from your diagram folder).</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Caecum</b> &#8211; a small pouch where the ileum joins at the ileocaecal valve (one-way).<span class="src cls">PDF</span></li>
+          <li><b>Appendix</b> &#8211; narrow finger-like outgrowth of the caecum with lymphoid tissue; inflammation = <b>appendicitis</b>.<span class="src cls">class</span></li>
+          <li><b>Colon</b> &#8211; ascending &#8594; transverse &#8594; descending &#8594; sigmoid (pelvic) colon; an inverted U.<span class="src cls">PDF</span></li>
+          <li><b>Rectum</b> &#8211; stores faeces temporarily.<span class="src cls">class</span></li>
+          <li><b>Anus</b> &#8211; ends the tract; guarded by sphincters.<span class="src cls">PDF</span></li>
+        </ol>
+      </div>
+
+      <div class="stat-strip">
+        <div class="stat"><div class="v">~1.5 m</div><div class="k">length (PDF)</div></div>
+        <div class="stat"><div class="v">wider</div><div class="k">than the small intestine</div></div>
+        <div class="stat"><div class="v">0</div><div class="k">villi, 0 enzymes</div></div>
+      </div>
+
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this &#183; functions</span>
+          <ul class="plain">
+            <li><b>Absorbs water</b> and <b>electrolytes</b>.<span class="src cls">class</span></li>
+            <li><b>Forms and stores faeces</b>.<span class="src cls">class</span></li>
+            <li><b>Gut microbiota</b> &#8211; bacteria metabolise undigested substances.<span class="src cls">class</span> They also make some vitamins (K, B).<span class="src gen">general</span></li>
+            <li>Secretes only <b>mucus</b>, no enzymes.<span class="src cls">PDF</span></li>
+          </ul>
+        </div>
+        <div class="blk know">
+          <span class="lbl">Know this &#183; defaecation</span>
+          <ul class="plain">
+            <li>Stretch of the rectum triggers the <b>defaecation reflex</b>: rectal contraction + relaxation of the anal sphincter.<span class="src cls">class</span></li>
+            <li>The anal sphincters are partly <b>voluntary</b>, so we can delay it.<span class="src cls">PDF</span></li>
+            <li>Waves of the colon and rectum push the faeces out.<span class="src cls">PDF</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>By the time the contents reach the caecum they are a watery mix of waste and leftovers. The colon moves them slowly so that water has time to be pulled back into the body; the longer the contents stay, the drier the stool. <b>Fast transit</b> means little water is absorbed (diarrhoea); <b>slow transit</b> means too much is taken (hard stool, constipation).<span class="src gen">general</span> That link is what the yoga section (9) uses.</p>
+      </div>
+
+      <div class="cols2">
+        <div class="blk mem">
+          <span class="lbl">Memory aid</span>
+          <p><b>Colon order:</b> Ascending (up, right) &#8594; Transverse (across) &#8594; Descending (down, left) &#8594; Sigmoid (S-bend) &#8594; Rectum &#8594; Anus. &#8220;<b>A</b>ll <b>T</b>he <b>D</b>ishes <b>S</b>till <b>R</b>emain <b>A</b>round.&#8221;</p>
+        </div>
+        <div class="blk conf">
+          <span class="lbl">Common confusion</span>
+          <p><b>Large &#8800; longer.</b> The large intestine is shorter (~1.5 m) but wider than the small intestine (~6 m). It is &#8220;large&#8221; because of its width. It does <b>no digestion</b>: it absorbs water and stores waste.</p>
+        </div>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle</span>
+        <p>&#8220;Functions of the large intestine&#8221;: absorption of water and electrolytes; formation and storage of faeces; gut microbiota. &#8220;What is appendicitis?&#8221; &#8211; inflammation of the vermiform appendix.</p>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;The large intestine takes back water from what is left, so a runny leftover becomes solid stool. Friendly bacteria live here and break down some of what we could not digest. The stool waits in the rectum, and when it stretches, the body sends the signal to go.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; what the gut bacteria do</summary>
+        <div class="inner">
+          <p>The colon holds trillions of bacteria. They ferment fibre into short-chain fatty acids, which feed the colon lining, and make vitamin K. A healthy mix also crowds out harmful microbes. Antibiotics can upset this balance and cause diarrhoea.<span class="src gen">general</span> The class notes only state that they &#8220;metabolise undigested substances&#8221;.</p>
+        </div>
+      </details>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Functions of the large intestine?</div><div class="a">Absorb water and electrolytes, form/store faeces, gut microbiota</div></div>
+          <div class="recall-card"><div class="q">Parts of the large intestine?</div><div class="a">Caecum, colon (ascending, transverse, descending, sigmoid), rectum, anus</div></div>
+          <div class="recall-card"><div class="q">What is the appendix?</div><div class="a">A narrow outgrowth of the caecum with lymphoid tissue; inflammation = appendicitis</div></div>
+          <div class="recall-card"><div class="q">What triggers defaecation?</div><div class="a">Rectal stretch: reflex contraction and anal sphincter relaxation</div></div>
+          <div class="recall-card"><div class="q">Does the large intestine have enzymes or villi?</div><div class="a">No, neither</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 DISORDERS & YOGA -->
+    <section class="section" id="sec-yoga">
+      <div class="sec-head">
+        <div class="kicker">09 &#183; Putting it together</div>
+        <h2>Digestive Disorders &amp; Yoga Practice</h2>
+        <p class="dek">The 10-mark question and the class disorder list in one place. Tags show what your teacher said, what the Yoga &amp; Human Body notes say, and what is added reasoning to confirm.</p>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Q21 &#183; &#8220;How do asanas help in digestion?&#8221; (Section C, 10 marks)</span>
+        <p>Plan a five-part answer, about two marks each: <b>(1) the digestive process in brief &#8594; (2) stress and the nervous system (rest and digest) &#8594; (3) abdominal movement and posture &#8594; (4) specific problems and the asanas linked to them &#8594; (5) conclusion with a caution that these are supportive, not a cure.</b></p>
+      </div>
+
+      <p class="honest"><b>How to read the tags.</b> <span class="src cls">class</span> = stated in your class notes. <span class="src cls">YHB</span> = Yoga &amp; Human Body notes. <span class="src gen">general</span> = standard physiology. <span class="src add">added</span> = reasoning I added to explain a link; <b>not stated by your teacher, so confirm before you write it in an exam</b>. The YHB notes say: <i>&#8220;exam answers should distinguish traditional rationale from established physiology.&#8221;</i></p>
+
+      <h3 class="sub"><span class="n">9A</span>Five links between yoga and digestion</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Link</th><th>What it means</th><th>Source</th></tr>
+        <tr><td><b>1 &#183; Stress and the autonomic system</b></td><td>Stress influences digestion. Parasympathetic activity is &#8220;rest and digest&#8221;: it raises digestive activity; sympathetic activity lowers it. The vagus nerve links brain, heart, lungs and gut. Slow breathing and relaxation may raise vagal influence, though responses differ.</td><td><span class="src cls">YHB</span></td></tr>
+        <tr><td><b>2 &#183; Gut&#8211;brain interaction</b></td><td>Stress and poor meal timing are the main causes of acidity in class notes; IBS is a &#8220;gut&#8211;brain interaction disorder&#8221;, so relaxation techniques are used.</td><td><span class="src cls">class</span></td></tr>
+        <tr><td><b>3 &#183; Abdominal pressure and movement</b></td><td>The YHB list of what kriyas may influence includes the GI tract, mucosal secretions, peristalsis, abdominal pressure and autonomic activity.</td><td><span class="src cls">YHB</span></td></tr>
+        <tr><td><b>4 &#183; Posture on the abdomen</b></td><td>Twists, forward bends, knee-to-chest poses and back bends change the pressure on the abdomen and may massage the gut and encourage movement of gas and stool.</td><td><span class="src add">added</span></td></tr>
+        <tr><td><b>5 &#183; Traditional frame</b></td><td><b>Samana prana</b> is traditionally linked to digestion and assimilation, <b>apana</b> to downward, eliminative functions; in Ayurveda, balance of <b>agni</b> (digestive fire) is part of health.</td><td><span class="src cls">YHB</span></td></tr>
+      </table></div>
+
+      <h3 class="sub"><span class="n">9B</span>The class disorder list</h3>
+      <p style="font-size:13.5px;color:var(--muted)">Your teacher&#8217;s answer format: <b>explain the disease &#8594; symptoms &#8594; how yoga supports</b>.</p>
+      <div class="table-wrap"><table>
+        <tr><th>Disorder</th><th>Symptoms</th><th>Yoga support (class)</th><th>Possible rationale</th></tr>
+        <tr><td><b>GERD</b> (gastro-oesophageal reflux) &#8211; the lower sphincter loosens and acid comes up; &#8220;a higher form of acidity&#8221;; cause: stress or irregular meals</td><td>Heartburn, chest congestion, throat infection</td><td>Pavanamuktasana, Janu Shirshasana, hand in&#8211;out movement, cooling pranayama, meditation to release stress</td><td><span class="src add">added</span> Stress release and calmer breathing address the stated causes; gentle abdominal poses relieve trapped gas.</td></tr>
+        <tr><td><b>Gastritis</b> &#8211; inflammation of the stomach lining, upper abdomen</td><td>Bloating, vomiting tendency</td><td>Vajrasana after food</td><td><span class="src add">added</span> Vajrasana is a seated pose that is traditionally done after meals; no mechanism was given in class.</td></tr>
+        <tr><td><b>Peptic ulcer</b> &#8211; open sore in the stomach lining</td><td>Burning abdominal pain, nausea, indigestion</td><td>Cooling pranayama, Ardha Matsyendrasana, Pada Hastasana, yoga nidra, cyclic meditation</td><td><span class="src add">added</span> Relaxation practices target stress; cooling breaths are traditionally chosen for &#8220;heat&#8221;. Check with a teacher before twisting poses in an active ulcer.</td></tr>
+        <tr><td><b>Constipation</b> &#8211; difficulty passing stools</td><td>(not listed in class notes)</td><td>Chakki Chalanasana, Pavanamuktasana, Nadi Shuddhi</td><td><span class="src add">added</span> Abdominal compression and churning movements may encourage bowel movement; Nadi Shuddhi calms the nervous system.</td></tr>
+        <tr><td><b>Diarrhoea</b> &#8211; frequent loose stools</td><td>(not listed)</td><td>Varuna Mudra, breathing</td><td><span class="src add">added</span> Varuna is the traditional &#8220;water&#8221; mudra; breathing practices calm the autonomic system. Dehydration is the real danger, so fluids come first.</td></tr>
+        <tr><td><b>IBS</b> &#8211; gut&#8211;brain interaction disorder</td><td>Bloating, abdominal pain, diarrhoea or constipation</td><td>Relaxation techniques to relax the autonomic nervous system</td><td><span class="src cls">class</span> The teacher&#8217;s own rationale is the autonomic calm (links 1&#8211;2).</td></tr>
+        <tr><td><b>Obesity</b></td><td>(not listed)</td><td>Surya Namaskar; also improves mental health</td><td><span class="src add">added</span> A sustained, whole-body sequence raises energy use; mental-health benefit is the class note.</td></tr>
+        <tr><td><b>Liver disorders</b>: fatty liver (excess fat in liver cells; insulin resistance, sugar, alcohol, obesity); hepatitis (inflammation; autoimmune, alcohol, medicine side effects)</td><td>(not listed)</td><td>No yoga link given in class</td><td><span class="src add">added</span> Only the general point that yoga supports weight and lifestyle change. Write the causes; do not invent asanas.</td></tr>
+      </table></div>
+
+      <p class="honest"><b>Source notes.</b> (1) The class notes give <b>no symptoms</b> for constipation, diarrhoea, obesity or liver disorders; add them only from a textbook (for example hard or infrequent stool; watery stool; excess body fat) and tag them general. (2) The class note &#8220;Yoga poses help strengthen the mucus barrier&#8221; has no mechanism behind it (see section 4); do not state it as fact. (3) &#8220;Hand in&#8211;out movement&#8221; is written exactly as in your notes; ask your teacher which practice it is (a simple hand stretch-breathing movement is likely, but that is a guess).</p>
+
+      <h3 class="sub"><span class="n">9C</span>Practices that appear across the notes</h3>
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Asanas (class list)</span>
+          <ul class="plain">
+            <li><b>Pavanamuktasana</b> &#8211; lying, knees drawn to chest; compresses the abdomen. <span class="src cls">class</span> GERD, constipation.</li>
+            <li><b>Paschimottanasana</b> &#8211; seated forward bend.<span class="src cls">class</span> General list.</li>
+            <li><b>Janu Shirshasana</b> &#8211; one-leg forward bend. <span class="src cls">class</span> GERD.</li>
+            <li><b>Pada Hastasana</b> &#8211; standing forward bend. <span class="src cls">class</span> Peptic ulcer.</li>
+            <li><b>Ardha Matsyendrasana</b> &#8211; half spinal twist. <span class="src cls">class</span> Peptic ulcer.</li>
+            <li><b>Bhujangasana</b> &#8211; cobra; back bend that stretches the abdominal wall.<span class="src cls">class</span> General list.</li>
+            <li><b>Vajrasana</b> &#8211; sitting on the heels. <span class="src cls">class</span> After food, gastritis.</li>
+            <li><b>Chakki Chalanasana</b> &#8211; &#8220;grinding the mill&#8221;. <span class="src cls">class</span> Constipation.</li>
+            <li><b>Surya Namaskar</b> &#8211; sun salutation. <span class="src cls">class</span> Obesity.</li>
+          </ul>
+          <p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Posture descriptions in short are general knowledge.<span class="src gen">general</span></p>
+        </div>
+        <div class="blk know">
+          <span class="lbl">Breathing, mudra, relaxation</span>
+          <ul class="plain">
+            <li><b>Nadi Shuddhi</b> &#8211; alternate-nostril breathing. <span class="src cls">class</span> Constipation.</li>
+            <li><b>Bhramari</b> &#8211; humming breath. <span class="src cls">class</span> General list.</li>
+            <li><b>Cooling pranayama</b> &#8211; <span class="src cls">class</span> GERD, ulcer. The usual examples are Sheetali and Sheetkari (<span class="src add">added</span> names; confirm which your teacher means).</li>
+            <li><b>Yoga nidra, cyclic meditation</b> &#8211; deep relaxation. <span class="src cls">class</span> Ulcer.</li>
+            <li><b>Varuna mudra</b> &#8211; <span class="src cls">class</span> Diarrhoea.</li>
+            <li><b>Yogic breathing</b> &#8211; <span class="src cls">class</span> General list.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="blk know">
+        <span class="lbl">Know this &#183; cleansing practices and bandha (YHB)</span>
+        <ul class="plain">
+          <li><b>Shatkarma</b> include <b>dhauti, basti, neti, trataka, nauli, kapalabhati</b>; texts and teachers may classify and describe them differently.<span class="src cls">YHB</span></li>
+          <li><b>Uddiyana bandha</b> &#8211; &#8220;abdominal lock&#8221;: abdominal wall activation, altered intra-abdominal pressure, diaphragm movement.<span class="src cls">YHB</span></li>
+          <li>These are advanced practices usually learned with a teacher and kept for an <b>empty stomach</b>; people with ulcers, hernia, pregnancy or recent surgery are usually told to avoid abdominal locks and churning.<span class="src add">added</span> Confirm with your teacher.</li>
+        </ul>
+      </div>
+
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Yoga helps digestion in two broad ways: it <b>calms the nervous system</b> so the gut works in its &#8220;rest-and-digest&#8221; mode, and its <b>postures and breathing move and massage the abdomen</b>. The first is supported by the YHB notes on the parasympathetic system; the second is the classical rationale and an &#8220;added reasoning&#8221; link. A good exam answer says both, and names the asanas your teacher linked to each problem.</p>
+      </div>
+
+      <div class="cols2">
+        <div class="blk mem">
+          <span class="lbl">Memory aid &#183; tying asanas to the gut</span>
+          <p><b>&#8220;Twist, fold, press&#8221;:</b> <b>twist</b> (Ardha Matsyendrasana), <b>fold</b> (Paschimottanasana, Janu Shirshasana, Pada Hastasana), <b>press</b> (Pavanamuktasana), plus <b>arch</b> (Bhujangasana) and <b>sit</b> (Vajrasana).</p>
+        </div>
+        <div class="blk conf">
+          <span class="lbl">Common confusion</span>
+          <p><b>Yoga supports; it does not cure.</b> Tell the examiner these practices are supportive and that ulcers, hepatitis or bleeding need medical care.</p>
+        </div>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Model answer outline &#183; 10 marks</span>
+        <p><b>1.</b> Digestion = ingestion, digestion, absorption, assimilation, elimination. <b>2.</b> Stress disturbs digestion; yoga activates the parasympathetic (rest and digest) through relaxation, breathing and meditation. <b>3.</b> Postures (twists, forward bends, knee-to-chest, back bends) change abdominal pressure and may aid motility. <b>4.</b> Problems and practices: GERD (Pavanamuktasana, Janu Shirshasana, cooling pranayama), gastritis (Vajrasana after food), ulcer (cooling pranayama, Ardha Matsyendrasana, yoga nidra), constipation (Chakki Chalanasana, Pavanamuktasana, Nadi Shuddhi), diarrhoea (Varuna Mudra, breathing), IBS (relaxation), obesity (Surya Namaskar). <b>5.</b> Supportive, learned from a teacher, with regular meals.</p>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;Your gut digests best when you are relaxed, and worst when you are stressed. Yoga helps in two ways: slow breathing and relaxation switch the body to its rest-and-digest mode, and postures like twists and forward bends gently squeeze and stretch the belly, which can ease gas and constipation. It supports good digestion; it does not replace a doctor.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; the cooling pranayamas and stress</summary>
+        <div class="inner">
+          <p>Sheetali (breathing in over a curled tongue) and Sheetkari (breathing in through clenched teeth) are the standard &#8220;cooling&#8221; breaths. Their traditional purpose is to reduce a feeling of heat and acidity; the physiological part that fits your notes is that slow, controlled breathing is relaxing and may raise vagal influence.<span class="src add">added</span><span class="src cls">YHB</span></p>
+        </div>
+      </details>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">What is GERD, and which asanas does the class link?</div><div class="a">Acid rises when the lower sphincter loosens; Pavanamuktasana, Janu Shirshasana, cooling pranayama, meditation</div></div>
+          <div class="recall-card"><div class="q">Asana for gastritis?</div><div class="a">Vajrasana after food</div></div>
+          <div class="recall-card"><div class="q">Practices for peptic ulcer?</div><div class="a">Cooling pranayama, Ardha Matsyendrasana, Pada Hastasana, yoga nidra, cyclic meditation</div></div>
+          <div class="recall-card"><div class="q">Practices for constipation?</div><div class="a">Chakki Chalanasana, Pavanamuktasana, Nadi Shuddhi</div></div>
+          <div class="recall-card"><div class="q">What is IBS and how does yoga help?</div><div class="a">Gut&#8211;brain interaction disorder; relaxation techniques calm the autonomic nervous system</div></div>
+          <div class="recall-card"><div class="q">Which system does &#8220;rest and digest&#8221; describe?</div><div class="a">The parasympathetic nervous system</div></div>
+          <div class="recall-card"><div class="q">Which prana relates to digestion?</div><div class="a">Samana (apana: elimination)</div></div>
+        </div>
+      </div>
+
+      <p class="src-foot">Sources: class notes, 10&#8211;16 Sep 2026 (typed); Anatomy &amp; Physiology Notes &#8211; Digestive System (teacher&#8217;s PDF); Yoga &amp; Human Body notes (digestive, autonomic, pancha prana, shatkriya and bandha sections); general physiology tags from standard textbooks (Ross &amp; Wilson, digestive system chapter); the Semester 1 question paper (Q12 liver, Q18 digestive process, Q21 asanas and digestion). Photographic diagrams are from your diagram folder; the other diagrams were drawn for these notes.</p>
+    </section>
+
 
   </main>
 </div>
@@ -1224,53 +1459,52 @@
   var menuBtn = document.getElementById('menuBtn');
   var searchEl = document.getElementById('search');
 
-  function activate(id, scroll){
-    sections.forEach(function(s){ s.hidden = (s.id !== 'sec-' + id); });
+  function setActive(id){
     navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
-    if (scroll) window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
-    try { history.replaceState(null, '', '#' + id); } catch(e){}
-    closeSidebar();
   }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
 
   navItems.forEach(function(btn){
-    btn.addEventListener('click', function(){ activate(btn.dataset.target, true); });
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
   });
-
-  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
-  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
   menuBtn.addEventListener('click', openSidebar);
   scrim.addEventListener('click', closeSidebar);
 
   searchEl.addEventListener('input', function(){
     var q = searchEl.value.trim().toLowerCase();
     navItems.forEach(function(btn){
-      var text = btn.textContent.toLowerCase();
-      btn.hidden = q.length > 0 && text.indexOf(q) === -1;
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
     });
   });
 
-  // Layer tabs (Understand / Explain / Connect to practice) -- one independent set per section
-  Array.prototype.slice.call(document.querySelectorAll('.layer-nav')).forEach(function(nav){
-    var scope = nav.closest('.section') || document;
-    var layerButtons = Array.prototype.slice.call(nav.querySelectorAll('.layer-item'));
-    var layerPanels = Array.prototype.slice.call(scope.querySelectorAll('.layer-panel'));
-    layerButtons.forEach(function(btn){
-      btn.addEventListener('click', function(){
-        var target = btn.dataset.layer;
-        layerButtons.forEach(function(b){ b.classList.toggle('active', b === btn); });
-        layerPanels.forEach(function(p){ p.hidden = (p.dataset.panel !== target); });
-      });
-    });
-  });
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
 
-  // Flip-to-reveal recall cards
   Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
     card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
   });
 
-  var startId = 'overview';
   var hash = (location.hash || '').replace('#','');
-  if (hash && document.getElementById('sec-' + hash)) startId = hash;
-  activate(startId, false);
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
 })();
 </script>
