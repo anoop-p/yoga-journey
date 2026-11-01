@@ -210,6 +210,9 @@
     h2, h3.sub{ break-after:avoid; }
   }
 
+  @media (max-width:640px){ .fig.wide-svg{ overflow-x:auto; -webkit-overflow-scrolling:touch; } .fig.wide-svg svg{ min-width:540px; } .fig.wide-svg::after{ content:"swipe sideways to see the whole diagram"; display:block; font-size:11px; color:var(--muted); text-align:center; margin-top:4px; } }
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .fig.photo img{ max-width:100%; height:auto; border-radius:8px; }
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 
@@ -235,10 +238,12 @@
       <button class="nav-item" data-target="volumes"><span class="num">05</span><span>Volumes &amp; Capacities</span></button>
       <button class="nav-item" data-target="exchange"><span class="num">06</span><span>Gas Exchange &amp; Transport</span></button>
       <button class="nav-item" data-target="regulation"><span class="num">07</span><span>Regulation of Breathing</span></button>
-      <button class="nav-item" data-target="yoga"><span class="num">08</span><span>Breathing &amp; Yoga</span></button>
+      <button class="nav-item" data-target="resus"><span class="num">08</span><span>Artificial Respiration &amp; CPR</span></button>
+      <button class="nav-item" data-target="yoga"><span class="num">09</span><span>Breathing &amp; Yoga (Q20)</span></button>
+      <button class="nav-item" data-target="practice"><span class="num">10</span><span>Yogic Practices &amp; Breath</span></button>
     </nav>
     <div class="sidebar-footer">
-      Reference: Respiratory System Handwritten Notes (class notebook); Respiratory System &mdash; Simple Notes (PDF); Yoga &amp; Human Body notes; Ross &amp; Wilson ch. 10
+      Reference: Respiratory System Handwritten Notes (class notebook); Respiratory System &ndash; Simple Notes (PDF); Artificial Respiration and Resuscitation (PDF); Yoga &amp; Human Body notes; Ross &amp; Wilson ch. 10; Functional Anatomy of Yoga
     </div>
   </aside>
 
@@ -1160,12 +1165,222 @@
       </div>
     </section>
 
-    <!-- 08 BREATHING AND YOGA -->
+        <!-- 08 RESUSCITATION -->
+    <section class="section" id="sec-resus">
+      <div class="sec-head">
+        <div class="kicker">08 &#183; Syllabus: artificial respiration and resuscitation</div>
+        <h2>Artificial Respiration &amp; Resuscitation</h2>
+        <p class="dek">What to do when breathing or the heart stops: open the airway, breathe for the person, keep blood moving, shock the heart if needed. Tags: <span class="src cls">PDF</span> = your teacher&#8217;s &#8220;Artificial Respiration and Resuscitation&#8221; study material.</p>
+      </div>
+
+      <p class="honest"><b>Safety note.</b> This is exam study material, not first-aid training. The PDF itself says resuscitation must follow current CPR training and local protocols, and that this material does not replace practical certification.<span class="src cls">PDF</span></p>
+
+      <div class="stat-strip">
+        <div class="stat"><div class="v">112</div><div class="k">emergency number, India</div></div>
+        <div class="stat"><div class="v">100&#8211;120 /min</div><div class="k">adult compressions</div></div>
+        <div class="stat"><div class="v">5&#8211;6 cm</div><div class="k">compression depth, adult</div></div>
+        <div class="stat"><div class="v">30 : 2</div><div class="k">compressions : breaths</div></div>
+      </div>
+
+      <h3 class="sub"><span class="n">8A</span>Two ideas, not one</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Artificial respiration</th><th>Resuscitation</th></tr>
+        <tr><td>Artificial movement of air into and out of the lungs when breathing has stopped or is inadequate</td><td>Restoring vital functions, breathing and circulation, in a life-threatening emergency</td></tr>
+        <tr><td>Mainly concerns <b>breathing</b> (ventilation)</td><td>Covers <b>breathing + circulation</b> (+ defibrillation)</td></tr>
+        <tr><td>Used in respiratory arrest</td><td>Used in cardiac arrest and other life-threatening conditions</td></tr>
+        <tr><td>Examples: mouth-to-mouth, mouth-to-nose, bag-valve-mask, hospital ventilator</td><td>Examples: CPR, advanced life support</td></tr>
+      </table></div>
+      <p style="font-size:12.5px;color:var(--muted)"><b>Key concept (PDF):</b> artificial respiration is <i>part of</i> resuscitation, but resuscitation is more than artificial respiration. Artificial breathing alone does not treat cardiac arrest; chest compressions (CPR) are needed.<span class="src cls">PDF</span></p>
+
+      <h3 class="sub"><span class="n">8B</span>The Basic Life Support sequence</h3>
+      <figure class="fig wide-svg">
+        <svg viewBox="0 0 700 150" role="img" aria-label="Seven-step BLS sequence: ensure safety, check responsiveness, call emergency services and get an AED, check for normal breathing, begin CPR, apply the AED, continue until help takes over or the person recovers">
+          <g class="fa"><rect x="2" y="30" width="88" height="80" rx="10"/></g>
+          <g class="fs"><rect x="102" y="30" width="88" height="80" rx="10"/></g>
+          <g class="fa"><rect x="202" y="30" width="88" height="80" rx="10"/></g>
+          <g class="fs"><rect x="302" y="30" width="88" height="80" rx="10"/></g>
+          <g class="ft"><rect x="402" y="30" width="88" height="80" rx="10"/></g>
+          <g class="fg"><rect x="502" y="30" width="88" height="80" rx="10"/></g>
+          <g class="fa"><rect x="602" y="30" width="96" height="80" rx="10"/></g>
+          <g class="ln" style="stroke-width:2"><path d="M91 70 H101 M191 70 H201 M291 70 H301 M391 70 H401 M491 70 H501 M591 70 H601"/></g>
+          <text class="t ts tc" x="46" y="66" style="font-weight:600">Ensure</text><text class="t ts tc" x="46" y="80">safety</text>
+          <text class="t ts tc" x="146" y="66" style="font-weight:600">Check</text><text class="t ts tc" x="146" y="80">response</text>
+          <text class="t ts tc" x="246" y="62" style="font-weight:600">Call 112,</text><text class="t ts tc" x="246" y="76">get an</text><text class="t ts tc" x="246" y="90">AED</text>
+          <text class="t ts tc" x="346" y="62" style="font-weight:600">Normal</text><text class="t ts tc" x="346" y="76">breathing?</text><text class="t ts tc" x="346" y="90">(gasps: no)</text>
+          <text class="t ts tc" x="446" y="66" style="font-weight:600">Begin</text><text class="t ts tc" x="446" y="80">CPR</text>
+          <text class="t ts tc" x="546" y="66" style="font-weight:600">Apply</text><text class="t ts tc" x="546" y="80">AED</text>
+          <text class="t ts tc" x="650" y="62" style="font-weight:600">Continue</text><text class="t ts tc" x="650" y="76">until help</text><text class="t ts tc" x="650" y="90">or recovery</text>
+          <g class="bd"><circle cx="46" cy="16" r="9"/><text x="46" y="20">1</text></g><g class="bd"><circle cx="146" cy="16" r="9"/><text x="146" y="20">2</text></g><g class="bd"><circle cx="246" cy="16" r="9"/><text x="246" y="20">3</text></g><g class="bd"><circle cx="346" cy="16" r="9"/><text x="346" y="20">4</text></g><g class="bd"><circle cx="446" cy="16" r="9"/><text x="446" y="20">5</text></g><g class="bd"><circle cx="546" cy="16" r="9"/><text x="546" y="20">6</text></g><g class="bd"><circle cx="650" cy="16" r="9"/><text x="650" y="20">7</text></g>
+        </svg>
+        <figcaption>The simplified adult BLS sequence from your PDF.</figcaption>
+      </figure>
+
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this &#183; first steps</span>
+          <ul class="plain">
+            <li><b>Safety first</b> for rescuer, victim and bystanders.<span class="src cls">PDF</span></li>
+            <li><b>Check responsiveness:</b> tap and ask loudly, &#8220;Are you okay?&#8221;<span class="src cls">PDF</span></li>
+            <li><b>Call EMS</b> (112 in India) and send for an <b>AED</b>.<span class="src cls">PDF</span></li>
+            <li><b>Breathing check:</b> <b>gasping or occasional agonal breaths are not normal breathing</b>.<span class="src cls">PDF</span></li>
+          </ul>
+        </div>
+        <div class="blk know">
+          <span class="lbl">Know this &#183; airway</span>
+          <ul class="plain">
+            <li><b>Head-tilt&#8211;chin-lift:</b> one hand on the forehead tilts the head back; fingers of the other hand lift the chin; do not press into the soft tissue under the chin.<span class="src cls">PDF</span></li>
+            <li><b>Jaw-thrust:</b> for suspected spinal injury, by trained rescuers, moving the neck as little as possible. Airway and breathing still take priority.<span class="src cls">PDF</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="sub"><span class="n">8C</span>Ways of breathing for someone</h3>
+      <div class="spread">
+        <figure class="fig photo">
+          <img src="assets/diagrams/bag-valve-mask-ventilation.jpg" alt="A rescuer squeezing a self-inflating bag attached to a face mask held over a patient's face">
+          <figcaption>Bag-valve-mask ventilation (from your diagram folder).</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Mouth-to-mouth</b> &#8211; open the airway, pinch the nose, seal your mouth over theirs, give a gentle breath until the chest visibly rises, let it fall, repeat as the protocol says.<span class="src cls">PDF</span></li>
+          <li><b>Mouth-to-nose</b> &#8211; when the mouth cannot be opened, is injured, or cannot be sealed: seal over the nose instead.<span class="src cls">PDF</span></li>
+          <li><b>Bag-valve-mask (BVM)</b> &#8211; self-inflating bag + face mask + one-way valve (+ oxygen). No mouth contact, and can deliver more oxygen, but needs training to keep a good mask seal and open airway.<span class="src cls">PDF</span></li>
+          <li><b>Mechanical ventilation</b> &#8211; in hospital.<span class="src cls">PDF</span></li>
+        </ol>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted)"><b>Limits of mouth-to-mouth:</b> infection risk (use a barrier device if available), gastric inflation if breaths are too large, and it depends on correct airway position.<span class="src cls">PDF</span></p>
+
+      <h3 class="sub"><span class="n">8D</span>CPR and the AED</h3>
+      <div class="spread rev">
+        <ol class="key">
+          <li><b>Surface:</b> person on a firm, flat surface.<span class="src cls">PDF</span></li>
+          <li><b>Hands:</b> centre of the chest, over the lower half of the sternum; arms fairly straight.<span class="src cls">PDF</span></li>
+          <li><b>Rate and depth:</b> about 100&#8211;120 per minute, 5&#8211;6 cm in an average adult.<span class="src cls">PDF</span></li>
+          <li><b>Recoil:</b> let the chest come fully back up; keep interruptions short.<span class="src cls">PDF</span></li>
+          <li><b>Ratio:</b> 30 compressions : 2 breaths for a trained rescuer.<span class="src cls">PDF</span></li>
+          <li><b>Continue until</b> signs of life, the AED or medical team takes over, you cannot go on, or it becomes unsafe.<span class="src cls">PDF</span></li>
+        </ol>
+        <figure class="fig photo">
+          <img src="assets/diagrams/cpr-steps.jpg" alt="Poster of CPR steps: call for help, check response, chest compressions, open airway and two breaths, repeat sets of 30 compressions">
+          <figcaption>CPR poster (from your diagram folder). It says &#8220;Call 911&#8221;; in India use <b>112</b>.</figcaption>
+        </figure>
+      </div>
+
+      <div class="spread">
+        <figure class="fig photo">
+          <img src="assets/diagrams/aed-defibrillator-use.jpg" alt="A rescuer pressing the shock button of an AED next to a training manikin with electrode pads on its chest">
+          <figcaption>AED on a training manikin (from your diagram folder).</figcaption>
+        </figure>
+        <ol class="key">
+          <li><b>Turn on</b> the AED.<span class="src cls">PDF</span></li>
+          <li><b>Expose and dry</b> the chest; <b>attach the pads</b> as the diagrams show.<span class="src cls">PDF</span></li>
+          <li><b>Let it analyse</b> the rhythm; nobody touches the patient.<span class="src cls">PDF</span></li>
+          <li><b>Shock</b> only if advised, then <b>resume CPR</b> straight away when told.<span class="src cls">PDF</span></li>
+          <li>It helps in <b>shockable rhythms</b>: ventricular fibrillation (VF) and pulseless ventricular tachycardia (VT).<span class="src cls">PDF</span></li>
+        </ol>
+      </div>
+
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this &#183; special situations</span>
+          <ul class="plain">
+            <li><b>Recovery position</b> &#8211; for an unconscious person who <i>is</i> breathing normally, if moving them is safe: keeps the airway open and lets fluid drain; keep checking.<span class="src cls">PDF</span></li>
+            <li><b>Drowning</b> &#8211; rescue safely, call EMS; ventilation is especially important because the problem is lack of oxygen. <b>Do not waste time</b> trying to drain water from the lungs by abdominal thrusts.<span class="src cls">PDF</span></li>
+            <li><b>Choking</b> &#8211; mild: encourage coughing. Severe (cannot speak, cough or breathe): follow current choking guidelines for the person&#8217;s age. If unresponsive, start CPR; remove an object only if you can <b>see</b> it; <b>no blind finger sweeps</b>.<span class="src cls">PDF</span></li>
+          </ul>
+        </div>
+        <div class="blk know">
+          <span class="lbl">Know this &#183; types and complications</span>
+          <ul class="plain">
+            <li><b>BLS</b> (recognition, compressions, rescue breathing, AED), <b>ALS</b> (by professionals: airway devices, drugs, monitoring), <b>neonatal/paediatric</b> (special protocols).<span class="src cls">PDF</span></li>
+            <li>Complications: gastric inflation, vomiting, aspiration, lung injury from over-ventilation; rib or sternal fractures and bruising from compressions. <b>The risk of injury must not stop CPR when it is needed.</b><span class="src cls">PDF</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="spread rev">
+        <ol class="key">
+          <li><b>Infants</b> need special protocols because their anatomy, physiology and causes of arrest differ from adults.<span class="src cls">PDF</span></li>
+          <li>The photo shows a <b>two-finger</b> chest compression on an infant manikin. Your PDF gives no infant rates or depths, so learn those only in a certified course.</li>
+        </ol>
+        <figure class="fig photo">
+          <img src="assets/diagrams/infant-cpr-technique.jpg" alt="A rescuer's two fingers pressing on the centre of an infant manikin's chest">
+          <figcaption>Infant CPR on a manikin (from your diagram folder).</figcaption>
+        </figure>
+      </div>
+
+      <div class="blk und">
+        <span class="lbl">Understand it &#183; why this order</span>
+        <p>The brain is extremely sensitive to loss of oxygen, and when the heart stops, oxygen delivery falls quickly.<span class="src cls">PDF</span> So each step buys time for the next: <b>compressions</b> keep blood (and its remaining oxygen) moving, <b>breaths</b> add fresh oxygen, the <b>AED</b> tries to restart a normal heart rhythm, and <b>advanced care</b> takes over. This is the <b>Chain of Survival</b>: early recognition and call &#8594; early high-quality CPR &#8594; rapid defibrillation &#8594; advanced resuscitation &#8594; post-cardiac-arrest care &#8594; recovery and rehabilitation.<span class="src cls">PDF</span></p>
+      </div>
+
+      <h3 class="sub"><span class="n">8E</span>Why it matters to a yoga teacher</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Pranayama</th><th>Artificial respiration</th></tr>
+        <tr><td>Voluntary regulation of breathing</td><td>Emergency help for breathing</td></tr>
+        <tr><td>Practised by a conscious participant</td><td>Needed when normal breathing is absent or inadequate</td></tr>
+        <tr><td>For physiological and psychological purposes</td><td>To keep the person alive</td></tr>
+        <tr><td>Needs active participation</td><td>Done by a rescuer or device</td></tr>
+        <tr><td>Part of yogic practice</td><td>Part of emergency medicine</td></tr>
+      </table></div>
+      <div class="blk know">
+        <span class="lbl">If someone collapses in your class (PDF)</span>
+        <ul class="plain">
+          <li>1 Stop the practice. 2 Make the area safe. 3 Check response and normal breathing. 4 Call emergency services. 5 Start BLS/CPR <b>if trained</b> and indicated. 6 Use an AED if available and trained. 7 Ask someone to manage the crowd and contact family. 8 Keep monitoring until professionals arrive. 9 Record the incident for reporting.<span class="src cls">PDF</span></li>
+        </ul>
+        <p style="font-size:12.5px;color:var(--muted);margin:6px 0 0"><b>Yogic breathing practices are not a substitute for emergency ventilation or CPR.</b><span class="src cls">PDF</span></p>
+      </div>
+
+      <div class="cols2">
+        <div class="blk mem">
+          <span class="lbl">Memory aid</span>
+          <p><b>S-R-C-B-C-A-C:</b> <b>S</b>afety, <b>R</b>esponse, <b>C</b>all (112 + AED), <b>B</b>reathing check, <b>C</b>PR, <b>A</b>ED, <b>C</b>ontinue. &#8220;<b>S</b>ome <b>R</b>escuers <b>C</b>an <b>B</b>reathe <b>C</b>hests <b>A</b>nd <b>C</b>ontinue.&#8221;</p>
+          <p style="margin:0"><b>Numbers:</b> 100&#8211;120, 5&#8211;6 cm, 30:2.</p>
+        </div>
+        <div class="blk conf">
+          <span class="lbl">Common confusion</span>
+          <p><b>Artificial respiration &#8800; CPR.</b> Rescue breaths without compressions do not restart a stopped heart. And <b>agonal gasping is not breathing</b>: treat it as no normal breathing.</p>
+        </div>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; not yet asked in your Semester 1 paper, but it is on the syllabus</span>
+        <p>Likely forms: &#8220;Define artificial respiration&#8221; (movement of air in and out of the lungs when breathing has stopped or is inadequate); &#8220;Name methods&#8221; (mouth-to-mouth, mouth-to-nose, bag-valve-mask); &#8220;What is CPR?&#8221; (chest compressions + breaths: 30:2, 100&#8211;120/min, 5&#8211;6 cm); &#8220;Role of an AED&#8221;. For a 10-mark answer use: definitions &#8594; BLS sequence &#8594; airway &#8594; breaths &#8594; compressions &#8594; AED &#8594; special situations &#8594; yoga teacher&#8217;s role &#8594; caution.</p>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;If someone is not breathing normally, call 112 and get a defibrillator. Push hard and fast in the centre of the chest, about twice a second, and give two breaths after every thirty pushes. When the defibrillator arrives, follow its voice. Breathing for someone is only one part of it; keeping the blood moving is the other. A yoga class breath exercise cannot replace any of this.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; links to the rest of this page</summary>
+        <div class="inner">
+          <p>Mouth-to-mouth works because expired air still holds about 16% oxygen, enough to oxygenate an arrested patient.<span class="src gen">general</span> The chest is expanded by pressure from outside here, the reverse of normal negative-pressure breathing (<a href="#sec-breathing">section 4</a>). Brain cells&#8217; sensitivity to low oxygen links to the control of breathing by CO&#8322; and O&#8322; (<a href="#sec-regulation">section 7</a>).</p>
+        </div>
+      </details>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Define artificial respiration.</div><div class="a">Artificial movement of air into and out of the lungs when breathing has stopped or is inadequate</div></div>
+          <div class="recall-card"><div class="q">Methods of artificial respiration?</div><div class="a">Mouth-to-mouth, mouth-to-nose, bag-valve-mask, mechanical ventilation (hospital)</div></div>
+          <div class="recall-card"><div class="q">Adult CPR numbers?</div><div class="a">100&#8211;120 compressions/min, 5&#8211;6 cm deep, 30 compressions : 2 breaths</div></div>
+          <div class="recall-card"><div class="q">What does an AED do?</div><div class="a">Analyses the heart rhythm and shocks if VF or pulseless VT</div></div>
+          <div class="recall-card"><div class="q">How to open the airway?</div><div class="a">Head-tilt&#8211;chin-lift (jaw-thrust if spinal injury is suspected)</div></div>
+          <div class="recall-card"><div class="q">Emergency number in India?</div><div class="a">112</div></div>
+          <div class="recall-card"><div class="q">Is agonal gasping normal breathing?</div><div class="a">No</div></div>
+        </div>
+      </div>
+
+      <p class="src-foot">Sources: Artificial Respiration and Resuscitation, study material for M.Sc. Yogic Science (teacher&#8217;s PDF, all items tagged PDF); CPR poster, AED, bag-valve-mask and infant CPR pictures from your diagram folder. The oxygen-in-expired-air figure is general physiology, not from the PDF.</p>
+    </section>
+
+    <!-- 09 BREATHING AND YOGA -->
     <section class="section" id="sec-yoga">
       <div class="sec-head">
-        <div class="kicker">08 &#183; Putting it together</div>
+        <div class="kicker">09 &#183; Putting it together</div>
         <h2>Breathing &amp; Yoga Practice</h2>
-        <p class="dek">The 10-mark question: every earlier section becomes one paragraph of the answer. Tags show which claims come from your class notes and which are general physiology.</p>
+        <p class="dek">The 10-mark question: every earlier section becomes one paragraph of the answer. The wider list of asanas, pranayama and bandhas is in <a href="#sec-practice">section 10</a>. Tags show which claims come from your class notes and which are general physiology.</p>
       </div>
 
       <div class="blk exam">
@@ -1226,6 +1441,165 @@
       </div>
 
       <p class="src-foot">Sources: Respiratory System Handwritten Notes (class notebook, typed with the original diagrams); Respiratory System &#8211; Simple Notes (teacher&#8217;s PDF); Yoga &amp; Human Body notes (respiratory, pranayama and kumbhaka sections); Ross &amp; Wilson, Anatomy and Physiology in Health and Illness, ch. 10, and NCERT Biology, Breathing and Exchange of Gases, for the &#8220;general physiology&#8221; tags; the Semester 1 question paper (Q6, Q9, Q16, Q19, Q20). New diagrams on this page are drawn for these notes; the photographic ones are from the notebook.</p>
+    </section>
+
+    <!-- 10 YOGIC PRACTICES -->
+    <section class="section" id="sec-practice">
+      <div class="sec-head">
+        <div class="kicker">10 &#183; Syllabus: relevance to yogic practices, asanas, pranayama</div>
+        <h2>Yogic Practices &amp; the Respiratory System</h2>
+        <p class="dek">Which asanas, breathing practices, bandhas and cleansing kriyas act on which part of the respiratory system, and what is established physiology and what is tradition.</p>
+      </div>
+
+      <p class="honest"><b>How this section was made.</b> Your class notes do not state which asana or pranayama goes with which respiratory mechanism, so this section uses your Yoga &amp; Human Body notes and two reference books, and adds standard yoga teaching where those are silent. Tags: <span class="src cls">YHB</span> Yoga &amp; Human Body notes; <span class="src gen">R&amp;W</span> Ross &amp; Wilson; <span class="src add">FAY</span> <i>Functional Anatomy of Yoga</i> (posture and breathing anatomy only); <span class="src add">added</span> standard yoga practice or reasoning I added, <b>not in your notes, so confirm with your teacher before using it in an exam</b>. The YHB notes say: <i>distinguish traditional rationale from established physiology</i>.</p>
+
+      <figure class="fig wide-svg">
+        <svg viewBox="0 0 640 320" role="img" aria-label="Three columns: yoga practices (seated and chest-opening postures, slow diaphragmatic breathing, forceful breathing and kriyas, breath retention and bandha, relaxation and meditation) lead to changes (rib and diaphragm movement, breathing rate and volume, autonomic balance, CO2 and pressure changes) which may lead to results (breathing efficiency and awareness, relaxation, risk if done wrongly)">
+          <text class="t tb" x="6" y="18" style="fill:var(--muted)">PRACTICE</text><text class="t tb" x="236" y="18" style="fill:var(--muted)">WHAT CHANGES</text><text class="t tb" x="470" y="18" style="fill:var(--muted)">POSSIBLE RESULT</text>
+          <g class="fa"><rect x="6" y="30" width="180" height="40" rx="8"/><rect x="6" y="80" width="180" height="40" rx="8"/></g>
+          <g class="ft"><rect x="6" y="130" width="180" height="40" rx="8"/><rect x="6" y="180" width="180" height="40" rx="8"/><rect x="6" y="230" width="180" height="40" rx="8"/></g>
+          <g class="fg"><rect x="236" y="40" width="170" height="52" rx="8"/><rect x="236" y="104" width="170" height="52" rx="8"/><rect x="236" y="168" width="170" height="52" rx="8"/><rect x="236" y="232" width="170" height="52" rx="8"/></g>
+          <g class="fs"><rect x="470" y="50" width="164" height="64" rx="8"/><rect x="470" y="130" width="164" height="64" rx="8"/><rect x="470" y="210" width="164" height="64" rx="8"/></g>
+          <g class="ln" style="stroke-width:1.5"><path d="M186 50 L236 66 M186 100 L236 66 M186 100 L236 130 M186 150 L236 130 M186 150 L236 194 M186 200 L236 258 M186 250 L236 194 M186 250 L236 130 M406 66 L470 82 M406 130 L470 82 M406 130 L470 162 M406 194 L470 162 M406 258 L470 242 M406 194 L470 242"/></g>
+          <text class="t ts tc" x="96" y="55">Chest-opening, twists</text>
+          <text class="t ts tc" x="96" y="105">Sitting posture</text>
+          <text class="t ts tc" x="96" y="155">Slow diaphragmatic breathing</text>
+          <text class="t ts tc" x="96" y="205">Forceful breathing, kriyas</text>
+          <text class="t ts tc" x="96" y="255">Retention, bandhas, meditation</text>
+          <text class="t ts tc" x="321" y="62" style="font-weight:600">Rib and diaphragm</text><text class="t ts tc" x="321" y="77">movement</text>
+          <text class="t ts tc" x="321" y="126" style="font-weight:600">Rate and depth</text><text class="t ts tc" x="321" y="141">of breathing</text>
+          <text class="t ts tc" x="321" y="190" style="font-weight:600">Autonomic balance</text><text class="t ts tc" x="321" y="205">(vagal influence)</text>
+          <text class="t ts tc" x="321" y="254" style="font-weight:600">CO&#8322;, O&#8322; and</text><text class="t ts tc" x="321" y="269">pressure changes</text>
+          <text class="t ts tc" x="552" y="76" style="font-weight:600">Breathing efficiency,</text><text class="t ts tc" x="552" y="91">awareness</text>
+          <text class="t ts tc" x="552" y="156" style="font-weight:600">Relaxation,</text><text class="t ts tc" x="552" y="171">calmer state</text>
+          <text class="t ts tc" x="552" y="236" style="font-weight:600">Risk if forceful or</text><text class="t ts tc" x="552" y="251">prolonged: teach with care</text>
+        </svg>
+        <figcaption>The whole section in one picture. The middle column is physiology; the right column is what practice <i>may</i> do, depending on technique and person.</figcaption>
+      </figure>
+
+      <h3 class="sub"><span class="n">10A</span>Where each practice acts</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Part</th><th>Practice</th><th>Rationale</th><th>Source</th></tr>
+        <tr><td><b>Nose, upper airway</b></td><td>Nadi Shuddhi (alternate-nostril breathing); Neti</td><td>Neti is among the six shatkarmas, and kriyas &#8220;may influence the respiratory tract&#8221;. Nadi Shuddhi is slow, controlled breathing.</td><td><span class="src cls">YHB</span></td></tr>
+        <tr><td><b>Throat, larynx</b></td><td>Ujjayi; Bhramari; Jalandhara bandha</td><td>Jalandhara (throat lock) involves neck position, respiratory mechanics, pressure changes and autonomic responses.</td><td><span class="src cls">YHB</span> bandha; Ujjayi and Bhramari <span class="src add">added</span></td></tr>
+        <tr><td><b>Diaphragm, ribs, intercostals</b></td><td>Diaphragmatic (&#8220;belly&#8221;) breathing; sectional breathing</td><td>The diaphragm is the main muscle of breathing; its contraction creates negative pressure and the lungs fill.</td><td><span class="src gen">R&amp;W</span> <span class="src add">FAY</span></td></tr>
+        <tr><td><b>Lungs, ventilation</b></td><td>Regular slow breathing practice; Kapalabhati</td><td>Regular, appropriate practice may influence respiratory muscle function, efficiency, lung volumes, rate and breathlessness; the effect depends on the person and technique.</td><td><span class="src cls">YHB</span></td></tr>
+        <tr><td><b>Abdomen and pressure</b></td><td>Uddiyana bandha; Mula bandha</td><td>Abdominal wall activation, changed intra-abdominal pressure, diaphragm movement; pelvic-floor activation.</td><td><span class="src cls">YHB</span> <span class="src add">FAY</span></td></tr>
+        <tr><td><b>Brainstem, autonomic control</b></td><td>Slow breathing, meditation, relaxation</td><td>May increase vagal influence; lowers respiratory rate and promotes relaxed breathing.</td><td><span class="src cls">YHB</span></td></tr>
+      </table></div>
+
+      <h3 class="sub"><span class="n">10B</span>Asanas and the breath</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Group</th><th>Postures</th><th>What it does for breathing</th><th>Source</th></tr>
+        <tr><td><b>Seated, upright trunk</b></td><td>Sukhasana, Padmasana, Vajrasana</td><td>An upright, stable trunk lets the diaphragm and ribs move freely during pranayama.</td><td><span class="src add">added</span></td></tr>
+        <tr><td><b>Chest-opening / backbends</b></td><td>Bhujangasana, Ustrasana, Setu Bandhasana</td><td>Stretch the front of the chest. <b>But</b> stretched ribs and intercostals are harder to separate, so breathing in backbends is harder, especially for beginners; go gradually and breathe at the edge of comfort.</td><td><span class="src add">FAY</span> postures and the &#8220;harder to breathe&#8221; point</td></tr>
+        <tr><td><b>Twists</b></td><td>Ardha Matsyendrasana</td><td>Twisting loads the ribs and intercostals, and the compressed abdomen pushes the breath up into the chest. With practice the stretched tissues allow easier breathing.</td><td><span class="src add">FAY</span></td></tr>
+        <tr><td><b>Forward bends</b></td><td>Paschimottanasana, Uttanasana</td><td>Compress the abdomen, so breath goes more to the back and sides of the chest; useful for lengthening the exhalation.</td><td><span class="src add">added</span></td></tr>
+        <tr><td><b>Dynamic sequences</b></td><td>Surya Namaskar</td><td>Movement matched to breath (up with inhalation, down with exhalation) raises ventilation as the body works harder.</td><td><span class="src add">added</span> <span class="src gen">R&amp;W</span> demand raises ventilation</td></tr>
+        <tr><td><b>Relaxation</b></td><td>Shavasana, yoga nidra</td><td>Returns breathing rate to rest; promotes relaxed breathing.</td><td><span class="src cls">YHB</span> meditation and relaxation</td></tr>
+      </table></div>
+      <p style="font-size:12.5px;color:var(--muted)">Your class notes do not link particular asanas to particular respiratory effects, so this table uses <span class="src add">FAY</span> for posture facts and <span class="src add">added</span> for the rest.</p>
+
+      <h3 class="sub"><span class="n">10C</span>Pranayama</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Practice</th><th>What it is</th><th>Possible effect</th><th>Caution</th><th>Source</th></tr>
+        <tr><td><b>Deep diaphragmatic breathing</b></td><td>Slow breath that expands the abdomen/lower chest</td><td>Uses the diaphragm; slow breaths give relaxation (parasympathetic influence).</td><td>Keep it comfortable</td><td><span class="src cls">YHB</span> <span class="src gen">R&amp;W</span></td></tr>
+        <tr><td><b>Nadi Shuddhi</b></td><td>Alternate-nostril breathing</td><td>Slow, controlled breathing: influences rate, heart rate, HRV, stress.</td><td>No force; no long retention for beginners</td><td><span class="src cls">YHB</span> effects; name <span class="src add">added</span></td></tr>
+        <tr><td><b>Bhramari</b></td><td>Humming exhalation</td><td>Slow, long exhalation; relaxation.</td><td>Gentle</td><td><span class="src add">added</span></td></tr>
+        <tr><td><b>Ujjayi</b></td><td>Slow breathing with slight narrowing at the throat</td><td>Slows the breath; audible feedback.</td><td>Do not strain the throat</td><td><span class="src add">added</span></td></tr>
+        <tr><td><b>Sheetali, Sheetkari</b></td><td>&#8220;Cooling&#8221; inhalations</td><td>Slow inhalation, traditionally cooling.</td><td>Avoid in cold, breathing illness</td><td><span class="src add">added</span></td></tr>
+        <tr><td><b>Kapalabhati</b></td><td>Rapid forceful exhalations with passive inhalation</td><td>Rapid or forceful breathing has different effects from slow breathing; it is listed among the shatkarmas.</td><td>Not for beginners or with heart disease, high blood pressure, pregnancy, asthma attacks</td><td><span class="src cls">YHB</span> listed; cautions <span class="src add">added</span></td></tr>
+        <tr><td><b>Bhastrika</b></td><td>Forceful &#8220;bellows&#8221; breathing</td><td>Rapid forceful breathing.</td><td>Dizziness; same cautions as Kapalabhati</td><td><span class="src add">added</span></td></tr>
+        <tr><td><b>Kumbhaka</b></td><td><b>Antar</b> (retain after inhaling), <b>bahir</b> (after exhaling), <b>kevala</b> (spontaneous, advanced)</td><td>Prolonged or forceful retention can alter CO&#8322; and O&#8322;, blood pressure and intrathoracic pressure.</td><td><b>Teach appropriately</b></td><td><span class="src cls">YHB</span></td></tr>
+      </table></div>
+
+      <div class="cols2">
+        <div class="blk know">
+          <span class="lbl">Know this &#183; bandhas (YHB)</span>
+          <ul class="plain">
+            <li><b>Jalandhara</b> &#8211; throat lock: cervical position, respiratory mechanics, pressure changes, autonomic responses.<span class="src cls">YHB</span></li>
+            <li><b>Uddiyana</b> &#8211; abdominal lock: abdominal wall activation, altered abdominal pressure, diaphragm movement.<span class="src cls">YHB</span></li>
+            <li><b>Mula</b> &#8211; pelvic-floor lock: pelvic-floor activation, postural stabilisation.<span class="src cls">YHB</span></li>
+            <li><b>Maha bandha</b> &#8211; combination of the major bandhas.<span class="src cls">YHB</span></li>
+          </ul>
+        </div>
+        <div class="blk know">
+          <span class="lbl">Know this &#183; what a bandha does to the breath (FAY)</span>
+          <ul class="plain">
+            <li>Normal belly breath: the diaphragm descends, pressing the abdominal contents down and out.<span class="src add">FAY</span></li>
+            <li>With the pelvic floor tight (mula) and the lower abdomen drawn in (uddiyana), the abdomen cannot move out, so the diaphragm lifts the lower ribs instead and the <b>breath is redirected into the chest</b>. Both styles are used in different methods.<span class="src add">FAY</span></li>
+            <li>The diaphragm&#8217;s top moves only about an inch even in a big belly breath.<span class="src add">FAY</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="sub"><span class="n">10D</span>Respiratory conditions: what yoga can and cannot claim</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Condition</th><th>Practices often taught</th><th>Caution</th><th>Source</th></tr>
+        <tr><td><b>Asthma</b></td><td>Slow comfortable breathing, relaxation, gentle postures</td><td>Avoid forceful breathing and long retention during symptoms; keep medicines at hand; see a doctor</td><td><span class="src add">added</span> confirm</td></tr>
+        <tr><td><b>Bronchitis, smokers&#8217; cough</b></td><td>Slow breathing, sitting posture, Neti (kriya for the respiratory tract)</td><td>Persistent cough needs medical care</td><td><span class="src cls">YHB</span> kriyas affect the tract; rest <span class="src add">added</span></td></tr>
+        <tr><td><b>Stress-related fast breathing</b></td><td>Slow breathing, meditation, relaxation</td><td>&#8212;</td><td><span class="src cls">YHB</span></td></tr>
+      </table></div>
+      <p style="font-size:12.5px;color:var(--muted)">Regular appropriate breathing practices <b>may</b> influence respiratory muscle function, efficiency, lung volumes, rate and breathlessness; changes depend on the population and technique.<span class="src cls">YHB</span> Yoga is supportive, not a cure.</p>
+
+      <h3 class="sub"><span class="n">10E</span>A sample breath-centred practice</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Step</th><th>Practice</th><th>Purpose</th></tr>
+        <tr><td>1 &#183; Settle</td><td>Sit upright; 2 minutes of quiet breathing</td><td>Notice the natural breath.</td></tr>
+        <tr><td>2 &#183; Move</td><td>A few rounds of Surya Namaskar, matching movement to breath</td><td>Link movement and breath.</td></tr>
+        <tr><td>3 &#183; Open</td><td>Bhujangasana, gently</td><td>Stretch the front of the chest.</td></tr>
+        <tr><td>4 &#183; Twist and fold</td><td>Ardha Matsyendrasana, Paschimottanasana</td><td>Work the ribs; lengthen the exhalation.</td></tr>
+        <tr><td>5 &#183; Breathe</td><td>Deep diaphragmatic breathing, Nadi Shuddhi, Bhramari</td><td>Slow breathing; vagal influence.</td></tr>
+        <tr><td>6 &#183; Rest</td><td>Shavasana</td><td>Return the breathing rate to rest.</td></tr>
+      </table></div>
+      <p style="font-size:12.5px;color:var(--muted)">This order is an <b>added</b> study example; it contains no retention or forceful breathing.<span class="src add">added</span></p>
+
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Breathing is automatic but can also be steered by will. Yoga uses this window in three ways: <b>(1) mechanics</b> (posture and bandha change how the diaphragm, ribs and abdomen share the work), <b>(2) pace</b> (slow breathing lowers rate and shifts the autonomic balance toward relaxation) and <b>(3) chemistry and pressure</b> (breath-holding and forceful breathing change CO&#8322;, O&#8322; and chest pressure). The first two are the benefits; the third is why retention and forceful practices need care.</p>
+      </div>
+
+      <div class="cols2">
+        <div class="blk mem">
+          <span class="lbl">Memory aid</span>
+          <p><b>&#8220;Posture, Pace, Pressure.&#8221;</b> Posture shapes the rib and diaphragm movement; Pace (slow breathing) calms; Pressure (retention, bandhas, forceful breathing) needs care.</p>
+        </div>
+        <div class="blk conf">
+          <span class="lbl">Common confusion</span>
+          <p><b>&#8220;Chest-opening&#8221; does not mean easier breathing.</b> Backbends and twists stretch the ribs and the muscles between them, which makes deep breathing harder at first.<span class="src add">FAY</span> And <b>pranayama is not artificial respiration</b> (section 8).</p>
+        </div>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; &#8220;Explain the physiological effects of pranayama&#8221; (YHB top question) and Q20</span>
+        <p>Five parts: (1) mechanics: diaphragm and intercostals, ribs, abdominal pressure; (2) ventilation: rate, volume, lung function &#8220;may&#8221; improve; (3) nervous system: slow breathing, vagal influence, stress; (4) retention: CO&#8322;, O&#8322;, blood pressure, intrathoracic pressure, so teach with care; (5) conclusion: effects depend on technique and person; distinguish tradition from physiology.</p>
+      </div>
+
+      <div class="blk say">
+        <span class="lbl">Explain it to someone &#183; 30 seconds</span>
+        <p>&#8220;Breathing is the one automatic function you can also steer. In yoga, postures change how your ribs and diaphragm move, slow breathing calms the nervous system, and holding or forcing the breath changes the gases and pressure in your chest, which is why those practices must be learned from a teacher.&#8221;</p>
+      </div>
+
+      <details class="deeper">
+        <summary>Go deeper &#183; what the sources support</summary>
+        <div class="inner">
+          <p>Ross &amp; Wilson supports the respiratory physiology (the diaphragm and intercostals, nerve control, response to CO&#8322;), and <i>Functional Anatomy of Yoga</i> supports the posture and bandha anatomy. The YHB notes cover the pranayama effects but only in general terms (&#8220;may influence&#8230;&#8221;). None of these state that a specific asana improves vital capacity, so write it as <b>&#8220;may&#8221;</b>.</p>
+        </div>
+      </details>
+
+      <div class="card">
+        <div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div>
+        <div class="recall-strip">
+          <div class="recall-card"><div class="q">Three ways yoga acts on breathing?</div><div class="a">Mechanics (posture, bandha), pace (slow breathing), chemistry/pressure (retention, forceful breathing)</div></div>
+          <div class="recall-card"><div class="q">Antar vs bahir kumbhaka?</div><div class="a">Retention after inhaling vs after exhaling</div></div>
+          <div class="recall-card"><div class="q">Name the major bandhas.</div><div class="a">Jalandhara (throat), Uddiyana (abdomen), Mula (pelvic floor), Maha (combination)</div></div>
+          <div class="recall-card"><div class="q">Why is breathing harder in twists and backbends?</div><div class="a">Ribs and intercostals are stretched, so the ribs separate less easily</div></div>
+          <div class="recall-card"><div class="q">Kriya for the respiratory tract?</div><div class="a">Neti (and Kapalabhati, listed among the shatkarmas)</div></div>
+          <div class="recall-card"><div class="q">Why write &#8220;may&#8221;?</div><div class="a">Effects depend on technique and person; separate tradition from physiology</div></div>
+        </div>
+      </div>
+
+      <p class="src-foot">Sources: Yoga &amp; Human Body notes (pranayama, kumbhaka, bandha, shatkriya, autonomic system); Ross &amp; Wilson, <i>Anatomy and Physiology in Health and Illness</i>, ch. 10; <i>Functional Anatomy of Yoga</i> (breath and bandha, twists and backbend chapters); Semester 1 question paper (Q20). Items tagged &#8220;added&#8221; are standard yoga teaching or my own reasoning; confirm with your teacher.</p>
     </section>
 
   </main>
