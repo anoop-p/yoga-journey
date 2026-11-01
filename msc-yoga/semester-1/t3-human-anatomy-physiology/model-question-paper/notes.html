@@ -1,0 +1,576 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model Question Paper</title>
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 14px; }
+  .mq .mqh{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
+  .mq .marks-tag{ margin-bottom:0; }
+  .mq .topic{ font-size:11px; color:var(--muted); }
+  .mq .mqt{ font-weight:600; color:var(--ink); margin:0 0 10px; max-width:none; }
+  .mq details.ans > summary{ cursor:pointer; list-style:none; display:inline-block; padding:6px 12px; border-radius:8px; background:var(--teal-soft); color:var(--teal); font-size:13px; font-weight:600; }
+  .mq details.ans > summary::-webkit-details-marker{ display:none; }
+  .mq details.ans[open] > summary{ background:var(--surface-2); color:var(--muted); }
+  .mq .ansb{ margin-top:12px; border-top:1px dashed var(--border); padding-top:10px; }
+  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 10px; padding-left:22px; }
+  .mq .ansb p{ margin:0 0 8px; }
+  .mq .ansb .pts{ font-size:12.5px; color:var(--muted); }
+  .mq .ansb .pts b{ color:var(--teal); }
+  .mq .ansb .hi{ background:var(--teal-soft); border-radius:8px; padding:8px 12px; margin:0 0 10px; color:var(--ink); }
+  .mqbar{ display:flex; gap:8px; flex-wrap:wrap; margin:0 0 16px; position:sticky; top:0; z-index:5; background:var(--bg); padding:8px 0; }
+  .mqbar button{ font:inherit; font-size:13px; padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft); cursor:pointer; }
+  .mqbar button.on{ background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Model Question Paper</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../index.html">&larr; T3 &middot; Human Anatomy &amp; Physiology</a>
+    <div class="brand">
+      <div class="eyebrow">Human Anatomy &amp; Physiology</div>
+      <h1>Model Question Paper</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="guide"><span class="num">01</span><span>How to Use &amp; Syllabus Coverage</span></button>
+      <button class="nav-item" data-target="u3"><span class="num">02</span><span>Unit 3 &middot; Digestive System</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Practice questions with model answers, built from your class notes, the unit pages on this site and Ross &amp; Wilson. Tap a question to reveal its answer. Tags: class, general, added (confirm with teacher)
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="section" id="sec-guide">
+      <div class="sec-head">
+        <div class="kicker">00 &#183; Read this first</div>
+        <h2>Model Question Paper</h2>
+        <p class="dek">A practice bank written from the syllabus, not the real paper, in the same 2-, 5- and 10-mark pattern. Read the question, try it on paper, then tap to reveal the model answer.</p>
+      </div>
+
+      <div class="stat-strip">
+        <div class="stat"><div class="v">15</div><div class="k">two-mark per unit</div></div>
+        <div class="stat"><div class="v">8</div><div class="k">five-mark per unit</div></div>
+        <div class="stat"><div class="v">4</div><div class="k">ten-mark per unit</div></div>
+        <div class="stat"><div class="v">1 of 4</div><div class="k">units ready (Unit 3)</div></div>
+      </div>
+
+      <p class="honest"><b>Honest note.</b> These are practice questions I wrote from your syllabus, so they are not copies of any real paper. The answers use your class notes where they say something (<span class="src cls">class</span>), Ross &amp; Wilson and standard textbooks otherwise (<span class="src gen">general</span>), and anything I reasoned out is tagged <span class="src add">added</span>: confirm those with your teacher. The real paper is on the <a href="../question-paper/notes.html">Question Paper</a> page.</p>
+
+      <div class="blk know">
+        <span class="lbl">How to use</span>
+        <ul class="plain">
+          <li>Use the filter chips on each unit to practise only 2-, 5- or 10-mark questions.</li>
+          <li>Answers are hidden. Tap &#8220;Tap to reveal answer&#8221; under a question, or use &#8220;Reveal all / Hide all&#8221;.</li>
+          <li>Time yourself like the exam: about 3 minutes for 2 marks, 8 for 5 marks and 15 for 10 marks.</li>
+          <li>Units 1, 2 and 4 will follow once you have reviewed Unit 3.</li>
+        </ul>
+      </div>
+
+      <h3 class="sub"><span class="n">U3</span>Unit 3 syllabus coverage</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Syllabus line</th><th>Questions</th></tr>
+        <tr><td>Gross anatomy: GI tract, mouth, pharynx, stomach, intestines</td><td>2-mark: 1, 2, 5, 9, 10. 5-mark: 16, 19, 23. 10-mark: 24</td></tr>
+        <tr><td>Physiology of digestion, acid production, gastric juices</td><td>2-mark: 4, 6, 7, 8, 14. 5-mark: 18, 22. 10-mark: 25</td></tr>
+        <tr><td>Salivary glands, pancreas, liver</td><td>2-mark: 3, 11, 12. 5-mark: 17, 20, 21. 10-mark: 26</td></tr>
+        <tr><td>Relevance to yogic practices, asanas, pranayama</td><td>2-mark: 13, 15. 10-mark: 27 (and the yoga link in 24)</td></tr>
+      </table></div>
+    </section>
+    <section class="section" id="sec-u3">
+      <div class="sec-head">
+        <div class="kicker">01 &#183; Unit 3 &#183; Digestive System</div>
+        <h2>Unit 3 Question Bank (27 questions)</h2>
+        <p class="dek">15 two-mark, 8 five-mark and 4 ten-mark questions. Revise first from the <a href="../unit-3-digestive-system/notes.html">Unit 3 page</a>.</p>
+      </div>
+      <div class="mqbar" id="mqbar">
+        <button class="on" data-f="all">All</button><button data-f="2">2 marks</button><button data-f="5">5 marks</button><button data-f="10">10 marks</button><button data-f="reveal">Reveal all</button><button data-f="hide">Hide all</button>
+      </div>
+      <h3 class="sub"><span class="n">A</span>Two-mark questions</h3>
+      <div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q1 &#183; 2 marks</span><span class="topic">Overview</span></div>
+        <p class="mqt">Define digestion.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <div class="hi">Digestion is the breakdown of large, insoluble food molecules into small, soluble ones that can be absorbed into the blood.</div>
+          <p>It is both mechanical (chewing, churning) and chemical (enzymes). <span class="src cls">class</span></p>
+        </div></details></div>
+      <div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q2 &#183; 2 marks</span><span class="topic">Overview</span></div>
+        <p class="mqt">Name the five activities of the digestive system.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <div class="hi">Ingestion, digestion, absorption, assimilation and elimination.</div>
+          <p>Absorption puts nutrients into the blood; assimilation is the cells using them. <span class="src cls">class</span></p>
+        </div></details></div>
+      <div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q3 &#183; 2 marks</span><span class="topic">Salivary glands</span></div>
+        <p class="mqt">Name the three pairs of salivary glands.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <div class="hi">Parotid, submandibular and sublingual glands.</div>
+          <p>Parotid: in front of the ear. Submandibular: below the jaw. Sublingual: under the tongue. <span class="src cls">class</span></p>
+        </div></details></div>
+      <div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q4 &#183; 2 marks</span><span class="topic">Physiology</span></div>
+        <p class="mqt">Which enzyme is present in saliva and what does it do?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <div class="hi">Salivary amylase starts the digestion of starch, breaking it into smaller sugars (maltose).</div>
+          <p class="pts"><b>Note:</b> your class notes say &ldquo;breaks carbs to starch&rdquo;; that is reversed. Write starch &rarr; sugars. <span class="src gen">general</span></p>
+        </div></details></div>
+      <div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q5 &#183; 2 marks</span><span class="topic">Stomach</span></div>
+        <p class="mqt">Name the four parts of the stomach.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <div class="hi">Cardia, fundus, body and pyloric region.</div>
+          <p>Cardia is at the oesophageal opening; the pyloric region leads to the duodenum through the pyloric sphincter. <span class="src cls">class</span></p>
+        </div></details></div>
+      <div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q6 &#183; 2 marks</span><span class="topic">Stomach</span></div>
+        <p class="mqt">What is chyme?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <div class="hi">Chyme is the semi-fluid, acidic paste formed when the swallowed food (bolus) is churned and mixed with gastric juice in the stomach.</div>
+          <p>It passes in small amounts into the duodenum. <span class="src cls">class</span></p>
+        </div></details></div>
+      <div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q7 &#183; 2 marks</span><span class="topic">Gastric juice</span></div>
+        <p class="mqt">What is the role of hydrochloric acid in the stomach?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <div class="hi">HCl activates pepsinogen into pepsin, gives the acid medium pepsin needs, and kills most microbes in food.</div>
+          <p>It is made by the parietal cells of the gastric glands. <span class="src cls">class</span></p>
+        </div></details></div>
+      <div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q8 &#183; 2 marks</span><span class="topic">Gastric juice</span></div>
+        <p class="mqt">What is intrinsic factor? Why is it important?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <div class="hi">Intrinsic factor is a protein made by the parietal cells that binds vitamin B12 so it can be absorbed in the ileum.</div>
+          <p>Without it, B12 deficiency (pernicious anaemia) can follow. <span class="src cls">class</span> <span class="src gen">R&amp;W</span></p>
+        </div></details></div>
+      <div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q9 &#183; 2 marks</span><span class="topic">Small intestine</span></div>
+        <p class="mqt">Name the three parts of the small intestine.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <div class="hi">Duodenum, jejunum and ileum.</div>
+          <p>The duodenum (about 25 cm) is where chyme, pancreatic juice and bile enter. <span class="src cls">class</span></p>
+        </div></details></div>
+      <div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q10 &#183; 2 marks</span><span class="topic">Small intestine</span></div>
+        <p class="mqt">What are villi? State their function.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <div class="hi">Villi are tiny finger-like projections of the small intestine lining. They greatly increase the surface area for absorption.</div>
+          <p>Each villus has a capillary network and a lacteal (lymph vessel) for carrying away absorbed nutrients and fat. <span class="src cls">class</span></p>
+        </div></details></div>
+      <div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q11 &#183; 2 marks</span><span class="topic">Liver</span></div>
+        <p class="mqt">Write any two functions of the liver.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <ol><li>Makes bile, which emulsifies fats.</li><li>Processes absorbed nutrients and detoxifies drugs and alcohol (also stores glycogen).</li></ol>
+          <p> <span class="src cls">class</span> <span class="src gen">R&amp;W</span></p>
+        </div></details></div>
+      <div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q12 &#183; 2 marks</span><span class="topic">Pancreas</span></div>
+        <p class="mqt">Name any two enzymes of pancreatic juice and their substrates.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <ol><li>Pancreatic amylase: starch.</li><li>Lipase: fats. (Trypsin and chymotrypsin act on proteins.)</li></ol>
+          <p>Pancreatic juice is alkaline (about pH 8). <span class="src cls">class</span> <span class="src gen">R&amp;W</span></p>
+        </div></details></div>
+      <div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q13 &#183; 2 marks</span><span class="topic">Yoga</span></div>
+        <p class="mqt">Which asana is recommended after a meal, and why?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <div class="hi">Vajrasana (thunderbolt pose).</div>
+          <p>It is a seated pose that does not compress the abdomen, so it may support digestion after food; the class notes also use it for gastritis. <span class="src cls">class</span> Write &ldquo;may help&rdquo;.</p>
+        </div></details></div>
+      <div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q14 &#183; 2 marks</span><span class="topic">Physiology</span></div>
+        <p class="mqt">What is peristalsis?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <div class="hi">Peristalsis is the wave-like contraction and relaxation of the gut-wall muscles that pushes food along the digestive tract.</div>
+          <p>It happens in the oesophagus, stomach and intestines. <span class="src gen">general</span></p>
+        </div></details></div>
+      <div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q15 &#183; 2 marks</span><span class="topic">Yoga</span></div>
+        <p class="mqt">Name two yoga practices your class notes link to constipation.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <ol><li>Pavanamuktasana (wind-relieving pose).</li><li>Chakki Chalanasana (churning the mill); also Nadi Shuddhi.</li></ol>
+          <p> <span class="src cls">class</span> They move and gently massage the abdomen.</p>
+        </div></details></div>
+      <h3 class="sub"><span class="n">B</span>Five-mark questions</h3>
+      <div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q16 &#183; 5 marks</span><span class="topic">Overview</span></div>
+        <p class="mqt">Differentiate between the alimentary canal and the accessory organs of digestion.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <div class="table-wrap"><table><tr><th>Point</th><th>Alimentary canal</th><th>Accessory organs</th></tr><tr><td>Meaning</td><td>The continuous tube from mouth to anus</td><td>Organs that help digestion</td></tr><tr><td>Food passes through?</td><td>Yes</td><td>No</td></tr><tr><td>Parts</td><td>Mouth, pharynx, oesophagus, stomach, small intestine, large intestine, rectum, anus</td><td>Teeth, tongue, salivary glands, liver, gallbladder, pancreas</td></tr><tr><td>Function</td><td>Digestion, absorption, elimination</td><td>Secrete juices (saliva, bile, pancreatic juice) or aid chewing</td></tr><tr><td>Wall</td><td>Four layers: mucosa, submucosa, muscularis, serosa</td><td>Glandular tissue, with ducts into the canal</td></tr></table></div>
+          <p class="pts"><b>Marks:</b> one per row. <span class="src cls">class</span></p>
+        </div></details></div>
+      <div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q17 &#183; 5 marks</span><span class="topic">Salivary glands</span></div>
+        <p class="mqt">Name the salivary glands and write the functions of saliva.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <p><b>Glands:</b> three pairs: parotid, submandibular and sublingual (plus many small glands in the mouth lining). Release is controlled by the autonomic nervous system and by reflex: food in the mouth (unconditioned) or sight, smell or thought of food (conditioned).</p>
+          <p><b>Functions of saliva:</b></p>
+          <ol><li>Moistens food and forms the bolus for swallowing.</li><li>Salivary amylase starts starch digestion.</li><li>Dissolves food so it can be tasted.</li><li>Cleans the mouth and teeth; helps defend against germs.</li><li>Lubricates the mouth and helps speech.</li></ol>
+          <p class="pts"><b>Note:</b> the class line &ldquo;salivary glands help to control the ANS&rdquo; is reversed: the ANS controls the glands. pH about 6&ndash;7. <span class="src cls">class</span> <span class="src gen">R&amp;W</span></p>
+        </div></details></div>
+      <div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q18 &#183; 5 marks</span><span class="topic">Gastric juice</span></div>
+        <p class="mqt">Describe the composition and functions of gastric juice.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <p>Gastric juice is secreted by the gastric glands of the stomach. Its parts and jobs:</p>
+          <ol><li><b>Hydrochloric acid</b> (parietal cells): activates pepsinogen, makes the stomach acidic and kills microbes.</li><li><b>Pepsinogen</b> (chief cells): inactive; becomes <b>pepsin</b>, which starts protein digestion.</li><li><b>Mucus</b> (mucous cells): forms a protective barrier on the stomach wall (with bicarbonate).</li><li><b>Intrinsic factor</b> (parietal cells): helps absorb vitamin B12.</li><li><b>Water</b> and salts make the juice fluid. The hormone gastrin (from G cells, carried in the blood) stimulates its release.</li></ol>
+          <p class="pts"><b>Note:</b> write &ldquo;strongly acidic, about pH 1&ndash;3&rdquo;. Your class notes say 0&ndash;3 and the PDF says 1&ndash;1.5; Ross &amp; Wilson says pepsin works at 1.5&ndash;3.5. Gastrin is a hormone, not part of the juice itself. <span class="src cls">class</span> <span class="src gen">R&amp;W</span></p>
+        </div></details></div>
+      <div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q19 &#183; 5 marks</span><span class="topic">Small intestine</span></div>
+        <p class="mqt">Describe the structure of the small intestine and explain how it is adapted for absorption.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <p><b>Structure:</b> a long coiled tube (the longest part of the canal) of three parts: duodenum (about 25 cm, receives bile and pancreatic juice), jejunum and ileum, joined to the large intestine.</p>
+          <p><b>Adaptations for absorption:</b></p>
+          <ol><li><b>Great length</b> and folds of the lining.</li><li><b>Villi:</b> finger-like projections that multiply the surface.</li><li><b>Microvilli</b> (brush border) on each lining cell: a further increase in surface area.</li><li><b>Capillary network</b> in each villus: carries glucose and amino acids to the blood.</li><li><b>Lacteal</b> in each villus: carries absorbed fat (as chylomicrons) in the lymph.</li></ol>
+          <p class="pts"><b>Marks:</b> structure (2), adaptations (3). Draw a labelled villus if time allows. <span class="src cls">class</span></p>
+        </div></details></div>
+      <div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q20 &#183; 5 marks</span><span class="topic">Liver and bile</span></div>
+        <p class="mqt">Write the functions of the liver and the role of bile.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <p><b>Functions of the liver:</b></p>
+          <ol><li>Makes bile.</li><li>Processes absorbed nutrients (stores glycogen, changes sugars and amino acids).</li><li>Detoxifies drugs, alcohol and wastes.</li><li>Makes plasma proteins and stores some vitamins and iron.</li></ol>
+          <p><b>Role of bile:</b> bile is stored and concentrated in the gallbladder and reaches the duodenum through the common bile duct. It has bile salts and pigments but <b>no enzymes</b>. Bile salts emulsify fat into tiny droplets so lipase can act, and help absorb fats and fat-soluble vitamins.</p>
+          <p class="pts"><b>Path:</b> liver &rarr; hepatic ducts &rarr; gallbladder &rarr; common bile duct &rarr; duodenum. The functional unit of the liver is the hepatic lobule. <span class="src cls">class</span> <span class="src gen">R&amp;W</span></p>
+        </div></details></div>
+      <div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q21 &#183; 5 marks</span><span class="topic">Pancreas</span></div>
+        <p class="mqt">Explain the role of the pancreas in digestion.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <ol><li>The pancreas lies behind the stomach and pours <b>pancreatic juice</b> into the duodenum through the pancreatic duct (joined with the bile duct).</li><li>The juice is <b>alkaline</b> (about pH 8); with bile it neutralises the acid chyme.</li><li><b>Pancreatic amylase</b> digests starch.</li><li><b>Trypsin, chymotrypsin and carboxypeptidase</b> digest proteins to peptides. Trypsinogen is activated by <b>enterokinase</b> from the intestinal wall.</li><li><b>Lipase</b> digests fats; nucleases digest nucleic acids.</li></ol>
+          <p class="pts"><b>Add:</b> the pancreas is also an endocrine gland (insulin and glucagon). <span class="src cls">class</span> <span class="src gen">general</span></p>
+        </div></details></div>
+      <div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q22 &#183; 5 marks</span><span class="topic">Absorption</span></div>
+        <p class="mqt">Explain how the end products of digestion are absorbed.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <ol><li><b>Final products:</b> carbohydrates &rarr; glucose; proteins &rarr; amino acids; fats &rarr; fatty acids and monoglycerides.</li><li><b>Where:</b> mostly in the small intestine, through the villi. The stomach absorbs only a little (water, alcohol).</li><li><b>Glucose and amino acids:</b> carried by sodium-dependent transport into the lining cells, then into the capillaries and blood.</li><li><b>Fats:</b> form small <b>micelles</b> with bile salts, enter the cells, are repackaged as <b>chylomicrons</b> and enter the lacteal (lymph).</li><li><b>Water and salts:</b> absorbed along the small intestine; the large intestine absorbs more water.</li></ol>
+          <p class="pts"> <span class="src cls">class</span></p>
+        </div></details></div>
+      <div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q23 &#183; 5 marks</span><span class="topic">Large intestine</span></div>
+        <p class="mqt">Describe the parts and functions of the large intestine. How is defaecation brought about?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <p><b>Parts:</b> caecum (with the appendix), colon (ascending, transverse, descending, sigmoid), rectum and anus.</p>
+          <p><b>Functions:</b></p>
+          <ol><li>Absorbs water and electrolytes.</li><li>Forms and stores faeces.</li><li>Houses gut bacteria (microbiota).</li></ol>
+          <p>It has <b>no villi and no digestive enzymes</b>.</p>
+          <p><b>Defaecation:</b> faeces entering the rectum stretch its wall; a reflex contracts the rectum and relaxes the internal anal sphincter, and the voluntary external sphincter lets faeces pass.</p>
+          <p class="pts"> <span class="src cls">class</span> <span class="src gen">R&amp;W</span> (the external sphincter detail is general)</p>
+        </div></details></div>
+      <h3 class="sub"><span class="n">C</span>Ten-mark questions</h3>
+      <div class="mq" data-m="10"><div class="mqh"><span class="marks-tag">Q24 &#183; 10 marks</span><span class="topic">Gross anatomy + process</span></div>
+        <p class="mqt">Describe the structure of the digestive system and explain the process of digestion.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <p><b>Introduction.</b> The digestive system turns food into small molecules the blood can carry. It has the alimentary canal (a tube of about 9 m from mouth to anus) and accessory organs.</p>
+          <h3 class="sub"><span class="n">A</span>Structure</h3>
+          <ol><li><b>Mouth:</b> teeth (32 permanent, 20 milk), tongue and salivary glands.</li><li><b>Pharynx</b> and <b>oesophagus</b> (about 25 cm): carry food to the stomach by peristalsis; the epiglottis protects the airway.</li><li><b>Stomach:</b> cardia, fundus, body, pylorus; gastric glands secrete juice.</li><li><b>Small intestine:</b> duodenum, jejunum, ileum, with villi.</li><li><b>Large intestine:</b> caecum, colon, rectum and anus.</li><li><b>Accessory organs:</b> salivary glands, liver, gallbladder, pancreas.</li><li><b>Wall:</b> mucosa, submucosa, muscularis and serosa.</li></ol>
+          <h3 class="sub"><span class="n">B</span>Process</h3>
+          <ol><li><b>Ingestion:</b> chewing and saliva begin digestion.</li><li><b>Digestion:</b> stomach (acid, pepsin) then small intestine (pancreatic juice, bile, intestinal enzymes).</li><li><b>Absorption:</b> in the small intestine through villi; water in the large intestine.</li><li><b>Assimilation:</b> cells use the nutrients.</li><li><b>Elimination:</b> faeces leave through the anus.</li></ol>
+          <p><b>Yoga link and conclusion.</b> Practices that relax the nervous system and gently move the abdomen may support digestion (see Q27). A balanced diet and regular meals are equally important.</p>
+          <p class="pts"><b>Marks:</b> intro (1), structure (4), process (4), conclusion (1). <span class="src cls">class</span></p>
+        </div></details></div>
+      <div class="mq" data-m="10"><div class="mqh"><span class="marks-tag">Q25 &#183; 10 marks</span><span class="topic">Physiology</span></div>
+        <p class="mqt">Explain digestion in the stomach and the small intestine. Describe gastric juice and how acid is produced.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <p><b>Introduction.</b> Chemical digestion starts in the mouth (starch) and is mainly carried out in the stomach (protein) and small intestine (all food groups).</p>
+          <h3 class="sub"><span class="n">A</span>In the stomach</h3>
+          <ol><li>Food becomes <b>chyme</b> by churning with gastric juice.</li><li>Gastric juice has <b>HCl, pepsinogen, mucus and intrinsic factor</b>; gastrin (a hormone from G cells) stimulates secretion.</li><li><b>Acid production:</b> parietal cells pump hydrogen ions into the stomach lumen (a proton pump that uses ATP) and chloride follows, forming HCl. Inside the cell, carbon dioxide and water form carbonic acid (enzyme: carbonic anhydrase), which supplies the hydrogen ions. <span class="src gen">R&amp;W</span></li><li>HCl activates pepsinogen to <b>pepsin</b>, which breaks proteins into peptides at low pH.</li><li>The stomach does not digest itself because of the mucus-bicarbonate barrier, inactive pepsinogen and rapid cell renewal.</li></ol>
+          <h3 class="sub"><span class="n">B</span>In the small intestine</h3>
+          <ol><li>Chyme enters the duodenum in small amounts; <b>pancreatic juice</b> (alkaline) and <b>bile</b> neutralise the acid.</li><li><b>Carbohydrates:</b> pancreatic amylase, then maltase, lactase and sucrase (lactase splits lactose into glucose and galactose).</li><li><b>Proteins:</b> trypsin, chymotrypsin and carboxypeptidase, then peptidases to amino acids.</li><li><b>Fats:</b> bile salts emulsify; lipase splits them to fatty acids and monoglycerides.</li><li>The end products are absorbed through the villi.</li></ol>
+          <p><b>Conclusion.</b> The stomach prepares and starts protein digestion; the small intestine completes digestion and absorbs.</p>
+          <p class="pts"><b>Marks:</b> intro (1), stomach (4), intestine (4), conclusion (1). Quote the pH as &ldquo;about 1&ndash;3&rdquo;. <span class="src cls">class</span> <span class="src gen">R&amp;W</span></p>
+        </div></details></div>
+      <div class="mq" data-m="10"><div class="mqh"><span class="marks-tag">Q26 &#183; 10 marks</span><span class="topic">Glands</span></div>
+        <p class="mqt">Describe the structure and role of the salivary glands, liver and pancreas in digestion.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <p><b>Introduction.</b> These accessory organs make the juices that digest food; food never passes through them.</p>
+          <h3 class="sub"><span class="n">A</span>Salivary glands</h3>
+          <ul><li>Three pairs: parotid, submandibular, sublingual; saliva pH about 6&ndash;7.</li><li>Saliva moistens food, forms the bolus, and salivary amylase starts starch digestion. Release is reflex-controlled (conditioned and unconditioned).</li></ul>
+          <h3 class="sub"><span class="n">B</span>Liver and gallbladder</h3>
+          <ul><li>The largest gland, made of hepatic lobules; the gallbladder stores and concentrates bile.</li><li>Bile (salts and pigments, no enzymes) emulsifies fat and aids absorption of fat-soluble vitamins; the liver also processes nutrients and detoxifies.</li><li>Bile path: liver &rarr; hepatic ducts &rarr; gallbladder &rarr; common bile duct &rarr; duodenum.</li></ul>
+          <h3 class="sub"><span class="n">C</span>Pancreas</h3>
+          <ul><li>Lies behind the stomach; pancreatic juice enters the duodenum by the pancreatic duct.</li><li>Alkaline juice (about pH 8) with amylase, trypsin, chymotrypsin, carboxypeptidase, lipase and nucleases; trypsinogen is activated by enterokinase.</li><li>Also an endocrine gland (insulin, glucagon).</li></ul>
+          <p><b>Conclusion.</b> Together the three provide the enzymes and bile that digest carbohydrate, protein and fat.</p>
+          <p class="pts"><b>Marks:</b> intro (1), saliva (2), liver (3), pancreas (3), conclusion (1). <span class="src cls">class</span> <span class="src gen">R&amp;W</span></p>
+        </div></details></div>
+      <div class="mq" data-m="10"><div class="mqh"><span class="marks-tag">Q27 &#183; 10 marks</span><span class="topic">Yoga relevance</span></div>
+        <p class="mqt">Explain how yoga practices (asanas and pranayama) help digestion and digestive disorders.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+          <p><b>Introduction.</b> Digestion depends on gut movement, blood flow and a calm nervous system. Yoga may support all three. (Write &ldquo;may help&rdquo;: traditional rationale is not the same as proven physiology.)</p>
+          <h3 class="sub"><span class="n">A</span>How yoga may help</h3>
+          <ol><li><b>Rest and digest:</b> relaxation and slow breathing favour the parasympathetic nervous system. <span class="src cls">class</span></li><li><b>Abdominal massage:</b> twists and forward bends compress and release the abdomen and may stimulate the gut.</li><li><b>Stronger abdominal muscles</b> support the gut and bowel movement.</li></ol>
+          <h3 class="sub"><span class="n">B</span>By disorder (from your class notes)</h3>
+          <div class="table-wrap"><table><tr><th>Disorder</th><th>Practices</th></tr><tr><td>GERD (reflux)</td><td>Pavanamuktasana, Janu Shirshasana, cooling pranayama, meditation</td></tr><tr><td>Gastritis</td><td>Vajrasana after food</td></tr><tr><td>Peptic ulcer</td><td>Cooling pranayama, Ardha Matsyendrasana, Pada Hastasana, yoga nidra, cyclic meditation</td></tr><tr><td>Constipation</td><td>Chakki Chalanasana, Pavanamuktasana, Nadi Shuddhi</td></tr><tr><td>IBS</td><td>Relaxation techniques that calm the autonomic nervous system</td></tr></table></div>
+          <h3 class="sub"><span class="n">C</span>Pranayama and cautions</h3>
+          <ul><li>Cooling pranayama (Sheetali, Sheetkari) for acidity. <span class="src add">added</span></li><li>Practise on an empty stomach; avoid strong abdominal poses in ulcers, hernia or after abdominal surgery. <span class="src add">added</span></li></ul>
+          <p><b>Conclusion.</b> Yoga supports digestion by relaxing the nervous system and moving the abdomen, but it works along with diet, water and medical care.</p>
+          <p class="pts"><b>Marks:</b> intro (1), mechanisms (3), disorders and practices (4), cautions (1), conclusion (1). <span class="src cls">class</span></p>
+        </div></details></div>
+    </section>
+<script>
+(function(){
+  var bar=document.getElementById('mqbar'); if(!bar) return;
+  var btns=bar.querySelectorAll('button');
+  btns.forEach(function(b){ b.addEventListener('click',function(){
+    var f=b.getAttribute('data-f'), cards=document.querySelectorAll('.mq');
+    if(f==='reveal'||f==='hide'){ document.querySelectorAll('.mq details.ans').forEach(function(d){ if(f==='reveal') d.setAttribute('open',''); else d.removeAttribute('open'); }); return; }
+    btns.forEach(function(x){ x.classList.remove('on'); }); b.classList.add('on');
+    cards.forEach(function(c){ c.style.display=(f==='all'||c.getAttribute('data-m')===f)?'':'none'; });
+  }); });
+})();
+</script>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
+</script>
