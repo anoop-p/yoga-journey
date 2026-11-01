@@ -1,0 +1,713 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Question Paper &amp; Model Answers</title>
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  @media (max-width:640px){ .fig.wide-svg{ overflow-x:auto; -webkit-overflow-scrolling:touch; } .fig.wide-svg svg{ min-width:540px; } .fig.wide-svg::after{ content:"swipe sideways to see the whole diagram"; display:block; font-size:11px; color:var(--muted); text-align:center; margin-top:4px; } }
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .qa{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px 20px 8px; margin:0 0 20px; }
+  .qa h3{ font-size:17px; margin:0 0 8px; }
+  .qa .qn{ font-family:"IBM Plex Mono",monospace; color:var(--accent); margin-right:8px; }
+  .qa ul,.qa ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 12px; padding-left:22px; }
+  .qa .pts{ font-size:12.5px; color:var(--muted); border-top:1px dashed var(--border); padding-top:8px; margin-top:6px; }
+  .qa .pts b{ color:var(--teal); }
+  .qa .hi{ background:var(--teal-soft); border-radius:8px; padding:8px 12px; margin:0 0 12px; color:var(--ink); }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Question Paper &amp; Model Answers</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../index.html">&larr; T3 &middot; Human Anatomy &amp; Physiology</a>
+    <div class="brand">
+      <div class="eyebrow">Human Anatomy &amp; Physiology</div>
+      <h1>Question Paper &amp; Model Answers</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="paper"><span class="num">01</span><span>Paper Map &amp; How to Write</span></button>
+      <button class="nav-item" data-target="u1"><span class="num">02</span><span>Unit 1 &middot; Cell &amp; Tissue</span></button>
+      <button class="nav-item" data-target="u2"><span class="num">03</span><span>Unit 2 &middot; Muscle, Bone &amp; Joints</span></button>
+      <button class="nav-item" data-target="u3"><span class="num">04</span><span>Unit 3 &middot; Digestive</span></button>
+      <button class="nav-item" data-target="u4"><span class="num">05</span><span>Unit 4 &middot; Respiratory</span></button>
+      <button class="nav-item" data-target="test"><span class="num">06</span><span>Class Test (Respiratory)</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Paper: MSC-1/3/23MYHPS1CCTC3/24, Sem 1, DSCC-18 (60 marks, 2 hrs). Baseline for style: your teacher's answer key for the respiratory class test. Content: your class notes, unit pages on this site, Ross &amp; Wilson
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="section" id="sec-paper">
+      <div class="sec-head">
+        <div class="kicker">00 &#183; Read this first</div>
+        <h2>Semester 1 Paper: Map and How to Write</h2>
+        <p class="dek">Paper DSCC-18, Human Anatomy and Physiology: 60 marks, 2 hours, 22 questions. Every question below has a model answer sized for its marks, grouped by unit so you can jump to the unit you are revising.</p>
+      </div>
+
+      <div class="stat-strip">
+        <div class="stat"><div class="v">A</div><div class="k">any 10 of 13 &#215; 2 = 20</div></div>
+        <div class="stat"><div class="v">B</div><div class="k">any 4 of 6 &#215; 5 = 20</div></div>
+        <div class="stat"><div class="v">C</div><div class="k">any 2 of 3 &#215; 10 = 20</div></div>
+        <div class="stat"><div class="v">2 h</div><div class="k">about 36 min per section</div></div>
+      </div>
+
+      <p class="honest"><b>How these answers were made.</b> Your teacher's key for the respiratory class test is the style baseline: Section A is one or two lines, Section B is a labelled diagram or 4&#8211;5 crisp points, Section C is a structured answer (introduction, headed points, yoga link, conclusion). Facts come from your class notes and the unit pages on this site (<span class="src cls">class</span>), or from Ross &amp; Wilson and standard textbooks (<span class="src gen">general</span>). Anything I reasoned out without a source is tagged <span class="src add">added</span>: confirm those with your teacher. For yoga claims use &#8220;may help&#8221; wording; the YHB notes say exam answers should separate traditional rationale from established physiology.</p>
+
+      <div class="table-wrap"><table>
+        <tr><th>Unit</th><th>Section A (2 marks)</th><th>Section B (5)</th><th>Section C (10)</th></tr>
+        <tr><td><b>1 &#183; Cell &amp; Tissue</b></td><td>Q1 cell, Q2 organelle, Q5 two tissues, Q7 mitochondria, Q10 epithelial functions</td><td>Q14 balance in the body (homeostasis)</td><td>none</td></tr>
+        <tr><td><b>2 &#183; Muscle, Bone &amp; Joints</b></td><td>Q3 longest bone, Q4 muscle types, Q8 muscle cell diagram, Q11 bio-mechanical movements, Q13 shortest bone</td><td>Q15 muscle fatigue, Q17 two joint types</td><td>Q22 asanas and pranayama for muscles and bones</td></tr>
+        <tr><td><b>3 &#183; Digestive</b></td><td>Q12 liver function</td><td>Q18 digestive process</td><td>Q21 asanas and digestion</td></tr>
+        <tr><td><b>4 &#183; Respiratory</b></td><td>Q6 lungs, Q9 lung-cavity fluid</td><td>Q16 respiratory system diagram, Q19 how we breathe</td><td>Q20 breathing in yoga practice</td></tr>
+      </table></div>
+
+      <div class="blk know">
+        <span class="lbl">Know this &#183; what the marks reward</span>
+        <ul class="plain">
+          <li><b>2 marks:</b> one clear fact plus one supporting word or example. About 2 lines. No introduction.</li>
+          <li><b>5 marks:</b> 5 distinct points (1 mark each), or a neat labelled diagram with 6&#8211;8 labels plus a line of explanation. About 10&#8211;12 lines.</li>
+          <li><b>10 marks:</b> short introduction, 6&#8211;8 headed points, a yoga or practical link, one-line conclusion. About 1.5 pages.</li>
+          <li>Section C always asks for yoga relevance. Learn one reliable structure and reuse it: <i>what happens in the body &#8594; what the practice does &#8594; why it helps &#8594; caution</i>.</li>
+        </ul>
+      </div>
+
+      <div class="blk mem">
+        <span class="lbl">Memory aid &#183; choosing questions</span>
+        <p>Pick Section A questions you can answer in one line (usually 11 of 13 are easy: Q1, 2, 3, 4, 5, 6, 7, 9, 10, 12, 13). Skip the diagram question unless you are sure of the labels. In B take the diagrams and &#8220;process&#8221; questions (Q16, Q18, Q19) because their points are fixed. In C take Q20, Q21 and Q22 only if you have a yoga example for each; two are enough.</p>
+      </div>
+
+      <div class="blk conf">
+        <span class="lbl">Common confusion &#183; wording of the paper</span>
+        <p>The English wording is slightly loose in places (&#8220;fluid present in the lungs' cavity&#8221; means the <b>pleural fluid</b> between the two pleural layers; &#8220;balance in the body&#8221; is most likely <b>homeostasis</b>). Where a question could be read two ways, the answer states the reading it takes.</p>
+      </div>
+
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Marks pattern of the paper?</div><div class="a">A: 10 of 13 &#215; 2. B: 4 of 6 &#215; 5. C: 2 of 3 &#215; 10. Total 60, 2 hours</div></div>
+        <div class="recall-card"><div class="q">Which questions are Unit 4?</div><div class="a">Q6, Q9 (A); Q16, Q19 (B); Q20 (C)</div></div>
+        <div class="recall-card"><div class="q">Which are Section C?</div><div class="a">Q20 breathing and yoga; Q21 asanas and digestion; Q22 asanas and pranayama for muscles and bones</div></div>
+      </div>
+      <div class="src-foot"><span class="src cls">class</span> key style &#183; paper text from your scan</div>
+    </section>
+    <section class="section" id="sec-u1">
+      <div class="sec-head">
+        <div class="kicker">01 &#183; Unit 1 &#183; Cell &amp; Tissue</div>
+        <h2>Questions 1, 2, 5, 7, 10 and 14</h2>
+        <p class="dek">Five short answers and one 5-mark answer. Revise from the <a href="../unit-1-cell-tissue/index.html">Unit 1 pages</a>.</p>
+      </div>
+
+      <div class="qa"><span class="marks-tag">Q1 &#183; 2 marks</span><h3>What is a cell?</h3>
+        <div class="hi">A cell is the basic structural and functional unit of all living things.</div>
+        <ul><li>It is the smallest unit that can carry out the processes of life (taking in food, making energy, growing, reproducing).</li></ul>
+        <div class="pts"><b>Marking points:</b> &#8220;basic unit&#8221; + &#8220;structure and function&#8221;. <span class="src cls">class</span></div></div>
+
+      <div class="qa"><span class="marks-tag">Q2 &#183; 2 marks</span><h3>Name any one organelle found inside a cell.</h3>
+        <div class="hi">Mitochondria (any one of: nucleus, ribosome, endoplasmic reticulum, Golgi apparatus, lysosome).</div>
+        <ul><li>Organelles are small specialised structures in the cytoplasm, each with its own job.</li></ul>
+        <div class="pts"><b>Tip:</b> choose the one you can describe in a line; the examiner may ask for nothing more but a function line earns safety marks. <span class="src gen">general</span></div></div>
+
+      <div class="qa"><span class="marks-tag">Q5 &#183; 2 marks</span><h3>Name any two types of tissues.</h3>
+        <div class="hi">Epithelial tissue and muscle tissue. (The four basic types: epithelial, connective, muscular, nervous.)</div>
+        <div class="pts"><b>Tip:</b> name two and add &#8220;the four types are&#8230;&#8221; only if you are sure of all four. <span class="src cls">class</span></div></div>
+
+      <div class="qa"><span class="marks-tag">Q7 &#183; 2 marks</span><h3>What is the role of mitochondria in a cell?</h3>
+        <div class="hi">Mitochondria make energy for the cell by aerobic respiration, in the form of ATP. They are called the &#8220;powerhouse of the cell&#8221;.</div>
+        <ul><li>Cells with a high energy need (muscle, liver) contain many mitochondria.</li></ul>
+        <div class="pts"><b>Marking points:</b> ATP/energy + powerhouse. <span class="src cls">class</span></div></div>
+
+      <div class="qa"><span class="marks-tag">Q10 &#183; 2 marks</span><h3>Write any two functions of epithelial cells.</h3>
+        <ol><li><b>Protection:</b> covers the body surface and lines cavities, shielding underlying tissue from injury, germs and drying (skin).</li>
+        <li><b>Absorption and secretion:</b> lining of the intestine absorbs nutrients; glands secrete mucus, enzymes and hormones.</li></ol>
+        <div class="pts"><b>Others you may use:</b> filtration (kidney), sensation, excretion. <span class="src cls">class</span> <span class="src gen">general</span></div></div>
+
+      <div class="qa"><span class="marks-tag">Q14 &#183; 5 marks</span><h3>What is balance in the body? Explain.</h3>
+        <p class="honest"><b>Reading taken.</b> The Unit 1 syllabus ends with &#8220;tissue, organs, systems, homeostasis&#8221;, so &#8220;balance in the body&#8221; is answered as <b>homeostasis</b>. If your teacher meant postural balance, the last point covers it. <span class="src add">added: confirm with teacher</span></p>
+        <ol>
+          <li><b>Meaning:</b> homeostasis is the body's ability to keep its internal environment steady (temperature, water, pH, blood sugar, oxygen) although the outside world keeps changing.</li>
+          <li><b>How it works:</b> a receptor senses a change, a control centre (brain) compares it with the normal value, and an effector (muscle or gland) corrects it. This is a feedback loop, mostly <b>negative feedback</b>.</li>
+          <li><b>Example:</b> body temperature about 37 &#176;C. Too hot: sweating and skin blood vessels widen. Too cold: shivering and vessels narrow.</li>
+          <li><b>Who maintains it:</b> the nervous and endocrine systems coordinate; kidneys, lungs, skin and liver carry out the corrections.</li>
+          <li><b>Importance and yoga link:</b> cells work only in a narrow range, so failure of balance causes disease. Regular yoga practice, with relaxation and slow breathing, may help the body return to a calm, balanced state. <span class="src add">added</span></li>
+        </ol>
+        <div class="pts"><b>Marking points:</b> definition (1), feedback loop (1), example (1), systems (1), importance (1).</div></div>
+    </section>
+
+    <section class="section" id="sec-u2">
+      <div class="sec-head">
+        <div class="kicker">02 &#183; Unit 2 &#183; Muscle, Bone &amp; Joints</div>
+        <h2>Questions 3, 4, 8, 11, 13, 15, 17 and 22</h2>
+        <p class="dek">Revise from the <a href="../unit-2-skeletal-muscular/index.html">Unit 2 pages</a>. Your muscular, joint and skeletal notes are the sources.</p>
+      </div>
+
+      <div class="qa"><span class="marks-tag">Q3 &#183; 2 marks</span><h3>Which is the longest bone in the human body?</h3>
+        <div class="hi">The femur (thigh bone).</div>
+        <ul><li>It runs from the hip to the knee and carries the body weight.</li></ul></div>
+
+      <div class="qa"><span class="marks-tag">Q4 &#183; 2 marks</span><h3>How many main types of muscles are there?</h3>
+        <div class="hi">Three: skeletal (voluntary, striated), smooth (involuntary, non-striated) and cardiac (involuntary, striated, only in the heart). <span class="src cls">class</span></div></div>
+
+      <div class="qa"><span class="marks-tag">Q8 &#183; 2 marks</span><h3>Draw a simple diagram of a muscle cell.</h3>
+        <figure class="fig wide-svg">
+          <svg viewBox="0 0 560 230" role="img" aria-label="A skeletal muscle fibre: a long cylinder with sarcolemma, several nuclei at the edge, mitochondria, and parallel striated myofibrils">
+            <rect class="ft" x="40" y="60" width="420" height="110" rx="55"/>
+            <rect x="40" y="60" width="420" height="110" rx="55" fill="none" stroke="var(--accent)" stroke-width="3"/>
+            <g stroke="var(--ink-soft)" stroke-width="1.2" opacity=".55">
+              <path d="M110 100 H410 M110 118 H410 M110 136 H410"/>
+            </g>
+            <g class="fs">
+              <rect x="130" y="94" width="8" height="48"/><rect x="170" y="94" width="8" height="48"/><rect x="210" y="94" width="8" height="48"/><rect x="250" y="94" width="8" height="48"/><rect x="290" y="94" width="8" height="48"/><rect x="330" y="94" width="8" height="48"/><rect x="370" y="94" width="8" height="48"/>
+            </g>
+            <ellipse class="fa" cx="110" cy="72" rx="14" ry="6"/><ellipse class="fa" cx="260" cy="70" rx="14" ry="6"/><ellipse class="fa" cx="400" cy="72" rx="14" ry="6"/>
+            <ellipse class="fg" cx="150" cy="156" rx="12" ry="6"/><ellipse class="fg" cx="300" cy="158" rx="12" ry="6"/>
+            <text class="t tb" x="60" y="26">Sarcolemma (cell membrane)</text><path class="lnt" d="M100 32 L90 62"/>
+            <text class="t tb" x="300" y="26">Nuclei (many, at the edge)</text><path class="lnt" d="M380 32 L398 64"/>
+            <text class="t tb" x="40" y="212">Myofibrils with striations (dark and light bands)</text><path class="lnt" d="M180 198 L190 144"/>
+            <text class="t tb" x="320" y="212">Mitochondria</text><path class="lnt" d="M360 198 L312 162"/>
+          </svg>
+        </figure>
+        <ul><li>A skeletal muscle cell (fibre) is long, cylindrical and multinucleate, packed with myofibrils whose repeating sarcomeres give the striped (striated) look. Mitochondria supply the ATP. <span class="src cls">class</span></li></ul>
+        <div class="pts"><b>Marking points:</b> neat shape (&#189;), any three labels (1&#189;). Draw it with a pencil and label with ruled lines.</div></div>
+
+      <div class="qa"><span class="marks-tag">Q11 &#183; 2 marks</span><h3>What are bio-mechanical movements?</h3>
+        <div class="hi">Biomechanical movements are the movements of the body studied by applying the methods of mechanics (forces, levers, planes and axes) to the structure and function of the human body.</div>
+        <ul><li>Examples: flexion, extension, abduction, adduction, rotation, circumduction. They occur in planes (sagittal, frontal, transverse) and about axes.</li></ul>
+        <div class="pts"><b>Source:</b> kinesiology/biomechanics handout (SAI): kinesiology is the study of human movement; mechanics applied to the body is biomechanics. <span class="src cls">class</span></div></div>
+
+      <div class="qa"><span class="marks-tag">Q13 &#183; 2 marks</span><h3>Name the shortest bone in the human body.</h3>
+        <div class="hi">The stapes (stirrup), a tiny bone in the middle ear.</div>
+        <div class="pts"><b>Tip:</b> the other two ear bones are the malleus and incus. <span class="src gen">general</span></div></div>
+
+      <div class="qa"><span class="marks-tag">Q15 &#183; 5 marks</span><h3>What causes muscle fatigue?</h3>
+        <p><b>Muscle fatigue</b> is the fall in a muscle's ability to keep up force after prolonged or repeated activity. <span class="src cls">class</span> Its causes:</p>
+        <ol>
+          <li><b>Energy (ATP) shortage:</b> stores of ATP, creatine phosphate and glycogen run low in long or intense effort.</li>
+          <li><b>Lactic acid and hydrogen ion build-up:</b> during hard exercise with too little oxygen, the muscle makes lactate, the acidity rises and slows the contractile process. (Lactate is not the only cause.) <span class="src gen">general</span></li>
+          <li><b>Oxygen shortage / poor blood supply:</b> the muscle cannot get oxygen and remove wastes fast enough.</li>
+          <li><b>Electrolyte and fluid imbalance:</b> loss of sodium, potassium or magnesium through sweating weakens muscle and nerve function; magnesium deficiency can cause weakness and spasm. <span class="src cls">class</span></li>
+          <li><b>Duration, intensity, fibre type, training and recovery</b> also decide how quickly fatigue sets in. A well-trained muscle fatigues later. <span class="src cls">class</span></li>
+        </ol>
+        <div class="pts"><b>Yoga link (one line):</b> holding a pose for long makes the muscles shake; rest in <i>Shavasana</i> and slow breathing aid recovery. <span class="src add">added</span></div></div>
+
+      <div class="qa"><span class="marks-tag">Q17 &#183; 5 marks</span><h3>Name two types of joints in the body.</h3>
+        <p>Joints are classified by the tissue at the articulation into three types. Two of them:</p>
+        <ol>
+          <li><b>Synovial joint (freely movable, diarthrosis).</b> The &#8220;true joint&#8221;: bone ends covered with hyaline cartilage, a joint capsule enclosing a cavity with synovial fluid, held by ligaments. Wide range of movement. Examples: <b>ball and socket</b> (shoulder, hip), <b>hinge</b> (elbow, knee), pivot (atlas-axis), saddle (thumb base), plane (between small bones), condyloid (wrist).</li>
+          <li><b>Fibrous joint (immovable, synarthrosis).</b> Bones joined by tough fibrous tissue; little or no movement. Examples: skull sutures, tibiofibular joint (syndesmosis), tooth in its socket (gomphosis).</li>
+        </ol>
+        <div class="hi">A third type: <b>cartilaginous joint</b> (slightly movable): bones joined by cartilage, for example the joints between vertebrae and the pubic symphysis.</div>
+        <div class="pts"><b>Marking points:</b> two names (2), features (2), examples (1). <span class="src cls">class</span></div></div>
+
+      <div class="qa"><span class="marks-tag">Q22 &#183; 10 marks</span><h3>Explain how asanas and pranayama are good for muscles and bones.</h3>
+        <p><b>Introduction.</b> Muscles move and protect the bones, and bones give muscles a lever to pull. Yoga loads both gently and repeatedly, and pranayama supports them with oxygen and relaxation.</p>
+        <h3 class="sub"><span class="n">A</span>Muscles</h3>
+        <ol>
+          <li><b>Strength and endurance:</b> holding poses such as Tadasana, Trikonasana, Virabhadrasana and Bhujangasana keeps muscles working against body weight.</li>
+          <li><b>Flexibility:</b> stretching in Paschimottanasana (hamstrings) and Ardha Matsyendrasana (spinal muscles) lengthens muscles within safe limits (extensibility and elasticity). <span class="src cls">class</span></li>
+          <li><b>Posture:</b> postural muscles of back and abdomen are trained, which can reduce slouching and back strain.</li>
+          <li><b>Relaxation and less fatigue:</b> Shavasana and slow rhythmic breathing allow tense muscles to let go and recover.</li>
+        </ol>
+        <h3 class="sub"><span class="n">B</span>Bones and joints</h3>
+        <ol>
+          <li><b>Bone strength:</b> weight-bearing poses (Tadasana, Virabhadrasana, Vrikshasana) put gentle load on the bones, and bone responds to load by staying strong. Evidence in yoga for bone density is modest; say &#8220;may help&#8221;. <span class="src gen">general</span></li>
+          <li><b>Joint mobility:</b> bending and rotating through the full range keeps synovial fluid circulating and cartilage nourished.</li>
+          <li><b>Spine health:</b> forward, backward and twisting poses move all the vertebral joints and may keep intervertebral discs supple.</li>
+        </ol>
+        <h3 class="sub"><span class="n">C</span>Role of pranayama</h3>
+        <ul>
+          <li>Slow deep breathing (Anuloma-viloma, Bhastrika with caution) improves oxygen supply to working muscles and helps remove carbon dioxide. <span class="src add">added</span></li>
+          <li>It calms the nervous system, reducing muscle tension and helping muscles relax. <span class="src add">added</span></li>
+          <li>Deep abdominal and chest breathing exercises the diaphragm and intercostal muscles.</li>
+        </ul>
+        <p><b>Conclusion.</b> Practised regularly, with proper alignment and within one's limit, asanas and pranayama may help keep muscles strong and flexible, bones and joints healthy, and the body relaxed. Avoid forcing a pose in pain or with a joint or bone problem.</p>
+        <p class="honest">Your class notes list the muscle and joint facts above (characteristics, functions, joint types) but give <b>no asana-by-asana list</b> for bones and muscles. The yoga examples are tagged <span class="src add">added</span>; tell me if your teacher uses different ones.</p>
+        <div class="pts"><b>Marking points:</b> intro (1), muscles (3), bones and joints (3), pranayama (2), caution/conclusion (1).</div></div>
+    </section>
+    <section class="section" id="sec-u3">
+      <div class="sec-head">
+        <div class="kicker">03 &#183; Unit 3 &#183; Digestive System</div>
+        <h2>Questions 12, 18 and 21</h2>
+        <p class="dek">Revise from the <a href="../unit-3-digestive-system/notes.html">Unit 3 page</a>.</p>
+      </div>
+
+      <div class="qa"><span class="marks-tag">Q12 &#183; 2 marks</span><h3>Name one main function of the liver.</h3>
+        <div class="hi">The liver makes <b>bile</b>, which helps digest and absorb fats.</div>
+        <ul><li>Other functions you may add: stores glycogen, processes absorbed nutrients, detoxifies drugs and alcohol.</li></ul>
+        <div class="pts"><span class="src cls">class</span> <span class="src gen">R&amp;W</span></div></div>
+
+      <div class="qa"><span class="marks-tag">Q18 &#183; 5 marks</span><h3>What is the digestive process?</h3>
+        <p>Digestion is the breakdown of food into small soluble molecules the blood can carry to the cells. It has five steps.</p>
+        <ol>
+          <li><b>Ingestion:</b> food enters the mouth; teeth chew it and saliva moistens it (mechanical digestion).</li>
+          <li><b>Digestion:</b> saliva starts starch breakdown; the stomach churns food with hydrochloric acid and pepsin to protein-digesting juice; in the small intestine pancreatic juice, bile and intestinal juice finish carbohydrates, proteins and fats.</li>
+          <li><b>Absorption:</b> mainly in the small intestine, where villi pass nutrients into blood and lymph; the large intestine absorbs water.</li>
+          <li><b>Assimilation:</b> the cells use the nutrients for energy, growth and repair.</li>
+          <li><b>Elimination:</b> undigested residue leaves as faeces through the rectum and anus.</li>
+        </ol>
+        <div class="hi">Route: mouth &#8594; pharynx &#8594; oesophagus &#8594; stomach &#8594; small intestine &#8594; large intestine &#8594; rectum &#8594; anus. Helpers: salivary glands, liver, gallbladder, pancreas.</div>
+        <div class="pts"><b>Marking points:</b> five steps, 1 mark each. A simple flow line earns a neat look. <span class="src cls">class</span></div></div>
+
+      <div class="qa"><span class="marks-tag">Q21 &#183; 10 marks</span><h3>How do asanas help in digestion?</h3>
+        <p><b>Introduction.</b> Digestion depends on muscular movement of the gut (peristalsis), the flow of blood and juices, and a calm nervous system. Certain asanas may support all three.</p>
+        <h3 class="sub"><span class="n">A</span>How asanas may help</h3>
+        <ol>
+          <li><b>Massage of abdominal organs:</b> forward bends, twists and backbends alternately compress and release the abdomen, which may stimulate the stomach, intestines, liver and pancreas.</li>
+          <li><b>Better blood flow</b> to the digestive organs, bringing oxygen and nutrients.</li>
+          <li><b>Stronger abdominal muscles</b> that support the gut and help the bowel move its contents.</li>
+          <li><b>Relief of gas and constipation:</b> twists and knee-to-chest poses help move trapped gas along the colon.</li>
+          <li><b>Stress reduction:</b> relaxation after practice shifts the body toward &#8220;rest and digest&#8221; (parasympathetic action), which favours gut activity.</li>
+        </ol>
+        <h3 class="sub"><span class="n">B</span>Asana examples</h3>
+        <div class="table-wrap"><table>
+          <tr><th>Asana</th><th>Digestive benefit (may help)</th></tr>
+          <tr><td>Pavanamuktasana</td><td>Expels gas; eases bloating and constipation</td></tr>
+          <tr><td>Ardha Matsyendrasana</td><td>Twists and massages the abdomen; stimulates liver and pancreas</td></tr>
+          <tr><td>Paschimottanasana</td><td>Compresses abdomen; may help constipation</td></tr>
+          <tr><td>Bhujangasana, Dhanurasana</td><td>Stretch the front of the abdomen; stimulate digestive organs</td></tr>
+          <tr><td>Vajrasana</td><td>Can be done after meals; supports calm digestion</td></tr>
+          <tr><td>Uttanapadasana, Naukasana</td><td>Strengthen abdominal muscles</td></tr>
+        </table></div>
+        <h3 class="sub"><span class="n">C</span>Cautions</h3>
+        <ul>
+          <li>Practise on an empty stomach (after 3&#8211;4 hours); avoid strong forward bends right after food.</li>
+          <li>Avoid strong abdominal poses in ulcers, hernia, pregnancy, menstruation (as advised) and after abdominal surgery. <span class="src add">added</span></li>
+        </ul>
+        <p><b>Conclusion.</b> Asanas can support digestion by moving, massaging and relaxing the gut, but they work best with regular meals, enough water and fibre.</p>
+        <p class="honest">The class notes link yoga to constipation, diarrhoea, obesity and liver disorders but name few asanas. The table above is from the Unit 3 page (section 10, Yogic Practices &amp; Digestion) and is mostly tagged <span class="src add">added</span> there. These are traditional claims; write &#8220;may help&#8221;.</p>
+        <div class="pts"><b>Marking points:</b> intro (1), mechanism (3), asanas with benefit (4), cautions/conclusion (2).</div></div>
+    </section>
+    <section class="section" id="sec-u4">
+      <div class="sec-head">
+        <div class="kicker">04 &#183; Unit 4 &#183; Respiratory System</div>
+        <h2>Questions 6, 9, 16, 19 and 20</h2>
+        <p class="dek">Revise from the <a href="../unit-4-respiratory-system/notes.html">Unit 4 page</a>. These match your respiratory class test and the teacher's key.</p>
+      </div>
+
+      <div class="qa"><span class="marks-tag">Q6 &#183; 2 marks</span><h3>What is the function of the lungs?</h3>
+        <div class="hi">The lungs bring oxygen into the blood and remove carbon dioxide from it (gas exchange).</div>
+        <ul><li>This takes place in the alveoli. <span class="src cls">class</span></li></ul></div>
+
+      <div class="qa"><span class="marks-tag">Q9 &#183; 2 marks</span><h3>Name the fluid present in the lungs' cavity.</h3>
+        <div class="hi">Pleural fluid, in the pleural cavity between the two pleural layers.</div>
+        <ul><li>It lubricates the lungs so they move smoothly during breathing.</li></ul>
+        <div class="pts"><span class="src cls">class</span> (teacher's key)</div></div>
+
+      <div class="qa"><span class="marks-tag">Q16 &#183; 5 marks</span><h3>Draw and label the parts of the respiratory system.</h3>
+        <figure class="fig wide-svg">
+          <svg viewBox="0 0 560 420" role="img" aria-label="Respiratory system: nasal cavity, pharynx, larynx, trachea, two bronchi, bronchioles, lungs with alveoli and the diaphragm below">
+            <path class="ft" d="M170 120 C100 130 80 250 96 330 C104 372 160 372 196 350 C210 300 206 180 200 128Z"/>
+            <path class="ft" d="M290 128 C284 180 280 300 294 350 C330 372 386 372 394 330 C410 250 390 130 320 120Z"/>
+            <rect class="fs" x="228" y="120" width="34" height="160" rx="10"/>
+            <path d="M245 280 L200 330 M245 280 L292 330 M200 330 L180 350 M200 330 L214 352 M292 330 L310 352 M292 330 L276 350" fill="none" stroke="var(--teal)" stroke-width="7" stroke-linecap="round"/>
+            <circle class="fa" cx="178" cy="352" r="7"/><circle class="fa" cx="216" cy="354" r="7"/><circle class="fa" cx="276" cy="352" r="7"/><circle class="fa" cx="312" cy="354" r="7"/>
+            <ellipse class="fg" cx="245" cy="42" rx="26" ry="16"/>
+            <rect class="fs" x="236" y="58" width="18" height="30" rx="6"/>
+            <rect class="fa" x="232" y="94" width="26" height="28" rx="8"/>
+            <path class="fw" d="M70 392 C160 372 330 372 420 392 L420 408 L70 408Z" opacity=".7"/>
+            <text class="t tb" x="290" y="38">Nasal cavity</text><path class="lnt" d="M290 40 L271 42"/>
+            <text class="t tb" x="290" y="78">Pharynx</text><path class="lnt" d="M288 74 L256 74"/>
+            <text class="t tb" x="290" y="110">Larynx</text><path class="lnt" d="M288 106 L260 106"/>
+            <text class="t tb" x="290" y="196">Trachea</text><path class="lnt" d="M288 192 L264 192"/>
+            <text class="t tb" x="20" y="290">Bronchus</text><path class="lnt" d="M84 286 L220 306"/>
+            <text class="t tb" x="410" y="250">Lung</text><path class="lnt" d="M408 246 L370 246"/>
+            <text class="t tb" x="410" y="345">Alveoli</text><path class="lnt" d="M408 341 L318 352"/>
+            <text class="t tb" x="20" y="380">Bronchioles</text><path class="lnt" d="M100 376 L190 342"/>
+            <text class="t tb" x="440" y="404">Diaphragm</text><path class="lnt" d="M436 400 L400 398"/>
+          </svg>
+        </figure>
+        <ol>
+          <li><b>Nasal cavity:</b> warms, filters and moistens air.</li>
+          <li><b>Pharynx</b> (throat): common passage for air and food. <b>Larynx</b> (voice box): holds the vocal cords.</li>
+          <li><b>Trachea</b> (windpipe): C-shaped cartilage rings keep it open; divides into two <b>bronchi</b>.</li>
+          <li><b>Bronchi &#8594; bronchioles &#8594; alveoli:</b> the airway branches like a tree and ends in air sacs.</li>
+          <li><b>Lungs:</b> the right has three lobes, the left two. <b>Diaphragm:</b> the main muscle of breathing, below the lungs.</li>
+        </ol>
+        <div class="pts"><b>Marking points:</b> diagram (2), at least 6&#8211;8 correct labels (2), one-line functions (1). Teacher's key labels: nasal cavity, pharynx, larynx, trachea, bronchi, bronchioles, alveoli, lungs, diaphragm. <span class="src cls">class</span> (the figure is schematic; draw it larger and neater in the exam)</div></div>
+
+      <div class="qa"><span class="marks-tag">Q19 &#183; 5 marks</span><h3>How do we breathe?</h3>
+        <p>Breathing is the movement of air in and out of the lungs. It is done by the diaphragm and the intercostal muscles, using pressure changes (air flows from higher to lower pressure).</p>
+        <ol>
+          <li><b>Inspiration (breathing in):</b> the diaphragm contracts and flattens; the external intercostals lift the ribs up and out. The chest volume rises, lung pressure falls below the outside pressure, and air rushes in.</li>
+          <li><b>Expiration (breathing out):</b> the diaphragm and intercostals relax; the diaphragm rises, the ribs come down, the volume falls, pressure rises and air flows out. Quiet expiration is passive; forced expiration uses the abdominal and internal intercostal muscles.</li>
+          <li><b>Path of air:</b> nose &#8594; pharynx &#8594; larynx &#8594; trachea &#8594; bronchi &#8594; bronchioles &#8594; alveoli.</li>
+          <li><b>Gas exchange:</b> in the alveoli oxygen passes into the blood and carbon dioxide passes out.</li>
+          <li><b>Control:</b> the respiratory centre in the brainstem sets the rate (about 12&#8211;16 breaths per minute at rest).</li>
+        </ol>
+        <div class="pts"><b>Marking points:</b> inspiration (2), expiration (2), muscles/pressure/path (1). <span class="src cls">class</span> <span class="src gen">R&amp;W</span></div></div>
+
+      <div class="qa"><span class="marks-tag">Q20 &#183; 10 marks</span><h3>How does breathing affect the body in yoga practice?</h3>
+        <p><b>Introduction.</b> Breath is the one automatic function we can also control. In yoga, breath is joined to movement and used as a tool to steady the body and mind.</p>
+        <h3 class="sub"><span class="n">A</span>Effects on the body</h3>
+        <ol>
+          <li><b>More oxygen, better exchange:</b> slow deep breathing uses more of the lung, including the bases, so more oxygen reaches the blood and carbon dioxide is cleared.</li>
+          <li><b>Stronger respiratory muscles:</b> the diaphragm and intercostals are exercised; vital capacity and chest expansion may improve.</li>
+          <li><b>Calm nervous system:</b> slow, long exhalation may increase parasympathetic activity, lowering heart rate and stress.</li>
+          <li><b>Relaxed muscles:</b> breathing out in a stretch helps the muscle release and move deeper into the pose.</li>
+          <li><b>Focus and steadiness:</b> following the breath holds attention and keeps movement smooth and rhythmic.</li>
+          <li><b>Circulation and digestion:</b> pressure changes in chest and abdomen may help venous return and massage the abdominal organs.</li>
+        </ol>
+        <h3 class="sub"><span class="n">B</span>In practice</h3>
+        <ul>
+          <li><b>Asanas:</b> breathe in while lengthening or opening the chest (backbends), breathe out while folding or twisting.</li>
+          <li><b>Pranayama:</b> Anuloma-viloma (alternate nostril), Ujjayi, Bhramari, Kapalabhati and Bhastrika (the last two vigorous and with caution), each with puraka (inhale), kumbhaka (retention) and rechaka (exhale).</li>
+        </ul>
+        <p><b>Cautions and conclusion.</b> Breath retention and fast breathing should be learned under a teacher and avoided in high blood pressure, heart disease, or lung problems without advice. Practised properly, regulated breathing may support the lungs, calm the mind and improve the body's response to practice.</p>
+        <p class="honest">Pranayama names and the benefit statements follow Unit 4 section 10 of this site; only the points from your class notes and teacher PDF are untagged there, and the rest are marked <span class="src add">added</span>. Write benefits as &#8220;may&#8221;.</p>
+        <div class="pts"><b>Marking points:</b> intro (1), six effects (4), asana/pranayama examples (3), cautions/conclusion (2).</div></div>
+    </section>
+    <section class="section" id="sec-test">
+      <div class="sec-head">
+        <div class="kicker">05 &#183; Class test &#183; Respiratory System</div>
+        <h2>Your Class Test with Model Answers</h2>
+        <p class="dek">1 hour, 30 marks. Section A: any five &#215; 2. Section B: any two &#215; 5. Section C: any one &#215; 10. Written in the style of your teacher's key.</p>
+      </div>
+
+      <h3 class="sub"><span class="n">A</span>Section A &#183; any five (5 &#215; 2 = 10)</h3>
+      <div class="table-wrap"><table>
+        <tr><th>No.</th><th>Question</th><th>Model answer</th></tr>
+        <tr><td>1</td><td>Function of the lungs?</td><td>Gas exchange: take in oxygen and remove carbon dioxide.</td></tr>
+        <tr><td>2</td><td>Fluid in the lungs' cavity?</td><td>Pleural fluid (in the pleural cavity); it lubricates the lungs.</td></tr>
+        <tr><td>3</td><td>Main muscle of breathing?</td><td>The diaphragm (helped by the intercostal muscles).</td></tr>
+        <tr><td>4</td><td>What is tidal volume?</td><td>The volume of air breathed in or out in one quiet breath, about 500 mL in an adult.</td></tr>
+        <tr><td>5</td><td>Where does gas exchange take place?</td><td>In the alveoli (air sacs) of the lungs, across the thin alveolar-capillary wall.</td></tr>
+        <tr><td>6</td><td>What is vital capacity?</td><td>The largest volume of air that can be breathed out after a maximum breath in (tidal + inspiratory reserve + expiratory reserve volumes); about 4&#8211;5 L in a healthy adult (varies with age, sex and size). <span class="src gen">R&amp;W</span></td></tr>
+      </table></div>
+      <p class="honest"><b>Check the numbers.</b> Tidal volume of about 500 mL is standard. For vital capacity quote the formula and say &#8220;about 4&#8211;5 litres&#8221;; use the exact figure from your Unit 4 page or class notes if your teacher gave one.</p>
+
+      <h3 class="sub"><span class="n">B</span>Section B &#183; any two (2 &#215; 5 = 10)</h3>
+
+      <div class="qa"><span class="marks-tag">Q7 &#183; 5 marks</span><h3>Draw and label the parts of the respiratory system.</h3>
+        <p>Same as paper <b>Q16</b>: see the labelled diagram in <a href="#sec-u4">Unit 4</a>. Required labels: nasal cavity, pharynx, larynx, trachea, bronchi, bronchioles, alveoli, lungs, diaphragm.</p></div>
+
+      <div class="qa"><span class="marks-tag">Q8 &#183; 5 marks</span><h3>How do we breathe?</h3>
+        <p>Same as paper <b>Q19</b> (inspiration with diaphragm contracting and ribs rising; expiration with the diaphragm relaxing; pressure change; gas exchange). See <a href="#sec-u4">Unit 4</a>.</p></div>
+
+      <div class="qa"><span class="marks-tag">Q9 &#183; 5 marks</span><h3>Differentiate between external and internal respiration.</h3>
+        <div class="table-wrap"><table>
+          <tr><th>Point</th><th>External respiration</th><th>Internal respiration</th></tr>
+          <tr><td>Meaning</td><td>Exchange of gases between the air in the lungs and the blood</td><td>Exchange of gases between the blood and the body cells</td></tr>
+          <tr><td>Site</td><td>Alveoli and pulmonary capillaries</td><td>Tissues (systemic capillaries and cells)</td></tr>
+          <tr><td>Gas movement</td><td>Oxygen enters the blood; carbon dioxide leaves the blood</td><td>Oxygen leaves the blood into cells; carbon dioxide enters the blood</td></tr>
+          <tr><td>Blood change</td><td>Deoxygenated blood becomes oxygenated</td><td>Oxygenated blood becomes deoxygenated</td></tr>
+          <tr><td>Process</td><td>Breathing and diffusion</td><td>Diffusion, followed by cell (aerobic) respiration that makes ATP</td></tr>
+        </table></div>
+        <div class="pts"><b>Marking points:</b> one mark per row. <span class="src gen">R&amp;W</span> (class key may group these differently)</div></div>
+
+      <h3 class="sub"><span class="n">C</span>Section C &#183; any one (1 &#215; 10 = 10)</h3>
+
+      <div class="qa"><span class="marks-tag">Q10 &#183; 10 marks</span><h3>How does breathing affect the body in yoga practice?</h3>
+        <p>Same as paper <b>Q20</b>: see <a href="#sec-u4">Unit 4</a> for the full answer (introduction, six effects, asana and pranayama examples, cautions).</p></div>
+
+      <div class="qa"><span class="marks-tag">Q11 &#183; 10 marks</span><h3>Explain the structure and functions of the respiratory system, and how pranayama benefits it.</h3>
+        <p><b>Introduction.</b> The respiratory system brings oxygen into the body and removes carbon dioxide. Cells need oxygen to release energy from food.</p>
+        <h3 class="sub"><span class="n">A</span>Structure (the air route)</h3>
+        <ol>
+          <li><b>Nose and nasal cavity:</b> warm, filter and moisten the air.</li>
+          <li><b>Pharynx:</b> shared passage for air and food.</li>
+          <li><b>Larynx:</b> voice box; the epiglottis covers it during swallowing.</li>
+          <li><b>Trachea:</b> windpipe held open by C-shaped cartilage rings.</li>
+          <li><b>Bronchi and bronchioles:</b> branching tubes into each lung.</li>
+          <li><b>Alveoli:</b> millions of thin-walled air sacs surrounded by capillaries, the site of gas exchange.</li>
+          <li><b>Lungs and pleura:</b> right lung three lobes, left two; each lung covered by pleura with pleural fluid between the layers.</li>
+          <li><b>Diaphragm and intercostal muscles:</b> the muscles of breathing.</li>
+        </ol>
+        <h3 class="sub"><span class="n">B</span>Functions</h3>
+        <ul>
+          <li>Breathing (ventilation): moves air in and out.</li>
+          <li>Gas exchange: oxygen into blood, carbon dioxide out.</li>
+          <li>Protection: hairs, mucus and cilia trap dust and germs.</li>
+          <li>Voice production (larynx) and smell (nose).</li>
+          <li>Helps regulate blood pH by removing carbon dioxide. <span class="src gen">R&amp;W</span></li>
+        </ul>
+        <h3 class="sub"><span class="n">C</span>How pranayama benefits the system</h3>
+        <ul>
+          <li>Trains the diaphragm and intercostal muscles; improves chest expansion and lung capacity.</li>
+          <li>Slow deep breaths ventilate the lower lungs, improving oxygen uptake and clearing stale air.</li>
+          <li>Cleaning practices such as Kapalabhati may clear the nasal passages; alternate nostril breathing may calm breathing rate.</li>
+          <li>Builds awareness and control of breathing and reduces stress that tightens breathing.</li>
+        </ul>
+        <p><b>Conclusion.</b> A healthy respiratory system gives every cell oxygen; regular, correct pranayama may keep it efficient. Learn the vigorous practices from a teacher.</p>
+        <div class="pts"><b>Marking points:</b> intro (1), structure (4), functions (2), pranayama (2), conclusion (1). Pranayama benefits: write &#8220;may&#8221;. <span class="src add">added</span></div></div>
+
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Tidal volume?</div><div class="a">Air moved in one quiet breath, about 500 mL</div></div>
+        <div class="recall-card"><div class="q">Vital capacity?</div><div class="a">Maximum air breathed out after a maximum breath in</div></div>
+        <div class="recall-card"><div class="q">External vs internal respiration?</div><div class="a">External: lungs and blood. Internal: blood and cells</div></div>
+        <div class="recall-card"><div class="q">Main muscle of breathing?</div><div class="a">Diaphragm</div></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
+</script>
