@@ -1,0 +1,913 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hatha Parampara</title>
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  @media (max-width:640px){ .fig.wide-svg{ overflow-x:auto; -webkit-overflow-scrolling:touch; } .fig.wide-svg svg{ min-width:540px; } .fig.wide-svg::after{ content:"swipe sideways to see the whole diagram"; display:block; font-size:11px; color:var(--muted); text-align:center; margin-top:4px; } }
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .fig.photo img{ max-width:100%; height:auto; border-radius:8px; }
+  .dv{ font-family:"Noto Sans Devanagari","Kohinoor Devanagari","Devanagari Sangam MN","Mukta",serif; font-size:18px; line-height:1.9; color:var(--ink); background:var(--surface-2); border-radius:8px; padding:8px 14px 8px; margin:0 0 10px; }
+  .dv .dvn{ display:block; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); line-height:1.4; margin-bottom:2px; }
+  .dv .gl{ font-family:"Inter",system-ui,sans-serif; font-size:13.5px; line-height:1.5; color:var(--ink-soft); margin:4px 0 0; border-top:1px dashed var(--border); padding-top:5px; }
+  .sk{ font-family:"Fraunces",Georgia,serif; font-style:italic; color:var(--ink); }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Hatha Parampara</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../index.html">&larr; T2 &middot; Applications of Hatha Yoga</a>
+    <div class="brand">
+      <div class="eyebrow">Applications of Hatha Yoga</div>
+      <h1>Hatha Parampara</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="overview"><span class="num">01</span><span>Hatha Parampara &amp; HYP</span></button>
+      <button class="nav-item" data-target="matha"><span class="num">02</span><span>Matha Lakshana &amp; Rules</span></button>
+      <button class="nav-item" data-target="mitahara"><span class="num">03</span><span>Mitahara, Pathya &amp; Apathya</span></button>
+      <button class="nav-item" data-target="causes"><span class="num">04</span><span>Six Causes of Failure &amp; Success</span></button>
+      <button class="nav-item" data-target="asanas"><span class="num">05</span><span>Important Asanas</span></button>
+      <button class="nav-item" data-target="siddhi"><span class="num">06</span><span>Hatha Siddhi Lakshana</span></button>
+      <button class="nav-item" data-target="shatkarma"><span class="num">07</span><span>Shatkriyas &amp; Benefits</span></button>
+      <button class="nav-item" data-target="kumbhaka"><span class="num">08</span><span>Ashta Kumbhaka &amp; Benefits</span></button>
+      <button class="nav-item" data-target="slokas"><span class="num">09</span><span>Slokas (Devanagari)</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Sources: your class notes (22 Sep &ndash; 9 Nov 2026), Hatha and Gheranda Samhita notes, Shatkarma slides, Hatha Yoga Pradipika with Muktibodhananda&#8217;s commentary (Bihar School). Verse numbers follow that book
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="section" id="sec-overview">
+      <div class="sec-head">
+        <div class="kicker">01 &#183; Hatha Parampara</div>
+        <h2>The Hatha Tradition and the Pradipika</h2>
+        <p class="dek">Unit 1 is the base of the whole paper: where hatha yoga comes from, what the Hatha Yoga Pradipika (HYP) says a practitioner needs, and the practices it teaches (asana, shatkriya, kumbhaka).</p>
+      </div>
+
+      <div class="stat-strip">
+        <div class="stat"><div class="v">4</div><div class="k">chapters of HYP (as your notes list)</div></div>
+        <div class="stat"><div class="v">6+6</div><div class="k">causes of failure and success</div></div>
+        <div class="stat"><div class="v">6</div><div class="k">shatkarma (HYP 2.22)</div></div>
+        <div class="stat"><div class="v">8</div><div class="k">kumbhaka (HYP 2.44)</div></div>
+      </div>
+
+      <div class="table-wrap"><table>
+        <tr><th>Your syllabus line</th><th>Section</th><th>HYP verses</th></tr>
+        <tr><td>Mitahara, Pathya &amp; Apathya, Matha Lakshana</td><td>2 (Matha), 3 (Mitahara)</td><td>1.12&ndash;13; 1.57&ndash;63</td></tr>
+        <tr><td>Six causes of failure and success</td><td>4</td><td>1.15&ndash;16</td></tr>
+        <tr><td>Important asanas, Hatha Siddhi Lakshan</td><td>5, 6</td><td>1.19&ndash;56; 2.78</td></tr>
+        <tr><td>Shatkriyas &amp; benefits, Ashta Kumbhaka &amp; benefits (H.P.)</td><td>7, 8</td><td>2.21&ndash;37; 2.44&ndash;75</td></tr>
+      </table></div>
+
+      <div class="blk und">
+        <span class="lbl">Understand it &#183; what &ldquo;hatha&rdquo; means <span class="src cls">class</span></span>
+        <ul class="plain">
+          <li><b>Ha</b> = sun = pranic energy = <b>pingala</b> nadi (your notes link it to the sympathetic nervous system). <b>Tha</b> = moon = mental energy = <b>ida</b> nadi (parasympathetic).</li>
+          <li><b>Hatha yoga is balancing these two energies.</b> When ha and tha are balanced, the energy rises in <b>sushumna</b> and kundalini awakens.</li>
+          <li><b>Shiva</b> = pure consciousness; <b>Shakti</b> = creative energy. <i>Nadi</i> comes from &ldquo;nad&rdquo;, to flow: nadis are what flows.</li>
+          <li><b>Pradipika</b> means &ldquo;light&rdquo; or &ldquo;lamp&rdquo; (the class explanation: the way to the light). Its four chapters, as your notes list them: asanas, shatkarma and pranayama, mudra and bandha, samadhi.</li>
+          <li><b>Purpose:</b> hatha yoga is the ladder to <b>raja yoga</b>. HYP 1.67 says asanas and kumbhakas are to be practised until raja yoga is reached; 2.76 says neither works without the other. <span class="src gen">HYP book</span></li>
+        </ul>
+      </div>
+
+      <div class="blk know">
+        <span class="lbl">Know this &#183; the lineage <span class="src cls">class</span></span>
+        <p><b>Adinath (Shiva) &rarr; Matsyendranath &rarr; Gorakhnath &rarr; Swatmarama</b> (author of the HYP). Your notes mark pages 32 and verses 5&ndash;9 as &ldquo;must study&rdquo; for this part.</p>
+      </div>
+
+      <div class="blk mem">
+        <span class="lbl">Memory aid &#183; the eight siddhis <span class="src cls">class</span></span>
+        <p>Anima (small as an atom), Laghima (weightless), Mahima (huge), Garima (heavy), Prapti (reach anywhere), Prakamya (stay under water; keep body and youth), Vashitva (control over all things), Ishitva (create and destroy at will). Say them as <b>A-L-M-G-P-P-V-I</b>.</p>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; how your teacher wants answers written <span class="src cls">class</span></span>
+        <p>For an asana or practice question: <b>write the sloka</b> &rarr; <b>short introduction</b> &rarr; <b>technique with breathing</b> &rarr; <b>benefits or importance</b> &rarr; <b>chakra</b>. Verses marked &ldquo;important, must study&rdquo; in your notes: 12, 13, 15, 16, the yama-niyama lists (17&ndash;18), 30&ndash;31 (Mayurasana), 33 (four asanas), and 2.2.</p>
+      </div>
+
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Ha and Tha mean?</div><div class="a">Ha: sun, pingala, pranic. Tha: moon, ida, mental. Hatha = balancing the two</div></div>
+        <div class="recall-card"><div class="q">Lineage of hatha vidya?</div><div class="a">Adinath, Matsyendranath, Gorakhnath, Swatmarama</div></div>
+        <div class="recall-card"><div class="q">Goal of hatha yoga?</div><div class="a">Raja yoga: hatha prepares the body and breath for samadhi</div></div>
+        <div class="recall-card"><div class="q">Pradipika means?</div><div class="a">Lamp, light (the way to the light)</div></div>
+      </div>
+      <div class="src-foot"><span class="src cls">class</span> notes 22 Sep 2026 and exam notes <span class="src gen">HYP book</span> Muktibodhananda commentary</div>
+    </section>
+    <section class="section" id="sec-matha">
+      <div class="sec-head">
+        <div class="kicker">02 &#183; Matha Lakshana</div>
+        <h2>Where and How the Hatha Yogi Practises</h2>
+        <p class="dek">HYP 1.12 gives the place (the country and the practice space); 1.13 describes the hermitage (matha). Your notes mark both as &ldquo;important, must study&rdquo;.</p>
+      </div>
+
+      <div class="spread">
+        <figure class="fig">
+          <svg viewBox="0 0 380 300" role="img" aria-label="Schematic of a hatha yoga hermitage: a small room with a small door and no window, an open raised platform with roof in front, a well, all inside a boundary wall">
+            <rect x="14" y="14" width="352" height="272" rx="10" fill="none" stroke="var(--ink-soft)" stroke-width="3" stroke-dasharray="10 5"/>
+            <rect class="ft" x="60" y="40" width="170" height="110" rx="6"/>
+            <rect class="fa" x="128" y="102" width="34" height="48" rx="3"/>
+            <path d="M52 40 L145 14 L238 40Z" fill="var(--teal-soft)" stroke="var(--teal)" stroke-width="2"/>
+            <rect class="fs" x="60" y="176" width="170" height="40" rx="4"/>
+            <path d="M60 176 L60 216 M230 176 L230 216" stroke="var(--teal)" stroke-width="4"/>
+            <circle class="fw" cx="304" cy="224" r="26"/><circle cx="304" cy="224" r="26" fill="none" stroke="var(--ink-soft)" stroke-width="3"/>
+            <g class="bd"><circle cx="145" cy="126" r="9"/><text x="145" y="130">1</text></g><g class="bd"><circle cx="145" cy="52" r="9"/><text x="145" y="56">2</text></g><g class="bd"><circle cx="145" cy="196" r="9"/><text x="145" y="200">3</text></g><g class="bd"><circle cx="304" cy="224" r="9"/><text x="304" y="228">4</text></g><g class="bd"><circle cx="34" cy="150" r="9"/><text x="34" y="154">5</text></g>
+          </svg>
+        </figure>
+        <div>
+          <ol class="key">
+            <li><b>Small door</b>, no windows, holes or cracks (HYP 1.13)</li>
+            <li><b>The room itself:</b> neither too high nor too low, spotlessly clean, free of animals and insects</li>
+            <li><b>Raised platform</b> in front, open with a roof (a &ldquo;mandapa&rdquo; or bower)</li>
+            <li><b>Well</b> (a water source)</li>
+            <li><b>Surrounding wall or fence</b>; the whole site is one bow&#8217;s length clear of rocks, fire and water (1.12)</li>
+          </ol>
+          <div class="blk und">
+            <span class="lbl">Understand it</span>
+            <p><b>Verse 12</b> (place): the hatha yogi lives alone in a hermitage, in a space a bow&#8217;s length (about 1.5 m) with no danger from rocks, fire or water, in a well-governed, virtuous kingdom where alms are easy to get. <b>Verse 13</b> (the matha): small door, no aperture, holes or cracks; not too high or low; clean; pleasant. Your Muktibodhananda commentary adds that these are guidelines for the time and climate, to be adapted today: simple, clean, practical and natural. <span class="src cls">class</span> <span class="src gen">HYP book</span></p>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="sub"><span class="n">2A</span>Rules and instructions for hatha yogis</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Rule</th><th>What your notes say</th></tr>
+        <tr><td>Place</td><td>The matha: clean, quiet, undisturbed; entry limited to the practitioner</td></tr>
+        <tr><td>Time</td><td>Best: about two hours before sunrise (Brahmamuhurta, around 4 a.m.), or two hours before sunset. HYP 2.11: pranayama four times a day: morning, midday, evening, midnight</td></tr>
+        <tr><td>Food</td><td>Mitahara: no over- or under-eating (see section 3)</td></tr>
+        <tr><td>Guru</td><td>Practise as taught by a guru or expert teacher (HYP 1.14)</td></tr>
+        <tr><td>Sequence</td><td>Shatkarma if needed &rarr; asanas &rarr; pranayama (with mudras, bandhas) &rarr; samadhi</td></tr>
+        <tr><td>Mat and clothes</td><td>Wool blanket as insulator (no spongy mattress); loose, light clothes; remove watch, glasses, jewellery</td></tr>
+        <tr><td>Bath and stomach</td><td>A natural-water bath before practice helps; stomach should be empty (a reason for morning practice)</td></tr>
+        <tr><td>Age</td><td>Anyone: young, old, very old, sick or feeble can attain success by practice (HYP 1.64)</td></tr>
+        <tr><td>Contraindications</td><td>Chronic illness such as stomach ulcer, tuberculosis, hernia or hypertension: consult a doctor or expert teacher first</td></tr>
+        <tr><td>Practice, not talk</td><td>Success only from practice, not from reading or clothes or talking about yoga (HYP 1.65&ndash;66)</td></tr>
+        <tr><td>Order of preparation</td><td>Pranayama only after steady sitting asanas; nadishuddhi before the eight kumbhakas; shatkarma first only if fat or mucus is excessive (HYP 2.21)</td></tr>
+      </table></div>
+      <p class="honest"><b>Source note.</b> The Hatha and Gheranda Samhita handout labels the six-causes verse &ldquo;HYP I-14&rdquo;; in your Muktibodhananda book it is verse 15 (as your class notes also say). Use 1.15 and 1.16. The handout also says 1.14 for &ldquo;practise only as the guru instructs&rdquo;; that is the idea of 1.14 in the book. <span class="src gen">HYP book</span></p>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; &ldquo;Describe the Matha (hermitage) according to HYP&rdquo; <span class="src cls">class</span></span>
+        <p>Write 1.12 (place: alone, bow&#8217;s length, no rocks, fire, water; virtuous kingdom with alms) then 1.13 (small door, no windows or cracks, not too high or low, clean, no animals; outside platform, well, wall; pleasant). Close with: &ldquo;the aim is a simple, clean, quiet place that supports one-pointed practice.&rdquo; Your notes say the question &ldquo;looks like&rdquo; hermitage.</p>
+      </div>
+
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">What is a matha?</div><div class="a">A small hermitage for hatha practice</div></div>
+        <div class="recall-card"><div class="q">Verses for place and matha?</div><div class="a">HYP 1.12 (place) and 1.13 (matha)</div></div>
+        <div class="recall-card"><div class="q">Best time to practise?</div><div class="a">Two hours before sunrise (Brahmamuhurta); also before sunset</div></div>
+        <div class="recall-card"><div class="q">Order of practice?</div><div class="a">Shatkarma, asana, pranayama (with mudra, bandha), samadhi</div></div>
+      </div>
+      <div class="src-foot"><span class="src cls">class</span> notes 23 Sep 2026 and handout <span class="src gen">HYP book</span></div>
+    </section>
+    <section class="section" id="sec-mitahara">
+      <div class="sec-head">
+        <div class="kicker">03 &#183; Mitahara, Pathya &amp; Apathya</div>
+        <h2>The Hatha Yogi&#8217;s Diet</h2>
+        <p class="dek">HYP 1.57&ndash;63. Mitahara is the moderate, suitable diet; pathya foods help practice, apathya foods block it.</p>
+      </div>
+
+      <div class="spread rev">
+        <figure class="fig">
+          <svg viewBox="0 0 320 300" role="img" aria-label="The stomach as a circle: half food, one quarter water, one quarter air">
+            <path class="fa" d="M160 150 L160 30 A120 120 0 0 1 160 270 Z"/>
+            <path class="fs" d="M160 150 L160 270 A120 120 0 0 1 40 150 Z"/>
+            <path class="ft" d="M160 150 L40 150 A120 120 0 0 1 160 30 Z"/>
+            <circle cx="160" cy="150" r="120" fill="none" stroke="var(--ink-soft)" stroke-width="3"/>
+            <text class="t tb" x="214" y="156" text-anchor="middle">Food</text><text class="t ts" x="214" y="172" text-anchor="middle">1/2</text>
+            <text class="t tb" x="100" y="216" text-anchor="middle">Water</text><text class="t ts" x="100" y="232" text-anchor="middle">1/4</text>
+            <text class="t tb" x="100" y="96" text-anchor="middle">Air</text><text class="t ts" x="100" y="112" text-anchor="middle">1/4</text>
+            <g class="bd"><circle cx="214" cy="128" r="9"/><text x="214" y="132">1</text></g><g class="bd"><circle cx="100" cy="188" r="9"/><text x="100" y="192">2</text></g><g class="bd"><circle cx="100" cy="68" r="9"/><text x="100" y="72">3</text></g>
+          </svg>
+        </figure>
+        <div>
+          <ol class="key">
+            <li><b>Food:</b> half of the stomach</li>
+            <li><b>Water:</b> one quarter</li>
+            <li><b>Air:</b> the last quarter stays free. This is the &ldquo;one fourth left empty&rdquo; of verse 58</li>
+          </ol>
+          <div class="blk und">
+            <span class="lbl">Understand it &#183; Verse 58 <span class="src gen">HYP book</span></span>
+            <p><b>Mitahara</b> is agreeable, sweet (fresh and pleasant, not sugary) food, eaten leaving one fourth of the stomach empty, as an offering to please Shiva (the inner self). Your notes: no under-eating and no over-eating; about three-fourths full; eat with gratitude; <b>not</b> one meal a day, fasting, irregular meals or snacking. <span class="src cls">class</span></p>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="sub"><span class="n">3A</span>Pathya (suitable) and Apathya (unsuitable) foods</h3>
+      <div class="cols2">
+        <div class="card"><h4>Pathya: HYP 1.62&ndash;63 <span class="src gen">HYP book</span></h4>
+          <ul class="plain">
+            <li>Whole grains: wheat, rice, barley</li>
+            <li>Milk and ghee; honey; brown sugar and sugar candy</li>
+            <li>Dry ginger; patola fruit; the &ldquo;five vegetables&rdquo; (leafy, spinach-like)</li>
+            <li>Mung and similar light pulses; pure water</li>
+            <li><b>1.63:</b> nourishing, sweet, with ghee and milk, nourishing the dhatus, pleasing and suitable</li>
+          </ul></div>
+        <div class="card"><h4>Apathya: HYP 1.59&ndash;61 <span class="src gen">HYP book</span></h4>
+          <ul class="plain">
+            <li><b>1.59:</b> bitter, sour, pungent, salty, heating foods; sour gruel, oil, sesame, mustard; alcohol, fish, meat; curds, buttermilk, horse gram, jujube, oil cakes; asafoetida and garlic</li>
+            <li><b>1.60:</b> food reheated after going cold, dry food, too much salt or acid, stale food, too many mixed vegetables</li>
+            <li><b>1.61:</b> fire, bad company, long pilgrimages, cold bathing at dawn in winter, fasting, tasks that cause bodily pain</li>
+          </ul></div>
+      </div>
+
+      <div class="blk know">
+        <span class="lbl">Know this &#183; why the book says so <span class="src gen">HYP book</span></span>
+        <ul class="plain">
+          <li>Mitahara means <b>sattwic</b>, light, easily digested food. Heavy food leads to a tamasic state; the aim is to avoid wasting prana on digestion.</li>
+          <li>Milk and ghee protect the digestive lining that shatkarma can wash away, and calm stomach heat.</li>
+          <li>Reheated food ferments and causes indigestion, wind and acidity; mixed vegetables upset digestion.</li>
+          <li>Regular meals, not frequent fasting: the book says one who devotes hours to practice should not strain the body.</li>
+        </ul>
+      </div>
+
+      <p class="honest"><b>Source note.</b> Your class notes just say &ldquo;Yogic diet&rdquo; (5 Nov) with no detail; the definitions above come from the handout and the book. HYP 1.57 also links mitahara to success: the brahmachari who takes moderate pure food and is regular becomes siddha after a year. The handout&#8217;s &ldquo;three-fourths full&rdquo; and the book&#8217;s &ldquo;half food, quarter water, quarter air&rdquo; mean the same thing.</p>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; &ldquo;Define Mitahara. List Pathya and Apathya&rdquo;</span>
+        <p>Sloka 1.58 &rarr; define (agreeable, sweet, a quarter left empty, offered to Shiva) &rarr; pathya list (1.62) &rarr; apathya list (1.59&ndash;60) &rarr; benefit: supports digestion, steadiness and sattwa. Also useful: mitahara is the <b>ninth yama</b> in HYP&#8217;s list of ten (section 4).</p>
+      </div>
+
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Define mitahara.</div><div class="a">Agreeable, sweet food, a quarter of the stomach left empty, eaten as an offering</div></div>
+        <div class="recall-card"><div class="q">Stomach split in mitahara?</div><div class="a">Half food, quarter water, quarter air</div></div>
+        <div class="recall-card"><div class="q">Three pathya foods?</div><div class="a">Wheat/rice/barley, milk and ghee, mung, honey, pure water</div></div>
+        <div class="recall-card"><div class="q">Three apathya foods?</div><div class="a">Sour, pungent, salty foods; alcohol, meat; stale or reheated food</div></div>
+      </div>
+      <div class="src-foot"><span class="src cls">class</span> handout <span class="src gen">HYP book</span> 1.57&ndash;63</div>
+    </section>
+    <section class="section" id="sec-causes">
+      <div class="sec-head">
+        <div class="kicker">04 &#183; Six Causes of Failure and Success</div>
+        <h2>Badhaka and Sadhaka Tattva</h2>
+        <p class="dek">HYP 1.15 lists six things that destroy yoga; 1.16 lists six that bring success. Both are &ldquo;important, must study&rdquo; in your notes. Write the sloka, then the list.</p>
+      </div>
+
+      <div class="cols2">
+        <div class="card"><h4>1.15 Badhaka: six causes of failure <span class="src cls">class</span></h4>
+          <ol class="plain" style="padding-left:20px">
+            <li><b>Atyahara</b>: overeating</li>
+            <li><b>Prayasa</b>: excessive exertion (beyond capacity)</li>
+            <li><b>Prajalpa</b>: excessive talking</li>
+            <li><b>Niyama agraha</b>: excessive attachment to rules</li>
+            <li><b>Jana sanga</b>: excessive socialising, company of common people</li>
+            <li><b>Laulya</b>: unsteadiness, a wavering mind</li>
+          </ol></div>
+        <div class="card"><h4>1.16 Sadhaka: six causes of success <span class="src cls">class</span></h4>
+          <ol class="plain" style="padding-left:20px">
+            <li><b>Utsaha</b>: enthusiasm</li>
+            <li><b>Sahasa</b>: courage</li>
+            <li><b>Dhairya</b>: perseverance</li>
+            <li><b>Tattva jnana</b>: discrimination (knowing the truth)</li>
+            <li><b>Nishchaya</b>: unshakeable faith and firm resolve</li>
+            <li><b>Jana sanga parityaga</b>: avoiding the company of common people</li>
+          </ol></div>
+      </div>
+      <p class="honest"><b>Source note.</b> The Sanskrit names above follow the order of the verse (utsahat, sahasat, dhairyat, tattva-jnanat, nishchayat, jana-sanga-parityagat). Your handout pairs perseverance with &ldquo;Sahasa&rdquo;, discrimination with &ldquo;Dhairyat&rdquo; and faith with &ldquo;Tattva jnana&rdquo;, which does not match the verse order; the English names are the same six, so for the exam the <b>English list is safe</b>. Confirm the pairing with your teacher if she asks for the Sanskrit names. <span class="src add">added: confirm with teacher</span></p>
+
+      <div class="blk und">
+        <span class="lbl">Understand it &#183; what each means <span class="src gen">HYP book</span></span>
+        <ul class="plain">
+          <li><b>Why they matter:</b> hatha yoga aims to balance ida and pingala; each cause of failure keeps the energy scattered, each cause of success gathers it.</li>
+          <li><b>Overeating</b> and <b>exertion</b> burden body and prana; <b>talking</b> and <b>company</b> scatter energy and mind; <b>rigid rules</b> and <b>unsteadiness</b> are the two extremes of attitude.</li>
+          <li><b>Enthusiasm</b> keeps regularity (&ldquo;every day like the first day&rdquo;); <b>perseverance</b> means continuing in rain, hail or shine until the goal; <b>faith</b> in the guru and the ultimate truth is the most important.</li>
+        </ul>
+      </div>
+
+      <div class="blk mem">
+        <span class="lbl">Memory aid</span>
+        <p><b>Failure: A-P-P-N-J-L</b> (Atyahara, Prayasa, Prajalpa, Niyama-agraha, Jana-sanga, Laulya). <b>Success: U-S-D-T-N-J</b> (Utsaha, Sahasa, Dhairya, Tattva-jnana, Nishchaya, Jana-sanga-parityaga). Jana-sanga appears in both: with company it fails, without it succeeds.</p>
+      </div>
+
+      <h3 class="sub"><span class="n">4A</span>Yama and Niyama in HYP (compare with Patanjali) <span class="src cls">class</span></h3>
+      <p>Your 24 Sep notes say &ldquo;question will be like: compare with HYP&rdquo;. HYP 1.17&ndash;18 lists ten of each.</p>
+      <div class="table-wrap"><table>
+        <tr><th>HYP: 10 yamas</th><th>HYP: 10 niyamas</th></tr>
+        <tr><td>Ahimsa (non-violence), Satya (truth), Asteya (non-stealing), Brahmacharya (continence), Kshama (forgiveness), Dhriti (endurance), Daya (compassion), Arjava (humility), <b>Mitahara (moderate diet)</b>, Shaucha (cleanliness)</td><td>Tapas (penance), Santosha (contentment), Astikya (belief), Dana (charity), Ishvara pujana (worship of God), Siddhanta vakya shravana (listening to scripture), Hri (modesty), Mati (discerning intellect), Japa, Huta (sacrifice)</td></tr>
+        <tr><th>Patanjali: 5 yamas</th><th>Patanjali: 5 niyamas</th></tr>
+        <tr><td>Ahimsa, satya, asteya, brahmacharya, aparigraha</td><td>Shaucha, santosha, tapas, svadhyaya, Ishvara pranidhana</td></tr>
+      </table></div>
+      <p class="honest"><b>Source note.</b> The Patanjali row is standard Yoga Sutra content (not in your class notes) and is tagged <span class="src gen">general</span>. Three differences to write: HYP has <b>ten</b> in each list (Patanjali five); HYP&#8217;s yamas include mitahara (not in Patanjali&#8217;s lists) and shaucha (a niyama in Patanjali); HYP&#8217;s niyamas add dana, hri, mati, japa and huta.</p>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; &ldquo;What are the causes of failure and success in hatha yoga?&rdquo;</span>
+        <p>Sloka 1.15, list six with one line each, sloka 1.16, list six with one line each, then a conclusion: &ldquo;failure comes from scattering energy; success from steady, enthusiastic and disciplined practice under a guru.&rdquo; Marks usually go to the exact six names.</p>
+      </div>
+
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Six causes of failure?</div><div class="a">Overeating, exertion, talkativeness, rigid rules, company, unsteadiness</div></div>
+        <div class="recall-card"><div class="q">Six causes of success?</div><div class="a">Enthusiasm, courage, perseverance, discrimination, faith, avoiding company</div></div>
+        <div class="recall-card"><div class="q">Which cause is on both lists?</div><div class="a">Jana sanga: company of common people (failure) / avoiding it (success)</div></div>
+        <div class="recall-card"><div class="q">How many yamas and niyamas in HYP?</div><div class="a">Ten and ten (Patanjali: five and five)</div></div>
+      </div>
+      <div class="src-foot"><span class="src cls">class</span> notes 24 Sep 2026 and handout <span class="src gen">HYP book</span></div>
+    </section>
+    <section class="section" id="sec-asanas">
+      <div class="sec-head">
+        <div class="kicker">05 &#183; Important Asanas</div>
+        <h2>The Asanas of HYP Chapter 1</h2>
+        <p class="dek">Swatmarama describes 15 asanas (1.19&ndash;56) out of the 84 taught by Shiva, then picks four as the most important and one as the best. Your notes give the exam format: sloka, introduction, technique with breathing, benefits, chakra.</p>
+      </div>
+
+      <div class="stat-strip">
+        <div class="stat"><div class="v">84</div><div class="k">asanas taught by Shiva (1.33)</div></div>
+        <div class="stat"><div class="v">4</div><div class="k">important: siddha, padma, simha, bhadra</div></div>
+        <div class="stat"><div class="v">1</div><div class="k">best: siddhasana</div></div>
+        <div class="stat"><div class="v">30&ndash;31</div><div class="k">Mayurasana, both slokas</div></div>
+      </div>
+
+      <h3 class="sub"><span class="n">5A</span>The sitting and floor asanas (1.19&ndash;32)</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Asana (verse)</th><th>What the sloka says</th><th>Benefit stated</th></tr>
+        <tr><td><b>Swastikasana</b> (1.19)</td><td>Soles of the feet placed on the inner sides of the thighs; sit equipoised with the body straight</td><td>A steady sitting pose</td></tr>
+        <tr><td><b>Gomukhasana</b> (1.20)</td><td>Right ankle by the left buttock, left ankle by the right buttock; resembles the cow&#8217;s face</td><td>&ndash;</td></tr>
+        <tr><td><b>Veerasana</b> (1.21)</td><td>One foot by the opposite thigh, the other under the same thigh</td><td>&ndash;</td></tr>
+        <tr><td><b>Koormasana</b> (1.22)</td><td>Press the anus with the ankles in opposite directions; sit well poised</td><td>&ndash;</td></tr>
+        <tr><td><b>Kukkutasana</b> (1.23)</td><td>In padmasana, insert the hands between thighs and calves and lift the body on the hands</td><td>&ndash;</td></tr>
+        <tr><td><b>Uttan Koormasana</b> (1.24)</td><td>From kukkutasana, clasp the shoulders and lie flat on the back like a tortoise</td><td>&ndash;</td></tr>
+        <tr><td><b>Dhanurasana</b> (1.25)</td><td>Hold the toes and pull them to the ears as if drawing a bow (steps: sarala, then purna)</td><td>&ndash;</td></tr>
+        <tr><td><b>Matsyendrasana</b> (1.26&ndash;27)</td><td>Right foot at the base of the left thigh, left foot beside the right knee; hold the left foot with the right hand, left arm behind the waist, body twisted (taught by Matsyendranath)</td><td>Increases the digestive fire, removes diseases, awakens the serpent power, brings balance of bindu; stimulates manipura chakra</td></tr>
+        <tr><td><b>Paschimottanasana</b> (1.28&ndash;29)</td><td>Legs stretched like a stick, bend forward, hold the toes, forehead on the knees. &ldquo;Best among asanas&rdquo; (also called ugrasana)</td><td>Prana rises in sushumna, digestive fire increases, abdomen becomes flat, free from disease; activates manipura</td></tr>
+        <tr><td><b>Mayurasana</b> (1.30&ndash;31)</td><td>Lie on the stomach, hands under the body, elbows at the sides of the navel; raise the body like a stick</td><td>Quickly removes enlarged glands (spleen), dropsy and stomach disorders; balances vata, pitta, kapha; burns up wrongly eaten food, kindles gastric fire, destroys &ldquo;kalakuta&rdquo; poison</td></tr>
+        <tr><td><b>Shavasana</b> (1.32)</td><td>Lie flat on the back like a dead body</td><td>Removes tiredness and relaxes the mind and whole body</td></tr>
+      </table></div>
+      <p class="honest"><b>Source note.</b> Your notes say Sarala and Purna Dhanurasana, and Paschimottanasana &ldquo;also known as Ugrasana&rdquo;, and a fragment &ldquo;Mats&hellip; pancreas, liver, spleen (create red blood cells&hellip;)&rdquo; that looks like Matsyendrasana (ask your teacher). For Mayurasana the sloka says &ldquo;enlargement of the glands&rdquo; (the commentary reads this as the spleen and related organs). Benefit cells with &ldquo;&ndash;&rdquo; mean the sloka states none; I did not invent them. Write technique with breathing from your class demonstration. <span class="src cls">class</span> <span class="src gen">HYP book</span></p>
+
+      <h3 class="sub"><span class="n">5B</span>The four important asanas (1.33&ndash;34) and siddhasana the best</h3>
+      <p><b>Verse 33:</b> Shiva taught 84 asanas; Swatmarama describes four. <b>Verse 34:</b> siddhasana, padmasana, simhasana and bhadrasana are the four main asanas; <b>always sit in siddhasana because it is the best.</b> <span class="src cls">class</span></p>
+      <div class="table-wrap"><table>
+        <tr><th>Asana (verse)</th><th>Sloka in brief</th><th>Importance and benefit</th></tr>
+        <tr><td><b>Siddhasana</b> (1.35&ndash;43)<br>also guptasana, muktasana, vajrasana (1.37)</td><td>Press the perineum with the heel of one foot, the other foot above the genitals; chin on chest, still, senses controlled, gaze at the eyebrow centre; &ldquo;breaks open the door to liberation&rdquo;</td><td>Best of all asanas; purifies the 72,000 nadis (1.39); perfection after twelve years with moderate food and meditation on the self (1.40); the three bandhas occur by themselves (1.42); &ldquo;no asana like siddhasana&rdquo; (1.43)</td></tr>
+        <tr><td><b>Padmasana</b> (1.44&ndash;49)</td><td>Right foot on the left thigh, left on the right; hands crossed behind the back holding the toes; chin on chest; gaze at the nose tip; tongue pressed to the upper teeth root. Alternative: soles up, palms in the lap</td><td>&ldquo;Destroyer of all diseases&rdquo;; with pranayama and drawing apana up, awakens shakti (1.48); filling the nadis with prana gives liberation (1.49)</td></tr>
+        <tr><td><b>Simhasana</b> (1.50&ndash;52)</td><td>Ankles below the scrotum (right on the left side, left on the right) at the perineum; palms on knees, fingers spread, mouth open, gaze at the nose tip</td><td>Held in great esteem by the highest yogis; facilitates the three bandhas; the commentary adds relief for throat, mouth, nose and ear disorders, and the roaring-lion variation tones the throat</td></tr>
+        <tr><td><b>Bhadrasana</b> (1.53&ndash;54)</td><td>Ankles on either side of the perineum, hold the feet firmly with the hands and stay motionless; also called gorakshasana</td><td>&ldquo;Destroys all diseases&rdquo;</td></tr>
+      </table></div>
+      <div class="blk mem">
+        <span class="lbl">Memory aid</span>
+        <p><b>S-P-S-B</b>: &ldquo;Siddha Padma Simha Bhadra&rdquo;, with <b>Siddha</b> the best. Siddhasana is also <b>Guptasana</b> (the secret pose). Paschimottanasana is the one called <b>best</b> of the floor asanas (1.29); siddhasana is best of all.</p>
+      </div>
+
+      <div class="blk know">
+        <span class="lbl">Know this &#183; chakra and breathing (for the exam format) <span class="src cls">class</span></span>
+        <p>Your teacher wants <b>technique with breathing</b> and the <b>chakra</b> in each asana answer. The HYP book itself ties <b>manipura</b> (navel) to <b>Matsyendrasana</b> and <b>Paschimottanasana</b>, and gaze at the <b>ajna</b> (eyebrow centre) to siddhasana. For other asanas your notes do not name the chakra, so ask for her list: do not guess one in the exam.</p>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; &ldquo;Describe Siddhasana / Padmasana / Mayurasana&rdquo;</span>
+        <p>Follow the five-step format. For Mayurasana write both slokas (1.30, 1.31). For the &ldquo;four important asanas&rdquo; question, give verse 34 and a short block for each (sloka gist and benefit), then end with why siddhasana is best (purifies the nadis; the three bandhas arise on their own).</p>
+      </div>
+
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Four important asanas?</div><div class="a">Siddhasana, padmasana, simhasana, bhadrasana (1.34)</div></div>
+        <div class="recall-card"><div class="q">Best asana?</div><div class="a">Siddhasana, also called guptasana</div></div>
+        <div class="recall-card"><div class="q">Paschimottanasana: another name and chakra?</div><div class="a">Ugrasana; manipura chakra. Digestive fire increases</div></div>
+        <div class="recall-card"><div class="q">Mayurasana: effect?</div><div class="a">Removes spleen enlargement, dropsy and stomach disorders; kindles gastric fire</div></div>
+        <div class="recall-card"><div class="q">Shavasana: effect?</div><div class="a">Removes tiredness and relaxes the mind</div></div>
+      </div>
+      <div class="src-foot"><span class="src cls">class</span> notes 5 Oct 2026 <span class="src gen">HYP book</span> 1.18&ndash;56</div>
+    </section>
+
+    <section class="section" id="sec-siddhi">
+      <div class="sec-head">
+        <div class="kicker">06 &#183; Hatha Siddhi Lakshana</div>
+        <h2>Signs of Success in Hatha Yoga</h2>
+        <p class="dek">HYP 2.78: the signs that show hatha yoga has been perfected.</p>
+      </div>
+
+      <div class="blk und">
+        <span class="lbl">Understand it &#183; Verse 2.78 <span class="src gen">HYP book</span></span>
+        <p>&ldquo;Perfection of hatha yoga is achieved when there is <b>leanness of the body, tranquil countenance, manifestation of the inner sound, clear eyes, diseaselessness, control of bindu, active digestive fire and purification of the nadis.</b>&rdquo;</p>
+      </div>
+
+      <div class="table-wrap"><table>
+        <tr><th>#</th><th>Sign (lakshana)</th><th>Meaning</th></tr>
+        <tr><td>1</td><td>Leanness of the body</td><td>Light, slim, free of excess weight</td></tr>
+        <tr><td>2</td><td>Tranquil countenance</td><td>A calm, cheerful face</td></tr>
+        <tr><td>3</td><td>Manifestation of the inner sound (nada)</td><td>The inner sound is heard; see Nada Anusandhana in Unit 2</td></tr>
+        <tr><td>4</td><td>Clear eyes</td><td>Bright, steady eyes</td></tr>
+        <tr><td>5</td><td>Diseaselessness</td><td>Good health</td></tr>
+        <tr><td>6</td><td>Control of bindu</td><td>Control and conservation of the vital essence (semen/ova)</td></tr>
+        <tr><td>7</td><td>Active digestive fire</td><td>Strong digestion (jatharagni)</td></tr>
+        <tr><td>8</td><td>Purified nadis</td><td>The energy channels are clear, so prana flows in sushumna</td></tr>
+      </table></div>
+
+      <div class="blk mem">
+        <span class="lbl">Memory aid</span>
+        <p><b>L-T-N-C-D-B-A-P</b>: &ldquo;Lean, Tranquil, Nada, Clear eyes, Diseaseless, Bindu, Agni, Purified nadis&rdquo;. Eight signs; compare with the eight siddhis of section 1 (those are powers, these are signs).</p>
+      </div>
+
+      <p class="honest"><b>Source note.</b> The meanings in the third column are short explanations, not additional verses; your class notes list only the topic &ldquo;Hatha Siddhi Lakshan&rdquo;, not the eight signs, so confirm with your teacher whether she also wants the siddha-tradition list (for example 1.57, siddha after a year of regular, moderate practice). <span class="src add">added: confirm with teacher</span></p>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle</span>
+        <p>Short answer (2 marks): name any four. Five-mark answer: all eight with a line each, then &ldquo;these signs show balance of ida and pingala and the readiness for raja yoga&rdquo;.</p>
+      </div>
+
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Verse for hatha siddhi lakshana?</div><div class="a">HYP 2.78</div></div>
+        <div class="recall-card"><div class="q">How many signs?</div><div class="a">Eight: lean, calm face, inner sound, clear eyes, no disease, bindu control, active digestion, pure nadis</div></div>
+      </div>
+      <div class="src-foot"><span class="src gen">HYP book</span> 2.78</div>
+    </section>
+    <section class="section" id="sec-shatkarma">
+      <div class="sec-head">
+        <div class="kicker">07 &#183; Shatkriyas &amp; Benefits</div>
+        <h2>The Six Cleansing Practices (HYP 2.21&ndash;37)</h2>
+        <p class="dek">Shat = six, karma or kriya = action. They remove excess fat, mucus and wind (the doshas) so that pranayama can be practised without strain. Verse 2.22 names the six.</p>
+      </div>
+
+      <div class="blk und">
+        <span class="lbl">Understand it &#183; 2.21, 2.22, 2.36 <span class="src gen">HYP book</span></span>
+        <ul class="plain">
+          <li><b>2.21:</b> when fat or mucus is excessive, do shatkarma <i>before</i> pranayama; those whose doshas are balanced need not. The doshas are kapha (mucus), pitta (bile), vata (wind).</li>
+          <li><b>2.22:</b> <span class="sk">Dhauti, basti, neti, trataka, nauli, kapalabhati</span> are the six cleansing processes.</li>
+          <li><b>2.23:</b> they are secret, learned only from a guru. <b>2.36:</b> after the six, pranayama succeeds without strain. <b>2.37:</b> some teachers say pranayama alone cleans the nadis; the book says both views are correct.</li>
+        </ul>
+      </div>
+
+      <div class="table-wrap"><table>
+        <tr><th>Kriya</th><th>Meaning and method</th><th>Benefit (HYP)</th><th>Caution (slides)</th></tr>
+        <tr><td><b>1 Dhauti</b><br>(2.24&ndash;25)</td><td>Washing of the alimentary canal. Sloka describes <b>vastra dhauti</b>: a wet cloth, four finger-widths wide and about 1.5 m long, swallowed slowly and withdrawn. Other forms: <b>kunjal</b> (drinking salt water and vomiting), danda dhauti, agnisara</td><td>Destroys cough, asthma, spleen disease and the twenty disorders of excess mucus; clears the digestive and respiratory tracts, reduces fat, relieves gas, constipation and poor digestion</td><td>Not in stomach or intestinal ulcers, hernia, heart disease, high blood pressure, asthma (kunjal)</td></tr>
+        <tr><td><b>2 Basti</b><br>(2.26&ndash;28)</td><td>Yogic enema: sitting in utkatasana, navel-deep in water, contract the anus (jala basti); sthala basti is done on dry land. Needs uddiyana and nauli first</td><td>Removes enlarged glands and spleen and disorders from excess wind, bile and mucus; increases appetite, makes the body glow, purifies the dhatus, senses and mind</td><td>Not in pregnancy, menstruation, diarrhoea, rectal bleeding, extreme weakness, within 3 hours of food</td></tr>
+        <tr><td><b>3 Neti</b><br>(2.29&ndash;30)</td><td>Nasal cleansing: sutra neti (a soft thread through the nose to the mouth) or jala neti (lukewarm salt water through the nostrils, about 1 tsp salt per half litre)</td><td>Cleanses the cranium, bestows &ldquo;clairvoyance&rdquo;, destroys diseases above the throat; clears mucus, helps colds, sinusitis, tonsillitis</td><td>Not with a blocked or bleeding nose; do it in the morning; relax in balasana afterwards</td></tr>
+        <tr><td><b>4 Trataka</b><br>(2.31&ndash;32)</td><td>Gazing steadily at a small point (candle flame) without blinking until tears flow; then close the eyes and hold the after-image</td><td>Eradicates all eye diseases, fatigue and sloth; commentary: helps insomnia, anxiety, concentration, memory; acts on ajna chakra</td><td>Caution in severe psychic problems such as schizophrenia or hallucinations</td></tr>
+        <tr><td><b>5 Nauli</b><br>(2.33&ndash;34)</td><td>Lean forward, protrude the abdomen and rotate the muscles from right to left with speed. Three parts: madhyama (centre), dakshina (right), vama (left); then nauli chalan (churning)</td><td>&ldquo;Foremost of hatha practices&rdquo;: kindles digestive fire, removes indigestion, sluggish digestion and dosha disorders, tones abdominal and pelvic organs</td><td>Not in heart disease, high BP, hernia, gallstones, acute ulcer, pregnancy or after abdominal surgery</td></tr>
+        <tr><td><b>6 Kapalabhati</b><br>(2.35)</td><td>Rapid exhalation and inhalation like a blacksmith&#8217;s bellows. Active, forceful exhalation, passive inhalation (30 pumps per round in the slides)</td><td>Destroys all mucous disorders; slides: increases metabolism, helps asthma, activates small intestine, adrenals and pancreas, relieves constipation, alertness</td><td>Not on a full stomach, in pregnancy, recent surgery, ulcers, hernia</td></tr>
+      </table></div>
+      <p class="honest"><b>Source note.</b> The first three columns come from the HYP verses and commentary (<span class="src gen">HYP book</span>); the cautions and the kunjal, nauli and kapalabhati method details come from your Shatkarma slides (<span class="src cls">class</span>). Your teacher&#8217;s handout gives the <b>sequence differently in the two texts</b>: HYP (2.22) is dhauti, basti, neti, <b>trataka, nauli</b>, kapalabhati; Gheranda Samhita (1.12) is dhauti, basti, neti, <b>nauli, trataka</b>, kapalabhati. The Gheranda practices (agnisara, danda, vamana and vastra dhauti, jala and sthala basti, vata, vyut and sit karma kapalabhati) belong to Unit 3.</p>
+
+      <div class="blk know">
+        <span class="lbl">Know this &#183; what the slides add <span class="src cls">class</span></span>
+        <ul class="plain">
+          <li>Shatkarma are practised under the guidance of an experienced teacher, usually early in the morning on an empty stomach.</li>
+          <li>The body cleans itself, but residue can build up as impurity (ama) and cause illness: the shatkarma flush it out.</li>
+          <li>Kapalabhati is sometimes counted with pranayama; trataka acts as a pratyahara practice because it withdraws the other senses into sight.</li>
+        </ul>
+      </div>
+
+      <div class="blk mem">
+        <span class="lbl">Memory aid</span>
+        <p><b>D-B-N-T-N-K</b> (HYP): &ldquo;Dhauti, Basti, Neti, Trataka, Nauli, Kapalabhati&rdquo;. Body parts, top to bottom: nose (neti), eyes (trataka), throat and stomach (dhauti), abdomen (nauli), colon (basti), skull and lungs (kapalabhati).</p>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; &ldquo;Explain Shatkriyas with benefits&rdquo;</span>
+        <p>Write 2.22, name the six, then for each: meaning, a line of method, one HYP benefit and one caution. Open with the purpose (2.21: removes excess fat and mucus before pranayama) and close with the guru rule (2.23). The sequence difference with Gheranda Samhita earns a mark if you add it.</p>
+      </div>
+
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Six shatkarma in HYP?</div><div class="a">Dhauti, basti, neti, trataka, nauli, kapalabhati (2.22)</div></div>
+        <div class="recall-card"><div class="q">Why do shatkarma before pranayama?</div><div class="a">To remove excess fat, mucus and wind so pranayama is easy (2.21, 2.36)</div></div>
+        <div class="recall-card"><div class="q">Foremost of the six for digestion?</div><div class="a">Nauli: kindles digestive fire (2.34)</div></div>
+        <div class="recall-card"><div class="q">Kapalabhati benefit in the sloka?</div><div class="a">Destroys all mucous disorders</div></div>
+        <div class="recall-card"><div class="q">HYP vs Gheranda order?</div><div class="a">HYP: trataka then nauli. Gheranda: nauli then trataka</div></div>
+      </div>
+      <div class="src-foot"><span class="src cls">class</span> handout, Shatkarma slides <span class="src gen">HYP book</span> 2.21&ndash;37</div>
+    </section>
+    <section class="section" id="sec-kumbhaka">
+      <div class="sec-head">
+        <div class="kicker">08 &#183; Ashta Kumbhaka &amp; Benefits</div>
+        <h2>The Eight Kumbhakas of HYP (2.44&ndash;75)</h2>
+        <p class="dek">Kumbhaka is breath retention, and in HYP the word covers the whole pranayama. Your notes: &ldquo;8 pranayamas&rdquo;; write the sloka <span class="sk">chale vate chalam chittam</span> (HYP 2.2) in the exam.</p>
+      </div>
+
+      <div class="blk und">
+        <span class="lbl">Understand it &#183; basics</span>
+        <ul class="plain">
+          <li><b>Pranayama</b> = prana (vital force) + ayama (extension, expansion). HYP 2.2: <i>when the breath moves, the mind moves; when the breath is still, the mind is still</i>. <span class="src cls">class</span></li>
+          <li><b>Three phases (2.71):</b> pooraka (inhalation), rechaka (exhalation), kumbhaka (retention). Kumbhaka is of two kinds: <b>sahita</b> (with inhalation and exhalation) and <b>kevala</b> (spontaneous, free of both). Practise sahita until kevala comes (2.72&ndash;73). <span class="src gen">HYP book</span></li>
+          <li><b>Before the eight:</b> sit steadily in asana, take moderate food, practise nadishuddhi until the nadis are clear, under a guru (2.1, 2.16); minimum age for pranayama is 15. <span class="src cls">class</span></li>
+        </ul>
+      </div>
+
+      <div class="table-wrap"><table>
+        <tr><th>Kumbhaka (verse)</th><th>Method in the sloka</th><th>Benefit stated</th></tr>
+        <tr><td><b>1 Suryabheda</b><br>(2.48&ndash;50)</td><td>Inhale slowly through the <b>right</b> nostril, retain until the breath is felt to the roots of the hair and tips of the nails, exhale slowly through the <b>left</b></td><td>Purifies the cranium, destroys vata (wind) disorders, eliminates worms. Heating: stimulates the sympathetic system</td></tr>
+        <tr><td><b>2 Ujjayi</b><br>(2.51&ndash;53)</td><td>Mouth closed, inhale through both nostrils with control so the breath is felt from throat to heart with a soft sound; retain; exhale through the left nostril</td><td>Removes phlegm in the throat, stimulates the digestive fire; commentary: good for insomnia and tension, simple form for heart disease</td></tr>
+        <tr><td><b>3 Seetkari</b><br>(2.54&ndash;56)</td><td>Draw the breath in through the mouth with a hissing sound, exhale through the nose</td><td>Cooling and calming; the sloka says the practitioner becomes free of hunger, thirst, sleep and laziness; sattwa becomes steady</td></tr>
+        <tr><td><b>4 Sheetali</b><br>(2.57&ndash;58)</td><td>Inhale through the (rolled) tongue, retain, exhale through the nostrils</td><td>Cures enlarged stomach or spleen, fever, excess bile, hunger and thirst, counteracts poisons; cooling, helps high BP and acidity</td></tr>
+        <tr><td><b>5 Bhastrika</b><br>(2.59&ndash;67)</td><td>In padmasana, forceful bellows-like inhalation and exhalation repeatedly; then a deep breath, retention with jalandhara, exhale slowly (through the right then left in rounds)</td><td>Destroys wind, bile and mucus disorders, increases the digestive fire, arouses kundalini, removes mucus blocking the entrance of brahma nadi</td></tr>
+        <tr><td><b>6 Bhramari</b><br>(2.68)</td><td>Breathe in quickly with a sound like the male black bee; exhale slowly with the sound of the female bee (a humming)</td><td>The mind is absorbed in bliss; calms the mind</td></tr>
+        <tr><td><b>7 Moorchha</b><br>(2.69)</td><td>At the end of inhalation fix jalandhara bandha, then exhale slowly</td><td>Makes the mind inactive and confers pleasure (&ldquo;swooning&rdquo; breath)</td></tr>
+        <tr><td><b>8 Plavini</b><br>(2.70)</td><td>Fill the abdomen completely with air (swallowing air)</td><td>The practitioner can float on water like a lotus leaf</td></tr>
+      </table></div>
+
+      <div class="cols2">
+        <div class="card"><h4>Cooling and calming <span class="src cls">class</span></h4>
+          <p><b>Sheetali, Seetkari</b> (and Chandrabhedana, which your notes list but HYP does not describe). Cool the body, reduce heat and BP. <b>Caution: low blood pressure.</b></p></div>
+        <div class="card"><h4>Heating <span class="src cls">class</span></h4>
+          <p><b>Suryabheda, Ujjayi, Bhastrika:</b> raise gastric fire, metabolism and BP. <b>Avoid Bhastrika in high BP</b>; your notes also say Ujjayi makes one more introverted, so not recommended in depression.</p></div>
+      </div>
+      <p class="honest"><b>Source notes.</b> (1) The Gheranda Samhita list differs: sahita, suryabheda, ujjayi, sheetali, bhastrika, bhramari, murchha, kevali (your notes). (2) Your notes call Ujjayi a &ldquo;heating&rdquo; practice and warn against it in depression; the Muktibodhananda commentary instead recommends it for insomnia and tension, and its simple form (without retention) for heart disease, with a caution for low BP. Both are given here: in the exam write your teacher&#8217;s version. (3) Chandrabhedana is not described in HYP; the commentary says it was left out because activating ida alone can make the mind introvert and the body lethargic. <span class="src gen">HYP book</span></p>
+
+      <div class="blk know">
+        <span class="lbl">Know this &#183; the goal of kumbhaka <span class="src gen">HYP book</span></span>
+        <ul class="plain">
+          <li>2.41: restraining the prana purifies nadis and chakras and bursts open the door of sushumna.</li>
+          <li>2.75: by retention kundalini is aroused, sushumna is unobstructed and hatha yoga is perfected. 2.77: stopping the prana frees the mind from modifications, raja yoga is reached.</li>
+          <li>2.76: neither hatha without raja nor raja without hatha is perfect.</li>
+        </ul>
+      </div>
+
+      <div class="blk mem">
+        <span class="lbl">Memory aid</span>
+        <p><b>S-U-S-S-B-B-M-P</b>: &ldquo;Surya, Ujjayi, Seetkari, Sheetali, Bhastrika, Bhramari, Moorchha, Plavini&rdquo;. Cooling pair = the two &ldquo;S&rdquo; in the middle (Seetkari, Sheetali); heating = Surya, Ujjayi, Bhastrika.</p>
+      </div>
+
+      <div class="blk exam">
+        <span class="lbl">Exam angle &#183; &ldquo;Describe Ashta Kumbhaka with benefits&rdquo;</span>
+        <p>Write 2.2 and 2.44 (the list), the three phases and the two kinds of kumbhaka, then give the eight in a table: method and benefit in one line each, with the cooling and heating cautions at the end. If the question asks for one kumbhaka, follow the asana format: sloka, introduction, technique with breathing, benefits, chakra or nadi involved.</p>
+      </div>
+
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Eight kumbhakas in HYP?</div><div class="a">Surya, ujjayi, seetkari, sheetali, bhastrika, bhramari, moorchha, plavini</div></div>
+        <div class="recall-card"><div class="q">Two kinds of kumbhaka?</div><div class="a">Sahita (with breath) and kevala (spontaneous)</div></div>
+        <div class="recall-card"><div class="q">Suryabheda: which nostril in and out?</div><div class="a">In through the right, out through the left</div></div>
+        <div class="recall-card"><div class="q">Cooling pranayamas and caution?</div><div class="a">Sheetali, seetkari: avoid in low BP</div></div>
+        <div class="recall-card"><div class="q">Bhastrika caution?</div><div class="a">High blood pressure: avoid</div></div>
+        <div class="recall-card"><div class="q">Which verse: breath moves, mind moves?</div><div class="a">HYP 2.2, chale vate chalam chittam</div></div>
+      </div>
+      <div class="src-foot"><span class="src cls">class</span> notes 7 and 28 Oct 2026 <span class="src gen">HYP book</span> 2.44&ndash;77</div>
+    </section>
+    <section class="section" id="sec-slokas">
+      <div class="sec-head">
+        <div class="kicker">09 &#183; Slokas</div>
+        <h2>Key Slokas in Devanagari</h2>
+        <p class="dek">The verses of this unit, copied from your verses PDF, in the order of the sections above. Each has a one-line meaning. Read the verse, then say the meaning aloud.</p>
+      </div>
+      <p class="honest"><b>Verse numbers.</b> The number shown is the one in your verses PDF. In chapter 1, from the yama-niyama verses onward, the PDF number is two higher than the Muktibodhananda book that the other sections cite (siddhasana is verse 37 in the PDF and 1.35 in the book). Chapter 2 numbers are the same. The one-line meanings are plain readings of the Sanskrit, tagged below; the fuller translations are in the sections above.</p>
+      <h3 class="sub"><span class="n">1</span>Hatha, the Matha and the Practice Place</h3>
+      <div class="dv"><span class="dvn">verse 1.2</span>&#2346;&#2381;&#2352;&#2339;&#2350;&#2381;&#2351; &#2358;&#2381;&#2352;&#2368;-&#2327;&#2369;&#2352;&#2369;&#2306; &#2344;&#2366;&#2341;&#2306; &#2360;&#2381;&#2357;&#2366;&#2340;&#2381;&#2350;&#2366;&#2352;&#2366;&#2350;&#2375;&#2339; &#2351;&#2379;&#2327;&#2367;&#2344;&#2366; &#2404;<br>&#2325;&#2375;&#2357;&#2354;&#2306; &#2352;&#2366;&#2332;-&#2351;&#2379;&#2327;&#2366;&#2351; &#2361;&#2336;-&#2357;&#2367;&#2342;&#2381;&#2351;&#2379;&#2346;&#2342;&#2367;&#2358;&#2381;&#2351;&#2340;&#2375; &#2405;<p class="gl">Having bowed to the guru Nath, Svatmarama teaches hatha vidya only for the sake of raja yoga.</p></div>
+      <div class="dv"><span class="dvn">verse 1.10</span>&#2309;&#2358;&#2375;&#2359;-&#2340;&#2366;&#2346;-&#2340;&#2346;&#2381;&#2340;&#2366;&#2344;&#2366;&#2306; &#2360;&#2350;&#2366;&#2358;&#2381;&#2352;&#2351;-&#2350;&#2336;&#2379; &#2361;&#2336;&#2307; &#2404;<br>&#2309;&#2358;&#2375;&#2359;-&#2351;&#2379;&#2327;-&#2351;&#2369;&#2325;&#2381;&#2340;&#2366;&#2344;&#2366;&#2350;&#2366;&#2343;&#2366;&#2352;-&#2325;&#2350;&#2336;&#2379; &#2361;&#2336;&#2307; &#2405;<p class="gl">Hatha is the refuge of all who are burning with troubles, and the supporting tortoise of all who practise yoga.</p></div>
+      <div class="dv"><span class="dvn">verse 1.12</span>&#2360;&#2369;&#2352;&#2366;&#2332;&#2381;&#2351;&#2375; &#2343;&#2366;&#2352;&#2381;&#2350;&#2367;&#2325;&#2375; &#2342;&#2375;&#2358;&#2375; &#2360;&#2369;&#2349;&#2367;&#2325;&#2381;&#2359;&#2375; &#2344;&#2367;&#2352;&#2369;&#2346;&#2342;&#2381;&#2352;&#2357;&#2375; &#2404;<br>&#2343;&#2344;&#2369;&#2307; &#2346;&#2381;&#2352;&#2350;&#2366;&#2339;-&#2346;&#2352;&#2381;&#2351;&#2344;&#2381;&#2340;&#2306; &#2358;&#2367;&#2354;&#2366;&#2327;&#2381;&#2344;&#2367;-&#2332;&#2354;-&#2357;&#2352;&#2381;&#2332;&#2367;&#2340;&#2375; &#2404;<br>&#2319;&#2325;&#2366;&#2344;&#2381;&#2340;&#2375; &#2350;&#2336;&#2367;&#2325;&#2366;-&#2350;&#2343;&#2381;&#2351;&#2375; &#2360;&#2381;&#2341;&#2366;&#2340;&#2357;&#2381;&#2351;&#2306; &#2361;&#2336;-&#2351;&#2379;&#2327;&#2367;&#2344;&#2366; &#2405;<p class="gl">The place: a well-governed, righteous country with plenty of alms and no disturbance; the yogi lives alone in a small hut, a bow&#8217;s length clear of stones, fire and water.</p></div>
+      <div class="dv"><span class="dvn">verse 1.13</span>&#2309;&#2354;&#2381;&#2346;-&#2342;&#2381;&#2357;&#2366;&#2352;&#2350;&#2352;&#2344;&#2381;&#2343;&#2381;&#2352;-&#2327;&#2352;&#2381;&#2340;-&#2357;&#2367;&#2357;&#2352;&#2306; &#2344;&#2366;&#2340;&#2381;&#2351;&#2369;&#2330;&#2381;&#2330;-&#2344;&#2368;&#2330;&#2366;&#2351;&#2340;&#2306;<br>&#2360;&#2350;&#2381;&#2351;&#2327;&#2381;-&#2327;&#2379;&#2350;&#2351;-&#2360;&#2366;&#2344;&#2381;&#2342;&#2381;&#2352;-&#2354;&#2367;&#2346;&#2381;&#2340;&#2350;&#2350;&#2354;&#2306; &#2344;&#2367;&#2307;&#2358;&#2375;&#2360;-&#2332;&#2344;&#2381;&#2340;&#2370;&#2332;&#2381;&#2333;&#2367;&#2340;&#2350;&#2381; &#2404;<br>&#2348;&#2366;&#2361;&#2381;&#2351;&#2375; &#2350;&#2339;&#2381;&#2337;&#2346;-&#2357;&#2375;&#2342;&#2367;-&#2325;&#2370;&#2346;-&#2352;&#2369;&#2330;&#2367;&#2352;&#2306; &#2346;&#2381;&#2352;&#2366;&#2325;&#2366;&#2352;-&#2360;&#2306;&#2357;&#2375;&#2359;&#2381;&#2335;&#2367;&#2340;&#2306;<br>&#2346;&#2381;&#2352;&#2379;&#2325;&#2381;&#2340;&#2306; &#2351;&#2379;&#2327;-&#2350;&#2336;&#2360;&#2381;&#2351; &#2354;&#2325;&#2381;&#2359;&#2339;&#2350;&#2367;&#2342;&#2306; &#2360;&#2367;&#2342;&#2381;&#2343;&#2376;&#2352;&#2381;&#2361;&#2336;&#2366;&#2349;&#2381;&#2351;&#2366;&#2360;&#2367;&#2349;&#2367;&#2307; &#2405;<p class="gl">The hut: small door, no openings or holes, neither too high nor too low, clean and free of insects; outside, a pavilion, a raised platform and a well, all enclosed by a wall.</p></div>
+      <div class="dv"><span class="dvn">verse 1.14</span>&#2319;&#2357;&#2306; &#2357;&#2367;&#2343;&#2375; &#2350;&#2336;&#2375; &#2360;&#2381;&#2341;&#2367;&#2340;&#2381;&#2357;&#2366; &#2360;&#2352;&#2381;&#2357;-&#2330;&#2367;&#2344;&#2381;&#2340;&#2366;-&#2357;&#2367;&#2357;&#2352;&#2381;&#2332;&#2367;&#2340;&#2307; &#2404;<br>&#2327;&#2369;&#2352;&#2370;&#2346;&#2342;&#2367;&#2359;&#2381;&#2335;-&#2350;&#2366;&#2352;&#2381;&#2327;&#2375;&#2339; &#2351;&#2379;&#2327;&#2350;&#2375;&#2357; &#2360;&#2350;&#2349;&#2381;&#2351;&#2360;&#2375;&#2340;&#2381; &#2405;<p class="gl">Living in such a matha, free of worries, practise yoga only as the guru teaches.</p></div>
+      <h3 class="sub"><span class="n">2</span>Six Causes of Failure and Success; Yamas and Niyamas</h3>
+      <div class="dv"><span class="dvn">verse 1.15</span>&#2309;&#2340;&#2381;&#2351;&#2366;&#2361;&#2366;&#2352;&#2307; &#2346;&#2381;&#2352;&#2351;&#2366;&#2360;&#2358;&#2381;&#2330; &#2346;&#2381;&#2352;&#2332;&#2354;&#2381;&#2346;&#2379; &#2344;&#2367;&#2351;&#2350;&#2366;&#2327;&#2381;&#2352;&#2361;&#2307; &#2404;<br>&#2332;&#2344;-&#2360;&#2329;&#2381;&#2327;&#2358;&#2381;&#2330; &#2354;&#2380;&#2354;&#2381;&#2351;&#2306; &#2330; &#2359;&#2337;&#2381;&#2349;&#2367;&#2352;&#2381;&#2351;&#2379;&#2327;&#2379; &#2357;&#2367;&#2344;&#2358;&#2381;&#2351;&#2340;&#2367; &#2405;<p class="gl">Six things destroy yoga: overeating, exertion, talkativeness, clinging to rules, company of common people, and restlessness.</p></div>
+      <div class="dv"><span class="dvn">verse 1.16</span>&#2313;&#2340;&#2381;&#2360;&#2366;&#2361;&#2366;&#2340;&#2381;&#2360;&#2366;&#2361;&#2360;&#2366;&#2342;&#2381;&#2343;&#2376;&#2352;&#2381;&#2351;&#2366;&#2340;&#2381;&#2340;&#2340;&#2381;&#2340;&#2381;&#2357;-&#2332;&#2381;&#2334;&#2366;&#2344;&#2366;&#2330;&#2381;&#2330; &#2344;&#2367;&#2358;&#2381;&#2330;&#2351;&#2366;&#2340;&#2381; &#2404;<br>&#2332;&#2344;-&#2360;&#2329;&#2381;&#2327;-&#2346;&#2352;&#2367;&#2340;&#2381;&#2351;&#2366;&#2327;&#2366;&#2340;&#2381;&#2359;&#2337;&#2381;&#2349;&#2367;&#2352;&#2381;&#2351;&#2379;&#2327;&#2307; &#2346;&#2381;&#2352;&#2360;&#2367;&#2342;&#2381;&#2343;&#2381;&#2351;&#2340;&#2367; &#2405;<p class="gl">Six things bring success: enthusiasm, daring, patience, knowledge of the principle, firm resolve, and giving up company.</p></div>
+      <div class="dv"><span class="dvn">verse 1.17 &middot; book 1.15</span>&#2309;&#2361;&#2367;&#2306;&#2360;&#2366; &#2360;&#2340;&#2381;&#2351;&#2350;&#2360;&#2381;&#2340;&#2375;&#2351;&#2306; &#2348;&#2381;&#2352;&#2361;&#2381;&#2350;&#2330;&#2352;&#2381;&#2351;&#2306; &#2325;&#2381;&#2359;&#2350;&#2366; &#2343;&#2371;&#2340;&#2367;&#2307; &#2404;<br>&#2342;&#2351;&#2366;&#2352;&#2381;&#2332;&#2357;&#2306; &#2350;&#2367;&#2340;&#2366;&#2361;&#2366;&#2352;&#2307; &#2358;&#2380;&#2330;&#2306; &#2330;&#2376;&#2357; &#2351;&#2350;&#2366; &#2342;&#2358; &#2405;<p class="gl">The ten yamas: non-violence, truth, non-stealing, brahmacharya, forgiveness, fortitude, compassion, straightforwardness, moderate diet and cleanliness.</p></div>
+      <div class="dv"><span class="dvn">verse 1.18 &middot; book 1.16</span>&#2340;&#2346;&#2307; &#2360;&#2344;&#2381;&#2340;&#2379;&#2359; &#2310;&#2360;&#2381;&#2340;&#2367;&#2325;&#2381;&#2351;&#2306; &#2342;&#2366;&#2344;&#2350;&#2368;&#2358;&#2381;&#2357;&#2352;-&#2346;&#2370;&#2332;&#2344;&#2350;&#2381; &#2404;<br>&#2360;&#2367;&#2342;&#2381;&#2343;&#2366;&#2344;&#2381;&#2340;-&#2357;&#2366;&#2325;&#2381;&#2351;-&#2358;&#2381;&#2352;&#2357;&#2339;&#2306; &#2361;&#2381;&#2352;&#2368;&#2350;&#2340;&#2368; &#2330; &#2340;&#2346;&#2379; &#2361;&#2369;&#2340;&#2350;&#2381; &#2404;<br>&#2344;&#2367;&#2351;&#2350;&#2366; &#2342;&#2358; &#2360;&#2350;&#2381;&#2346;&#2381;&#2352;&#2379;&#2325;&#2381;&#2340;&#2366; &#2351;&#2379;&#2327;-&#2358;&#2366;&#2360;&#2381;&#2340;&#2381;&#2352;-&#2357;&#2367;&#2358;&#2366;&#2352;&#2342;&#2376;&#2307; &#2405;<p class="gl">The ten niyamas, as the verse lists them (names in the table in section 4).</p></div>
+      <h3 class="sub"><span class="n">3</span>Important Asanas</h3>
+      <div class="dv"><span class="dvn">verse 1.19 &middot; book 1.17</span>&#2361;&#2336;&#2360;&#2381;&#2351; &#2346;&#2381;&#2352;&#2341;&#2350;&#2366;&#2329;&#2381;&#2327;&#2340;&#2381;&#2357;&#2366;&#2342;&#2366;&#2360;&#2344;&#2306; &#2346;&#2370;&#2352;&#2381;&#2357;&#2350;&#2369;&#2330;&#2381;&#2351;&#2340;&#2375; &#2404;<br>&#2325;&#2369;&#2352;&#2381;&#2351;&#2366;&#2340;&#2381;&#2340;&#2342;&#2366;&#2360;&#2344;&#2306; &#2360;&#2381;&#2341;&#2376;&#2352;&#2381;&#2351;&#2350;&#2366;&#2352;&#2379;&#2327;&#2381;&#2351;&#2306; &#2330;&#2366;&#2329;&#2381;&#2327;-&#2354;&#2366;&#2328;&#2357;&#2350;&#2381; &#2405;<p class="gl">Asana comes first because it is the first limb of hatha; it gives steadiness, health and lightness of body.</p></div>
+      <div class="dv"><span class="dvn">verse 1.28 &middot; book 1.26</span>&#2357;&#2366;&#2350;&#2379;&#2352;&#2369;-&#2350;&#2370;&#2354;&#2366;&#2352;&#2381;&#2346;&#2367;&#2340;-&#2342;&#2325;&#2381;&#2359;-&#2346;&#2366;&#2342;&#2306;<br>&#2332;&#2366;&#2344;&#2379;&#2352;&#2381;&#2348;&#2361;&#2367;&#2352;&#2381;&#2357;&#2375;&#2359;&#2381;&#2335;&#2367;&#2340;-&#2357;&#2366;&#2350;-&#2346;&#2366;&#2342;&#2350;&#2381; &#2404;<br>&#2346;&#2381;&#2352;&#2327;&#2371;&#2361;&#2381;&#2351; &#2340;&#2367;&#2359;&#2381;&#2336;&#2375;&#2340;&#2381;&#2346;&#2352;&#2367;&#2357;&#2352;&#2381;&#2340;&#2367;&#2340;&#2366;&#2329;&#2381;&#2327;&#2307;<br>&#2358;&#2381;&#2352;&#2368;-&#2350;&#2340;&#2381;&#2360;&#2381;&#2351;&#2344;&#2366;&#2341;&#2379;&#2342;&#2367;&#2340;&#2350;&#2366;&#2360;&#2344;&#2306; &#2360;&#2381;&#2351;&#2366;&#2340;&#2381; &#2405;<p class="gl">Matsyendrasana: right foot at the root of the left thigh, left foot wound outside the knee, hold it and turn the body.</p></div>
+      <div class="dv"><span class="dvn">verse 1.29 &middot; book 1.27</span>&#2350;&#2340;&#2381;&#2360;&#2381;&#2351;&#2375;&#2344;&#2381;&#2342;&#2381;&#2352;-&#2346;&#2368;&#2336;&#2306; &#2332;&#2336;&#2352;-&#2346;&#2381;&#2352;&#2342;&#2368;&#2346;&#2381;&#2340;&#2367;&#2306;<br>&#2346;&#2381;&#2352;&#2330;&#2339;&#2381;&#2337;-&#2352;&#2369;&#2327;&#2381;&#2350;&#2339;&#2381;&#2337;&#2354;-&#2326;&#2339;&#2381;&#2337;&#2344;&#2366;&#2360;&#2381;&#2340;&#2381;&#2352;&#2350;&#2381; &#2404;<br>&#2309;&#2349;&#2381;&#2351;&#2366;&#2360;&#2340;&#2307; &#2325;&#2369;&#2339;&#2381;&#2337;&#2354;&#2367;&#2344;&#2368;-&#2346;&#2381;&#2352;&#2348;&#2379;&#2343;&#2306;<br>&#2330;&#2344;&#2381;&#2342;&#2381;&#2352;-&#2360;&#2381;&#2341;&#2367;&#2352;&#2340;&#2381;&#2357;&#2306; &#2330; &#2342;&#2342;&#2366;&#2340;&#2367; &#2346;&#2369;&#2306;&#2360;&#2366;&#2350;&#2381; &#2405;<p class="gl">Matsyendrasana kindles the digestive fire, destroys severe diseases, awakens kundalini and steadies the moon (bindu).</p></div>
+      <div class="dv"><span class="dvn">verse 1.30 &middot; book 1.28</span>&#2346;&#2381;&#2352;&#2360;&#2366;&#2352;&#2381;&#2351; &#2346;&#2366;&#2342;&#2380; &#2349;&#2369;&#2357;&#2367; &#2342;&#2339;&#2381;&#2337;-&#2352;&#2370;&#2346;&#2380;<br>&#2342;&#2379;&#2352;&#2381;&#2349;&#2381;&#2351;&#2366;&#2306; &#2346;&#2342;&#2366;&#2327;&#2381;&#2352;-&#2342;&#2381;&#2357;&#2367;&#2340;&#2351;&#2306; &#2327;&#2371;&#2361;&#2368;&#2340;&#2381;&#2357;&#2366; &#2404;<br>&#2332;&#2366;&#2344;&#2370;&#2346;&#2352;&#2367;&#2344;&#2381;&#2351;&#2360;&#2381;&#2340;-&#2354;&#2354;&#2366;&#2335;-&#2342;&#2375;&#2358;&#2379;<br>&#2357;&#2360;&#2375;&#2342;&#2367;&#2342;&#2306; &#2346;&#2358;&#2381;&#2330;&#2367;&#2350;&#2340;&#2366;&#2344;&#2350;&#2366;&#2361;&#2369;&#2307; &#2405;<p class="gl">Paschimottanasana: legs stretched like sticks, hold the toes with the hands, forehead on the knees.</p></div>
+      <div class="dv"><span class="dvn">verse 1.31 &middot; book 1.29</span>&#2311;&#2340;&#2367; &#2346;&#2358;&#2381;&#2330;&#2367;&#2350;&#2340;&#2366;&#2344;&#2350;&#2366;&#2360;&#2344;&#2366;&#2327;&#2381;&#2352;&#2381;&#2351;&#2306;<br>&#2346;&#2357;&#2344;&#2306; &#2346;&#2358;&#2381;&#2330;&#2367;&#2350;-&#2357;&#2366;&#2361;&#2367;&#2344;&#2306; &#2325;&#2352;&#2379;&#2340;&#2367; &#2404;<br>&#2313;&#2342;&#2351;&#2306; &#2332;&#2336;&#2352;&#2366;&#2344;&#2354;&#2360;&#2381;&#2351; &#2325;&#2369;&#2352;&#2381;&#2351;&#2366;&#2342;&#2381;<br>&#2313;&#2342;&#2352;&#2375; &#2325;&#2366;&#2352;&#2381;&#2358;&#2381;&#2351;&#2350;&#2352;&#2379;&#2327;&#2340;&#2366;&#2306; &#2330; &#2346;&#2369;&#2306;&#2360;&#2366;&#2350;&#2381; &#2405;<p class="gl">It makes the breath flow in the back channel (sushumna), kindles the digestive fire, makes the belly lean and gives health.</p></div>
+      <div class="dv"><span class="dvn">verse 1.32 &middot; book 1.30</span>&#2343;&#2352;&#2366;&#2350;&#2357;&#2359;&#2381;&#2335;&#2349;&#2381;&#2351; &#2325;&#2352;-&#2342;&#2381;&#2357;&#2351;&#2375;&#2344;<br>&#2340;&#2340;&#2381;-&#2325;&#2370;&#2352;&#2381;&#2346;&#2352;-&#2360;&#2381;&#2341;&#2366;&#2346;&#2367;&#2340;-&#2344;&#2366;&#2349;&#2367;-&#2346;&#2366;&#2352;&#2381;&#2358;&#2381;&#2357;&#2307; &#2404;<br>&#2313;&#2330;&#2381;&#2330;&#2366;&#2360;&#2344;&#2379; &#2342;&#2339;&#2381;&#2337;&#2357;&#2342;&#2369;&#2340;&#2381;&#2341;&#2367;&#2340;&#2307; &#2326;&#2375;<br>&#2350;&#2366;&#2351;&#2370;&#2352;&#2350;&#2375;&#2340;&#2340;&#2381;&#2346;&#2381;&#2352;&#2357;&#2342;&#2344;&#2381;&#2340;&#2367; &#2346;&#2368;&#2336;&#2350;&#2381; &#2405;<p class="gl">Mayurasana: palms on the ground, elbows at the sides of the navel, body raised like a staff in the air.</p></div>
+      <div class="dv"><span class="dvn">verse 1.33 &middot; book 1.31</span>&#2361;&#2352;&#2340;&#2367; &#2360;&#2325;&#2354;-&#2352;&#2379;&#2327;&#2366;&#2344;&#2366;&#2358;&#2369; &#2327;&#2369;&#2354;&#2381;&#2350;&#2379;&#2342;&#2352;&#2366;&#2342;&#2368;&#2344;&#2381;<br>&#2309;&#2349;&#2367;&#2349;&#2357;&#2340;&#2367; &#2330; &#2342;&#2379;&#2359;&#2366;&#2344;&#2366;&#2360;&#2344;&#2306; &#2358;&#2381;&#2352;&#2368;-&#2350;&#2351;&#2370;&#2352;&#2350;&#2381; &#2404;<br>&#2348;&#2361;&#2369; &#2325;&#2342;&#2358;&#2344;-&#2349;&#2369;&#2325;&#2381;&#2340;&#2306; &#2349;&#2360;&#2381;&#2350; &#2325;&#2369;&#2352;&#2381;&#2351;&#2366;&#2342;&#2358;&#2375;&#2359;&#2306;<br>&#2332;&#2344;&#2351;&#2340;&#2367; &#2332;&#2336;&#2352;&#2366;&#2327;&#2381;&#2344;&#2367;&#2306; &#2332;&#2366;&#2352;&#2351;&#2375;&#2340;&#2381;&#2325;&#2366;&#2354;-&#2325;&#2370;&#2335;&#2350;&#2381; &#2405;<p class="gl">Mayurasana quickly removes gulma and abdominal diseases, overcomes imbalance of the humours, burns up unsuitable food and digests even deadly poison.</p></div>
+      <div class="dv"><span class="dvn">verse 1.34 &middot; book 1.32</span>&#2313;&#2340;&#2381;&#2340;&#2366;&#2344;&#2306; &#2358;&#2348;&#2357;&#2342;&#2381;&#2349;&#2370;&#2350;&#2380; &#2358;&#2351;&#2344;&#2306; &#2340;&#2330;&#2381;&#2331;&#2357;&#2366;&#2360;&#2344;&#2350;&#2381; &#2404;<br>&#2358;&#2357;&#2366;&#2360;&#2344;&#2306; &#2358;&#2381;&#2352;&#2366;&#2344;&#2381;&#2340;&#2367;-&#2361;&#2352;&#2306; &#2330;&#2367;&#2340;&#2381;&#2340;-&#2357;&#2367;&#2358;&#2381;&#2352;&#2366;&#2344;&#2381;&#2340;&#2367;-&#2325;&#2366;&#2352;&#2325;&#2350;&#2381; &#2405;<p class="gl">Shavasana: lying on the back like a corpse; it removes tiredness and brings rest to the mind.</p></div>
+      <div class="dv"><span class="dvn">verse 1.35 &middot; book 1.33</span>&#2330;&#2340;&#2369;&#2352;&#2358;&#2368;&#2340;&#2381;&#2351;&#2366;&#2360;&#2344;&#2366;&#2344;&#2367; &#2358;&#2367;&#2357;&#2375;&#2344; &#2325;&#2341;&#2367;&#2340;&#2366;&#2344;&#2367; &#2330; &#2404;<br>&#2340;&#2375;&#2349;&#2381;&#2351;&#2358;&#2381;&#2330;&#2340;&#2369;&#2359;&#2381;&#2325;&#2350;&#2366;&#2342;&#2366;&#2351; &#2360;&#2366;&#2352;&#2349;&#2370;&#2340;&#2306; &#2348;&#2381;&#2352;&#2357;&#2368;&#2350;&#2381;&#2351;&#2361;&#2350;&#2381; &#2405;<p class="gl">Shiva taught 84 asanas; Svatmarama gives the essence of four.</p></div>
+      <div class="dv"><span class="dvn">verse 1.36 &middot; book 1.34</span>&#2360;&#2367;&#2342;&#2381;&#2343;&#2306; &#2346;&#2342;&#2381;&#2350;&#2306; &#2340;&#2341;&#2366; &#2360;&#2367;&#2306;&#2361;&#2306; &#2349;&#2342;&#2381;&#2352;&#2306; &#2357;&#2375;&#2340;&#2367; &#2330;&#2340;&#2369;&#2359;&#2381;&#2335;&#2351;&#2350;&#2381; &#2404;<br>&#2358;&#2381;&#2352;&#2375;&#2359;&#2381;&#2336;&#2306; &#2340;&#2340;&#2381;&#2352;&#2366;&#2346;&#2367; &#2330; &#2360;&#2369;&#2326;&#2375; &#2340;&#2367;&#2359;&#2381;&#2336;&#2375;&#2340;&#2381;&#2360;&#2367;&#2342;&#2381;&#2343;&#2366;&#2360;&#2344;&#2375; &#2360;&#2342;&#2366; &#2405;<p class="gl">The four are siddha, padma, simha and bhadra; of these, always sit in siddhasana.</p></div>
+      <div class="dv"><span class="dvn">verse 1.37 &middot; book 1.35</span>&#2351;&#2379;&#2344;&#2367;-&#2360;&#2381;&#2341;&#2366;&#2344;&#2325;&#2350;&#2329;&#2381;&#2328;&#2381;&#2352;&#2367;-&#2350;&#2370;&#2354;-&#2328;&#2335;&#2367;&#2340;&#2306; &#2325;&#2371;&#2340;&#2381;&#2357;&#2366; &#2342;&#2371;&#2338;&#2306; &#2357;&#2367;&#2344;&#2381;&#2351;&#2360;&#2375;&#2340;&#2381;<br>&#2350;&#2375;&#2339;&#2381;&#2338;&#2381;&#2352;&#2375; &#2346;&#2366;&#2342;&#2350;&#2341;&#2376;&#2325;&#2350;&#2375;&#2357; &#2361;&#2371;&#2342;&#2351;&#2375; &#2325;&#2371;&#2340;&#2381;&#2357;&#2366; &#2361;&#2344;&#2369;&#2306; &#2360;&#2369;&#2360;&#2381;&#2341;&#2367;&#2352;&#2350;&#2381; &#2404;<br>&#2360;&#2381;&#2341;&#2366;&#2339;&#2369;&#2307; &#2360;&#2306;&#2351;&#2350;&#2367;&#2340;&#2375;&#2344;&#2381;&#2342;&#2381;&#2352;&#2367;&#2351;&#2379;&#2365;&#2330;&#2354;-&#2342;&#2371;&#2358;&#2366; &#2346;&#2358;&#2381;&#2351;&#2375;&#2342;&#2381;&#2349;&#2381;&#2352;&#2369;&#2357;&#2379;&#2352;&#2344;&#2381;&#2340;&#2352;&#2306;<br>&#2361;&#2381;&#2351;&#2375;&#2340;&#2344;&#2381;&#2350;&#2379;&#2325;&#2381;&#2359;-&#2325;&#2346;&#2366;&#2335;-&#2349;&#2375;&#2342;-&#2332;&#2344;&#2325;&#2306; &#2360;&#2367;&#2342;&#2381;&#2343;&#2366;&#2360;&#2344;&#2306; &#2346;&#2381;&#2352;&#2379;&#2330;&#2381;&#2351;&#2340;&#2375; &#2405;<p class="gl">Siddhasana: heel at the perineum, the other heel above the genitals, chin on chest, steady, senses controlled, gaze at the eyebrow centre. It opens the door of liberation.</p></div>
+      <div class="dv"><span class="dvn">verse 1.38 &middot; book 1.36</span>&#2350;&#2375;&#2339;&#2381;&#2338;&#2381;&#2352;&#2366;&#2342;&#2369;&#2346;&#2352;&#2367; &#2357;&#2367;&#2344;&#2381;&#2351;&#2360;&#2381;&#2351; &#2360;&#2357;&#2381;&#2351;&#2306; &#2327;&#2369;&#2354;&#2381;&#2347;&#2306; &#2340;&#2341;&#2379;&#2346;&#2352;&#2367; &#2404;<br>&#2327;&#2369;&#2354;&#2381;&#2347;&#2366;&#2344;&#2381;&#2340;&#2352;&#2306; &#2330; &#2344;&#2367;&#2325;&#2381;&#2359;&#2367;&#2346;&#2381;&#2351; &#2360;&#2367;&#2342;&#2381;&#2343;&#2366;&#2360;&#2344;&#2350;&#2367;&#2342;&#2306; &#2349;&#2357;&#2375;&#2340;&#2381; &#2405;<p class="gl">The second way: place the left heel above the genitals and the other heel above it.</p></div>
+      <div class="dv"><span class="dvn">verse 1.40 &middot; book 1.38</span>&#2351;&#2350;&#2375;&#2359;&#2381;&#2357;&#2367;&#2357; &#2350;&#2367;&#2340;&#2366;&#2361;&#2366;&#2352;&#2350;&#2361;&#2367;&#2306;&#2360;&#2366; &#2344;&#2367;&#2351;&#2350;&#2375;&#2359;&#2381;&#2357;&#2367;&#2357; &#2404;<br>&#2350;&#2369;&#2326;&#2381;&#2351;&#2306; &#2360;&#2352;&#2381;&#2357;&#2366;&#2360;&#2344;&#2375;&#2359;&#2381;&#2357;&#2375;&#2325;&#2306; &#2360;&#2367;&#2342;&#2381;&#2343;&#2366;&#2307; &#2360;&#2367;&#2342;&#2381;&#2343;&#2366;&#2360;&#2344;&#2306; &#2357;&#2367;&#2342;&#2369;&#2307; &#2405;<p class="gl">As mitahara is the chief of the yamas and non-violence of the niyamas, siddhasana is the chief of all asanas.</p></div>
+      <div class="dv"><span class="dvn">verse 1.41 &middot; book 1.39</span>&#2330;&#2340;&#2369;&#2352;&#2358;&#2368;&#2340;&#2367;-&#2346;&#2368;&#2336;&#2375;&#2359;&#2369; &#2360;&#2367;&#2342;&#2381;&#2343;&#2350;&#2375;&#2357; &#2360;&#2342;&#2366;&#2349;&#2381;&#2351;&#2360;&#2375;&#2340;&#2381; &#2404;<br>&#2342;&#2381;&#2357;&#2366;&#2360;&#2346;&#2381;&#2340;&#2340;&#2367;-&#2360;&#2361;&#2360;&#2381;&#2352;&#2366;&#2339;&#2366;&#2306; &#2344;&#2366;&#2337;&#2368;&#2344;&#2366;&#2306; &#2350;&#2354;-&#2358;&#2379;&#2343;&#2344;&#2350;&#2381; &#2405;<p class="gl">It purifies the 72,000 nadis.</p></div>
+      <div class="dv"><span class="dvn">verse 1.42 &middot; book 1.40</span>&#2310;&#2340;&#2381;&#2350;-&#2343;&#2381;&#2351;&#2366;&#2351;&#2368; &#2350;&#2367;&#2340;&#2366;&#2361;&#2366;&#2352;&#2368; &#2351;&#2366;&#2357;&#2342;&#2381;&#2342;&#2381;&#2357;&#2366;&#2342;&#2358;-&#2357;&#2340;&#2381;&#2360;&#2352;&#2350;&#2381; &#2404;<br>&#2360;&#2342;&#2366; &#2360;&#2367;&#2342;&#2381;&#2343;&#2366;&#2360;&#2344;&#2366;&#2349;&#2381;&#2351;&#2366;&#2360;&#2366;&#2342;&#2381;&#2351;&#2379;&#2327;&#2368; &#2344;&#2367;&#2359;&#2381;&#2346;&#2340;&#2381;&#2340;&#2367;&#2350;&#2366;&#2346;&#2381;&#2344;&#2369;&#2351;&#2366;&#2340;&#2381; &#2405;<p class="gl">A self-contemplating yogi on moderate diet who practises siddhasana for twelve years attains perfection.</p></div>
+      <div class="dv"><span class="dvn">verse 1.43 &middot; book 1.41</span>&#2325;&#2367;&#2350;&#2344;&#2381;&#2351;&#2376;&#2352;&#2381;&#2348;&#2361;&#2369;&#2349;&#2367;&#2307; &#2346;&#2368;&#2336;&#2376;&#2307; &#2360;&#2367;&#2342;&#2381;&#2343;&#2375; &#2360;&#2367;&#2342;&#2381;&#2343;&#2366;&#2360;&#2344;&#2375; &#2360;&#2340;&#2367; &#2404;<br>&#2346;&#2381;&#2352;&#2366;&#2339;&#2366;&#2344;&#2367;&#2354;&#2375; &#2360;&#2366;&#2357;&#2343;&#2366;&#2344;&#2375; &#2348;&#2342;&#2381;&#2343;&#2375; &#2325;&#2375;&#2357;&#2354;-&#2325;&#2369;&#2350;&#2381;&#2349;&#2325;&#2375; &#2404;<br>&#2313;&#2340;&#2381;&#2346;&#2342;&#2381;&#2351;&#2340;&#2375; &#2344;&#2367;&#2352;&#2366;&#2351;&#2366;&#2360;&#2366;&#2340;&#2381;&#2360;&#2381;&#2357;&#2351;&#2350;&#2375;&#2357;&#2379;&#2344;&#2381;&#2350;&#2344;&#2368; &#2325;&#2354;&#2366; &#2405;<p class="gl">When siddhasana is perfected and the breath is held in kevala kumbhaka, the unmani state arises by itself.</p></div>
+      <div class="dv"><span class="dvn">verse 1.44 &middot; book 1.42</span>&#2340;&#2341;&#2376;&#2325;&#2366;&#2360;&#2381;&#2350;&#2367;&#2344;&#2381;&#2344;&#2375;&#2357; &#2342;&#2371;&#2338;&#2375; &#2360;&#2367;&#2342;&#2381;&#2343;&#2375; &#2360;&#2367;&#2342;&#2381;&#2343;&#2366;&#2360;&#2344;&#2375; &#2360;&#2340;&#2367; &#2404;<br>&#2348;&#2344;&#2381;&#2343;-&#2340;&#2381;&#2352;&#2351;&#2350;&#2344;&#2366;&#2351;&#2366;&#2360;&#2366;&#2340;&#2381;&#2360;&#2381;&#2357;&#2351;&#2350;&#2375;&#2357;&#2379;&#2346;&#2332;&#2366;&#2351;&#2340;&#2375; &#2405;<p class="gl">From siddhasana alone the three bandhas arise without effort.</p></div>
+      <div class="dv"><span class="dvn">verse 1.45 &middot; book 1.43</span>&#2344;&#2366;&#2360;&#2344;&#2306; &#2360;&#2367;&#2342;&#2381;&#2343;-&#2360;&#2342;&#2371;&#2358;&#2306; &#2344; &#2325;&#2369;&#2350;&#2381;&#2349;&#2307; &#2325;&#2375;&#2357;&#2354;&#2379;&#2346;&#2350;&#2307; &#2404;<br>&#2344; &#2326;&#2375;&#2330;&#2352;&#2368;-&#2360;&#2350;&#2366; &#2350;&#2369;&#2342;&#2381;&#2352;&#2366; &#2344; &#2344;&#2366;&#2342;-&#2360;&#2342;&#2371;&#2358;&#2379; &#2354;&#2351;&#2307; &#2405;<p class="gl">No asana like siddha, no kumbhaka like kevala, no mudra like khechari, no absorption like nada.</p></div>
+      <div class="dv"><span class="dvn">verse 1.46 &middot; book 1.44</span>&#2357;&#2366;&#2350;&#2379;&#2352;&#2370;&#2346;&#2352;&#2367; &#2342;&#2325;&#2381;&#2359;&#2367;&#2339;&#2306; &#2330; &#2330;&#2352;&#2339;&#2306; &#2360;&#2306;&#2360;&#2381;&#2341;&#2366;&#2346;&#2381;&#2351; &#2357;&#2366;&#2350;&#2306; &#2340;&#2341;&#2366;<br>&#2342;&#2325;&#2381;&#2359;&#2379;&#2352;&#2370;&#2346;&#2352;&#2367; &#2346;&#2358;&#2381;&#2330;&#2367;&#2350;&#2375;&#2344; &#2357;&#2367;&#2343;&#2367;&#2344;&#2366; &#2343;&#2371;&#2340;&#2381;&#2357;&#2366; &#2325;&#2352;&#2366;&#2349;&#2381;&#2351;&#2366;&#2306; &#2342;&#2371;&#2338;&#2350;&#2381; &#2404;<br>&#2309;&#2329;&#2381;&#2327;&#2369;&#2359;&#2381;&#2336;&#2380; &#2361;&#2371;&#2342;&#2351;&#2375; &#2344;&#2367;&#2343;&#2366;&#2351; &#2330;&#2367;&#2348;&#2369;&#2325;&#2306; &#2344;&#2366;&#2360;&#2366;&#2327;&#2381;&#2352;&#2350;&#2366;&#2354;&#2379;&#2325;&#2351;&#2375;&#2340;&#2381;<br>&#2319;&#2340;&#2342;&#2381;&#2357;&#2381;&#2351;&#2366;&#2343;&#2367;-&#2357;&#2367;&#2344;&#2366;&#2358;-&#2325;&#2366;&#2352;&#2367; &#2351;&#2350;&#2367;&#2344;&#2366;&#2306; &#2346;&#2342;&#2381;&#2350;&#2366;&#2360;&#2344;&#2306; &#2346;&#2381;&#2352;&#2379;&#2330;&#2381;&#2351;&#2340;&#2375; &#2405;<p class="gl">Padmasana: each foot on the opposite thigh, hands crossed behind holding the toes, chin on chest, gaze at the nose tip.</p></div>
+      <div class="dv"><span class="dvn">verse 1.49 &middot; book 1.47</span>&#2311;&#2342;&#2306; &#2346;&#2342;&#2381;&#2350;&#2366;&#2360;&#2344;&#2306; &#2346;&#2381;&#2352;&#2379;&#2325;&#2381;&#2340;&#2306; &#2360;&#2352;&#2381;&#2357;-&#2357;&#2381;&#2351;&#2366;&#2343;&#2367;-&#2357;&#2367;&#2344;&#2366;&#2358;&#2344;&#2350;&#2381; &#2404;<br>&#2342;&#2369;&#2352;&#2381;&#2354;&#2349;&#2306; &#2351;&#2375;&#2344; &#2325;&#2375;&#2344;&#2366;&#2346;&#2367; &#2343;&#2368;&#2350;&#2340;&#2366; &#2354;&#2349;&#2381;&#2351;&#2340;&#2375; &#2349;&#2369;&#2357;&#2367; &#2405;<p class="gl">Padmasana destroys all diseases, but is hard for most people to master.</p></div>
+      <div class="dv"><span class="dvn">verse 1.52 &middot; book 1.50</span>&#2327;&#2369;&#2354;&#2381;&#2347;&#2380; &#2330; &#2357;&#2371;&#2359;&#2339;&#2360;&#2381;&#2351;&#2366;&#2343;&#2307; &#2360;&#2368;&#2357;&#2344;&#2381;&#2351;&#2366;&#2307; &#2346;&#2366;&#2352;&#2381;&#2358;&#2381;&#2357;&#2351;&#2379;&#2307; &#2325;&#2381;&#2359;&#2367;&#2346;&#2375;&#2340;&#2381; &#2404;<br>&#2342;&#2325;&#2381;&#2359;&#2367;&#2339;&#2375; &#2360;&#2357;&#2381;&#2351;-&#2327;&#2369;&#2354;&#2381;&#2347;&#2306; &#2340;&#2369; &#2342;&#2325;&#2381;&#2359;-&#2327;&#2369;&#2354;&#2381;&#2347;&#2306; &#2340;&#2369; &#2360;&#2357;&#2381;&#2351;&#2325;&#2375; &#2405;<p class="gl">Simhasana: ankles under the perineum at the sides of the seam, the right ankle on the left and the left on the right.</p></div>
+      <div class="dv"><span class="dvn">verse 1.53 &middot; book 1.51</span>&#2361;&#2360;&#2381;&#2340;&#2380; &#2340;&#2369; &#2332;&#2366;&#2344;&#2381;&#2357;&#2379;&#2307; &#2360;&#2306;&#2360;&#2381;&#2341;&#2366;&#2346;&#2381;&#2351; &#2360;&#2381;&#2357;&#2366;&#2329;&#2381;&#2327;&#2369;&#2354;&#2368;&#2307; &#2360;&#2350;&#2381;&#2346;&#2381;&#2352;&#2360;&#2366;&#2352;&#2381;&#2351; &#2330; &#2404;<br>&#2357;&#2381;&#2351;&#2366;&#2340;&#2381;&#2340;-&#2357;&#2325;&#2381;&#2340;&#2381;&#2352;&#2379; &#2344;&#2367;&#2352;&#2368;&#2325;&#2381;&#2359;&#2375;&#2340; &#2344;&#2366;&#2360;&#2366;&#2327;&#2381;&#2352;&#2306; &#2360;&#2369;&#2360;&#2350;&#2366;&#2361;&#2367;&#2340;&#2307; &#2405;<p class="gl">Hands on the knees, fingers spread, mouth open, gaze at the nose tip.</p></div>
+      <div class="dv"><span class="dvn">verse 1.54 &middot; book 1.52</span>&#2360;&#2367;&#2306;&#2361;&#2366;&#2360;&#2344;&#2306; &#2349;&#2357;&#2375;&#2342;&#2375;&#2340;&#2340;&#2381;&#2346;&#2370;&#2332;&#2367;&#2340;&#2306; &#2351;&#2379;&#2327;&#2367;-&#2346;&#2369;&#2329;&#2381;&#2327;&#2357;&#2376;&#2307; &#2404;<br>&#2348;&#2344;&#2381;&#2343;-&#2340;&#2381;&#2352;&#2367;&#2340;&#2351;-&#2360;&#2344;&#2381;&#2343;&#2366;&#2344;&#2306; &#2325;&#2369;&#2352;&#2369;&#2340;&#2375; &#2330;&#2366;&#2360;&#2344;&#2379;&#2340;&#2381;&#2340;&#2350;&#2350;&#2381; &#2405;<p class="gl">Simhasana is honoured by the best yogis and unites the three bandhas.</p></div>
+      <div class="dv"><span class="dvn">verse 1.56 &middot; book 1.54</span>&#2346;&#2366;&#2352;&#2381;&#2358;&#2381;&#2357;-&#2346;&#2366;&#2342;&#2380; &#2330; &#2346;&#2366;&#2339;&#2367;&#2349;&#2381;&#2351;&#2366;&#2306; &#2342;&#2371;&#2338;&#2306; &#2348;&#2342;&#2381;&#2343;&#2381;&#2357;&#2366; &#2360;&#2369;&#2344;&#2367;&#2358;&#2381;&#2330;&#2354;&#2350;&#2381; &#2404;<br>&#2349;&#2342;&#2381;&#2352;&#2366;&#2360;&#2344;&#2306; &#2349;&#2357;&#2375;&#2342;&#2375;&#2340;&#2340;&#2381;&#2360;&#2352;&#2381;&#2357;-&#2357;&#2381;&#2351;&#2366;&#2343;&#2367;-&#2357;&#2367;&#2344;&#2366;&#2358;&#2344;&#2350;&#2381; &#2404;<br>&#2327;&#2379;&#2352;&#2325;&#2381;&#2359;&#2366;&#2360;&#2344;&#2350;&#2367;&#2340;&#2381;&#2351;&#2366;&#2361;&#2369;&#2352;&#2367;&#2342;&#2306; &#2357;&#2376; &#2360;&#2367;&#2342;&#2381;&#2343;-&#2351;&#2379;&#2327;&#2367;&#2344;&#2307; &#2405;<p class="gl">Bhadrasana: hold the feet firmly with the hands and stay still. It destroys all diseases and is also called Gorakshasana.</p></div>
+      <h3 class="sub"><span class="n">4</span>Mitahara, Pathya and Apathya</h3>
+      <div class="dv"><span class="dvn">verse 1.59 &middot; book 1.57</span>&#2348;&#2381;&#2352;&#2361;&#2381;&#2350;&#2330;&#2366;&#2352;&#2368; &#2350;&#2367;&#2340;&#2366;&#2361;&#2366;&#2352;&#2368; &#2340;&#2381;&#2351;&#2366;&#2327;&#2368; &#2351;&#2379;&#2327;-&#2346;&#2352;&#2366;&#2351;&#2339;&#2307; &#2404;<br>&#2309;&#2348;&#2381;&#2342;&#2366;&#2342;&#2370;&#2352;&#2381;&#2343;&#2381;&#2357;&#2306; &#2349;&#2357;&#2375;&#2342;&#2381;&#2360;&#2367;&#2342;&#2381;&#2343;&#2379; &#2344;&#2366;&#2340;&#2381;&#2352; &#2325;&#2366;&#2352;&#2381;&#2351;&#2366; &#2357;&#2367;&#2330;&#2366;&#2352;&#2339;&#2366; &#2405;<p class="gl">A brahmachari, moderate in diet, detached and devoted to yoga, becomes a siddha after a year.</p></div>
+      <div class="dv"><span class="dvn">verse 1.60 &middot; book 1.58</span>&#2360;&#2369;&#2360;&#2381;&#2344;&#2367;&#2327;&#2381;&#2343;-&#2350;&#2343;&#2369;&#2352;&#2366;&#2361;&#2366;&#2352;&#2358;&#2381;&#2330;&#2340;&#2369;&#2352;&#2381;&#2341;&#2366;&#2306;&#2358;-&#2357;&#2367;&#2357;&#2352;&#2381;&#2332;&#2367;&#2340;&#2307; &#2404;<br>&#2349;&#2369;&#2332;&#2381;&#2351;&#2340;&#2375; &#2358;&#2367;&#2357;-&#2360;&#2350;&#2381;&#2346;&#2381;&#2352;&#2368;&#2340;&#2381;&#2351;&#2376; &#2350;&#2367;&#2340;&#2366;&#2361;&#2366;&#2352;&#2307; &#2360; &#2313;&#2330;&#2381;&#2351;&#2340;&#2375; &#2405;<p class="gl">Mitahara: sweet, rich food, with one fourth of the stomach left empty, eaten for the pleasure of Shiva.</p></div>
+      <div class="dv"><span class="dvn">verse 1.61 &middot; book 1.59</span>&#2325;&#2335;&#2381;&#2357;&#2366;&#2350;&#2381;&#2354;-&#2340;&#2368;&#2325;&#2381;&#2359;&#2381;&#2339;-&#2354;&#2357;&#2339;&#2379;&#2359;&#2381;&#2339;-&#2361;&#2352;&#2368;&#2340;-&#2358;&#2366;&#2325;-<br>&#2360;&#2380;&#2357;&#2368;&#2352;-&#2340;&#2376;&#2354;-&#2340;&#2367;&#2354;-&#2360;&#2352;&#2381;&#2359;&#2346;-&#2350;&#2342;&#2381;&#2351;-&#2350;&#2340;&#2381;&#2360;&#2381;&#2351;&#2366;&#2344;&#2381; &#2404;<br>&#2310;&#2332;&#2366;&#2342;&#2367;-&#2350;&#2366;&#2306;&#2360;-&#2342;&#2343;&#2367;-&#2340;&#2325;&#2381;&#2352;-&#2325;&#2369;&#2354;&#2340;&#2381;&#2341;&#2325;&#2379;&#2354;-<br>&#2346;&#2367;&#2339;&#2381;&#2351;&#2366;&#2325;-&#2361;&#2367;&#2329;&#2381;&#2327;&#2369;-&#2354;&#2358;&#2369;&#2344;&#2366;&#2342;&#2381;&#2351;&#2350;&#2346;&#2341;&#2381;&#2351;&#2350;&#2366;&#2361;&#2369;&#2307; &#2405;<p class="gl">Apathya (to avoid): bitter, sour, pungent, salty and heating foods; sour gruel, oil, sesame, mustard, alcohol, fish, meat, curds, buttermilk, horse gram, oil cake, asafoetida, garlic.</p></div>
+      <div class="dv"><span class="dvn">verse 1.62 &middot; book 1.60</span>&#2349;&#2379;&#2332;&#2344;&#2350;&#2361;&#2367;&#2340;&#2306; &#2357;&#2367;&#2342;&#2381;&#2351;&#2366;&#2340;&#2381;&#2346;&#2369;&#2344;&#2352;&#2360;&#2381;&#2351;&#2379;&#2359;&#2381;&#2339;&#2368;-&#2325;&#2371;&#2340;&#2306; &#2352;&#2370;&#2325;&#2381;&#2359;&#2350;&#2381; &#2404;<br>&#2309;&#2340;&#2367;&#2354;&#2357;&#2339;&#2350;&#2350;&#2381;&#2354;-&#2351;&#2369;&#2325;&#2381;&#2340;&#2306; &#2325;&#2342;&#2358;&#2344;-&#2358;&#2366;&#2325;&#2379;&#2340;&#2381;&#2325;&#2306; &#2357;&#2352;&#2381;&#2332;&#2381;&#2351;&#2350;&#2381; &#2405;<p class="gl">Also unsuitable: reheated, dry, over-salted or over-sour food and bad vegetables.</p></div>
+      <div class="dv"><span class="dvn">verse 1.64 &middot; book 1.62</span>&#2357;&#2352;&#2381;&#2332;&#2351;&#2375;&#2342;&#2381;&#2342;&#2369;&#2352;&#2381;&#2332;&#2344;-&#2346;&#2381;&#2352;&#2366;&#2344;&#2381;&#2340;&#2306; &#2357;&#2361;&#2381;&#2344;&#2367;-&#2360;&#2381;&#2340;&#2381;&#2352;&#2368;-&#2346;&#2341;&#2367;-&#2360;&#2375;&#2357;&#2344;&#2350;&#2381; &#2404;<br>&#2346;&#2381;&#2352;&#2366;&#2340;&#2307;-&#2360;&#2381;&#2344;&#2366;&#2344;&#2379;&#2346;&#2357;&#2366;&#2360;&#2366;&#2342;&#2367; &#2325;&#2366;&#2351;-&#2325;&#2381;&#2354;&#2375;&#2358;-&#2357;&#2367;&#2343;&#2367;&#2306; &#2340;&#2341;&#2366; &#2405;<p class="gl">Gorakhnath: avoid bad company, fire, women and long journeys, early-morning bathing and fasting, and any practice that tortures the body.</p></div>
+      <div class="dv"><span class="dvn">verse 1.65 &middot; book 1.63</span>&#2327;&#2379;&#2343;&#2370;&#2350;-&#2358;&#2366;&#2354;&#2367;-&#2351;&#2357;-&#2359;&#2366;&#2359;&#2381;&#2335;&#2367;&#2325;-&#2358;&#2379;&#2349;&#2344;&#2366;&#2344;&#2381;&#2344;&#2306;<br>&#2325;&#2381;&#2359;&#2368;&#2352;&#2366;&#2332;&#2381;&#2351;-&#2326;&#2339;&#2381;&#2337;-&#2344;&#2357;&#2344;&#2368;&#2340;-&#2360;&#2367;&#2342;&#2381;&#2343;&#2366;-&#2350;&#2343;&#2370;&#2344;&#2367; &#2404;<br>&#2358;&#2369;&#2339;&#2381;&#2336;&#2368;-&#2346;&#2335;&#2379;&#2354;-&#2347;&#2354;&#2366;&#2342;&#2367;&#2325;-&#2346;&#2334;&#2381;&#2330;-&#2358;&#2366;&#2325;&#2306;<br>&#2350;&#2369;&#2342;&#2381;&#2327;&#2366;&#2342;&#2367;-&#2342;&#2367;&#2357;&#2381;&#2351;&#2350;&#2369;&#2342;&#2325;&#2306; &#2330; &#2351;&#2350;&#2368;&#2344;&#2381;&#2342;&#2381;&#2352;-&#2346;&#2341;&#2381;&#2351;&#2350;&#2381; &#2405;<p class="gl">Pathya (suitable): wheat, rice, barley, milk, ghee, sugar candy, butter, honey, dried ginger, the five vegetables, mung beans, pure water.</p></div>
+      <div class="dv"><span class="dvn">verse 1.66 &middot; book 1.64</span>&#2346;&#2369;&#2359;&#2381;&#2335;&#2306; &#2360;&#2369;&#2350;&#2343;&#2369;&#2352;&#2306; &#2360;&#2381;&#2344;&#2367;&#2327;&#2381;&#2343;&#2306; &#2327;&#2357;&#2381;&#2351;&#2306; &#2343;&#2366;&#2340;&#2369;-&#2346;&#2381;&#2352;&#2346;&#2379;&#2359;&#2339;&#2350;&#2381; &#2404;<br>&#2350;&#2344;&#2379;&#2349;&#2367;&#2354;&#2359;&#2367;&#2340;&#2306; &#2351;&#2379;&#2327;&#2381;&#2351;&#2306; &#2351;&#2379;&#2327;&#2368; &#2349;&#2379;&#2332;&#2344;&#2350;&#2366;&#2330;&#2352;&#2375;&#2340;&#2381; &#2405;<p class="gl">The yogi should eat food that is nourishing, sweet, rich, from the cow, builds the tissues and is pleasing to the mind.</p></div>
+      <h3 class="sub"><span class="n">5</span>Practice, Success and Hatha Siddhi</h3>
+      <div class="dv"><span class="dvn">verse 1.67 &middot; book 1.65</span>&#2351;&#2369;&#2357;&#2379; &#2357;&#2371;&#2342;&#2381;&#2343;&#2379;&#2365;&#2340;&#2367;&#2357;&#2371;&#2342;&#2381;&#2343;&#2379; &#2357;&#2366; &#2357;&#2381;&#2351;&#2366;&#2343;&#2367;&#2340;&#2379; &#2342;&#2369;&#2352;&#2381;&#2348;&#2354;&#2379;&#2365;&#2346;&#2367; &#2357;&#2366; &#2404;<br>&#2309;&#2349;&#2381;&#2351;&#2366;&#2360;&#2366;&#2340;&#2381;&#2360;&#2367;&#2342;&#2381;&#2343;&#2367;&#2350;&#2366;&#2346;&#2381;&#2344;&#2379;&#2340;&#2367; &#2360;&#2352;&#2381;&#2357;-&#2351;&#2379;&#2327;&#2375;&#2359;&#2381;&#2357;&#2340;&#2344;&#2381;&#2342;&#2381;&#2352;&#2367;&#2340;&#2307; &#2405;<p class="gl">Young, old, very old, sick or weak: all gain siddhi by tireless practice.</p></div>
+      <div class="dv"><span class="dvn">verse 1.68 &middot; book 1.66</span>&#2325;&#2381;&#2352;&#2367;&#2351;&#2366;-&#2351;&#2369;&#2325;&#2381;&#2340;&#2360;&#2381;&#2351; &#2360;&#2367;&#2342;&#2381;&#2343;&#2367;&#2307; &#2360;&#2381;&#2351;&#2366;&#2342;&#2325;&#2381;&#2352;&#2367;&#2351;&#2360;&#2381;&#2351; &#2325;&#2341;&#2306; &#2349;&#2357;&#2375;&#2340;&#2381; &#2404;<br>&#2344; &#2358;&#2366;&#2360;&#2381;&#2340;&#2381;&#2352;-&#2346;&#2366;&#2336;-&#2350;&#2366;&#2340;&#2381;&#2352;&#2375;&#2339; &#2351;&#2379;&#2327;-&#2360;&#2367;&#2342;&#2381;&#2343;&#2367;&#2307; &#2346;&#2381;&#2352;&#2332;&#2366;&#2351;&#2340;&#2375; &#2405;<p class="gl">Perfection comes to one who practises, not to one who does not; not through reading the scriptures alone.</p></div>
+      <div class="dv"><span class="dvn">verse 1.69 &middot; book 1.67</span>&#2344; &#2357;&#2375;&#2359;-&#2343;&#2366;&#2352;&#2339;&#2306; &#2360;&#2367;&#2342;&#2381;&#2343;&#2375;&#2307; &#2325;&#2366;&#2352;&#2339;&#2306; &#2344; &#2330; &#2340;&#2340;&#2381;-&#2325;&#2341;&#2366; &#2404;<br>&#2325;&#2381;&#2352;&#2367;&#2351;&#2376;&#2357; &#2325;&#2366;&#2352;&#2339;&#2306; &#2360;&#2367;&#2342;&#2381;&#2343;&#2375;&#2307; &#2360;&#2340;&#2381;&#2351;&#2350;&#2375;&#2340;&#2344;&#2381;&#2344; &#2360;&#2306;&#2358;&#2351;&#2307; &#2405;<p class="gl">Neither dress nor talk about yoga gives siddhi; practice alone is the cause.</p></div>
+      <div class="dv"><span class="dvn">verse 2.78</span>&#2357;&#2346;&#2369;&#2307; &#2325;&#2371;&#2358;&#2340;&#2381;&#2357;&#2306; &#2357;&#2342;&#2344;&#2375; &#2346;&#2381;&#2352;&#2360;&#2344;&#2381;&#2344;&#2340;&#2366;<br>&#2344;&#2366;&#2342;-&#2360;&#2381;&#2347;&#2369;&#2335;&#2340;&#2381;&#2357;&#2306; &#2344;&#2351;&#2344;&#2375; &#2360;&#2369;&#2344;&#2367;&#2352;&#2381;&#2350;&#2354;&#2375; &#2404;<br>&#2309;&#2352;&#2379;&#2327;&#2340;&#2366; &#2348;&#2367;&#2344;&#2381;&#2342;&#2369;-&#2332;&#2351;&#2379;&#2365;&#2327;&#2381;&#2344;&#2367;-&#2342;&#2368;&#2346;&#2344;&#2306;<br>&#2344;&#2366;&#2337;&#2368;-&#2357;&#2367;&#2358;&#2369;&#2342;&#2381;&#2343;&#2367;&#2352;&#2381;&#2361;&#2336;-&#2360;&#2367;&#2342;&#2381;&#2343;&#2367;-&#2354;&#2325;&#2381;&#2359;&#2339;&#2350;&#2381; &#2405;<p class="gl">The signs of hatha siddhi: lean body, tranquil face, clear inner sound, bright eyes, health, control of bindu, active digestive fire, purified nadis.</p></div>
+      <h3 class="sub"><span class="n">6</span>Shatkriyas (Shatkarma)</h3>
+      <div class="dv"><span class="dvn">verse 2.21</span>&#2350;&#2375;&#2342;-&#2358;&#2381;&#2354;&#2375;&#2359;&#2381;&#2350;&#2366;&#2343;&#2367;&#2325;&#2307; &#2346;&#2370;&#2352;&#2381;&#2357;&#2306; &#2359;&#2335;&#2381;-&#2325;&#2352;&#2381;&#2350;&#2366;&#2339;&#2367; &#2360;&#2350;&#2366;&#2330;&#2352;&#2375;&#2340;&#2381; &#2404;<br>&#2309;&#2344;&#2381;&#2351;&#2360;&#2381;&#2340;&#2369; &#2344;&#2366;&#2330;&#2352;&#2375;&#2340;&#2381;&#2340;&#2366;&#2344;&#2367; &#2342;&#2379;&#2359;&#2366;&#2339;&#2366;&#2306; &#2360;&#2350;&#2349;&#2366;&#2357;&#2340;&#2307; &#2405;<p class="gl">Those with excess fat or mucus should do the six kriyas first; others need not, since their humours are balanced.</p></div>
+      <div class="dv"><span class="dvn">verse 2.22</span>&#2343;&#2380;&#2340;&#2367;&#2352;&#2381;&#2348;&#2360;&#2381;&#2340;&#2367;&#2360;&#2381;&#2340;&#2341;&#2366; &#2344;&#2375;&#2340;&#2367;&#2360;&#2381;&#2340;&#2381;&#2352;&#2366;&#2335;&#2325;&#2306; &#2344;&#2380;&#2354;&#2367;&#2325;&#2306; &#2340;&#2341;&#2366; &#2404;<br>&#2325;&#2346;&#2366;&#2354;-&#2349;&#2366;&#2340;&#2367;&#2358;&#2381;&#2330;&#2376;&#2340;&#2366;&#2344;&#2367; &#2359;&#2335;&#2381;-&#2325;&#2352;&#2381;&#2350;&#2366;&#2339;&#2367; &#2346;&#2381;&#2352;&#2330;&#2325;&#2381;&#2359;&#2340;&#2375; &#2405;<p class="gl">The six: dhauti, basti, neti, trataka, nauli, kapalabhati.</p></div>
+      <div class="dv"><span class="dvn">verse 2.23</span>&#2325;&#2352;&#2381;&#2350; &#2359;&#2335;&#2381;&#2325;&#2350;&#2367;&#2342;&#2306; &#2327;&#2379;&#2346;&#2381;&#2351;&#2306; &#2328;&#2335;-&#2358;&#2379;&#2343;&#2344;-&#2325;&#2366;&#2352;&#2325;&#2350;&#2381; &#2404;<br>&#2357;&#2367;&#2330;&#2367;&#2340;&#2381;&#2352;-&#2327;&#2369;&#2339;-&#2360;&#2344;&#2381;&#2343;&#2366;&#2351; &#2346;&#2370;&#2332;&#2381;&#2351;&#2340;&#2375; &#2351;&#2379;&#2327;&#2367;-&#2346;&#2369;&#2329;&#2381;&#2327;&#2357;&#2376;&#2307; &#2405;<p class="gl">The six actions are to be kept secret; they cleanse the body and are honoured by the best yogis.</p></div>
+      <div class="dv"><span class="dvn">verse 2.24</span>&#2330;&#2340;&#2369;&#2352;&#2381;-&#2309;&#2329;&#2381;&#2327;&#2369;&#2354;-&#2357;&#2367;&#2360;&#2381;&#2340;&#2366;&#2352;&#2306; &#2361;&#2360;&#2381;&#2340;-&#2346;&#2334;&#2381;&#2330;-&#2342;&#2358;&#2366;&#2351;&#2340;&#2350;&#2381; &#2404;<br>&#2327;&#2369;&#2352;&#2370;&#2346;&#2342;&#2367;&#2359;&#2381;&#2335;-&#2350;&#2366;&#2352;&#2381;&#2327;&#2375;&#2339; &#2360;&#2367;&#2325;&#2381;&#2340;&#2306; &#2357;&#2360;&#2381;&#2340;&#2381;&#2352;&#2306; &#2358;&#2344;&#2376;&#2352;&#2381;&#2327;&#2381;&#2352;&#2360;&#2375;&#2340;&#2381; &#2404;<br>&#2346;&#2369;&#2344;&#2307; &#2346;&#2381;&#2352;&#2340;&#2381;&#2351;&#2366;&#2361;&#2352;&#2375;&#2330;&#2381;&#2330;&#2376;&#2340;&#2342;&#2369;&#2342;&#2367;&#2340;&#2306; &#2343;&#2380;&#2340;&#2367;-&#2325;&#2352;&#2381;&#2350; &#2340;&#2340;&#2381; &#2405;<p class="gl">Dhauti: a wet cloth four fingers wide and fifteen hand spans long is slowly swallowed and withdrawn, as the guru teaches.</p></div>
+      <div class="dv"><span class="dvn">verse 2.25</span>&#2325;&#2366;&#2360;-&#2358;&#2381;&#2357;&#2366;&#2360;-&#2346;&#2381;&#2354;&#2368;&#2361;-&#2325;&#2369;&#2359;&#2381;&#2336;&#2306; &#2325;&#2347;&#2352;&#2379;&#2327;&#2366;&#2358;&#2381;&#2330; &#2357;&#2367;&#2306;&#2358;&#2340;&#2367;&#2307; &#2404;<br>&#2343;&#2380;&#2340;&#2367;-&#2325;&#2352;&#2381;&#2350;-&#2346;&#2381;&#2352;&#2349;&#2366;&#2357;&#2375;&#2339; &#2346;&#2381;&#2352;&#2351;&#2366;&#2344;&#2381;&#2340;&#2381;&#2351;&#2375;&#2357; &#2344; &#2360;&#2306;&#2358;&#2351;&#2307; &#2405;<p class="gl">Dhauti removes cough, asthma, spleen disease, leprosy and twenty mucus disorders.</p></div>
+      <div class="dv"><span class="dvn">verse 2.26</span>&#2344;&#2366;&#2349;&#2367;-&#2342;&#2328;&#2381;&#2344;-&#2332;&#2354;&#2375; &#2346;&#2366;&#2351;&#2380; &#2344;&#2381;&#2351;&#2360;&#2381;&#2340;-&#2344;&#2366;&#2354;&#2379;&#2340;&#2381;&#2325;&#2335;&#2366;&#2360;&#2344;&#2307; &#2404;<br>&#2310;&#2343;&#2366;&#2352;&#2366;&#2325;&#2369;&#2334;&#2381;&#2330;&#2344;&#2306; &#2325;&#2369;&#2352;&#2381;&#2351;&#2366;&#2340;&#2381;&#2325;&#2381;&#2359;&#2366;&#2354;&#2344;&#2306; &#2348;&#2360;&#2381;&#2340;&#2367;-&#2325;&#2352;&#2381;&#2350; &#2340;&#2340;&#2381; &#2405;<p class="gl">Basti: in utkatasana, navel-deep in water, a tube is inserted in the anus and the anus is contracted (washing).</p></div>
+      <div class="dv"><span class="dvn">verse 2.27</span>&#2327;&#2369;&#2354;&#2381;&#2350;-&#2346;&#2381;&#2354;&#2368;&#2361;&#2379;&#2342;&#2352;&#2306; &#2330;&#2366;&#2346;&#2367; &#2357;&#2366;&#2340;-&#2346;&#2367;&#2340;&#2381;&#2340;-&#2325;&#2347;&#2379;&#2342;&#2381;&#2349;&#2357;&#2366;&#2307; &#2404;<br>&#2348;&#2360;&#2381;&#2340;&#2367;-&#2325;&#2352;&#2381;&#2350;-&#2346;&#2381;&#2352;&#2349;&#2366;&#2357;&#2375;&#2339; &#2325;&#2381;&#2359;&#2368;&#2351;&#2344;&#2381;&#2340;&#2375; &#2360;&#2325;&#2354;&#2366;&#2350;&#2351;&#2366;&#2307; &#2405;<p class="gl">Basti removes gulma, spleen and abdominal disease, and disorders arising from vata, pitta and kapha.</p></div>
+      <div class="dv"><span class="dvn">verse 2.29</span>&#2360;&#2370;&#2340;&#2381;&#2352;&#2306; &#2357;&#2367;&#2340;&#2360;&#2381;&#2340;&#2367;-&#2360;&#2369;&#2360;&#2381;&#2344;&#2367;&#2327;&#2381;&#2343;&#2306; &#2344;&#2366;&#2360;&#2366;&#2344;&#2366;&#2354;&#2375; &#2346;&#2381;&#2352;&#2357;&#2375;&#2358;&#2351;&#2375;&#2340;&#2381; &#2404;<br>&#2350;&#2369;&#2326;&#2366;&#2344;&#2381;&#2344;&#2367;&#2352;&#2381;&#2327;&#2350;&#2351;&#2375;&#2330;&#2381;&#2330;&#2376;&#2359;&#2366; &#2344;&#2375;&#2340;&#2367;&#2307; &#2360;&#2367;&#2342;&#2381;&#2343;&#2376;&#2352;&#2381;&#2344;&#2367;&#2327;&#2342;&#2381;&#2351;&#2340;&#2375; &#2405;<p class="gl">Neti: a soft thread one span long is passed through the nose and drawn out through the mouth.</p></div>
+      <div class="dv"><span class="dvn">verse 2.30</span>&#2325;&#2346;&#2366;&#2354;-&#2358;&#2379;&#2343;&#2367;&#2344;&#2368; &#2330;&#2376;&#2357; &#2342;&#2367;&#2357;&#2381;&#2351;-&#2342;&#2371;&#2359;&#2381;&#2335;&#2367;-&#2346;&#2381;&#2352;&#2342;&#2366;&#2351;&#2367;&#2344;&#2368; &#2404;<br>&#2332;&#2340;&#2381;&#2352;&#2370;&#2352;&#2381;&#2343;&#2381;&#2357;-&#2332;&#2366;&#2340;-&#2352;&#2379;&#2327;&#2380;&#2328;&#2306; &#2344;&#2375;&#2340;&#2367;&#2352;&#2366;&#2358;&#2369; &#2344;&#2367;&#2361;&#2344;&#2381;&#2340;&#2367; &#2330; &#2405;<p class="gl">Neti cleanses the skull, gives clear vision and destroys diseases above the collarbone.</p></div>
+      <div class="dv"><span class="dvn">verse 2.31</span>&#2344;&#2367;&#2352;&#2368;&#2325;&#2381;&#2359;&#2375;&#2344;&#2381;&#2344;&#2367;&#2358;&#2381;&#2330;&#2354;-&#2342;&#2371;&#2358;&#2366; &#2360;&#2370;&#2325;&#2381;&#2359;&#2381;&#2350;-&#2354;&#2325;&#2381;&#2359;&#2381;&#2351;&#2306; &#2360;&#2350;&#2366;&#2361;&#2367;&#2340;&#2307; &#2404;<br>&#2309;&#2358;&#2381;&#2352;&#2369;-&#2360;&#2350;&#2381;&#2346;&#2366;&#2340;-&#2346;&#2352;&#2381;&#2351;&#2344;&#2381;&#2340;&#2350;&#2366;&#2330;&#2366;&#2352;&#2381;&#2351;&#2376;&#2360;&#2381;&#2340;&#2381;&#2352;&#2366;&#2335;&#2325;&#2306; &#2360;&#2381;&#2350;&#2371;&#2340;&#2350;&#2381; &#2405;<p class="gl">Trataka: gaze steadily at a small point, without blinking, until tears come.</p></div>
+      <div class="dv"><span class="dvn">verse 2.32</span>&#2350;&#2379;&#2330;&#2344;&#2306; &#2344;&#2375;&#2340;&#2381;&#2352;-&#2352;&#2379;&#2327;&#2366;&#2339;&#2366;&#2306; &#2340;&#2344;&#2381;&#2342;&#2381;&#2352;&#2366;&#2342;&#2368;&#2344;&#2366;&#2306; &#2325;&#2346;&#2366;&#2335;&#2325;&#2350;&#2381; &#2404;<br>&#2351;&#2340;&#2381;&#2344;&#2340;&#2360;&#2381;&#2340;&#2381;&#2352;&#2366;&#2335;&#2325;&#2306; &#2327;&#2379;&#2346;&#2381;&#2351;&#2306; &#2351;&#2341;&#2366; &#2361;&#2366;&#2335;&#2325;-&#2346;&#2375;&#2335;&#2325;&#2350;&#2381; &#2405;<p class="gl">Trataka removes eye diseases and sloth; it is to be kept secret like a box of gold.</p></div>
+      <div class="dv"><span class="dvn">verse 2.33</span>&#2309;&#2350;&#2344;&#2381;&#2342;&#2366;&#2357;&#2352;&#2381;&#2340;-&#2357;&#2375;&#2327;&#2375;&#2344; &#2340;&#2369;&#2344;&#2381;&#2342;&#2306; &#2360;&#2357;&#2381;&#2351;&#2366;&#2346;&#2360;&#2357;&#2381;&#2351;&#2340;&#2307; &#2404;<br>&#2344;&#2340;&#2366;&#2306;&#2360;&#2379; &#2349;&#2381;&#2352;&#2366;&#2350;&#2351;&#2375;&#2342;&#2375;&#2359;&#2366; &#2344;&#2380;&#2354;&#2367;&#2307; &#2360;&#2367;&#2342;&#2381;&#2343;&#2376;&#2307; &#2346;&#2381;&#2352;&#2358;&#2360;&#2381;&#2351;&#2340;&#2375; &#2405;<p class="gl">Nauli: bend forward and rotate the abdomen swiftly from side to side like a whirlpool.</p></div>
+      <div class="dv"><span class="dvn">verse 2.34</span>&#2350;&#2344;&#2381;&#2342;&#2366;&#2327;&#2381;&#2344;&#2367;-&#2360;&#2344;&#2381;&#2342;&#2368;&#2346;&#2344;-&#2346;&#2366;&#2330;&#2344;&#2366;&#2342;&#2367;-<br>&#2360;&#2344;&#2381;&#2343;&#2366;&#2346;&#2367;&#2325;&#2366;&#2344;&#2344;&#2381;&#2342;-&#2325;&#2352;&#2368; &#2360;&#2342;&#2376;&#2357; &#2404;<br>&#2309;&#2358;&#2375;&#2359;-&#2342;&#2379;&#2359;-&#2350;&#2351;-&#2358;&#2379;&#2359;&#2339;&#2368; &#2330;<br>&#2361;&#2336;-&#2325;&#2381;&#2352;&#2367;&#2351;&#2366; &#2350;&#2380;&#2354;&#2367;&#2352;&#2367;&#2351;&#2306; &#2330; &#2344;&#2380;&#2354;&#2367;&#2307; &#2405;<p class="gl">Nauli kindles weak digestive fire, aids digestion, gives joy, dries up all disorders and is the crown of hatha kriyas.</p></div>
+      <div class="dv"><span class="dvn">verse 2.35</span>&#2349;&#2360;&#2381;&#2340;&#2381;&#2352;&#2366;&#2357;&#2354;&#2381;&#2354;&#2379;&#2361;-&#2325;&#2366;&#2352;&#2360;&#2381;&#2351; &#2352;&#2375;&#2330;-&#2346;&#2370;&#2352;&#2380; &#2360;&#2360;&#2350;&#2381;&#2349;&#2381;&#2352;&#2350;&#2380; &#2404;<br>&#2325;&#2346;&#2366;&#2354;&#2349;&#2366;&#2340;&#2367;&#2352;&#2381;&#2357;&#2367;&#2326;&#2381;&#2351;&#2366;&#2340;&#2366; &#2325;&#2347;-&#2342;&#2379;&#2359;-&#2357;&#2367;&#2358;&#2379;&#2359;&#2339;&#2368; &#2405;<p class="gl">Kapalabhati: exhalation and inhalation like the bellows of a blacksmith; it dries up phlegm disorders.</p></div>
+      <div class="dv"><span class="dvn">verse 2.36</span>&#2359;&#2335;&#2381;-&#2325;&#2352;&#2381;&#2350;-&#2344;&#2367;&#2352;&#2381;&#2327;&#2340;-&#2360;&#2381;&#2341;&#2380;&#2354;&#2381;&#2351;-&#2325;&#2347;-&#2342;&#2379;&#2359;-&#2350;&#2354;&#2366;&#2342;&#2367;&#2325;&#2307; &#2404;<br>&#2346;&#2381;&#2352;&#2366;&#2339;&#2366;&#2351;&#2366;&#2350;&#2306; &#2340;&#2340;&#2307; &#2325;&#2369;&#2352;&#2381;&#2351;&#2366;&#2342;&#2344;&#2366;&#2351;&#2366;&#2360;&#2375;&#2344; &#2360;&#2367;&#2342;&#2381;&#2343;&#2381;&#2351;&#2340;&#2367; &#2405;<p class="gl">After the six cleansing kriyas remove fat and mucus, pranayama succeeds without effort.</p></div>
+      <h3 class="sub"><span class="n">7</span>Ashta Kumbhaka</h3>
+      <div class="dv"><span class="dvn">verse 2.1</span>&#2309;&#2341;&#2366;&#2360;&#2344;&#2375; &#2342;&#2371;&#2338;&#2375; &#2351;&#2379;&#2327;&#2368; &#2357;&#2358;&#2368; &#2361;&#2367;&#2340;-&#2350;&#2367;&#2340;&#2366;&#2358;&#2344;&#2307; &#2404;<br>&#2327;&#2369;&#2352;&#2370;&#2346;&#2342;&#2367;&#2359;&#2381;&#2335;-&#2350;&#2366;&#2352;&#2381;&#2327;&#2375;&#2339; &#2346;&#2381;&#2352;&#2366;&#2339;&#2366;&#2351;&#2366;&#2350;&#2366;&#2344;&#2381;&#2360;&#2350;&#2349;&#2381;&#2351;&#2360;&#2375;&#2340;&#2381; &#2405;<p class="gl">When asana is firm and the yogi is self-controlled on moderate diet, he should practise pranayama as the guru teaches.</p></div>
+      <div class="dv"><span class="dvn">verse 2.2</span>&#2330;&#2354;&#2375; &#2357;&#2366;&#2340;&#2375; &#2330;&#2354;&#2306; &#2330;&#2367;&#2340;&#2381;&#2340;&#2306; &#2344;&#2367;&#2358;&#2381;&#2330;&#2354;&#2375; &#2344;&#2367;&#2358;&#2381;&#2330;&#2354;&#2306; &#2349;&#2357;&#2375;&#2340;&#2381; &#2404;<br>&#2351;&#2379;&#2327;&#2368; &#2360;&#2381;&#2341;&#2366;&#2339;&#2369;&#2340;&#2381;&#2357;&#2350;&#2366;&#2346;&#2381;&#2344;&#2379;&#2340;&#2367; &#2340;&#2340;&#2379; &#2357;&#2366;&#2351;&#2369;&#2306; &#2344;&#2367;&#2352;&#2379;&#2343;&#2351;&#2375;&#2340;&#2381; &#2405;<p class="gl">When the breath moves, the mind moves; when it is still, the mind is still. So restrain the breath.</p></div>
+      <div class="dv"><span class="dvn">verse 2.44</span>&#2360;&#2370;&#2352;&#2381;&#2351;-&#2349;&#2375;&#2342;&#2344;&#2350;&#2369;&#2332;&#2381;&#2332;&#2366;&#2351;&#2368; &#2360;&#2368;&#2340;&#2381;&#2325;&#2366;&#2352;&#2368; &#2358;&#2368;&#2340;&#2354;&#2368; &#2340;&#2341;&#2366; &#2404;<br>&#2349;&#2360;&#2381;&#2340;&#2381;&#2352;&#2367;&#2325;&#2366; &#2349;&#2381;&#2352;&#2366;&#2350;&#2352;&#2368; &#2350;&#2370;&#2352;&#2381;&#2330;&#2381;&#2331;&#2366; &#2346;&#2381;&#2354;&#2366;&#2357;&#2367;&#2344;&#2368;&#2340;&#2381;&#2351;&#2359;&#2381;&#2335;-&#2325;&#2369;&#2350;&#2381;&#2349;&#2325;&#2366;&#2307; &#2405;<p class="gl">The eight kumbhakas: suryabheda, ujjayi, seetkari, sheetali, bhastrika, bhramari, moorchha, plavini.</p></div>
+      <div class="dv"><span class="dvn">verse 2.48</span>&#2310;&#2360;&#2344;&#2375; &#2360;&#2369;&#2326;&#2342;&#2375; &#2351;&#2379;&#2327;&#2368; &#2348;&#2342;&#2381;&#2343;&#2381;&#2357;&#2366; &#2330;&#2376;&#2357;&#2366;&#2360;&#2344;&#2306; &#2340;&#2340;&#2307; &#2404;<br>&#2342;&#2325;&#2381;&#2359;-&#2344;&#2366;&#2337;&#2381;&#2351;&#2366; &#2360;&#2350;&#2366;&#2325;&#2371;&#2359;&#2381;&#2351; &#2348;&#2361;&#2367;&#2307;&#2360;&#2381;&#2341;&#2306; &#2346;&#2357;&#2344;&#2306; &#2358;&#2344;&#2376;&#2307; &#2405;<p class="gl">Suryabheda: sit comfortably and draw the outer air in slowly through the right nostril.</p></div>
+      <div class="dv"><span class="dvn">verse 2.49</span>&#2310;&#2325;&#2375;&#2358;&#2366;&#2342;&#2366;&#2344;&#2326;&#2366;&#2327;&#2381;&#2352;&#2366;&#2330;&#2381;&#2330; &#2344;&#2367;&#2352;&#2379;&#2343;&#2366;&#2357;&#2343;&#2367; &#2325;&#2369;&#2350;&#2381;&#2349;&#2351;&#2375;&#2340;&#2381; &#2404;<br>&#2340;&#2340;&#2307; &#2358;&#2344;&#2376;&#2307; &#2360;&#2357;&#2381;&#2351;-&#2344;&#2366;&#2337;&#2381;&#2351;&#2366; &#2352;&#2375;&#2330;&#2351;&#2375;&#2340;&#2381;&#2346;&#2357;&#2344;&#2306; &#2358;&#2344;&#2376;&#2307; &#2405;<p class="gl">Retain until the breath seems to reach the hair roots and nail tips, then exhale slowly through the left nostril.</p></div>
+      <div class="dv"><span class="dvn">verse 2.50</span>&#2325;&#2346;&#2366;&#2354;-&#2358;&#2379;&#2343;&#2344;&#2306; &#2357;&#2366;&#2340;-&#2342;&#2379;&#2359;-&#2328;&#2381;&#2344;&#2306; &#2325;&#2371;&#2350;&#2367;-&#2342;&#2379;&#2359;-&#2361;&#2371;&#2340;&#2381; &#2404;<br>&#2346;&#2369;&#2344;&#2307; &#2346;&#2369;&#2344;&#2352;&#2367;&#2342;&#2306; &#2325;&#2366;&#2352;&#2381;&#2351;&#2306; &#2360;&#2370;&#2352;&#2381;&#2351;-&#2349;&#2375;&#2342;&#2344;&#2350;&#2369;&#2340;&#2381;&#2340;&#2350;&#2350;&#2381; &#2405;<p class="gl">Suryabheda purifies the skull, destroys vata disorders and worms; it is to be repeated again and again.</p></div>
+      <div class="dv"><span class="dvn">verse 2.51</span>&#2350;&#2369;&#2326;&#2306; &#2360;&#2306;&#2351;&#2350;&#2381;&#2351; &#2344;&#2366;&#2337;&#2368;&#2349;&#2381;&#2351;&#2366;&#2350;&#2366;&#2325;&#2371;&#2359;&#2381;&#2351; &#2346;&#2357;&#2344;&#2306; &#2358;&#2344;&#2376;&#2307; &#2404;<br>&#2351;&#2341;&#2366; &#2354;&#2327;&#2340;&#2367; &#2325;&#2339;&#2381;&#2336;&#2366;&#2340;&#2381;&#2340;&#2369; &#2361;&#2371;&#2342;&#2351;&#2366;&#2357;&#2343;&#2367; &#2360;-&#2360;&#2381;&#2357;&#2344;&#2350;&#2381; &#2405;<p class="gl">Ujjayi: close the mouth, draw in the breath through both nostrils so the sound is felt from throat to heart.</p></div>
+      <div class="dv"><span class="dvn">verse 2.52</span>&#2346;&#2370;&#2352;&#2381;&#2357;&#2357;&#2340;&#2381;&#2325;&#2369;&#2350;&#2381;&#2349;&#2351;&#2375;&#2340;&#2381;&#2346;&#2381;&#2352;&#2366;&#2339;&#2306; &#2352;&#2375;&#2330;&#2351;&#2375;&#2342;&#2367;&#2337;&#2351;&#2366; &#2340;&#2341;&#2366; &#2404;<br>&#2358;&#2381;&#2354;&#2375;&#2359;&#2381;&#2350;-&#2342;&#2379;&#2359;-&#2361;&#2352;&#2306; &#2325;&#2339;&#2381;&#2336;&#2375; &#2342;&#2375;&#2361;&#2366;&#2344;&#2354;-&#2357;&#2367;&#2357;&#2352;&#2381;&#2343;&#2344;&#2350;&#2381; &#2405;<p class="gl">Retain as before and exhale through the left nostril; it removes phlegm and increases the digestive fire.</p></div>
+      <div class="dv"><span class="dvn">verse 2.53</span>&#2344;&#2366;&#2337;&#2368;-&#2332;&#2354;&#2379;&#2342;&#2352;&#2366;&#2343;&#2366;&#2340;&#2369;-&#2327;&#2340;-&#2342;&#2379;&#2359;-&#2357;&#2367;&#2344;&#2366;&#2358;&#2344;&#2350;&#2381; &#2404;<br>&#2327;&#2330;&#2381;&#2331;&#2340;&#2366; &#2340;&#2367;&#2359;&#2381;&#2336;&#2340;&#2366; &#2325;&#2366;&#2352;&#2381;&#2351;&#2350;&#2369;&#2332;&#2381;&#2332;&#2366;&#2351;&#2381;&#2351;&#2366;&#2326;&#2381;&#2351;&#2306; &#2340;&#2369; &#2325;&#2369;&#2350;&#2381;&#2349;&#2325;&#2350;&#2381; &#2405;<p class="gl">It removes disorders of the nadis, dropsy and the dhatus; it can be done even while walking or standing.</p></div>
+      <div class="dv"><span class="dvn">verse 2.54</span>&#2360;&#2368;&#2340;&#2381;&#2325;&#2366;&#2306; &#2325;&#2369;&#2352;&#2381;&#2351;&#2366;&#2340;&#2381;&#2340;&#2341;&#2366; &#2357;&#2325;&#2381;&#2340;&#2381;&#2352;&#2375; &#2328;&#2381;&#2352;&#2366;&#2339;&#2375;&#2344;&#2376;&#2357; &#2357;&#2367;&#2332;&#2371;&#2350;&#2381;&#2349;&#2367;&#2325;&#2366;&#2350;&#2381; &#2404;<br>&#2319;&#2357;&#2350;&#2349;&#2381;&#2351;&#2366;&#2360;-&#2351;&#2379;&#2327;&#2375;&#2344; &#2325;&#2366;&#2350;-&#2342;&#2375;&#2357;&#2379; &#2342;&#2381;&#2357;&#2367;&#2340;&#2368;&#2351;&#2325;&#2307; &#2405;<p class="gl">Seetkari: make the hissing &ldquo;seet&rdquo; sound with the mouth, breathing in through the mouth; the yogi becomes a second god of love.</p></div>
+      <div class="dv"><span class="dvn">verse 2.57</span>&#2332;&#2367;&#2361;&#2381;&#2357;&#2351;&#2366; &#2357;&#2366;&#2351;&#2369;&#2350;&#2366;&#2325;&#2371;&#2359;&#2381;&#2351; &#2346;&#2370;&#2352;&#2381;&#2357;&#2357;&#2340;&#2381;&#2325;&#2369;&#2350;&#2381;&#2349;-&#2360;&#2366;&#2343;&#2344;&#2350;&#2381; &#2404;<br>&#2358;&#2344;&#2325;&#2376;&#2352;&#2381;&#2328;&#2381;&#2352;&#2366;&#2339;-&#2352;&#2344;&#2381;&#2343;&#2381;&#2352;&#2366;&#2349;&#2381;&#2351;&#2366;&#2306; &#2352;&#2375;&#2330;&#2351;&#2375;&#2340;&#2381;&#2346;&#2357;&#2344;&#2306; &#2360;&#2369;&#2343;&#2368;&#2307; &#2405;<p class="gl">Sheetali: draw in the air through the tongue, retain as before, and exhale slowly through the nostrils.</p></div>
+      <div class="dv"><span class="dvn">verse 2.58</span>&#2327;&#2369;&#2354;&#2381;&#2350;-&#2346;&#2381;&#2354;&#2368;&#2361;&#2366;&#2342;&#2367;&#2325;&#2366;&#2344;&#2381;&#2352;&#2379;&#2327;&#2366;&#2344;&#2381;&#2332;&#2381;&#2357;&#2352;&#2306; &#2346;&#2367;&#2340;&#2381;&#2340;&#2306; &#2325;&#2381;&#2359;&#2369;&#2343;&#2366;&#2306; &#2340;&#2371;&#2359;&#2366;&#2350;&#2381; &#2404;<br>&#2357;&#2367;&#2359;&#2366;&#2339;&#2367; &#2358;&#2368;&#2340;&#2354;&#2368; &#2344;&#2366;&#2350; &#2325;&#2369;&#2350;&#2381;&#2349;&#2367;&#2325;&#2375;&#2351;&#2306; &#2344;&#2367;&#2361;&#2344;&#2381;&#2340;&#2367; &#2361;&#2367; &#2405;<p class="gl">Sheetali removes gulma, spleen disorders, fever, excess bile, hunger and thirst, and poisons.</p></div>
+      <div class="dv"><span class="dvn">verse 2.59</span>&#2314;&#2352;&#2381;&#2357;&#2379;&#2352;&#2369;&#2346;&#2352;&#2367; &#2360;&#2306;&#2360;&#2381;&#2341;&#2366;&#2346;&#2381;&#2351; &#2358;&#2369;&#2349;&#2375; &#2346;&#2366;&#2342;-&#2340;&#2354;&#2375; &#2313;&#2349;&#2375; &#2404;<br>&#2346;&#2342;&#2381;&#2350;&#2366;&#2360;&#2344;&#2306; &#2349;&#2357;&#2375;&#2342;&#2375;&#2340;&#2340;&#2381;&#2360;&#2352;&#2381;&#2357;-&#2346;&#2366;&#2346;-&#2346;&#2381;&#2352;&#2339;&#2366;&#2358;&#2344;&#2350;&#2381; &#2405;<p class="gl">Bhastrika: sit in padmasana, the feet resting on the thighs; this itself destroys sin.</p></div>
+      <div class="dv"><span class="dvn">verse 2.60</span>&#2360;&#2350;&#2381;&#2351;&#2325;&#2381;&#2346;&#2342;&#2381;&#2350;&#2366;&#2360;&#2344;&#2306; &#2348;&#2342;&#2381;&#2343;&#2381;&#2357;&#2366; &#2360;&#2350;-&#2327;&#2381;&#2352;&#2368;&#2357;&#2379;&#2342;&#2352;&#2307; &#2360;&#2369;&#2343;&#2368;&#2307; &#2404;<br>&#2350;&#2369;&#2326;&#2306; &#2360;&#2306;&#2351;&#2350;&#2381;&#2351; &#2351;&#2340;&#2381;&#2344;&#2375;&#2344; &#2346;&#2381;&#2352;&#2366;&#2339;&#2306; &#2328;&#2381;&#2352;&#2366;&#2339;&#2375;&#2344; &#2352;&#2375;&#2330;&#2351;&#2375;&#2340;&#2381; &#2405;<p class="gl">With neck and abdomen in line, close the mouth and exhale through the nose with effort.</p></div>
+      <div class="dv"><span class="dvn">verse 2.61</span>&#2351;&#2341;&#2366; &#2354;&#2327;&#2340;&#2367; &#2361;&#2371;&#2340;&#2381;-&#2325;&#2339;&#2381;&#2336;&#2375; &#2325;&#2346;&#2366;&#2354;&#2366;&#2357;&#2343;&#2367; &#2360;-&#2360;&#2381;&#2357;&#2344;&#2350;&#2381; &#2404;<br>&#2357;&#2375;&#2327;&#2375;&#2344; &#2346;&#2370;&#2352;&#2351;&#2375;&#2330;&#2381;&#2330;&#2366;&#2346;&#2367; &#2361;&#2371;&#2340;&#2381;-&#2346;&#2342;&#2381;&#2350;&#2366;&#2357;&#2343;&#2367; &#2350;&#2366;&#2352;&#2369;&#2340;&#2350;&#2381; &#2405;<p class="gl">Breathe out with a sound from heart and throat up to the skull, and fill quickly down to the heart lotus.</p></div>
+      <div class="dv"><span class="dvn">verse 2.62</span>&#2346;&#2369;&#2344;&#2352;&#2381;&#2357;&#2367;&#2352;&#2375;&#2330;&#2351;&#2375;&#2340;&#2381;&#2340;&#2342;&#2381;&#2357;&#2340;&#2381;&#2346;&#2370;&#2352;&#2351;&#2375;&#2330;&#2381;&#2330; &#2346;&#2369;&#2344;&#2307; &#2346;&#2369;&#2344;&#2307; &#2404;<br>&#2351;&#2341;&#2376;&#2357; &#2354;&#2379;&#2361;&#2325;&#2366;&#2352;&#2375;&#2339; &#2349;&#2360;&#2381;&#2340;&#2381;&#2352;&#2366; &#2357;&#2375;&#2327;&#2375;&#2344; &#2330;&#2366;&#2354;&#2381;&#2351;&#2340;&#2375; &#2405;<p class="gl">Exhale and fill again and again, as the blacksmith works the bellows.</p></div>
+      <div class="dv"><span class="dvn">verse 2.65</span>&#2357;&#2367;&#2343;&#2367;&#2357;&#2340;&#2381;&#2325;&#2369;&#2350;&#2381;&#2349;&#2325;&#2306; &#2325;&#2371;&#2340;&#2381;&#2357;&#2366; &#2352;&#2375;&#2330;&#2351;&#2375;&#2342;&#2367;&#2337;&#2351;&#2366;&#2344;&#2367;&#2354;&#2350;&#2381; &#2404;<br>&#2357;&#2366;&#2340;-&#2346;&#2367;&#2340;&#2381;&#2340;-&#2358;&#2381;&#2354;&#2375;&#2359;&#2381;&#2350;-&#2361;&#2352;&#2306; &#2358;&#2352;&#2368;&#2352;&#2366;&#2327;&#2381;&#2344;&#2367;-&#2357;&#2367;&#2357;&#2352;&#2381;&#2343;&#2344;&#2350;&#2381; &#2405;<p class="gl">Having done kumbhaka properly, exhale through the left nostril; it removes wind, bile and phlegm and increases the body&#8217;s fire.</p></div>
+      <div class="dv"><span class="dvn">verse 2.66</span>&#2325;&#2369;&#2339;&#2381;&#2337;&#2354;&#2368; &#2348;&#2379;&#2343;&#2325;&#2306; &#2325;&#2381;&#2359;&#2367;&#2346;&#2381;&#2352;&#2306; &#2346;&#2357;&#2344;&#2306; &#2360;&#2369;&#2326;&#2342;&#2306; &#2361;&#2367;&#2340;&#2350;&#2381; &#2404;<br>&#2348;&#2381;&#2352;&#2361;&#2381;&#2350;-&#2344;&#2366;&#2337;&#2368;-&#2350;&#2369;&#2326;&#2375; &#2360;&#2306;&#2360;&#2381;&#2341;-&#2325;&#2347;&#2366;&#2342;&#2381;&#2351;&#2381;-&#2309;&#2352;&#2381;&#2327;&#2354;-&#2344;&#2366;&#2358;&#2344;&#2350;&#2381; &#2405;<p class="gl">It quickly awakens kundalini, is pleasant and beneficial, and destroys the phlegm blocking the mouth of brahma nadi.</p></div>
+      <div class="dv"><span class="dvn">verse 2.67</span>&#2360;&#2350;&#2381;&#2351;&#2327;&#2381;&#2327;&#2366;&#2340;&#2381;&#2352;-&#2360;&#2350;&#2369;&#2342;&#2381;&#2349;&#2370;&#2340;-&#2327;&#2381;&#2352;&#2344;&#2381;&#2341;&#2367;-&#2340;&#2381;&#2352;&#2351;-&#2357;&#2367;&#2349;&#2375;&#2342;&#2325;&#2350;&#2381; &#2404;<br>&#2357;&#2367;&#2358;&#2375;&#2359;&#2375;&#2339;&#2376;&#2357; &#2325;&#2352;&#2381;&#2340;&#2357;&#2381;&#2351;&#2306; &#2349;&#2360;&#2381;&#2340;&#2381;&#2352;&#2366;&#2326;&#2381;&#2351;&#2306; &#2325;&#2369;&#2350;&#2381;&#2349;&#2325;&#2306; &#2340;&#2381;&#2357;&#2367;&#2342;&#2350;&#2381; &#2405;<p class="gl">It pierces the three granthis, and is to be practised with special care.</p></div>
+      <div class="dv"><span class="dvn">verse 2.68</span>&#2357;&#2375;&#2327;&#2366;&#2342;&#2381;&#2328;&#2379;&#2359;&#2306; &#2346;&#2370;&#2352;&#2325;&#2306; &#2349;&#2371;&#2329;&#2381;&#2327;-&#2344;&#2366;&#2342;&#2306;<br>&#2349;&#2371;&#2329;&#2381;&#2327;&#2368;-&#2344;&#2366;&#2342;&#2306; &#2352;&#2375;&#2330;&#2325;&#2306; &#2350;&#2344;&#2381;&#2342;-&#2350;&#2344;&#2381;&#2342;&#2350;&#2381; &#2404;<br>&#2351;&#2379;&#2327;&#2368;&#2344;&#2381;&#2342;&#2381;&#2352;&#2366;&#2339;&#2366;&#2350;&#2375;&#2357;&#2350;&#2349;&#2381;&#2351;&#2366;&#2360;-&#2351;&#2379;&#2327;&#2366;&#2330;&#2381;<br>&#2330;&#2367;&#2340;&#2381;&#2340;&#2375; &#2332;&#2366;&#2340;&#2366; &#2325;&#2366;&#2330;&#2367;&#2342;&#2366;&#2344;&#2344;&#2381;&#2342;-&#2354;&#2368;&#2354;&#2366; &#2405;<p class="gl">Bhramari: inhale with a loud sound like a bee, exhale slowly with a humming sound; the mind fills with joy.</p></div>
+      <div class="dv"><span class="dvn">verse 2.69</span>&#2346;&#2370;&#2352;&#2325;&#2366;&#2344;&#2381;&#2340;&#2375; &#2327;&#2366;&#2338;&#2340;&#2352;&#2306; &#2348;&#2342;&#2381;&#2343;&#2381;&#2357;&#2366; &#2332;&#2366;&#2354;&#2344;&#2381;&#2343;&#2352;&#2306; &#2358;&#2344;&#2376;&#2307; &#2404;<br>&#2352;&#2375;&#2330;&#2351;&#2375;&#2344;&#2381;&#2350;&#2370;&#2352;&#2381;&#2330;&#2381;&#2331;&#2366;&#2326;&#2381;&#2351;&#2375;&#2351;&#2306; &#2350;&#2344;&#2379;-&#2350;&#2370;&#2352;&#2381;&#2330;&#2381;&#2331;&#2366; &#2360;&#2369;&#2326;-&#2346;&#2381;&#2352;&#2342;&#2366; &#2405;<p class="gl">Moorchha: at the end of inhalation, apply jalandhara firmly and exhale slowly; the mind faints into pleasure.</p></div>
+      <div class="dv"><span class="dvn">verse 2.70</span>&#2309;&#2344;&#2381;&#2340;&#2307; &#2346;&#2381;&#2352;&#2357;&#2352;&#2381;&#2340;&#2367;&#2340;&#2379;&#2342;&#2366;&#2352;-&#2350;&#2366;&#2352;&#2369;&#2340;&#2366;&#2346;&#2370;&#2352;&#2367;&#2340;&#2379;&#2342;&#2352;&#2307; &#2404;<br>&#2346;&#2351;&#2360;&#2381;&#2351;&#2327;&#2366;&#2343;&#2375;&#2365;&#2346;&#2367; &#2360;&#2369;&#2326;&#2366;&#2340;&#2381;&#2346;&#2381;&#2354;&#2357;&#2340;&#2375; &#2346;&#2342;&#2381;&#2350;-&#2346;&#2340;&#2381;&#2352;&#2357;&#2340;&#2381; &#2405;<p class="gl">Plavini: with the abdomen filled with air, one floats on deep water like a lotus leaf.</p></div>
+      <div class="dv"><span class="dvn">verse 2.71</span>&#2346;&#2381;&#2352;&#2366;&#2339;&#2366;&#2351;&#2366;&#2350;&#2360;&#2381;&#2340;&#2381;&#2352;&#2367;&#2343;&#2366; &#2346;&#2381;&#2352;&#2379;&#2325;&#2381;&#2340;&#2379; &#2352;&#2375;&#2330;-&#2346;&#2370;&#2352;&#2325;-&#2325;&#2369;&#2350;&#2381;&#2349;&#2325;&#2376;&#2307; &#2404;<br>&#2360;&#2361;&#2367;&#2340;&#2307; &#2325;&#2375;&#2357;&#2354;&#2358;&#2381;&#2330;&#2375;&#2340;&#2367; &#2325;&#2369;&#2350;&#2381;&#2349;&#2325;&#2379; &#2342;&#2381;&#2357;&#2367;&#2357;&#2367;&#2343;&#2379; &#2350;&#2340;&#2307; &#2405;<p class="gl">Pranayama is threefold (exhale, inhale, retain); kumbhaka is of two kinds, sahita and kevala.</p></div>
+      <div class="dv"><span class="dvn">verse 2.73</span>&#2346;&#2381;&#2352;&#2366;&#2339;&#2366;&#2351;&#2366;&#2350;&#2379;&#2365;&#2351;&#2350;&#2367;&#2340;&#2381;&#2351;&#2369;&#2325;&#2381;&#2340;&#2307; &#2360; &#2357;&#2376; &#2325;&#2375;&#2357;&#2354;-&#2325;&#2369;&#2350;&#2381;&#2349;&#2325;&#2307; &#2404;<br>&#2325;&#2369;&#2350;&#2381;&#2349;&#2325;&#2375; &#2325;&#2375;&#2357;&#2354;&#2375; &#2360;&#2367;&#2342;&#2381;&#2343;&#2375; &#2352;&#2375;&#2330;-&#2346;&#2370;&#2352;&#2325;-&#2357;&#2352;&#2381;&#2332;&#2367;&#2340;&#2375; &#2405;<p class="gl">Kevala kumbhaka: breath held spontaneously, without exhalation or inhalation.</p></div>
+      <div class="dv"><span class="dvn">verse 2.75</span>&#2352;&#2366;&#2332;-&#2351;&#2379;&#2327;-&#2346;&#2342;&#2306; &#2330;&#2366;&#2346;&#2367; &#2354;&#2349;&#2340;&#2375; &#2344;&#2366;&#2340;&#2381;&#2352; &#2360;&#2306;&#2358;&#2351;&#2307; &#2404;<br>&#2325;&#2369;&#2350;&#2381;&#2349;&#2325;&#2366;&#2340;&#2381;&#2325;&#2369;&#2339;&#2381;&#2337;&#2354;&#2368;-&#2348;&#2379;&#2343;&#2307; &#2325;&#2369;&#2339;&#2381;&#2337;&#2354;&#2368;-&#2348;&#2379;&#2343;&#2340;&#2379; &#2349;&#2357;&#2375;&#2340;&#2381; &#2404;<br>&#2309;&#2344;&#2352;&#2381;&#2327;&#2354;&#2366; &#2360;&#2369;&#2359;&#2369;&#2350;&#2381;&#2339;&#2366; &#2330; &#2361;&#2336;-&#2360;&#2367;&#2342;&#2381;&#2343;&#2367;&#2358;&#2381;&#2330; &#2332;&#2366;&#2351;&#2340;&#2375; &#2405;<p class="gl">Through kevala kumbhaka one reaches raja yoga; kundalini awakens, sushumna opens and hatha siddhi arises.</p></div>
+      <div class="src-foot"><span class="src gen">verses PDF</span> haTha-yoga-pradIpikA-slokas (Sanskrit Documents) <span class="src add">added</span> one-line meanings from the Sanskrit</div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
+</script>
