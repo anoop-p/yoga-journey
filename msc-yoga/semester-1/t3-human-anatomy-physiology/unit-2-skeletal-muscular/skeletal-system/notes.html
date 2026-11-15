@@ -510,7 +510,66 @@
 
 <p class="src-foot">Sources: class notes 17 Sep&#8211;1 Oct 2026 (typed); Anatomy &amp; Physiology M.Sc. Notes, Unit 1 (teacher's PDF); Yoga &amp; Human Body notes (skeleton, spinal column); Ross &amp; Wilson ch. 16; standard anatomy texts for the &#8220;general&#8221; tags; question paper Q22. Photographic diagrams are from your diagram folder; stock-photo images with watermarks were left out. Mnemonics tagged &#8220;added&#8221; are made up for these notes.</p>
 
-  </main>
+  <!--qr-start-->
+<style>.qr{margin:26px 0 4px;padding:14px 16px 16px;border:1px dashed var(--border);border-radius:12px;background:var(--surface-2)}
+.qr .qh{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:4px}
+.qr .qk{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--teal)}
+.qr .qs{font-size:12px;color:var(--muted)}
+.qr .qq{font-size:15px;font-weight:600;color:var(--ink);margin:0 0 3px}
+.qr .qd{font-size:12.5px;color:var(--ink-soft);margin:0 0 10px}
+.qr .qg{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:9px}
+.qr .qb{min-height:74px;padding:8px 10px;border:1px dashed var(--border);border-radius:10px;background:var(--surface);cursor:pointer;font:inherit;color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center}
+.qr .qb:hover{border-color:var(--teal)}
+.qr .qb .n{font-size:18px;color:var(--muted)}
+.qr .qb .t{font-size:11.5px;color:var(--muted)}
+.qr .qb.s1{border-style:solid;background:var(--gold-soft);border-color:var(--gold)}
+.qr .qb.s2{border-style:solid;background:var(--teal-soft);border-color:var(--teal)}
+.qr .qb .a{font-size:14px;font-weight:600}
+.qr .qb .h{font-size:11.5px;color:var(--ink-soft)}
+.qr .qf{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap;align-items:center}
+.qr .qf button{font:inherit;font-size:12.5px;padding:5px 11px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--ink);cursor:pointer}
+.qr .qf button:hover{border-color:var(--teal)}
+.qr .qm{font-size:12px;color:var(--ink-soft)}
+@media print{.qr{display:none}}</style>
+<script>(function(){
+var D={"axial": [{"q": "Name the eight cranial bones", "i": [["Frontal", "1"], ["Parietal", "2"], ["Temporal", "2"], ["Occipital", "1"], ["Sphenoid", "1"], ["Ethmoid", "1"]]}, {"q": "Name the three ear ossicles", "i": [["Malleus", "hammer"], ["Incus", "anvil"], ["Stapes", "stirrup"]], "o": 1}], "spine": [{"q": "Name the spine regions and counts", "i": [["Cervical", "7"], ["Thoracic", "12"], ["Lumbar", "5"], ["Sacral", "5, fused"], ["Coccyx", "4, fused"]], "o": 1}, {"q": "Name the ribs", "i": [["True", "1 to 7"], ["False", "8 to 10"], ["Floating", "11 and 12"]]}], "append": [{"q": "Name the arm bones, shoulder to hand", "i": [["Scapula and clavicle", "girdle"], ["Humerus", "upper arm"], ["Radius", "thumb side"], ["Ulna", "little finger side"], ["Carpals", "8"], ["Metacarpals", "5"], ["Phalanges", "14"]], "o": 1}, {"q": "Name the leg bones, hip to foot", "i": [["Hip bone", "girdle"], ["Femur", "thigh"], ["Patella", "knee cap"], ["Tibia", "shin"], ["Fibula", "outer"], ["Tarsals", "7"], ["Metatarsals", "5"], ["Phalanges", "14"]], "o": 1}], "types": [{"q": "Name the bone shape types with an example", "i": [["Long", "femur"], ["Short", "carpals"], ["Flat", "sternum, skull"], ["Irregular", "vertebra"], ["Sesamoid", "patella"]]}], "structure": [{"q": "Name the parts of a long bone", "i": [["Diaphysis", "shaft"], ["Epiphysis", "ends"], ["Metaphysis", "growth region"], ["Periosteum", "outer covering"], ["Endosteum", "inner lining"], ["Medullary cavity", "marrow"]]}], "cells": [{"q": "Name the bone cells and jobs", "i": [["Osteoblast", "builds bone"], ["Osteocyte", "maintains bone"], ["Osteoclast", "breaks down bone"], ["Osteoprogenitor", "stem cell"]]}]},KEY='yj_qr_v1';
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}}
+function save(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+Object.keys(D).forEach(function(sid){
+ var sec=document.getElementById('sec-'+sid); if(!sec) return;
+ D[sid].forEach(function(c,ci){
+  var id=location.pathname+'#'+sid+':'+ci, st=c.i.map(function(){return 0});
+  var box=document.createElement('div'); box.className='qr';
+  box.innerHTML='<div class="qh"><span class="qk">Quick recall</span><span class="qs"></span></div><p class="qq">'+esc(c.q)+'</p><p class="qd">Say or write each one first, then tap its box. Tap a revealed box again if you knew it.</p><div class="qg"></div><div class="qf"><button type="button" data-a="all">Reveal all</button><button type="button" data-a="reset">Try again</button><span class="qm"></span></div>';
+  var g=box.querySelector('.qg');
+  function sync(){
+   var all=load(), miss=[], got=0;
+   st.forEach(function(v,i){ if(v===1) miss.push(c.i[i]); if(v===2) got++; });
+   if(miss.length){ all[id]={p:location.pathname,s:sid,t:document.title,q:c.q,m:miss,n:Date.now()}; }
+   else if(all[id]&&st.every(function(v){return v!==0})){ delete all[id]; }
+   save(all);
+   box.querySelector('.qs').textContent=got+' of '+c.i.length+' recalled';
+   box.querySelector('.qm').textContent=all[id]?'Saved to your review list':'';
+  }
+  function draw(){
+   g.innerHTML='';
+   c.i.forEach(function(it,i){
+    var b=document.createElement('button'); b.type='button'; b.className='qb s'+st[i];
+    b.innerHTML=st[i]===0?'<span class="n">'+(c.o?(i+1):'?')+'</span><span class="t">tap to reveal</span>':'<span class="a">'+esc(it[0])+'</span><span class="h">'+esc(it[1]||'')+'</span>';
+    b.onclick=function(){st[i]=st[i]===0?1:(st[i]===1?2:1);draw();};
+    g.appendChild(b);
+   });
+   sync();
+  }
+  box.querySelector('[data-a=all]').onclick=function(){st=st.map(function(v){return v||1});draw();};
+  box.querySelector('[data-a=reset]').onclick=function(){st=st.map(function(){return 0});draw();};
+  sec.appendChild(box); draw();
+ });
+});
+})();</script>
+<!--qr-end-->
+</main>
 </div>
 
 <script>

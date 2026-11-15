@@ -1293,7 +1293,66 @@
       <p class="src-foot">Sources: Tissues Detailed Study Notes (Oct 2026 version); Tissues Quick Notes; Connective Tissue Notes; Cell Study Notes and Cell Detailed Study Notes (homeostasis, feedback, blood-cell facts); Yoga &amp; Human Body notes (tissue, homeostasis, tendon, ligament, proprioception, resting potential and asana-physiology sections); general physiology and histology for items tagged <i>general</i> (Ross &amp; Wilson, NCERT Biology: Tissues); the Semester 1 question paper (Q5, Q8, Q10, Q14, Q22). Diagrams on this page are drawn for these notes.</p>
     </section>
 
-  </main>
+  <!--qr-start-->
+<style>.qr{margin:26px 0 4px;padding:14px 16px 16px;border:1px dashed var(--border);border-radius:12px;background:var(--surface-2)}
+.qr .qh{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:4px}
+.qr .qk{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--teal)}
+.qr .qs{font-size:12px;color:var(--muted)}
+.qr .qq{font-size:15px;font-weight:600;color:var(--ink);margin:0 0 3px}
+.qr .qd{font-size:12.5px;color:var(--ink-soft);margin:0 0 10px}
+.qr .qg{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:9px}
+.qr .qb{min-height:74px;padding:8px 10px;border:1px dashed var(--border);border-radius:10px;background:var(--surface);cursor:pointer;font:inherit;color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center}
+.qr .qb:hover{border-color:var(--teal)}
+.qr .qb .n{font-size:18px;color:var(--muted)}
+.qr .qb .t{font-size:11.5px;color:var(--muted)}
+.qr .qb.s1{border-style:solid;background:var(--gold-soft);border-color:var(--gold)}
+.qr .qb.s2{border-style:solid;background:var(--teal-soft);border-color:var(--teal)}
+.qr .qb .a{font-size:14px;font-weight:600}
+.qr .qb .h{font-size:11.5px;color:var(--ink-soft)}
+.qr .qf{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap;align-items:center}
+.qr .qf button{font:inherit;font-size:12.5px;padding:5px 11px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--ink);cursor:pointer}
+.qr .qf button:hover{border-color:var(--teal)}
+.qr .qm{font-size:12px;color:var(--ink-soft)}
+@media print{.qr{display:none}}</style>
+<script>(function(){
+var D={"overview": [{"q": "Name the four basic tissues and their main job", "i": [["Epithelial", "covers and lines"], ["Connective", "supports and binds"], ["Muscular", "moves"], ["Nervous", "carries signals"]]}], "homeostasis": [{"q": "Name the parts of a feedback loop in order", "i": [["Stimulus", "a change"], ["Receptor", "senses it"], ["Control centre", "brain decides"], ["Effector", "acts"], ["Response", "back to normal"]], "o": 1}, {"q": "Give examples of negative and positive feedback", "i": [["Temperature control", "negative"], ["Blood glucose", "negative"], ["Childbirth", "positive"], ["Blood clotting", "positive"]]}], "epithelial": [{"q": "Match epithelium type to where it is found", "i": [["Simple squamous", "alveoli"], ["Simple cuboidal", "kidney tubules"], ["Simple columnar", "stomach, intestine"], ["Stratified squamous", "skin"], ["Pseudostratified ciliated", "trachea"], ["Transitional", "bladder"]]}], "connective": [{"q": "CAT LAB: name the six", "i": [["Cartilage", "cushion"], ["Areolar", "packing"], ["Tendon", "muscle to bone"], ["Ligament", "bone to bone"], ["Adipose", "fat"], ["Blood", "fluid tissue"]]}, {"q": "Name the three types of cartilage", "i": [["Hyaline", "joint surfaces"], ["Elastic", "ear"], ["Fibro", "discs"]]}, {"q": "Name the components of blood", "i": [["Plasma", ""], ["Red cells", "carry oxygen"], ["White cells", "defence"], ["Platelets", "clotting"]]}], "muscular": [{"q": "Name the three muscle types", "i": [["Skeletal", "voluntary, striated"], ["Smooth", "involuntary, no striations"], ["Cardiac", "heart, branched"]]}, {"q": "Name the wrappings of a skeletal muscle, outer to inner", "i": [["Epimysium", "whole muscle"], ["Perimysium", "fascicle"], ["Endomysium", "single fibre"]], "o": 1}], "nervous": [{"q": "Name the parts of a neuron", "i": [["Dendrites", "receive"], ["Cell body", "soma, nucleus"], ["Axon", "conducts"], ["Myelin sheath", "speeds up"], ["Axon terminals", "release transmitter"]]}, {"q": "Trace a reflex pathway", "i": [["Stimulus", ""], ["Receptor", ""], ["Sensory neuron", ""], ["CNS", ""], ["Motor neuron", ""], ["Effector", ""]], "o": 1}]},KEY='yj_qr_v1';
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}}
+function save(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+Object.keys(D).forEach(function(sid){
+ var sec=document.getElementById('sec-'+sid); if(!sec) return;
+ D[sid].forEach(function(c,ci){
+  var id=location.pathname+'#'+sid+':'+ci, st=c.i.map(function(){return 0});
+  var box=document.createElement('div'); box.className='qr';
+  box.innerHTML='<div class="qh"><span class="qk">Quick recall</span><span class="qs"></span></div><p class="qq">'+esc(c.q)+'</p><p class="qd">Say or write each one first, then tap its box. Tap a revealed box again if you knew it.</p><div class="qg"></div><div class="qf"><button type="button" data-a="all">Reveal all</button><button type="button" data-a="reset">Try again</button><span class="qm"></span></div>';
+  var g=box.querySelector('.qg');
+  function sync(){
+   var all=load(), miss=[], got=0;
+   st.forEach(function(v,i){ if(v===1) miss.push(c.i[i]); if(v===2) got++; });
+   if(miss.length){ all[id]={p:location.pathname,s:sid,t:document.title,q:c.q,m:miss,n:Date.now()}; }
+   else if(all[id]&&st.every(function(v){return v!==0})){ delete all[id]; }
+   save(all);
+   box.querySelector('.qs').textContent=got+' of '+c.i.length+' recalled';
+   box.querySelector('.qm').textContent=all[id]?'Saved to your review list':'';
+  }
+  function draw(){
+   g.innerHTML='';
+   c.i.forEach(function(it,i){
+    var b=document.createElement('button'); b.type='button'; b.className='qb s'+st[i];
+    b.innerHTML=st[i]===0?'<span class="n">'+(c.o?(i+1):'?')+'</span><span class="t">tap to reveal</span>':'<span class="a">'+esc(it[0])+'</span><span class="h">'+esc(it[1]||'')+'</span>';
+    b.onclick=function(){st[i]=st[i]===0?1:(st[i]===1?2:1);draw();};
+    g.appendChild(b);
+   });
+   sync();
+  }
+  box.querySelector('[data-a=all]').onclick=function(){st=st.map(function(v){return v||1});draw();};
+  box.querySelector('[data-a=reset]').onclick=function(){st=st.map(function(){return 0});draw();};
+  sec.appendChild(box); draw();
+ });
+});
+})();</script>
+<!--qr-end-->
+</main>
 </div>
 
 <script>

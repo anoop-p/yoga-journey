@@ -427,7 +427,66 @@
 })();
 </script>
 
-  </main>
+  <!--qr-start-->
+<style>.qr{margin:26px 0 4px;padding:14px 16px 16px;border:1px dashed var(--border);border-radius:12px;background:var(--surface-2)}
+.qr .qh{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:4px}
+.qr .qk{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--teal)}
+.qr .qs{font-size:12px;color:var(--muted)}
+.qr .qq{font-size:15px;font-weight:600;color:var(--ink);margin:0 0 3px}
+.qr .qd{font-size:12.5px;color:var(--ink-soft);margin:0 0 10px}
+.qr .qg{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:9px}
+.qr .qb{min-height:74px;padding:8px 10px;border:1px dashed var(--border);border-radius:10px;background:var(--surface);cursor:pointer;font:inherit;color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center}
+.qr .qb:hover{border-color:var(--teal)}
+.qr .qb .n{font-size:18px;color:var(--muted)}
+.qr .qb .t{font-size:11.5px;color:var(--muted)}
+.qr .qb.s1{border-style:solid;background:var(--gold-soft);border-color:var(--gold)}
+.qr .qb.s2{border-style:solid;background:var(--teal-soft);border-color:var(--teal)}
+.qr .qb .a{font-size:14px;font-weight:600}
+.qr .qb .h{font-size:11.5px;color:var(--ink-soft)}
+.qr .qf{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap;align-items:center}
+.qr .qf button{font:inherit;font-size:12.5px;padding:5px 11px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--ink);cursor:pointer}
+.qr .qf button:hover{border-color:var(--teal)}
+.qr .qm{font-size:12px;color:var(--ink-soft)}
+@media print{.qr{display:none}}</style>
+<script>(function(){
+var D={"a": [{"q": "Name the six Vedangas", "i": [["Shiksha", "phonetics"], ["Kalpa", "ritual"], ["Vyakarana", "grammar"], ["Nirukta", "word origin"], ["Chhandas", "metre"], ["Jyotisha", "astronomy"]]}, {"q": "Name the six Shat-sampatti", "i": [["Shama", "calm mind"], ["Dama", "control of senses"], ["Uparati", "withdrawal"], ["Titiksha", "endurance"], ["Shraddha", "faith"], ["Samadhana", "focus"]]}, {"q": "Name Patanjali’s four types of karma", "i": [["Shukla", "white"], ["Krishna", "black"], ["Shukla-krishna", "mixed"], ["Ashukla-akrishna", "neither"]]}], "b": [{"q": "Name the eightfold path of Buddhism", "i": [["Right view", ""], ["Right intention", ""], ["Right speech", ""], ["Right action", ""], ["Right livelihood", ""], ["Right effort", ""], ["Right mindfulness", ""], ["Right concentration", ""]], "o": 1}, {"q": "Name the Jain Tri-ratna", "i": [["Samyak darshana", "right faith"], ["Samyak jnana", "right knowledge"], ["Samyak charitra", "right conduct"]], "o": 1}, {"q": "Name the four types of bhakta (Gita 7.16)", "i": [["Arta", "distressed"], ["Jijnasu", "seeker"], ["Artharthi", "wealth seeker"], ["Jnani", "wise, the best"]]}]},KEY='yj_qr_v1';
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}}
+function save(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+Object.keys(D).forEach(function(sid){
+ var sec=document.getElementById('sec-'+sid); if(!sec) return;
+ D[sid].forEach(function(c,ci){
+  var id=location.pathname+'#'+sid+':'+ci, st=c.i.map(function(){return 0});
+  var box=document.createElement('div'); box.className='qr';
+  box.innerHTML='<div class="qh"><span class="qk">Quick recall</span><span class="qs"></span></div><p class="qq">'+esc(c.q)+'</p><p class="qd">Say or write each one first, then tap its box. Tap a revealed box again if you knew it.</p><div class="qg"></div><div class="qf"><button type="button" data-a="all">Reveal all</button><button type="button" data-a="reset">Try again</button><span class="qm"></span></div>';
+  var g=box.querySelector('.qg');
+  function sync(){
+   var all=load(), miss=[], got=0;
+   st.forEach(function(v,i){ if(v===1) miss.push(c.i[i]); if(v===2) got++; });
+   if(miss.length){ all[id]={p:location.pathname,s:sid,t:document.title,q:c.q,m:miss,n:Date.now()}; }
+   else if(all[id]&&st.every(function(v){return v!==0})){ delete all[id]; }
+   save(all);
+   box.querySelector('.qs').textContent=got+' of '+c.i.length+' recalled';
+   box.querySelector('.qm').textContent=all[id]?'Saved to your review list':'';
+  }
+  function draw(){
+   g.innerHTML='';
+   c.i.forEach(function(it,i){
+    var b=document.createElement('button'); b.type='button'; b.className='qb s'+st[i];
+    b.innerHTML=st[i]===0?'<span class="n">'+(c.o?(i+1):'?')+'</span><span class="t">tap to reveal</span>':'<span class="a">'+esc(it[0])+'</span><span class="h">'+esc(it[1]||'')+'</span>';
+    b.onclick=function(){st[i]=st[i]===0?1:(st[i]===1?2:1);draw();};
+    g.appendChild(b);
+   });
+   sync();
+  }
+  box.querySelector('[data-a=all]').onclick=function(){st=st.map(function(v){return v||1});draw();};
+  box.querySelector('[data-a=reset]').onclick=function(){st=st.map(function(){return 0});draw();};
+  sec.appendChild(box); draw();
+ });
+});
+})();</script>
+<!--qr-end-->
+</main>
 </div>
 
 <script>
