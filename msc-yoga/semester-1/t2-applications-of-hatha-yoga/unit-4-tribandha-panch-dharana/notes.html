@@ -1,0 +1,581 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tribandha &amp; Panch-Dharana</title>
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  @media (max-width:640px){ .fig.wide-svg{ overflow-x:auto; -webkit-overflow-scrolling:touch; } .fig.wide-svg svg{ min-width:540px; } .fig.wide-svg::after{ content:"swipe sideways to see the whole diagram"; display:block; font-size:11px; color:var(--muted); text-align:center; margin-top:4px; } }
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .fig.photo img{ max-width:100%; height:auto; border-radius:8px; }
+  .dv{ font-family:"Noto Sans Devanagari","Kohinoor Devanagari","Devanagari Sangam MN","Mukta",serif; font-size:18px; line-height:1.9; color:var(--ink); background:var(--surface-2); border-radius:8px; padding:8px 14px 8px; margin:0 0 10px; }
+  .dv .dvn{ display:block; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); line-height:1.4; margin-bottom:2px; }
+  .dv .gl{ font-family:"Inter",system-ui,sans-serif; font-size:13.5px; line-height:1.5; color:var(--ink-soft); margin:4px 0 0; border-top:1px dashed var(--border); padding-top:5px; }
+  .sk{ font-family:"Fraunces",Georgia,serif; font-style:italic; color:var(--ink); }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Tribandha &amp; Panch-Dharana</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../index.html">&larr; T2 &middot; Applications of Hatha Yoga</a>
+    <div class="brand">
+      <div class="eyebrow">Applications of Hatha Yoga</div>
+      <h1>Tribandha &amp; Panch-Dharana</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="mudras"><span class="num">01</span><span>The 25 Practices</span></button>
+      <button class="nav-item" data-target="mudradetail"><span class="num">02</span><span>Mudras in Detail</span></button>
+      <button class="nav-item" data-target="bandhas"><span class="num">03</span><span>Bandhas and Tribandha</span></button>
+      <button class="nav-item" data-target="shatru"><span class="num">04</span><span>Shat Shatru and Atma Layatva</span></button>
+      <button class="nav-item" data-target="dharana"><span class="num">05</span><span>Panch-Dharana</span></button>
+      <button class="nav-item" data-target="pratyahara"><span class="num">06</span><span>Pratyahara</span></button>
+      <button class="nav-item" data-target="ahara"><span class="num">07</span><span>Sthana, Kala, Ahara</span></button>
+      <button class="nav-item" data-target="pranayama"><span class="num">08</span><span>Pranayama (8 Kumbhakas)</span></button>
+      <button class="nav-item" data-target="dhyana"><span class="num">09</span><span>Dhyana and Samadhi</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Sources: Gheranda Samhita handouts on mudra and bandha (GSH ch 3), pranayama (ch 4 handout), dhyana and samadhi (ch 6 handout), your Hata and Gheranda notes, and the GS slides. Verse numbers only where the sources print them.
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="section" id="sec-mudras">
+      <div class="sec-head">
+        <div class="kicker">01 &#183; Mudra list</div>
+        <h2>The Sixteen Mudras, Four Bandhas and Five Dharanas</h2>
+        <p class="dek">Counts, groups and the memory frame for the GS mudra chapter.</p>
+      </div>
+      <div class="stat-strip"><div class="stat"><div class="v">25</div><div class="k">practices: 16 + 4 + 5</div></div><div class="stat"><div class="v">5</div><div class="k">mudra groups</div></div><div class="stat"><div class="v">4</div><div class="k">bandhas</div></div><div class="stat"><div class="v">5</div><div class="k">dharanas</div></div></div>
+      <div class="table-wrap"><table><tr><th>Group</th><th>Mudras</th></tr><tr><td>Hasta (hand)</td><td>Aadi, Chinmaya, Brahma (in the handout)</td></tr><tr><td>Mukha (head and face)</td><td>Shambhavi, Agochari (nabho), Kaki, Shanmukhi (yoni)</td></tr><tr><td>Kaya (body)</td><td>Viparitakarani</td></tr><tr><td>Adhara (base)</td><td>Ashvini, Vajroli</td></tr><tr><td>Bandha mudra</td><td>Maha mudra, Mahavedha</td></tr></table></div>
+      <div class="table-wrap"><table><tr><th>#</th><th>The 16 mudras</th><th>#</th><th>The 16 mudras</th></tr><tr><td>1</td><td>Maha</td><td>9</td><td>Tadagi</td></tr><tr><td>2</td><td>Nabho</td><td>10</td><td>Manduki</td></tr><tr><td>3</td><td>Mahavedha</td><td>11</td><td>Shambhavi</td></tr><tr><td>4</td><td>Khechari</td><td>12</td><td>Ashvini</td></tr><tr><td>5</td><td>Viparitakarani</td><td>13</td><td>Pashini</td></tr><tr><td>6</td><td>Yoni</td><td>14</td><td>Kaki</td></tr><tr><td>7</td><td>Vajroli</td><td>15</td><td>Matangi</td></tr><tr><td>8</td><td>Shakti chalani</td><td>16</td><td>Bhujangini</td></tr></table></div>
+      <div class="blk mem">
+        <span class="lbl">Memory aid &middot; 16 as 8 + 8 <span class="src add">added</span></span>
+        <p>The first eight run from the greatest (maha, nabho, mahavedha) to the strongest (khechari, vajroli, shakti chalani). The last eight are lighter and mostly simple: tadagi, manduki, shambhavi, ashvini, pashini, kaki, matangi, bhujangini.</p>
+      </div>
+      <div class="blk und">
+        <span class="lbl">Understand it &middot; what mudras are for <span class="src gen">GSH handout</span></span>
+        <ul class="plain"><li>A mudra is a seal: it closes the leaks of prana so the mind steadies. The GS says mudras give <b>sthirata</b> (steadiness).</li><li>Many are also done in the HYP. In the GS list, Maha, Mahavedha, Khechari, Viparitakarani, Vajroli and Shakti chalani are the ones you already met in Unit 2; here only the GS differences and the new ones are given.</li></ul>
+      </div>
+      <p class="honest"><b>Source note.</b> The GS handout says to practise shaktichalana <i>before</i> yoni mudra, because yoni mudra without it is not effective. The HYP counts ten mudras and bandhas; the GS counts 25 practices. Do not mix the two lists in an answer.</p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">How many mudras in the GS?</div><div class="a">16 mudras, 4 bandhas, 5 dharanas = 25</div></div>
+        <div class="recall-card"><div class="q">Sadhana from this chapter?</div><div class="a">Sthirata</div></div>
+        <div class="recall-card"><div class="q">Shanmukhi mudra is also called?</div><div class="a">Yoni mudra</div></div>
+        <div class="recall-card"><div class="q">Practise first?</div><div class="a">Shakti chalana, then yoni mudra</div></div>
+      </div>
+
+      <div class="src-foot"><span class="src gen">GSH ch 3, GS slides</span> <span class="src add">added</span></div>
+    </section>
+    <section class="section" id="sec-mudradetail">
+      <div class="sec-head">
+        <div class="kicker">02 &#183; Mudras</div>
+        <h2>Technique and Benefit of the 16 Mudras</h2>
+        <p class="dek">Three full cards, then a quick table for the remaining thirteen.</p>
+      </div>
+      <div class="stat-strip"><div class="stat"><div class="v">16</div><div class="k">mudras</div></div><div class="stat"><div class="v">3</div><div class="k">full technique cards</div></div><div class="stat"><div class="v">10</div><div class="k">short ones</div></div><div class="stat"><div class="v">1</div><div class="k">rule: guru first</div></div></div>
+      <div class="cols2">
+        <div class="card"><h4>Maha mudra (III 4&ndash;5) <span class="src gen">GSH</span></h4>
+          <ul class="plain"><li><b>Technique:</b> press the left heel at the perineum; right leg straight; hold the right big toe with both hands; inhale; jalandhara, then moola; shambhavi; hold; exhale slowly; other side.</li><li><b>Benefits (verse):</b> removes wrinkles and grey hair, delays ageing, cough, constipation, spleen disorders and all disease; raises digestive fire.</li><li><b>Caution:</b> heart problems, hypertension, back or knee pain.</li></ul></div>
+        <div class="card"><h4>Mahavedha (III 17&ndash;20) <span class="src gen">GSH</span></h4>
+          <ul class="plain"><li><b>Technique:</b> sit in padmasana, palms beside thighs, inhale, jalandhara, lift the buttocks on the hands and gently beat the ground, with awareness at mooladhara; exhale.</li><li><b>Benefits:</b> removes fear; delays ageing and death; wakes kundalini; core strength.</li><li>Same cautions as maha mudra.</li></ul></div>
+      </div>
+      <div class="cols2">
+        <div class="card"><h4>Khechari <span class="src gen">GSH</span></h4>
+          <ul class="plain"><li>The tongue tip reaches the eyebrow centre, entering the cavity above the palate, with gaze fixed between the eyebrows.</li><li><b>Benefits:</b> no fainting, hunger, thirst or laziness; free of disease, old age and death; radiant body; not burnt by fire, dried by wind or wetted by water; no snake bite; samadhi soon; the yogi tastes butter, ghee, milk, curd, buttermilk, honey, grape juice and nectar.</li></ul></div>
+        <div class="card"><h4>Viparitakarani (III 30&ndash;32) <span class="src gen">GSH</span></h4>
+          <ul class="plain"><li>Lie down, raise both legs vertical, support the hips with the hands, back about 45 degrees; do not jerk; concentrate on manipura and vishuddhi.</li><li><b>Benefits:</b> delays old age and death; becomes a siddha and does not perish even at dissolution (GS); grey hair becomes black in six months (HYP); blood to the brain.</li><li>Caution: high blood pressure, vertigo, weak heart, glaucoma, menstruation.</li></ul></div>
+      </div>
+      <div class="table-wrap"><table><tr><th>Mudra</th><th>Method (short)</th><th>Benefit</th></tr><tr><td><b>Nabho</b></td><td>Turn the tongue up towards the palate without effort and retain the breath. A preliminary form of khechari.</td><td>Destroys the diseases of yogis</td></tr><tr><td><b>Yoni</b></td><td>Siddhasana; close ears, eyes, nostrils and mouth with the fingers (six openings); inhale by kaki, join prana and apana; meditate on the six chakras; raise kundalini with the sounds hum and hamsah to sahasrara.</td><td>Samadhi</td></tr><tr><td><b>Vajroli</b></td><td>Class handout: hands on floor, legs and head up (like sirshasana without the head touching). Another handout gives the contraction of the genital muscles.</td><td>Kundalini; longevity; bindu control</td></tr><tr><td><b>Shakti chalani</b></td><td>In a closed room, a clean cloth 9 inches by 3 on the navel, ashes on the body, siddhasana, join prana and apana, ashvini until air enters sushumna.</td><td>Awakens kundalini</td></tr><tr><td><b>Tadagi</b></td><td>After full exhalation, mock inhalation: draw the belly back so it looks like a pond.</td><td>Like uddiyana bandha</td></tr><tr><td><b>Manduki</b></td><td>Mouth closed, move the root of the tongue, swallow the nectar slowly. Not well described.</td><td>Keeps wrinkles and grey hair away</td></tr><tr><td><b>Shambhavi</b></td><td>Gaze fixed at the eyebrow centre, meditating on the Atman. To be guarded like a respected lady.</td><td>Brahman realisation</td></tr><tr><td><b>Ashvini</b></td><td>Contract and relax the anal sphincter.</td><td>Awakens kundalini</td></tr><tr><td><b>Pashini</b></td><td>Karnapidasana-like; bind the legs behind the neck with the arms as if with a rope.</td><td>Awakens kundalini</td></tr><tr><td><b>Kaki</b></td><td>Purse the lips like a crow&#8217;s beak and inhale slowly.</td><td>Destroys all diseases</td></tr><tr><td><b>Matangi</b></td><td>Neck-deep in water, draw water through the nostrils and throw it out through the mouth, then the reverse.</td><td>Destroys old age and death</td></tr><tr><td><b>Bhujangini</b></td><td>Stretch the neck and mouth slightly, draw air in through the throat and swallow it.</td><td>Destroys decay; stomach disorders and indigestion</td></tr></table></div>
+      <p class="honest"><b>Source note.</b> The vajroli technique is given two ways in your files (the inverted-body version and the muscle-contraction version). Use the second for the exam as the principal technique, and mention the first as the handout variant. Your handout also says the GS describes viparitakarani in verses III 30 to 32.</p>
+      <div class="blk exam">
+        <span class="lbl">Exam angle &middot; &ldquo;Mudras of the GS&rdquo; <span class="src cls">class</span><span class="src add">added</span></span>
+        <p>List the 16, group them, then describe maha, mahavedha and khechari fully (technique, benefit, caution). Give one line each for the rest.</p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Mudra with beating of the buttocks?</div><div class="a">Mahavedha</div></div>
+        <div class="recall-card"><div class="q">Which mudra needs the cloth 9 by 3 inches?</div><div class="a">Shakti chalani</div></div>
+        <div class="recall-card"><div class="q">Mudra of mock inhalation?</div><div class="a">Tadagi</div></div>
+        <div class="recall-card"><div class="q">Mudra with water through the nose?</div><div class="a">Matangi</div></div>
+      </div>
+
+      <div class="src-foot"><span class="src gen">GSH ch 3</span></div>
+    </section>
+    <section class="section" id="sec-bandhas">
+      <div class="sec-head">
+        <div class="kicker">03 &#183; Bandhas</div>
+        <h2>Four Bandhas and the Tribandha</h2>
+        <p class="dek">The GS gives only the differences from the HYP, so learn those, not the full method.</p>
+      </div>
+      <div class="stat-strip"><div class="stat"><div class="v">4</div><div class="k">GS bandhas</div></div><div class="stat"><div class="v">3</div><div class="k">tribandha</div></div><div class="stat"><div class="v">6</div><div class="k">months to adept: jalandhara</div></div><div class="stat"><div class="v">16</div><div class="k">adharas controlled</div></div></div>
+      <div class="table-wrap"><table><tr><th>Bandha</th><th>GS method</th><th>Benefit</th></tr><tr><td><b>Uddiyana</b></td><td>Same as HYP</td><td>The great bird (prana) flies upward; like a lion to the elephant of death; leads to liberation; the best bandha</td></tr><tr><td><b>Jalandhara</b></td><td>Same as HYP</td><td>Controls the 16 adharas; conquers death; six months of practice makes a yogi an adept</td></tr><tr><td><b>Moola</b></td><td>Same as HYP, but press or pull the navel back as in uddiyana</td><td>Wards off old age</td></tr><tr><td><b>Maha bandha</b></td><td>Same as HYP, but hold the breath with jalandhara; no shambhavi</td><td>Prevents decay and death; one gains what one desires</td></tr></table></div>
+      <div class="blk und">
+        <span class="lbl">Understand it &middot; tribandha <span class="src gen">GSH</span><span class="src add">added</span></span>
+        <ul class="plain"><li><b>Tribandha</b> = three locks: jalandhara (throat), uddiyana (abdomen), moola (perineum). Done together with kumbhaka they push prana into sushumna. This is why the Unit 4 heading is &ldquo;Tribandha and Panch-dharana&rdquo;: the three locks plus five dharanas.</li><li>Order for practice: jalandhara first at the end of inhalation, then uddiyana (after exhalation) or moola, release in the reverse order: moola, then jalandhara, then exhale.</li></ul>
+      </div>
+      <p class="honest"><b>Source note.</b> Your handout says &ldquo;six months&rdquo; of jalandhara makes one an adept. Unit 2 used the same figure for uddiyana (HYP 3.59). Keep the GS figure for jalandhara only.</p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Which bandha controls the 16 adharas?</div><div class="a">Jalandhara</div></div>
+        <div class="recall-card"><div class="q">Best of the bandhas?</div><div class="a">Uddiyana</div></div>
+        <div class="recall-card"><div class="q">Maha bandha: shambhavi used?</div><div class="a">No; only jalandhara</div></div>
+        <div class="recall-card"><div class="q">Moola bandha extra?</div><div class="a">Navel drawn back</div></div>
+      </div>
+
+      <div class="src-foot"><span class="src gen">GSH ch 3</span> <span class="src add">added</span></div>
+    </section>
+    <section class="section" id="sec-shatru">
+      <div class="sec-head">
+        <div class="kicker">04 &#183; Shat Shatru</div>
+        <h2>Six Enemies and Merging into the Self</h2>
+        <p class="dek">Two syllabus lines that your files do not cover; written from general background and tagged as added.</p>
+      </div>
+      <div class="stat-strip"><div class="stat"><div class="v">6</div><div class="k">inner enemies</div></div><div class="stat"><div class="v">0</div><div class="k">verses in your files</div></div><div class="stat"><div class="v">3</div><div class="k">things to check with teacher</div></div></div>
+      <p class="honest"><b>Source note.</b> Your files (the GS handouts, the notes and the slides) <b>do not contain</b> a section on <i>Shat Shatru</i> or <i>Atma Layatva</i>. What follows is general background, tagged as added by me; check with your teacher or book (Swami Niranjanananda&#8217;s Gheranda Samhita) before using it in an answer.</p>
+      <div class="blk und">
+        <span class="lbl">Shat Shatru &middot; the six enemies <span class="src add">added</span></span>
+        <ul class="plain"><li>The six inner enemies of the sadhaka are <b>kama</b> (craving), <b>krodha</b> (anger), <b>lobha</b> (greed), <b>moha</b> (delusion), <b>mada</b> (pride) and <b>matsarya</b> (jealousy).</li><li>Everyday image: a driver trying to reach a place with six backseat passengers, each pulling the wheel in a different direction. Yoga practice (shatkarma, asana, mudra, pratyahara) slowly makes them quiet.</li><li>Link to your notes: the six <b>badhaka tattvas</b> of the HYP (overeating, exertion, talkativeness, rule-clinging, company, unsteadiness) are the practical obstacles; shat shatru are the inner ones.</li></ul>
+      </div>
+      <div class="blk und">
+        <span class="lbl">Atma Layatva &middot; merging into the self <span class="src add">added</span></span>
+        <ul class="plain"><li>Layatva = dissolving. Atma layatva is the dissolving of the mind (and prana) into the Self, which is the meaning of samadhi in the GS: &ldquo;detaching the mind from the body and making it one with Paramatman&rdquo; (your handout).</li><li>The six samadhis in section 8 (dhyana, nada, rasananda, laya, bhakti, raja) are the six doors to the same state.</li><li>Memory: <b>Atma</b> = self, <b>laya</b> = melting, like salt in water: it is still there, but you cannot find it separately.</li></ul>
+      </div>
+      <div class="blk exam">
+        <span class="lbl">Exam angle <span class="src add">added</span></span>
+        <p>If this line comes as a question, give the definition, tie it to samadhi and to the sadhana nirliptam (becoming one with the self), and name your teacher&#8217;s text if you have it. I would ask for the class notes for this line.</p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Six enemies?</div><div class="a">Kama, krodha, lobha, moha, mada, matsarya</div></div>
+        <div class="recall-card"><div class="q">Meaning of layatva?</div><div class="a">Dissolution, merging</div></div>
+        <div class="recall-card"><div class="q">Sadhana from samadhi?</div><div class="a">Nirlipta</div></div>
+      </div>
+
+      <div class="src-foot"><span class="src add">added</span></div>
+    </section>
+    <section class="section" id="sec-dharana">
+      <div class="sec-head">
+        <div class="kicker">05 &#183; Dharanas</div>
+        <h2>The Five Dharanas</h2>
+        <p class="dek">Element, place, colour, bija, deity and benefit, in one table.</p>
+      </div>
+      <div class="stat-strip"><div class="stat"><div class="v">5</div><div class="k">dharanas</div></div><div class="stat"><div class="v">2</div><div class="k">hours of holding prana with chitta</div></div><div class="stat"><div class="v">5</div><div class="k">elements</div></div><div class="stat"><div class="v">5</div><div class="k">bijas: la, va, ra, ya, ha</div></div></div>
+      <div class="table-wrap"><table><tr><th>Dharana</th><th>Element and place</th><th>Colour and shape</th><th>Bija</th><th>Deity</th><th>Benefit</th></tr><tr><td><b>Adho (parthivi)</b></td><td>Earth, heart region (hridayakasha)</td><td>Four-sided; golden (handout)</td><td>La</td><td>Brahma</td><td>Conquers earth; steadiness</td></tr><tr><td><b>Ambhasi</b></td><td>Water</td><td>White like a conch, moon or kunda flower</td><td>Va</td><td>Vishnu</td><td>Destroys unbearable suffering and sin</td></tr><tr><td><b>Vaishvanari (agneyi)</b></td><td>Fire, at the navel</td><td>Red like indragopa; like the effulgent sun</td><td>Ra</td><td>Rudra</td><td>Destroys the dread of death</td></tr><tr><td><b>Vayavi</b></td><td>Air</td><td>Smoky, like a heap of shining powder; full of sattva</td><td>Ya</td><td>Ishvara</td><td>Experience of flying in air</td></tr><tr><td><b>Nabho (akashi)</b></td><td>Space (vyoma)</td><td>Like clear sea water</td><td>Ha</td><td>Sadashiva</td><td>Opens the door to liberation</td></tr></table></div>
+      <div class="blk mem">
+        <span class="lbl">Memory aid &middot; bijas and deities <span class="src add">added</span></span>
+        <p><b>La-Va-Ra-Ya-Ha</b> go from earth up to space; <b>Brahma, Vishnu, Rudra, Ishvara, Sadashiva</b> go from creator up to the all-pervading. Everyday image: five floors of a building, heavy at the bottom, light at the top.</p>
+      </div>
+      <div class="blk und">
+        <span class="lbl">Understand it <span class="src gen">GS notes</span></span>
+        <ul class="plain"><li>In each, imagine the element in its place with its colour, shape, letter and god, and hold prana together with chitta for two hours (the text gives two hours; practise only as much as is comfortable).</li><li>Each dharana gives a small gain, but the real result is steadiness (sthirata): the mind learns to stay on one thing.</li></ul>
+      </div>
+      <p class="honest"><b>Source note.</b> Colours differ between your handouts: the notes say the earth dharana is &ldquo;golden arsenic&rdquo; and the handout says &ldquo;golden&rdquo;; many editions give earth as yellow and water as white. The notes also say the deity of the fire dharana is Rudra &ldquo;Vishnu&rdquo; in one line, which is a typing slip. Use Rudra.</p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Bija of fire?</div><div class="a">Ra</div></div>
+        <div class="recall-card"><div class="q">Which dharana gives flying?</div><div class="a">Vayavi</div></div>
+        <div class="recall-card"><div class="q">Duration?</div><div class="a">Two hours</div></div>
+        <div class="recall-card"><div class="q">Which opens the door to liberation?</div><div class="a">Nabho</div></div>
+      </div>
+
+      <div class="src-foot"><span class="src gen">GSH, GS notes</span> <span class="src add">added</span></div>
+    </section>
+    <section class="section" id="sec-pratyahara">
+      <div class="sec-head">
+        <div class="kicker">06 &#183; Pratyahara</div>
+        <h2>Pratyahara: Withdrawing the Senses</h2>
+        <p class="dek">Five short practices, one per sense; same rule each time.</p>
+      </div>
+      <div class="stat-strip"><div class="stat"><div class="v">5</div><div class="k">senses</div></div><div class="stat"><div class="v">1</div><div class="k">rule: mind follows the senses</div></div><div class="stat"><div class="v">4th</div><div class="k">chapter (sadhana: dhairya)</div></div><div class="stat"><div class="v">0</div><div class="k">equipment</div></div></div>
+      <div class="table-wrap"><table><tr><th>Sense</th><th>What the mind is drawn back from</th></tr><tr><td>Hearing (sound)</td><td>All sounds, pleasant or unpleasant</td></tr><tr><td>Touch</td><td>Cold and heat</td></tr><tr><td>Sight</td><td>Whatever the eye falls on, because the mind follows the sight</td></tr><tr><td>Smell</td><td>Good and bad smells (see note)</td></tr><tr><td>Taste</td><td>Sweet, sour, bitter and other tastes (see note)</td></tr></table></div>
+      <div class="blk und">
+        <span class="lbl">Understand it <span class="src gen">GS notes</span><span class="src add">added</span></span>
+        <ul class="plain"><li>Pratyahara means pulling back. In each case the practice is the same: notice what the sense is pulling the mind toward, withdraw the mind, and bring it under the control of the Self.</li><li>The result is <b>dhairya</b> (composure). Everyday image: a child following every shop window; pratyahara is gently holding the child&#8217;s hand.</li></ul>
+      </div>
+      <p class="honest"><b>Source note.</b> Your notes label the fourth line &ldquo;Taste&rdquo; but describe smells, and the fifth &ldquo;Smell&rdquo; but describe tastes. I have swapped them in the table so each sense matches its object. Check with your teacher which order the GS verses use.</p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Sadhana from pratyahara?</div><div class="a">Dhairya (composure)</div></div>
+        <div class="recall-card"><div class="q">How many practices?</div><div class="a">Five, one per sense</div></div>
+        <div class="recall-card"><div class="q">Where does the mind go?</div><div class="a">Where the sight falls</div></div>
+      </div>
+
+      <div class="src-foot"><span class="src gen">GS notes</span></div>
+    </section>
+    <section class="section" id="sec-ahara">
+      <div class="sec-head">
+        <div class="kicker">07 &#183; Place, Time, Food</div>
+        <h2>Place, Time, Diet and Forbidden Food</h2>
+        <p class="dek">The conditions the Gheranda Samhita sets before pranayama.</p>
+      </div>
+      <div class="stat-strip"><div class="stat"><div class="v">2</div><div class="k">good seasons: spring, autumn</div></div><div class="stat"><div class="v">4</div><div class="k">bad seasons</div></div><div class="stat"><div class="v">3/4+1/4</div><div class="k">mitahara split</div></div><div class="stat"><div class="v">8</div><div class="k">kumbhakas after this</div></div></div>
+      <div class="cols2">
+        <div class="card"><h4>Sthana (place) &middot; kuteera <span class="src gen">GS ch 4 handout</span></h4>
+          <ul class="plain"><li>Not far away with no security, not in a forest with no protection, not in a capital city or crowd.</li><li>A well-governed place where alms come easily and there is no nuisance.</li><li>A <b>kuteera</b> (cottage): with a compound, a well or pond; neither too high nor too low; free of insects; floor smeared with cow dung; secluded.</li></ul></div>
+        <div class="card"><h4>Kala (time) <span class="src gen">GS ch 4 handout</span></h4>
+          <ul class="plain"><li>Do not begin in hemanta (early winter), shishira (winter), grishma (summer) or varsha (monsoon): it causes sickness.</li><li>Best: <b>vasanta</b> (spring) and <b>sharad</b> (autumn): the yogi becomes free of disease and successful.</li><li>Daily timing is in your HYP notes: 4 a.m. brahmamuhurta and evening.</li></ul></div>
+      </div>
+      <div class="blk und">
+        <span class="lbl">Mitahara (moderate diet) <span class="src gen">GS ch 4 handout</span></span>
+        <ul class="plain"><li>Fresh, pure, pleasant, a little oily food. Fill <b>half</b> the stomach with food, <b>a quarter</b> with water, and leave <b>a quarter</b> empty for air. Eat with devotion (verses 21&ndash;22).</li><li>Without mitahara, pranayama brings many diseases and no progress.</li><li>In the beginning take milk and ghee, and two meals a day: noon and evening (verse 32).</li></ul>
+      </div>
+      <div class="table-wrap"><table><tr><th>Pathya (good)</th><th>Apathya (avoid)</th></tr><tr><td>Red rice, barley and wheat flour, green gram, horse gram, Bengal gram (clean, husk free); snake gourd, yam, plantain in all forms, brinjal, leafy vegetables (five kinds), fresh butter, ghee, milk, sugar cane, jaggery, coconut, pomegranate, grapes, cardamom, dates, nuts, cloves, rose apple, harad</td><td>Bitter, sour, salty and pungent foods; dry food, curd and buttermilk; heavy vegetables; liquor; palm nuts; jackfruit; kulatha, masoora, ash gourd, vegetable stems, gourds, berries, bilva, garlic, hing and similar; hard, polluted, putrid, stale, very hot or very cold food</td></tr></table></div>
+      <div class="blk know">
+        <span class="lbl">Know this &middot; nishiddha (forbidden) habits <span class="src gen">GS ch 4 handout</span></span>
+        <ul class="plain"><li>Avoid long travel, the company of bad people, sitting by a fire, early-morning bath and fasting, and anything that causes fatigue.</li><li>Avoid eating only once a day, not eating at all, or eating again within three hours (verse 31).</li><li>Food should be easy to digest, agreeable, soft, and nourish the seven dhatus.</li></ul>
+      </div>
+      <p class="honest"><b>Source note.</b> The handout lists items such as &ldquo;dragon fruit&rdquo; and &ldquo;a fragrant spicy chilli&rdquo; as translations of Sanskrit names; these are uncertain identifications (the verse names are dadima, karkotaki, rambha, dumbari etc.). Learn the categories, not each fruit. The list of pathya foods in the HYP (Unit 1) is different from this one.</p>
+      <div class="blk exam">
+        <span class="lbl">Exam angle <span class="src cls">class</span><span class="src add">added</span></span>
+        <p>The syllabus line is &ldquo;Sthana, Kala, Mitahara, Nishiddha Ahara&rdquo;. Answer with four short paragraphs: place (kuteera), time (spring/autumn), mitahara (1/2 + 1/4 + 1/4), and forbidden foods and habits.</p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Best seasons?</div><div class="a">Vasanta and sharad</div></div>
+        <div class="recall-card"><div class="q">Mitahara split?</div><div class="a">Half food, quarter water, quarter air</div></div>
+        <div class="recall-card"><div class="q">Name of the practice hut?</div><div class="a">Kuteera</div></div>
+        <div class="recall-card"><div class="q">Starting diet?</div><div class="a">Milk, ghee, two meals</div></div>
+      </div>
+
+      <div class="src-foot"><span class="src gen">GS ch 4 handout</span></div>
+    </section>
+    <section class="section" id="sec-pranayama">
+      <div class="sec-head">
+        <div class="kicker">08 &#183; Pranayama</div>
+        <h2>Pranayama in the Gheranda Samhita</h2>
+        <p class="dek">Nadishuddhi first, then eight kumbhakas, with the pranas and upapranas.</p>
+      </div>
+      <div class="stat-strip"><div class="stat"><div class="v">8</div><div class="k">kumbhakas</div></div><div class="stat"><div class="v">2</div><div class="k">kinds of nadishuddhi</div></div><div class="stat"><div class="v">5+5</div><div class="k">pranas and upapranas</div></div><div class="stat"><div class="v">72000</div><div class="k">nadis</div></div></div>
+      <div class="table-wrap"><table><tr><th>#</th><th>Kumbhaka</th><th>Core method</th><th>Benefit</th></tr><tr><td>1</td><td><b>Sahita</b></td><td>Sagarbha (with a/u/m bijas, 16:64:32) and nigarbha (without bijas, measured in matras)</td><td>Levitation, trembling, warmth; manonmani; calms the mind</td></tr><tr><td>2</td><td><b>Surya bhedana</b></td><td>Inhale right, retain with jalandhara until heat reaches nails and hair roots, exhale left</td><td>Prevents old age and death; wakes kundalini; raises fire</td></tr><tr><td>3</td><td><b>Ujjayi</b></td><td>Inhale through both nostrils, fill chest and throat, jalandhara, retain, exhale</td><td>Removes mucus disorders; indigestion; rheumatism; consumption; cough; fever; spleen</td></tr><tr><td>4</td><td><b>Sheetali</b></td><td>Tongue out and rolled, draw air, fill the stomach, retain, exhale through the nose</td><td>Free from indigestion; phlegm and bile disorders</td></tr><tr><td>5</td><td><b>Bhastrika</b></td><td>Quick equal breaths like a bellows, 20 times, then kumbhaka; three rounds</td><td>No disease; health grows daily</td></tr><tr><td>6</td><td><b>Bhramari</b></td><td>At midnight, close the ears, kumbhaka, listen to inner sounds with the right ear</td><td>Samadhi</td></tr><tr><td>7</td><td><b>Murchha</b></td><td>Inhale, retain, fix the mind between the eyebrows</td><td>Mind faints; happiness</td></tr><tr><td>8</td><td><b>Kevali</b></td><td>Make kumbhaka spontaneous in the natural pauses; mentally chant so-ham 15 times per minute</td><td>Effortless retention; unmani state</td></tr></table></div>
+      <div class="blk und">
+        <span class="lbl">Nadishuddhi &middot; the preparation <span class="src gen">GS ch 4 handout</span></span>
+        <ul class="plain"><li>Sit facing east or north on kusha grass, antelope skin, tiger skin or a blanket. Nadishuddhi is required before the eight kumbhakas: when the nadis are clean prana enters sushumna easily.</li><li><b>Samanu</b>: done with bija mantras. Vayu bija <i>yam</i> (inhale left 16, retain 64, exhale right 32), then agni bija <i>ram</i> (right in, left out), then moon <i>tham</i>/<i>vam</i>/<i>lam</i> (left in, right out; right in, left out), in a 16:64:32 pattern.</li><li><b>Nirmanu</b>: done through the dhauti group (vatasara, varisara, vahnisara, bahiskrita) without mantra.</li></ul>
+      </div>
+      <div class="cols2">
+        <div class="card"><h4>Sahita in detail <span class="src gen">GS ch 4 handout</span></h4>
+          <ul class="plain"><li><b>Sagarbha:</b> inhale left with <i>a</i> (red, Brahma, rajas) 16 times; uddiyana; retain with <i>u</i> (dark blue, Vishnu, sattva) 64 times; exhale right with <i>m</i> (white, Shiva, tamas) 32 times; then the other side.</li><li><b>Nigarbha:</b> no bija; the ratio 20:80:40 (best), 16:64:32 (middle) or 12:48:24 (low) matras. One matra = one turn of the left palm round the left knee.</li></ul></div>
+        <div class="card"><h4>Results by grade <span class="src gen">GS ch 4 handout</span></h4>
+          <ul class="plain"><li>Best (uttama): levitation. Middle: trembling of the spine. Lowest: warmth.</li><li>Also: moving in the air, diseases destroyed, kundalini wakes, manonmani, bliss.</li></ul></div>
+      </div>
+      <div class="table-wrap"><table><tr><th>Prana</th><th>Place and work</th><th>Upaprana</th><th>Work</th></tr><tr><td><b>Prana</b></td><td>Heart: breathing, heartbeat</td><td>Naga</td><td>Belching, hiccup</td></tr><tr><td><b>Apana</b></td><td>Anus: excretion</td><td>Kurma</td><td>Blinking</td></tr><tr><td><b>Samana</b></td><td>Navel: digestion</td><td>Krikara</td><td>Sneezing, hunger, thirst</td></tr><tr><td><b>Udana</b></td><td>Throat: sense receptors, speech</td><td>Devadatta</td><td>Yawning, sleep</td></tr><tr><td><b>Vyana</b></td><td>Whole body: circulation through 72,000 nadis</td><td>Dhananjaya</td><td>Opening and closing of heart valves; decays the body after death</td></tr></table></div>
+      <p class="honest"><b>Source note.</b> The slide total says &ldquo;10 pranayamas&rdquo; but the verse lists <b>eight</b> kumbhakas (sahita, surya bhedana, ujjayi, sheetali, bhastrika, bhramari, murchha, kevali). Answer eight. The sheetali exhalation is through the nostrils (not the mouth).</p>
+      <div class="blk exam">
+        <span class="lbl">Exam angle <span class="src cls">class</span><span class="src add">added</span></span>
+        <p>List the eight, then give three in full (sahita, surya bhedana, bhramari) with method, ratio, benefit and caution. Add one line on nadishuddhi before them. Compare with the HYP list in Unit 1: sitkari in the HYP, sahita and kevali in the GS.</p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">First step before kumbhakas?</div><div class="a">Nadishuddhi</div></div>
+        <div class="recall-card"><div class="q">Sagarbha ratio?</div><div class="a">16:64:32 with bija a-u-m</div></div>
+        <div class="recall-card"><div class="q">Pranas?</div><div class="a">Prana, apana, samana, udana, vyana</div></div>
+        <div class="recall-card"><div class="q">Which is practised at midnight?</div><div class="a">Bhramari</div></div>
+      </div>
+
+      <div class="src-foot"><span class="src gen">GS ch 4 handout</span></div>
+    </section>
+    <section class="section" id="sec-dhyana">
+      <div class="sec-head">
+        <div class="kicker">09 &#183; Dhyana, Samadhi</div>
+        <h2>Dhyana and Samadhi in the Gheranda Samhita</h2>
+        <p class="dek">Three meditations and six samadhis, each with its key.</p>
+      </div>
+      <div class="stat-strip"><div class="stat"><div class="v">3</div><div class="k">dhyanas</div></div><div class="stat"><div class="v">6</div><div class="k">samadhis</div></div><div class="stat"><div class="v">100&times;</div><div class="k">tejo over sthula</div></div><div class="stat"><div class="v">100,000&times;</div><div class="k">sukshma over tejo</div></div></div>
+      <div class="table-wrap"><table><tr><th>Dhyana</th><th>What you meditate on</th></tr><tr><td><b>Sthula</b> (gross, with form)</td><td>A chosen form or deity (ishtadevata) set in the heart: an island of gems in an ocean of nectar, with trees, flowers and a jewelled platform</td></tr><tr><td><b>Tejo (jyoti)</b> (light)</td><td>Kundalini at mooladhara as a serpent; the jiva as the crest of a flame; the light at the eyebrow centre, which is the pranava beyond the mind</td></tr><tr><td><b>Sukshma</b> (subtle)</td><td>Kundalini uniting with the Atman at brahmarandhra, through shambhavi mudra</td></tr></table></div>
+      <div class="blk know">
+        <span class="lbl">Know this <span class="src gen">GS ch 6 handout</span></span>
+        <ul class="plain"><li>Tejo is a hundred times better than sthula; sukshma a hundred thousand times better than tejo. These give <b>pratyaksha</b> (direct perception).</li><li>Sthula practice: sit in a comfortable pose, head and spine straight, chin mudra, eyes closed, relax; imagine the heart ocean and island and your ishtadevata on the throne; stay there to still the mind.</li></ul>
+      </div>
+      <div class="table-wrap"><table><tr><th>#</th><th>Samadhi</th><th>Through</th><th>Result</th></tr><tr><td>1</td><td><b>Dhyana yoga</b></td><td>Shambhavi mudra</td><td>Sees the Self as boundless space (Khamaya Brahman)</td></tr><tr><td>2</td><td><b>Nada yoga</b></td><td>Khechari mudra</td><td>Samadhi follows</td></tr><tr><td>3</td><td><b>Rasananda</b></td><td>Bhramari kumbhaka (slow humming breath)</td><td>So-ham arises; great bliss</td></tr><tr><td>4</td><td><b>Laya yoga</b></td><td>Yoni mudra</td><td>Shakti and Purusha united; aham brahma</td></tr><tr><td>5</td><td><b>Bhakti yoga</b></td><td>Deity in the heart with devotion and tears of joy</td><td>Manonmani state</td></tr><tr><td>6</td><td><b>Raja yoga</b></td><td>Manomurchha kumbhaka</td><td>Manas united with the Atman</td></tr></table></div>
+      <div class="blk und">
+        <span class="lbl">Understand it <span class="src gen">GS ch 6 handout</span><span class="src add">added</span></span>
+        <ul class="plain"><li>Samadhi in the GS is detaching the mind from the body and making it one with the Supreme Self. It is attained by the grace of the guru and gives <b>nirlipta</b> (unattached).</li><li>The six are six doors to one room: by the eyes (shambhavi), the tongue (khechari), the ears (bhramari), the heart (yoni, bhakti), and the mind (manomurchha).</li></ul>
+      </div>
+      <p class="honest"><b>Source note.</b> Your files give &ldquo;Rasananda samadhi&rdquo; under bhramari mudra and also say bhramari kumbhaka; same practice. Chapter numbering: the slides call the dhyana chapter the sixth (shashtha) and samadhi the seventh (saptama); the handout title says &ldquo;chapter VIII&rdquo; for samadhi, which looks like a slip.</p>
+      <div class="blk exam">
+        <span class="lbl">Exam angle <span class="src cls">class</span><span class="src add">added</span></span>
+        <p>Name the three dhyanas with the 100 and 100,000 ratios, then the six samadhis with the mudra or kumbhaka that gives each. Finish with the link to the HYP: samadhi is raja yoga, the aim of hatha yoga.</p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Three dhyanas?</div><div class="a">Sthula, tejo (jyoti), sukshma</div></div>
+        <div class="recall-card"><div class="q">Samadhi through khechari?</div><div class="a">Nada yoga samadhi</div></div>
+        <div class="recall-card"><div class="q">Samadhi through yoni mudra?</div><div class="a">Laya yoga</div></div>
+        <div class="recall-card"><div class="q">Last samadhi?</div><div class="a">Raja yoga, through manomurchha</div></div>
+      </div>
+
+      <div class="src-foot"><span class="src gen">GS ch 6 handout, notes</span></div>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
+</script>

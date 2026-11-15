@@ -1,0 +1,666 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mudras &amp; Bandhas</title>
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  @media (max-width:640px){ .fig.wide-svg{ overflow-x:auto; -webkit-overflow-scrolling:touch; } .fig.wide-svg svg{ min-width:540px; } .fig.wide-svg::after{ content:"swipe sideways to see the whole diagram"; display:block; font-size:11px; color:var(--muted); text-align:center; margin-top:4px; } }
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .fig.photo img{ max-width:100%; height:auto; border-radius:8px; }
+  .dv{ font-family:"Noto Sans Devanagari","Kohinoor Devanagari","Devanagari Sangam MN","Mukta",serif; font-size:18px; line-height:1.9; color:var(--ink); background:var(--surface-2); border-radius:8px; padding:8px 14px 8px; margin:0 0 10px; }
+  .dv .dvn{ display:block; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); line-height:1.4; margin-bottom:2px; }
+  .dv .gl{ font-family:"Inter",system-ui,sans-serif; font-size:13.5px; line-height:1.5; color:var(--ink-soft); margin:4px 0 0; border-top:1px dashed var(--border); padding-top:5px; }
+  .sk{ font-family:"Fraunces",Georgia,serif; font-style:italic; color:var(--ink); }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Mudras &amp; Bandhas</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../index.html">&larr; T2 &middot; Applications of Hatha Yoga</a>
+    <div class="brand">
+      <div class="eyebrow">Applications of Hatha Yoga</div>
+      <h1>Mudras &amp; Bandhas</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="overview"><span class="num">01</span><span>Mudras &amp; Bandhas: the Ten</span></button>
+      <button class="nav-item" data-target="maha"><span class="num">02</span><span>Maha Mudra, Bandha &amp; Vedha</span></button>
+      <button class="nav-item" data-target="khechari"><span class="num">03</span><span>Khechari: its Importance</span></button>
+      <button class="nav-item" data-target="last3"><span class="num">04</span><span>Viparita, Vajroli, Shakti Chalana</span></button>
+      <button class="nav-item" data-target="bandhas"><span class="num">05</span><span>The Three Bandhas</span></button>
+      <button class="nav-item" data-target="nada"><span class="num">06</span><span>Nadanusandhana</span></button>
+      <button class="nav-item" data-target="synonyms"><span class="num">07</span><span>Samadhi Synonyms</span></button>
+      <button class="nav-item" data-target="manas"><span class="num">08</span><span>Manas &amp; Prana</span></button>
+      <button class="nav-item" data-target="slokas"><span class="num">09</span><span>Slokas (Devanagari)</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Sources: your class notes (29 Oct and 9 Nov 2026), the Dasha Mudra seminar notes, Hatha Yoga Pradipika chapters 3 and 4 with Muktibodhananda&#8217;s commentary (Bihar School), the verses PDF, and the Gheranda Samhita chapter 3 notes.
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="section" id="sec-overview">
+      <div class="sec-head">
+        <div class="kicker">01 &#183; Mudra and Bandha</div>
+        <h2>The Ten Mudras of the Hatha Yoga Pradipika</h2>
+        <p class="dek">HYP chapter 3 opens with kundalini and then lists the ten practices that destroy old age and death. Everything in this unit hangs on that list.</p>
+      </div>
+      <div class="stat-strip"><div class="stat"><div class="v">10</div><div class="k">mudras and bandhas (HYP 3.6&ndash;7)</div></div><div class="stat"><div class="v">6+4</div><div class="k">six mudras and four bandhas</div></div><div class="stat"><div class="v">4</div><div class="k">stages of nada (HYP 4.69)</div></div><div class="stat"><div class="v">16</div><div class="k">names of the highest state (HYP 4.3&ndash;4)</div></div></div>
+      <div class="table-wrap"><table><tr><th>Your syllabus line</th><th>Section</th><th>HYP verses</th></tr><tr><td>Dasa-mudras, important bandhas and benefits</td><td>2, 3, 4, 5, 6</td><td>3.6&ndash;130 (bandhas 3.55&ndash;77)</td></tr><tr><td>Importance of Khechari</td><td>4</td><td>3.32&ndash;54; 4.38&ndash;53</td></tr><tr><td>Nadanusandhana, Samadhi synonyms</td><td>8, 7</td><td>4.3&ndash;4; 4.64&ndash;102</td></tr><tr><td>Correlation of Manas and Prana (H.P.)</td><td>9</td><td>4.21&ndash;30</td></tr></table></div>
+      <div class="blk und">
+        <span class="lbl">Understand it &middot; what a mudra and a bandha are <span class="src cls">class</span><span class="src gen">HYP book</span></span>
+        <ul class="plain"><li><b>Mudra</b> = seal, gesture or attitude. A mudra is a body position that <b>channels the energy</b> made by asana and pranayama into particular centres and arouses a particular state of mind (Muktibodhananda on 3.5).</li><li><b>Bandha</b> = lock. A bandha is a muscular contraction that <b>holds prana in one region</b>: throat (jalandhara), abdomen (uddiyana), perineum (moola).</li><li>In the old tantric texts <i>all</i> of these were called mudras. Hatha yoga separated the words: jalandhara, uddiyana and moola became <b>bandhas</b>, but the three together become a <b>mudra</b> (maha mudra, the &ldquo;great attitude&rdquo;).</li><li>So the HYP&#8217;s list of ten holds <b>six mudras and four bandhas</b>. Some texts call the same practice a mudra and others a bandha, so a difference in name between books is normal.</li><li>Why they matter: sloka 3.5 says the sleeping kundalini at the door of Brahma must be roused with all effort by practising mudra. Asana and pranayama give &ldquo;minor&rdquo; benefits; mudra and bandha give the &ldquo;major&rdquo; siddhis (3.8).</li></ul>
+      </div>
+      <div class="dv"><span class="dvn">verse 3.6&ndash;7</span>&#2350;&#2361;&#2366;&#2350;&#2369;&#2342;&#2381;&#2352;&#2366; &#2350;&#2361;&#2366;&#2348;&#2344;&#2381;&#2343;&#2379; &#2350;&#2361;&#2366;&#2357;&#2375;&#2343;&#2358;&#2381;&#2330; &#2326;&#2375;&#2330;&#2352;&#2368; &#2404;<br>&#2313;&#2337;&#2381;&#2337;&#2368;&#2351;&#2366;&#2344;&#2306; &#2350;&#2370;&#2354;&#2348;&#2344;&#2381;&#2343;&#2358;&#2381;&#2330; &#2348;&#2344;&#2381;&#2343;&#2379; &#2332;&#2366;&#2354;&#2344;&#2381;&#2343;&#2352;&#2366;&#2349;&#2367;&#2343;&#2307; &#2405;<br>&#2325;&#2352;&#2339;&#2368; &#2357;&#2367;&#2346;&#2352;&#2368;&#2340;&#2366;&#2326;&#2381;&#2351;&#2366; &#2357;&#2332;&#2381;&#2352;&#2379;&#2354;&#2368; &#2358;&#2325;&#2381;&#2340;&#2367;&#2330;&#2366;&#2354;&#2344;&#2350;&#2381; &#2404;<br>&#2311;&#2342;&#2306; &#2361;&#2367; &#2350;&#2369;&#2342;&#2381;&#2352;&#2366;&#2342;&#2358;&#2325;&#2306; &#2332;&#2352;&#2366;&#2350;&#2352;&#2339;&#2344;&#2366;&#2358;&#2344;&#2350;&#2381; &#2405;<p class="gl">Maha mudra, maha bandha, maha vedha, khechari, uddiyana, moola bandha and jalandhara bandha; viparita karani, vajroli and shakti chalana. These ten mudras destroy old age and death.</p></div>
+      <div class="blk mem">
+        <span class="lbl">Memory aid &middot; ten as 3 + 1 + 3 + 3 <span class="src add">added</span></span>
+        <p><b>Three Mahas</b> (mudra, bandha, vedha) &rarr; <b>Khechari</b> &rarr; <b>three locks</b> (Uddiyana, Moola, Jalandhara) &rarr; <b>the last three</b> (Viparita karani, Vajroli, Shakti chalana). That is 3+1+3+3 = 10, in the order of the verse.</p>
+      </div>
+      <div class="blk know">
+        <span class="lbl">Know this &middot; three rules the text repeats <span class="src gen">HYP 3.2, 3.8, 3.9</span></span>
+        <ul class="plain"><li><b>Guru:</b> kundalini is awakened by the guru&#8217;s grace (3.2). Muktibodhananda warns that raising it without a guru can be disturbing and hazardous.</li><li><b>Siddhis are a by-product:</b> Adinath says the ten give the eight divine powers (3.8) but Patanjali says siddhis are obstacles to samadhi, so they are not the aim.</li><li><b>Secrecy:</b> guard them like a box of jewels (3.9). This is why the text gives only outlines and the details come from the teacher.</li></ul>
+      </div>
+      <p class="honest"><b>Source note.</b> Your class notes on this unit are short: the four bandhas and their order (29 Oct) and the seminar task &ldquo;Dasha mudra, compare with Gheranda Samhita&rdquo; (9 Nov). The detail on every mudra below comes from the HYP verses, Muktibodhananda&#8217;s commentary and the Dasha Mudra seminar notes, and is tagged. The Gheranda chapter 3 notes group mudras by type (hasta, mukha, kaya, adhara, bandha); the HYP does not.</p>
+      <div class="blk exam">
+        <span class="lbl">Exam angle &middot; how to write a mudra answer <span class="src cls">class</span></span>
+        <p>Your teacher&#8217;s pattern for practices: <b>sloka</b> &rarr; <b>short introduction</b> &rarr; <b>technique with breathing</b> &rarr; <b>benefits</b> &rarr; <b>chakra</b>. For &ldquo;Describe the Dasa-mudras&rdquo;, write the verse 3.6&ndash;7 list, one or two lines on what a mudra is, then three or four lines per mudra (position, breath and lock, benefit).</p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">How many mudras in the HYP list?</div><div class="a">Ten: six mudras and four bandhas (3.6&ndash;7)</div></div>
+        <div class="recall-card"><div class="q">Mudra vs bandha?</div><div class="a">Mudra: seal or attitude that directs prana. Bandha: a lock that holds prana in one place</div></div>
+        <div class="recall-card"><div class="q">Which bandhas are in the ten?</div><div class="a">Maha, uddiyana, moola, jalandhara</div></div>
+        <div class="recall-card"><div class="q">Why keep mudras secret?</div><div class="a">HYP 3.9: guard them like jewels; learn from the guru</div></div>
+        <div class="recall-card"><div class="q">What do mudras and bandhas give?</div><div class="a">Major siddhis (3.8), but siddhis are not the goal</div></div>
+      </div>
+
+      <div class="src-foot"><span class="src cls">class</span> notes 29 Oct and 9 Nov 2026 <span class="src gen">HYP book</span> Muktibodhananda on 3.1&ndash;9</div>
+    </section>
+    <section class="section" id="sec-maha">
+      <div class="sec-head">
+        <div class="kicker">02 &#183; Maha Trio</div>
+        <h2>Maha Mudra, Maha Bandha and Maha Vedha</h2>
+        <p class="dek">HYP 3.10&ndash;31. Three practices that are taught as one sequence: gather the energy, lock it in, then drive it into sushumna.</p>
+      </div>
+      <div class="stat-strip"><div class="stat"><div class="v">3.10&ndash;18</div><div class="k">maha mudra</div></div><div class="stat"><div class="v">3.19&ndash;25</div><div class="k">maha bandha</div></div><div class="stat"><div class="v">3.26&ndash;31</div><div class="k">maha vedha</div></div><div class="stat"><div class="v">1</div><div class="k">sequence: gather, lock, channel</div></div></div>
+      <div class="blk und">
+        <span class="lbl">Understand it &middot; the three work as one sequence <span class="src gen">HYP book</span></span>
+        <ul class="plain"><li>HYP 3.25 says maha mudra and maha bandha are fruitless without maha vedha, as a beautiful woman is nothing without a husband.</li><li>Muktibodhananda&#8217;s picture: maha mudra and maha bandha fill the tank and start the engine; <b>maha vedha is releasing the brake and steering</b>. Without it, the energy may fall back into ida, pingala or mooladhara.</li><li>So the order is <b>maha mudra &rarr; maha bandha &rarr; maha vedha</b>, and 3.30&ndash;31 calls the three together a great secret that destroys old age and death and raises the digestive fire.</li></ul>
+      </div>
+      <h3 class="sub"><span class="n">A</span>Maha mudra: the great attitude</h3>
+      <div class="dv"><span class="dvn">verse 3.10</span>&#2346;&#2366;&#2342;&#2350;&#2370;&#2354;&#2375;&#2344; &#2357;&#2366;&#2350;&#2375;&#2344; &#2351;&#2379;&#2344;&#2367;&#2306; &#2360;&#2350;&#2381;&#2346;&#2368;&#2337;&#2381;&#2351; &#2342;&#2325;&#2381;&#2359;&#2367;&#2339;&#2366;&#2350;&#2381; &#2404;<br>&#2346;&#2381;&#2352;&#2360;&#2366;&#2352;&#2367;&#2340;&#2306; &#2346;&#2342;&#2306; &#2325;&#2371;&#2340;&#2381;&#2357;&#2366; &#2325;&#2352;&#2366;&#2349;&#2381;&#2351;&#2366;&#2306; &#2343;&#2366;&#2352;&#2351;&#2375;&#2342;&#2381;&#2342;&#2371;&#2338;&#2350;&#2381; &#2405;<p class="gl">Press the perineum with the left heel, stretch the right leg and hold the foot firmly with both hands.</p></div>
+      <div class="dv"><span class="dvn">verse 3.11</span>&#2325;&#2339;&#2381;&#2336;&#2375; &#2348;&#2344;&#2381;&#2343;&#2306; &#2360;&#2350;&#2366;&#2352;&#2379;&#2346;&#2381;&#2351; &#2343;&#2366;&#2352;&#2351;&#2375;&#2342;&#2381;&#2357;&#2366;&#2351;&#2369;&#2350;&#2370;&#2352;&#2381;&#2343;&#2381;&#2357;&#2340;&#2307; &#2404;<br>&#2351;&#2341;&#2366; &#2342;&#2339;&#2381;&#2337;&#2361;&#2340;&#2307; &#2360;&#2352;&#2381;&#2346;&#2379; &#2342;&#2339;&#2381;&#2337;&#2366;&#2325;&#2366;&#2352;&#2307; &#2346;&#2381;&#2352;&#2332;&#2366;&#2351;&#2340;&#2375; &#2405;<p class="gl">Apply the throat lock and hold the breath: prana rises straight like a snake struck with a stick.</p></div>
+      <div class="cols2">
+        <div class="card"><h4>Technique (Muktibodhananda) <span class="src gen">HYP book</span></h4>
+          <ul class="plain"><li>Sit with the right leg stretched, left heel at the perineum. Breathing out, lean forward and hold the big toe, head erect, back straight.</li><li>Khechari mudra, inhale slowly, tilt head back slightly, <b>shambhavi</b> (gaze at the eyebrow centre).</li><li>Hold the breath, apply <b>moola bandha</b>, rotate awareness through <b>ajna, vishuddhi, mooladhara</b>.</li><li>Release moola, lower the head, exhale slowly. Three rounds on each side, then three with both legs stretched.</li></ul></div>
+        <div class="card"><h4>Benefits and cautions <span class="src gen">HYP 3.14&ndash;18</span></h4>
+          <ul class="plain"><li>Slow exhale only, never fast (3.13). The kundalini &ldquo;straightens&rdquo; and ida and pingala go still as energy enters sushumna.</li><li>Removes the five kleshas and the causes of death (3.14). Foods and even poisons are digested like nectar (3.16).</li><li>Eases consumption, leprosy, constipation, enlarged spleen and indigestion (3.17).</li><li>Avoid with heart problems, high blood pressure, back or knee pain; learn from a guru (class notes).</li></ul></div>
+      </div>
+      <h3 class="sub"><span class="n">B</span>Maha bandha: the great lock</h3>
+      <div class="dv"><span class="dvn">verse 3.19&ndash;20</span>&#2346;&#2366;&#2352;&#2381;&#2359;&#2381;&#2339;&#2367;&#2306; &#2357;&#2366;&#2350;&#2360;&#2381;&#2351; &#2346;&#2366;&#2342;&#2360;&#2381;&#2351; &#2351;&#2379;&#2344;&#2367;&#2360;&#2381;&#2341;&#2366;&#2344;&#2375; &#2344;&#2367;&#2351;&#2379;&#2332;&#2351;&#2375;&#2340;&#2381; &#2404;<br>&#2357;&#2366;&#2350;&#2379;&#2352;&#2369;&#2346;&#2352;&#2367; &#2360;&#2306;&#2360;&#2381;&#2341;&#2366;&#2346;&#2381;&#2351; &#2342;&#2325;&#2381;&#2359;&#2367;&#2339;&#2306; &#2330;&#2352;&#2339;&#2306; &#2340;&#2341;&#2366; &#2405;<br>&#2346;&#2370;&#2352;&#2351;&#2367;&#2340;&#2381;&#2357;&#2366; &#2340;&#2340;&#2379; &#2357;&#2366;&#2351;&#2369;&#2306; &#2361;&#2371;&#2342;&#2351;&#2375; &#2330;&#2367;&#2348;&#2369;&#2325;&#2306; &#2342;&#2371;&#2338;&#2350;&#2381; &#2404;<br>&#2344;&#2367;&#2359;&#2381;&#2346;&#2368;&#2337;&#2381;&#2351; &#2357;&#2366;&#2351;&#2369;&#2350;&#2366;&#2325;&#2369;&#2334;&#2381;&#2330;&#2381;&#2351; &#2350;&#2344;&#2379; &#2350;&#2343;&#2381;&#2351;&#2375; &#2344;&#2367;&#2351;&#2379;&#2332;&#2351;&#2375;&#2340;&#2381; &#2405;<p class="gl">Left heel at the perineum, right foot on the left thigh; breathe in, chin firmly to the chest, contract the lower lock, and fix the mind at the centre.</p></div>
+      <div class="cols2">
+        <div class="card"><h4>Technique <span class="src gen">HYP book</span></h4>
+          <ul class="plain"><li><b>Hatha form (verses):</b> half padmasana, inhale through the left nostril, hold, jalandhara, moola, shambhavi. Release in the reverse order (shambhavi, moola, jalandhara) and exhale through the right. Then the other side.</li><li><b>Common form today:</b> siddhasana, exhale fully, hold the breath <i>outside</i>, apply jalandhara, uddiyana and moola; rotate awareness mooladhara &rarr; manipura &rarr; vishuddhi. Release moola, uddiyana, then jalandhara.</li><li>Three rounds at first, up to nine in the second form after months.</li></ul></div>
+        <div class="card"><h4>Benefits (3.23&ndash;24) <span class="src gen">HYP book</span></h4>
+          <ul class="plain"><li>Stops the upward leak of energy in all the nadis; gives great siddhis.</li><li>Frees from the bonds of death; ida, pingala and sushumna meet at ajna; the mind reaches &ldquo;Kedara&rdquo;, the seat of Shiva.</li><li>Muktibodhananda: shakti is locked in the torso and recirculates upward; the pineal and the whole endocrine system are regulated.</li><li>Needs the three bandhas perfected first; not for high or low blood pressure, hernia or ulcer.</li></ul></div>
+      </div>
+      <h3 class="sub"><span class="n">C</span>Maha vedha mudra: the great piercer</h3>
+      <div class="dv"><span class="dvn">verse 3.27</span>&#2360;&#2350;&#2361;&#2360;&#2381;&#2340;&#2351;&#2369;&#2327;&#2379; &#2349;&#2370;&#2350;&#2380; &#2360;&#2381;&#2347;&#2367;&#2330;&#2380; &#2360;&#2344;&#2381;&#2340;&#2366;&#2337;&#2351;&#2375;&#2330;&#2381;&#2331;&#2344;&#2376;&#2307; &#2404;<br>&#2346;&#2369;&#2335;&#2342;&#2381;&#2357;&#2351;&#2350;&#2340;&#2367;&#2325;&#2381;&#2352;&#2350;&#2381;&#2351; &#2357;&#2366;&#2351;&#2369;&#2307; &#2360;&#2381;&#2347;&#2369;&#2352;&#2340;&#2367; &#2350;&#2343;&#2381;&#2351;&#2327;&#2307; &#2405;<p class="gl">With palms on the floor, gently beat the buttocks on the ground; the prana leaves the two side channels and moves in the middle one.</p></div>
+      <div class="cols2">
+        <div class="card"><h4>Technique <span class="src gen">HYP book</span></h4>
+          <ul class="plain"><li>Sit in <b>padmasana</b> (if it is not perfected you cannot do this properly). Palms on the floor beside the thighs, fingers forward.</li><li>Inhale slowly, hold, <b>jalandhara</b>. Lift on straight arms and gently beat the buttocks on the ground three to seven times, awareness at mooladhara.</li><li>Rest, release the throat lock, exhale slowly. Begin with three rounds; up to five after some months, no more.</li><li>The beating action is called <i>tadan kriya</i>. Land buttocks and thighs together.</li></ul></div>
+        <div class="card"><h4>Benefits and cautions <span class="src gen">HYP 3.26&ndash;29</span></h4>
+          <ul class="plain"><li>Prana leaves ida and pingala and enters sushumna; the three unite and a death-like stillness comes (3.28).</li><li>Great perfections; keeps away wrinkles, grey hair and the trembling of old age (3.29).</li><li>Class notes add: removes fear, strengthens the core, and &ldquo;improves immune power&rdquo; (no evidence given).</li><li>Avoid with heart problems, high blood pressure, back or knee pain.</li></ul></div>
+      </div>
+      <div class="table-wrap"><table><tr><th></th><th>Maha mudra</th><th>Maha bandha</th><th>Maha vedha</th></tr><tr><td>Posture</td><td>Seated, one leg stretched, hold the toe</td><td>Half padmasana (or siddhasana)</td><td>Padmasana, hands on floor</td></tr><tr><td>Breath</td><td>Retain inside, slow exhale</td><td>Inside (verses) or outside (modern)</td><td>Retain inside</td></tr><tr><td>Locks</td><td>Throat; moola and shambhavi added in commentary</td><td>Jalandhara, moola (+ uddiyana)</td><td>Jalandhara</td></tr><tr><td>Key action</td><td>Hold the toe, gaze at eyebrows</td><td>Lock the energy in the torso</td><td>Lift and beat the buttocks</td></tr><tr><td>Role</td><td>Gathers prana, calms ida and pingala</td><td>Locks and recirculates it</td><td>Drives it into sushumna</td></tr></table></div>
+      <p class="honest"><b>Source note.</b> Muktibodhananda points out that in the Gheranda Samhita adding uddiyana to maha bandha makes it maha vedha, but the HYP treats maha vedha as a separate practice (the beating). Use the HYP version in a HYP question. Your Gheranda chapter 3 notes give maha mudra a <i>jalandhara &rarr; moola &rarr; shambhavi</i> order and say &ldquo;pull the upper body backward&rdquo;; the commentary says lean forward and hold the toe with the back straight. Name the source you follow.</p>
+      <div class="blk exam">
+        <span class="lbl">Exam angle &middot; &ldquo;Maha mudra, maha bandha and maha vedha&rdquo; <span class="src add">added</span></span>
+        <p>Write them as one sequence. Give 3.10&ndash;13 for maha mudra, 3.19&ndash;21 for maha bandha, 3.26&ndash;28 for maha vedha, then a three-row comparison like the table above, then 3.25 as the reason they belong together. Chakra: ajna, vishuddhi and mooladhara for maha mudra; mooladhara for maha vedha.</p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Maha mudra: which lock in the verse?</div><div class="a">Throat lock (3.11); exhale slowly (3.13)</div></div>
+        <div class="recall-card"><div class="q">Why is maha vedha needed?</div><div class="a">3.25: without it maha mudra and maha bandha are fruitless</div></div>
+        <div class="recall-card"><div class="q">Maha vedha: which asana?</div><div class="a">Padmasana, palms on floor, beat the buttocks gently</div></div>
+        <div class="recall-card"><div class="q">Release order for maha bandha?</div><div class="a">Shambhavi, moola, jalandhara</div></div>
+        <div class="recall-card"><div class="q">What is tadan kriya?</div><div class="a">The beating action of maha vedha</div></div>
+      </div>
+
+      <div class="src-foot"><span class="src gen">HYP book</span> verses 3.10&ndash;31 and Muktibodhananda <span class="src cls">class</span> Gheranda chapter 3 notes</div>
+    </section>
+    <section class="section" id="sec-khechari">
+      <div class="sec-head">
+        <div class="kicker">03 &#183; Khechari</div>
+        <h2>Khechari Mudra and Why It Matters</h2>
+        <p class="dek">The longest practice in HYP chapter 3, and the one the text calls unequalled. Learn it as a word, two forms, benefits and a link to samadhi.</p>
+      </div>
+      <div class="stat-strip"><div class="stat"><div class="v">3.32&ndash;54</div><div class="k">verses in chapter 3</div></div><div class="stat"><div class="v">2</div><div class="k">forms: hatha and raja</div></div><div class="stat"><div class="v">4.38&ndash;53</div><div class="k">more in chapter 4</div></div><div class="stat"><div class="v">1.43</div><div class="k">&ldquo;no mudra equals khechari&rdquo;</div></div></div>
+      <div class="blk und">
+        <span class="lbl">Understand it &middot; why it is called khechari <span class="src gen">HYP 3.41</span></span>
+        <ul class="plain"><li><i>Kha</i> = space (also Brahman); <i>chari</i> = moving. Verse 3.41: the mind moves in <i>kha</i> because the tongue moves in <i>kha</i>. Muktibodhananda: the attitude of dwelling in supreme consciousness; it is also called nabho mudra.</li><li>It is the <b>longest section of chapter 3</b> because it joins three ideas: the tongue turned back into the cavity above the palate, the gaze at the eyebrow centre, and keeping the <b>bindu</b> (the nectar of the moon) from falling into the fire at the navel.</li><li>Its place in the system: the same nectar that jalandhara and viparita karani protect is held here at its source. That is why verse 3.54 calls it &ldquo;the one mudra&rdquo; of the single state (manonmani).</li></ul>
+      </div>
+      <div class="dv"><span class="dvn">verse 3.32</span>&#2325;&#2346;&#2366;&#2354;&#2325;&#2369;&#2361;&#2352;&#2375; &#2332;&#2367;&#2361;&#2381;&#2357;&#2366; &#2346;&#2381;&#2352;&#2357;&#2367;&#2359;&#2381;&#2335;&#2366; &#2357;&#2367;&#2346;&#2352;&#2368;&#2340;&#2327;&#2366; &#2404;<br>&#2349;&#2381;&#2352;&#2369;&#2357;&#2379;&#2352;&#2344;&#2381;&#2340;&#2352;&#2381;&#2327;&#2340;&#2366; &#2342;&#2371;&#2359;&#2381;&#2335;&#2367;&#2352;&#2381;&#2350;&#2369;&#2342;&#2381;&#2352;&#2366; &#2349;&#2357;&#2340;&#2367; &#2326;&#2375;&#2330;&#2352;&#2368; &#2405;<p class="gl">When the tongue turns back into the cavity of the skull and the gaze is fixed between the eyebrows, it is khechari mudra.</p></div>
+      <div class="table-wrap"><table><tr><th>Form</th><th>What it is</th><th>Who</th></tr><tr><td>Hatha form (verses 3.33&ndash;37)</td><td>&ldquo;Milking&rdquo; the tongue and gradually cutting the frenum over six months so that the tongue reaches the eyebrow centre.</td><td>Only from a guru, to a prepared student, over many years. Describe as history; do not attempt.</td></tr><tr><td>Raja form</td><td>Turn the tongue back so its under surface touches the soft palate; the tip goes towards the nasal opening behind the throat if it can. Eyes closed, gaze at the eyebrow centre.</td><td>Simple; anyone can try gently. Used with japa, meditation and ujjayi.</td></tr></table></div>
+      <div class="blk know">
+        <span class="lbl">Know this &middot; benefits listed in the verses <span class="src gen">HYP 3.38&ndash;54</span></span>
+        <ul class="plain"><li>A moment with the tongue raised frees from poison, disease, death and old age (3.38). No fainting, hunger, thirst, sleep or laziness (3.39).</li><li>One who <i>knows</i> khechari is not troubled by disease, not stained by karma, not bound by time (3.40).</li><li>The bindu does not fall even when the yogi is with a woman (3.42&ndash;43); steady sipping of the moon&#8217;s nectar conquers death in a fortnight (3.44); a snake bite does not spread the poison (3.45).</li><li>The embodied soul does not leave a body full of the moon&#8217;s nectar, as a lamp does not leave its oil and wick (3.46).</li><li>Chapter 4: khechari and shambhavi both give ecstasy (4.38); it is perfected when sushumna flows and prana rests in the void (4.43&ndash;44); it awakens vyoma chakra (4.45); it leads to unmani (4.47) and yoga nidra (4.49).</li><li>Muktibodhananda: these claims describe the experience of supraconsciousness (samadhi), not everyday health. &ldquo;Knowing&rdquo; khechari means knowing by experience.</li></ul>
+      </div>
+      <div class="blk und">
+        <span class="lbl">Understand it &middot; the Gheranda Samhita version <span class="src cls">class</span><span class="src gen">GS notes</span></span>
+        <ul class="plain"><li>Khechari: the tongue tip reaches between the eyebrows; the upturned tongue enters the cavity above the palate; gaze fixed at the eyebrow centre. The notes describe no cutting.</li><li><b>Nabho mudra</b> is listed separately: turn the tongue gently upward toward the palate, hold the breath. A modified, preliminary form of khechari; it &ldquo;destroys the diseases of yogis&rdquo;.</li><li>Benefits in the notes: no fainting, hunger, thirst or laziness; no disease, old age or death; a radiant body that fire does not burn, wind does not dry, water does not wet and a snake does not bite; samadhi; and the tastes of butter, ghee, milk, curds, buttermilk, honey, grape juice and nectar.</li></ul>
+      </div>
+      <p class="honest"><b>Source note.</b> The tongue-cutting verses (3.33&ndash;36) are classical history, not a method for students. The teacher&#8217;s seminar notes say: show only the simple form, and do not suggest anyone stretches or cuts the tongue. Quote the verses as text, with the safe form as the practical answer. The verse &ldquo;no mudra equals khechari&rdquo; is numbered 1.45 in your verses PDF and 1.43 in the Muktibodhananda book; use whichever your teacher quotes.</p>
+      <div class="blk exam">
+        <span class="lbl">Exam angle &middot; &ldquo;Importance of Khechari&rdquo; <span class="src add">added</span></span>
+        <p>Answer in five points: (1) meaning of the word (3.41), (2) the two forms (hatha and raja), (3) the benefits in 3.38&ndash;41, (4) its link with bindu, sushumna and vyoma chakra (3.37, 3.45, 4.43&ndash;45), (5) no mudra equals it (1.43) and it leads to unmani. Close with the Muktibodhananda point that the benefits describe samadhi.</p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Meaning of khechari?</div><div class="a">Kha = space, chari = moving: mind moves in space as the tongue moves in space (3.41)</div></div>
+        <div class="recall-card"><div class="q">Two forms?</div><div class="a">Hatha (cutting the frenum, guru only) and raja (tongue simply turned back)</div></div>
+        <div class="recall-card"><div class="q">Gaze in khechari?</div><div class="a">Eyebrow centre (bhrumadhya)</div></div>
+        <div class="recall-card"><div class="q">Which chakra does it stimulate?</div><div class="a">Vyoma chakra (4.45); linked with vishuddhi/ajna region</div></div>
+        <div class="recall-card"><div class="q">GS preliminary form?</div><div class="a">Nabho mudra: tongue turned up gently, breath held</div></div>
+      </div>
+
+      <div class="src-foot"><span class="src gen">HYP book</span> 3.32&ndash;54, 4.38&ndash;53, 1.43 <span class="src gen">Dasha mudra seminar notes</span></div>
+    </section>
+    <section class="section" id="sec-last3">
+      <div class="sec-head">
+        <div class="kicker">04 &#183; Last Three</div>
+        <h2>Viparita Karani, Vajroli and Shakti Chalana</h2>
+        <p class="dek">HYP 3.78&ndash;130. The last three of the ten: inversion that saves the nectar, the practice that conserves bindu, and the practice that moves kundalini.</p>
+      </div>
+      <div class="stat-strip"><div class="stat"><div class="v">3.78&ndash;82</div><div class="k">viparita karani</div></div><div class="stat"><div class="v">3.83&ndash;103</div><div class="k">vajroli, sahajoli, amaroli</div></div><div class="stat"><div class="v">3.104&ndash;130</div><div class="k">shakti chalana</div></div><div class="stat"><div class="v">3</div><div class="k">last three of the ten</div></div></div>
+      <h3 class="sub"><span class="n">A</span>Viparita karani mudra: the reversing attitude</h3>
+      <div class="blk und">
+        <span class="lbl">Understand it &middot; the idea behind the inversion <span class="src gen">HYP 3.77&ndash;82</span></span>
+        <ul class="plain"><li>The <b>moon</b> (bindu, the nectar) sits at the palate and drips down; the <b>sun</b> at the navel (manipura) burns it up, and that is said to cause ageing (3.77).</li><li>Turn the body so the <b>navel is above and the palate below</b>: the sun is above and the moon below (3.79), and the nectar is not lost. The text calls it a technique that &ldquo;cheats the sun&rdquo; (3.78).</li><li>Learn it from the guru, not from crores of scripture arguments (3.78).</li></ul>
+      </div>
+      <div class="dv"><span class="dvn">verse 3.79</span>&#2314;&#2352;&#2381;&#2343;&#2381;&#2357;&#2306; &#2344;&#2366;&#2349;&#2375;&#2352;&#2343;&#2360;&#2381;&#2340;&#2366;&#2354;&#2379;&#2352;&#2370;&#2352;&#2381;&#2343;&#2381;&#2357;&#2306; &#2349;&#2366;&#2344;&#2369;&#2352;&#2343;&#2307; &#2358;&#2358;&#2368; &#2404;<br>&#2325;&#2352;&#2339;&#2368; &#2357;&#2367;&#2346;&#2352;&#2368;&#2340;&#2366;&#2326;&#2381;&#2351;&#2366; &#2327;&#2369;&#2352;&#2369;&#2357;&#2366;&#2325;&#2381;&#2351;&#2375;&#2344; &#2354;&#2349;&#2381;&#2351;&#2340;&#2375; &#2405;<p class="gl">With the navel above and the palate below, the sun above and the moon below: this is called viparita karani, obtained through the guru&#8217;s words.</p></div>
+      <div class="cols2">
+        <div class="card"><h4>Technique (Muktibodhananda) <span class="src gen">HYP book</span></h4>
+          <ul class="plain"><li>Lie in shavasana. Raise the legs and bring them a little behind the head so the back rises to about <b>45&deg;</b>, feet to the ceiling.</li><li>Support the lower back with both hands, elbows on the floor. Breathe normally, awareness at the throat (vishuddhi).</li><li>Come down: lower the back first with legs raised, then the legs slowly. Rest in shavasana.</li><li>Stage 2 adds ujjayi; stage 3 adds khechari with ujjayi. Empty stomach, at least three hours after food.</li></ul></div>
+        <div class="card"><h4>Benefits and cautions <span class="src gen">HYP</span><span class="src cls">class</span></h4>
+          <ul class="plain"><li>Raises the digestive fire, so eat well (3.80); with scanty food the fire burns the body (3.81).</li><li>Day one: stay inverted for a moment only; add a little each day (3.81). After six months grey hair and wrinkles are said to fade (3.82).</li><li>The three-hour practice in 3.82 is not advisable; Muktibodhananda warns against it.</li><li>Class notes: more blood to the head, better concentration and memory. Avoid with high blood pressure, vertigo, weak heart, glaucoma, cerebral thrombosis and during menstruation.</li></ul></div>
+      </div>
+      <h3 class="sub"><span class="n">B</span>Vajroli mudra</h3>
+      <div class="blk und">
+        <span class="lbl">Understand it &middot; what the word means <span class="src gen">HYP 3.83&ndash;103</span><span class="src cls">class</span></span>
+        <ul class="plain"><li><i>Vajra</i> = thunderbolt. Here it means the <b>vajra nadi</b>, the second layer inside sushumna that governs the urogenital system. Vajroli is one of three <i>oli</i> mudras: vajroli, sahajoli (the form for women) and amaroli.</li><li>Verse 3.83: even one who lives freely, without the disciplines of yoga, becomes a vessel of siddhis if he truly knows vajroli. Verse 3.88: preserving the bindu is life, releasing it is death.</li><li>Muktibodhananda: tantra does not suppress this energy but redirects it into <b>ojas</b> (vitality). The classical stages need years under a guru and are not taught in a class.</li><li><b>Class-notes version:</b> in siddhasana (men) or siddha yoni asana (women) draw the genital muscles up as if holding back urine, hold, release, repeat five times. It strengthens the pelvic floor and is like Kegel exercises. This is a later modern adaptation.</li></ul>
+      </div>
+      <p class="honest"><b>Source note.</b> Your Gheranda chapter 3 notes describe the GS vajroli as an inverted balance on the palms with the legs and head raised, like sirshasana without the head touching. Muktibodhananda describes it differently (balancing on the buttocks with feet behind the head) and says the GS states no genital contraction. Say that the two sources word it differently and quote the one you are following.</p>
+      <h3 class="sub"><span class="n">C</span>Shakti chalana mudra: moving the energy</h3>
+      <div class="blk und">
+        <span class="lbl">Understand it &middot; the aim <span class="src gen">HYP 3.104&ndash;130</span></span>
+        <ul class="plain"><li>Kundalini is pictured as a sleeping serpent coiled at the base of the spine, closing the door to Brahma with her mouth (3.106). Many names mean the same thing: kutilangi, kundalini, bhujangi, shakti, ishvari, arundhati (3.104).</li><li>It sleeps above the <b>kanda</b>, the root from which the nadis spring; it gives liberation to yogis and bondage to the ignorant (3.107). One who knows this is a knower of yoga.</li><li>3.109&ndash;110: she sleeps between ida (Ganga) and pingala (Yamuna). Seizing her by force and moving her gives the supreme state of Vishnu.</li><li>It comes last because it moves the energy the other mudras prepare.</li></ul>
+      </div>
+      <div class="cols2">
+        <div class="card"><h4>Technique (Muktibodhananda) <span class="src gen">HYP book</span></h4>
+          <ul class="plain"><li>Sit in siddhasana or siddha yoni asana, eyes closed. Inhale slowly through the right nostril, hold the breath and apply <b>moola bandha</b> as tightly as possible.</li><li>Exhale, then apply jalandhara and uddiyana and practise <b>nauli</b> clockwise up to ten rotations. Release in order; inhale only after the head is raised.</li><li>The verses name vajrasana for pressing the kanda near the ankles (3.114) and add <b>bhastrika</b> (3.115) and uddiyana at manipura (3.116).</li><li>The 90 minutes in the verse (3.112) are not practical. Begin with five rounds; advanced, needs a guru.</li></ul></div>
+        <div class="card"><h4>Benefits and Gheranda comparison <span class="src gen">HYP</span><span class="src cls">class</span></h4>
+          <ul class="plain"><li>Regular practice frees from disease (3.119) and makes the yogi a vessel of siddhi who conquers time (3.120).</li><li><b>GS (class notes):</b> practise in a closed room; cover the navel with a soft white cloth 9 in &times; 3 in; smear the body with ash; sit in siddhasana; inhale through both nostrils, join prana and apana, perform <b>ashvini mudra</b> until the air enters sushumna.</li><li>GS says practise shakti chalana <i>before</i> yoni mudra, because yoni mudra is not effective without it.</li><li>Both texts: advanced practice, learn from a guru. Avoid forceful retention with heart disease or high blood pressure (general precaution, not from the notes).</li></ul></div>
+      </div>
+      <div class="blk exam">
+        <span class="lbl">Exam angle &middot; six mudras in both texts <span class="src gen">seminar notes</span></span>
+        <p>The Dasha Mudra seminar notes give this comparison: <b>maha mudra</b> (GS adds shambhavi), <b>maha vedha</b> (almost identical), <b>khechari</b> (HYP cuts the frenum; GS does not), <b>viparita karani</b> (same principle), <b>vajroli</b> (different practice), <b>shakti chalana</b> (HYP: moola bandha, nauli, kanda squeeze, bhastrika; GS: ashvini mudra, ash on the body).</p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Viparita karani idea?</div><div class="a">Navel up, palate down: sun above, moon below, so the nectar is saved (3.79)</div></div>
+        <div class="recall-card"><div class="q">Back angle in viparita karani?</div><div class="a">About 45 degrees; chin does not press the chest</div></div>
+        <div class="recall-card"><div class="q">What is vajra in vajroli?</div><div class="a">Vajra nadi inside sushumna that governs the urogenital system</div></div>
+        <div class="recall-card"><div class="q">Three oli mudras?</div><div class="a">Vajroli, sahajoli, amaroli</div></div>
+        <div class="recall-card"><div class="q">Shakti chalana first step?</div><div class="a">Inhale through the right nostril, retain, moola bandha</div></div>
+      </div>
+
+      <div class="src-foot"><span class="src gen">HYP book</span> 3.78&ndash;130 Muktibodhananda <span class="src cls">class</span> Gheranda chapter 3 notes <span class="src gen">seminar notes</span></div>
+    </section>
+    <section class="section" id="sec-bandhas">
+      <div class="sec-head">
+        <div class="kicker">05 &#183; Bandhas</div>
+        <h2>Uddiyana, Moola and Jalandhara Bandha</h2>
+        <p class="dek">HYP 3.55&ndash;77. The three locks that make the ten mudras work. The class notes give their order; the verses give meaning and benefit.</p>
+      </div>
+      <div class="stat-strip"><div class="stat"><div class="v">3</div><div class="k">bandhas: uddiyana, moola, jalandhara</div></div><div class="stat"><div class="v">4</div><div class="k">with maha bandha (class notes)</div></div><div class="stat"><div class="v">3.55&ndash;77</div><div class="k">verses</div></div><div class="stat"><div class="v">6 months</div><div class="k">uddiyana to conquer death (3.59)</div></div></div>
+      <div class="blk und">
+        <span class="lbl">Understand it &middot; the three locks as a pipe <span class="src gen">HYP book</span><span class="src add">added</span></span>
+        <ul class="plain"><li>Picture the trunk as a pipe with a tap at each end. <b>Moola bandha</b> closes the bottom so apana cannot escape downward. <b>Jalandhara</b> closes the top so prana cannot go up and out. <b>Uddiyana</b> pulls the middle in and up, so the two opposite winds are pushed together at the navel.</li><li>When apana and prana meet at the navel (manipura, the seat of fire) the heat rises and wakes kundalini (3.66&ndash;69). That is why the text says the three are practised together as maha bandha (3.74&ndash;76).</li><li>Class notes: <b>order of doing: moola, uddiyana, jalandhara. Order of release: jalandhara, uddiyana, moola.</b> Memory hook: the one you lock last is the first one you open (add the bottom first, take the top off first).</li></ul>
+      </div>
+      <div class="table-wrap"><table><tr><th></th><th>Uddiyana (abdominal lock)</th><th>Moola (perineal lock)</th><th>Jalandhara (throat lock)</th></tr><tr><td>Verses</td><td>3.55&ndash;60</td><td>3.61&ndash;69</td><td>3.70&ndash;73</td></tr><tr><td>Meaning</td><td>&ldquo;Rising&rdquo; or &ldquo;flying&rdquo;: the great bird (prana) flies up sushumna</td><td>&ldquo;Root&rdquo; lock: contract the perineum (cervix in women) so apana rises</td><td>Jal = throat, dhara = supporting; stops the nectar flowing down</td></tr><tr><td>Action</td><td>After full exhalation, draw the abdomen back toward the spine and up</td><td>Press the perineum with the heel and contract it, repeatedly; <b>not</b> the anus (that is ashvini mudra)</td><td>Chin to the chest (collarbone), elbows straight, shoulders raised</td></tr><tr><td>Breath</td><td>Outside, after exhaling</td><td>Normal, or with retention (inside with jalandhara; outside with uddiyana)</td><td>Inside or outside retention</td></tr><tr><td>Posture</td><td>Standing at first, then bhadrasana, siddhasana or padmasana</td><td>Siddhasana or siddha yoni asana is best</td><td>Siddhasana, padmasana, sukhasana or vajrasana</td></tr><tr><td>Verse benefits</td><td>&ldquo;The lion that conquers the elephant of death&rdquo; (3.57); old become young (3.58); six months conquers death (3.59); best of the bandhas, liberation comes naturally (3.60)</td><td>Prana and apana, nada and bindu unite (3.64); urine and stool decrease, the old become young (3.65); kundalini straightens like a struck snake and enters brahma nadi (3.68&ndash;69)</td><td>Destroys old age and death (3.70); destroys throat disease (3.71); nectar does not fall into the fire, prana is not agitated (3.72); locks ida and pingala and the sixteen adharas (3.73)</td></tr><tr><td>Commentary adds</td><td>Tones the abdominal organs, diaphragm and solar plexus; helps digestion, circulation and gas exchange</td><td>Heat in manipura; awakens kundalini; mooladhara is directly contacted</td><td>Squeezes the thyroid and parathyroids, which slows the rate of metabolism; helps the voice and throat; pressure on neck nerves</td></tr><tr><td>Cautions</td><td>Stomach or intestinal ulcer, hernia, high blood pressure, heart disease, glaucoma or raised intracranial pressure: do not practise</td><td>Perfect it alone before adding it to pranayama</td><td>High blood pressure or heart disease: only with a teacher</td></tr></table></div>
+      <h3 class="sub"><span class="n">A</span>The verses of the three bandhas</h3>
+      <div class="dv"><span class="dvn">verse 3.57</span>&#2313;&#2342;&#2352;&#2375; &#2346;&#2358;&#2381;&#2330;&#2367;&#2350;&#2306; &#2340;&#2366;&#2344;&#2306; &#2344;&#2366;&#2349;&#2375;&#2352;&#2370;&#2352;&#2381;&#2343;&#2381;&#2357;&#2306; &#2330; &#2325;&#2366;&#2352;&#2351;&#2375;&#2340;&#2381; &#2404;<br>&#2313;&#2337;&#2381;&#2337;&#2368;&#2351;&#2366;&#2344;&#2379; &#2361;&#2381;&#2351;&#2360;&#2380; &#2348;&#2344;&#2381;&#2343;&#2379; &#2350;&#2371;&#2340;&#2381;&#2351;&#2369;&#2350;&#2366;&#2340;&#2329;&#2381;&#2327;&#2325;&#2375;&#2360;&#2352;&#2368; &#2405;<p class="gl">Draw the abdomen back and the part above the navel up: this is uddiyana bandha, the lion for the elephant of death.</p></div>
+      <div class="dv"><span class="dvn">verse 3.61</span>&#2346;&#2366;&#2352;&#2381;&#2359;&#2381;&#2339;&#2367;&#2349;&#2366;&#2327;&#2375;&#2344; &#2360;&#2350;&#2381;&#2346;&#2368;&#2337;&#2381;&#2351; &#2351;&#2379;&#2344;&#2367;&#2350;&#2366;&#2325;&#2369;&#2334;&#2381;&#2330;&#2351;&#2375;&#2342;&#2381;&#2327;&#2369;&#2342;&#2350;&#2381; &#2404;<br>&#2309;&#2346;&#2366;&#2344;&#2350;&#2370;&#2352;&#2381;&#2343;&#2381;&#2357;&#2350;&#2366;&#2325;&#2371;&#2359;&#2381;&#2351; &#2350;&#2370;&#2354;&#2348;&#2344;&#2381;&#2343;&#2379;&#2365;&#2349;&#2367;&#2343;&#2368;&#2351;&#2340;&#2375; &#2405;<p class="gl">Pressing with the heel and contracting the rectum, draw the apana upward: this is called moola bandha.</p></div>
+      <div class="dv"><span class="dvn">verse 3.70</span>&#2325;&#2339;&#2381;&#2336;&#2350;&#2366;&#2325;&#2369;&#2334;&#2381;&#2330;&#2381;&#2351; &#2361;&#2371;&#2342;&#2351;&#2375; &#2360;&#2381;&#2341;&#2366;&#2346;&#2351;&#2375;&#2330;&#2381;&#2330;&#2367;&#2348;&#2369;&#2325;&#2306; &#2342;&#2371;&#2338;&#2350;&#2381; &#2404;<br>&#2348;&#2344;&#2381;&#2343;&#2379; &#2332;&#2366;&#2354;&#2344;&#2381;&#2343;&#2352;&#2366;&#2326;&#2381;&#2351;&#2379;&#2365;&#2351;&#2306; &#2332;&#2352;&#2366;&#2350;&#2371;&#2340;&#2381;&#2351;&#2369;&#2357;&#2367;&#2344;&#2366;&#2358;&#2325;&#2307; &#2405;<p class="gl">Contract the throat and press the chin firmly on the chest: this is jalandhara bandha, destroyer of old age and death.</p></div>
+      <div class="dv"><span class="dvn">verse 3.76</span>&#2348;&#2344;&#2381;&#2343;&#2340;&#2381;&#2352;&#2351;&#2350;&#2367;&#2342;&#2306; &#2358;&#2381;&#2352;&#2375;&#2359;&#2381;&#2336;&#2306; &#2350;&#2361;&#2366;&#2360;&#2367;&#2342;&#2381;&#2343;&#2376;&#2358;&#2381;&#2330; &#2360;&#2375;&#2357;&#2367;&#2340;&#2350;&#2381; &#2404;<br>&#2360;&#2352;&#2381;&#2357;&#2375;&#2359;&#2366;&#2306; &#2361;&#2336;&#2340;&#2344;&#2381;&#2340;&#2381;&#2352;&#2366;&#2339;&#2366;&#2306; &#2360;&#2366;&#2343;&#2344;&#2306; &#2351;&#2379;&#2327;&#2367;&#2344;&#2379; &#2357;&#2367;&#2342;&#2369;&#2307; &#2405;<p class="gl">This triple lock is the best and is practised by the great siddhas; yogis know it as the means of all hatha and tantra practices.</p></div>
+      <div class="blk know">
+        <span class="lbl">Know this &middot; bandhas with other practices <span class="src gen">HYP book</span></span>
+        <ul class="plain"><li>Bandhas are done after asana and pranayama or with them, but each should be perfected on its own first.</li><li>Moola with jalandhara in <b>internal</b> retention (antar kumbhaka); with uddiyana and jalandhara in <b>external</b> retention (bahir kumbhaka).</li><li>Uddiyana is easier after an inverted asana and with the bowels empty; it must be perfected before nauli. Jalandhara is always done with uddiyana.</li><li>The bandhas are what make the ten work as a system: with them the three Mahas (maha mudra, bandha, vedha) become possible.</li></ul>
+      </div>
+      <p class="honest"><b>Source note.</b> Class notes (29 Oct) name the four bandhas as moola, uddiyana, jalandhara and maha, with the two orders above. In the HYP verses the ten include maha bandha as one of them, so &ldquo;four bandhas&rdquo; there means those four. The Gheranda notes call uddiyana &ldquo;the best of the bandhas&rdquo;, the same as HYP 3.60, and say maha bandha in the GS holds the breath with jalandhara and has no shambhavi. The &ldquo;hormone&rdquo; and &ldquo;thyroid&rdquo; explanations are Muktibodhananda&#8217;s modern commentary, not the verse text.</p>
+      <div class="blk exam">
+        <span class="lbl">Exam angle &middot; &ldquo;Bandhas and their benefits&rdquo; <span class="src add">added</span></span>
+        <p>Write the three verses (3.57, 3.61, 3.70), then a three-row table: meaning, action, benefit. Add the two orders (doing and release) from your class notes, 3.76 (best three) and one line on caution for blood pressure. If the question says &ldquo;important bandhas&rdquo;, the safe answer is these three plus maha bandha.</p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Order of doing bandhas?</div><div class="a">Moola, uddiyana, jalandhara</div></div>
+        <div class="recall-card"><div class="q">Order of release?</div><div class="a">Jalandhara, uddiyana, moola</div></div>
+        <div class="recall-card"><div class="q">Which bandha is best?</div><div class="a">Uddiyana (3.60)</div></div>
+        <div class="recall-card"><div class="q">Moola bandha vs ashvini mudra?</div><div class="a">Moola: perineum, centre of the body. Ashvini: anal sphincter</div></div>
+        <div class="recall-card"><div class="q">Jalandhara works on which gland (commentary)?</div><div class="a">Thyroid and parathyroid in the throat</div></div>
+      </div>
+
+      <div class="src-foot"><span class="src gen">HYP book</span> 3.55&ndash;77 Muktibodhananda <span class="src cls">class</span> 29 Oct 2026 <span class="src add">added</span></div>
+    </section>
+    <section class="section" id="sec-nada">
+      <div class="sec-head">
+        <div class="kicker">06 &#183; Nada Yoga</div>
+        <h2>Nadanusandhana: Exploring the Inner Sound</h2>
+        <p class="dek">HYP 4.64&ndash;102. The method Swatmarama recommends above all others for laya and samadhi, with four stages and a ladder of sounds.</p>
+      </div>
+      <div class="stat-strip"><div class="stat"><div class="v">4</div><div class="k">stages: arambha, ghata, parichaya, nishpatti</div></div><div class="stat"><div class="v">3</div><div class="k">granthis pierced (Brahma, Vishnu, Rudra)</div></div><div class="stat"><div class="v">15</div><div class="k">days to feel pleasure (4.83)</div></div><div class="stat"><div class="v">4.64&ndash;102</div><div class="k">verses on nada</div></div></div>
+      <div class="blk und">
+        <span class="lbl">Understand it &middot; what nadanusandhana is <span class="src gen">HYP 4.65&ndash;66</span><span class="src cls">class</span></span>
+        <ul class="plain"><li><i>Nada</i> = sound; <i>anusandhana</i> = exploration or tuning in. Nadanusandhana is listening to the <b>inner sound</b> until the mind rests in it. It is meditation on sound.</li><li>Verse 4.66: there are one and a quarter crore ways to laya (dissolution) told by Adinath; the author judges nada the best. 4.65: Gorakhnath&#8217;s method, open even to the unlearned.</li><li>Method (4.82): close the ears with the hands, listen to the sound within, fix the mind there. Within fifteen days restlessness is overcome (4.83). Practise at night in silence (GS: midnight, when animals are quiet).</li><li>The sound starts coarse and becomes subtle. Keep attention on the subtler sound (4.87); do not let the mind go to anything else (4.88).</li></ul>
+      </div>
+      <div class="table-wrap"><table><tr><th>Stage</th><th>Granthi pierced</th><th>What happens and what is heard</th><th>Verses</th></tr><tr><td><b>1. Arambha</b> (beginning)</td><td>Brahma granthi</td><td>Bliss from the void; tinkling and unstruck (anahata) sounds in the body; body lustrous, divine smell, free of disease</td><td>4.70&ndash;71</td></tr><tr><td><b>2. Ghata</b> (vessel)</td><td>Vishnu granthi</td><td>Prana enters the middle nadi; asana becomes firm; the yogi is like a divine being; greatest bliss; sound of the kettledrum (bheri)</td><td>4.72&ndash;73</td></tr><tr><td><b>3. Parichaya</b> (increase)</td><td>&mdash;</td><td>Sound of the drum (mardala); the great void; place of all siddhis; bliss of chitta; doshas, pain, old age, disease, hunger and sleep overcome</td><td>4.74&ndash;75</td></tr><tr><td><b>4. Nishpatti</b> (consummation)</td><td>Rudra granthi</td><td>Prana reaches the seat of Ishwara; sound of flute and vina; unites the mind in raja yoga; the yogi equals the lord of yogis</td><td>4.76&ndash;77</td></tr></table></div>
+      <div class="blk mem">
+        <span class="lbl">Memory aid &middot; sounds in order <span class="src cls">class</span><span class="src add">added</span></span>
+        <p><b>Bells &rarr; kettledrum &rarr; drum &rarr; flute and vina.</b> Say &ldquo;A-G-P-N&rdquo; for the stages and remember the granthis as <b>B-V-R</b> (Brahma, Vishnu, Rudra) for stages 1, 2 and 4; stage 3 is the great void.</p>
+      </div>
+      <div class="blk know">
+        <span class="lbl">Know this &middot; the sounds and the benefits of nada <span class="src gen">HYP 4.85&ndash;99</span></span>
+        <ul class="plain"><li><b>First:</b> ocean, clouds, kettledrum, jharjhara drum. <b>Middle:</b> mardala, conch, gong and horn. <b>Last:</b> tinkling bells, flute, vina, humming bee (4.85&ndash;86). Sounds are heard from the middle of the body.</li><li>The mind that is absorbed in nada no more wants sense objects, as a bee drinking honey does not care about the smell (4.90).</li><li>Nada is the net that traps the deer (mind), the hunter that kills it, the bolt that locks the horse, the sulphur that fixes mercury, the music that charms the snake and the deer (4.94&ndash;99).</li><li>The sound is shakti; what remains when the sound ends is the supreme self (4.101&ndash;102). Mind and the heard sound dissolve in one (4.100).</li></ul>
+      </div>
+      <div class="dv"><span class="dvn">verse 4.69</span>&#2310;&#2352;&#2350;&#2381;&#2349;&#2358;&#2381;&#2330; &#2328;&#2335;&#2358;&#2381;&#2330;&#2376;&#2357; &#2340;&#2341;&#2366; &#2346;&#2352;&#2367;&#2330;&#2351;&#2379;&#2365;&#2346;&#2367; &#2330; &#2404;<br>&#2344;&#2367;&#2359;&#2381;&#2346;&#2340;&#2381;&#2340;&#2367;&#2307; &#2360;&#2352;&#2381;&#2357;&#2351;&#2379;&#2327;&#2375;&#2359;&#2369; &#2360;&#2381;&#2351;&#2366;&#2342;&#2357;&#2360;&#2381;&#2341;&#2366;&#2330;&#2340;&#2369;&#2359;&#2381;&#2335;&#2351;&#2350;&#2381; &#2405;<p class="gl">In all yoga practices there are four stages: arambha, ghata, parichaya and nishpatti.</p></div>
+      <div class="dv"><span class="dvn">verse 4.82</span>&#2325;&#2352;&#2381;&#2339;&#2380; &#2346;&#2367;&#2343;&#2366;&#2351; &#2361;&#2360;&#2381;&#2340;&#2366;&#2349;&#2381;&#2351;&#2366;&#2306; &#2351;&#2307; &#2358;&#2371;&#2339;&#2379;&#2340;&#2367; &#2343;&#2381;&#2357;&#2344;&#2367;&#2306; &#2350;&#2369;&#2344;&#2367;&#2307; &#2404;<br>&#2340;&#2340;&#2381;&#2352; &#2330;&#2367;&#2340;&#2381;&#2340;&#2306; &#2360;&#2381;&#2341;&#2367;&#2352;&#2368;&#2325;&#2369;&#2352;&#2381;&#2351;&#2366;&#2342;&#2381;&#2351;&#2366;&#2357;&#2340;&#2381;&#2360;&#2381;&#2341;&#2367;&#2352;&#2346;&#2342;&#2306; &#2357;&#2381;&#2352;&#2332;&#2375;&#2340;&#2381; &#2405;<p class="gl">Closing the ears with the hands, the sage should hear the inner sound and make the mind steady there until the steady state is reached.</p></div>
+      <p class="honest"><b>Source note.</b> The seminar and class notes list the four stages; the sounds (tinkling, kettledrum, drum, flute/vina) and the granthis come from the HYP verses and your Hata and Gheranda notes. Muktibodhananda says the stages apply to all yogic practices, though the Shiva Samhita applies them to pranayama. The Gheranda pranayama chapter practises the inner sound as <b>Bhramari kumbhaka</b> at midnight: see Unit 4.</p>
+      <div class="blk exam">
+        <span class="lbl">Exam angle &middot; &ldquo;Nadanusandhana&rdquo; <span class="src cls">class</span></span>
+        <p>Define nada and anusandhana; give 4.82; table the four stages with sound; add 4.85&ndash;86 sounds; end with 4.90&ndash;99 benefits (mind captured). Mention that nada leads to laya and to samadhi (4.81).</p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Four stages of nada?</div><div class="a">Arambha, ghata, parichaya, nishpatti</div></div>
+        <div class="recall-card"><div class="q">Sound at ghata?</div><div class="a">Kettledrum (bheri); Vishnu granthi pierced</div></div>
+        <div class="recall-card"><div class="q">Sound at nishpatti?</div><div class="a">Flute and vina; Rudra granthi pierced; raja yoga</div></div>
+        <div class="recall-card"><div class="q">Method in 4.82?</div><div class="a">Close the ears with hands and listen to the inner sound</div></div>
+        <div class="recall-card"><div class="q">Time to first results?</div><div class="a">Fifteen days (4.83)</div></div>
+      </div>
+
+      <div class="src-foot"><span class="src gen">HYP book</span> 4.64&ndash;102 <span class="src cls">class</span> Hata and Gheranda notes</div>
+    </section>
+    <section class="section" id="sec-synonyms">
+      <div class="sec-head">
+        <div class="kicker">07 &#183; Samadhi</div>
+        <h2>Synonyms of Samadhi (HYP 4.3&ndash;4)</h2>
+        <p class="dek">Sixteen names for one state. The syllabus asks for these directly.</p>
+      </div>
+      <div class="stat-strip"><div class="stat"><div class="v">16</div><div class="k">synonyms in 4.3&ndash;4</div></div><div class="stat"><div class="v">2</div><div class="k">verses</div></div><div class="stat"><div class="v">9+7</div><div class="k">split between the two verses</div></div><div class="stat"><div class="v">1</div><div class="k">state: the highest reality</div></div></div>
+      <div class="dv"><span class="dvn">verse 4.3&ndash;4</span>&#2352;&#2366;&#2332;&#2351;&#2379;&#2327;&#2307; &#2360;&#2350;&#2366;&#2343;&#2367;&#2358;&#2381;&#2330; &#2313;&#2344;&#2381;&#2350;&#2344;&#2368; &#2330; &#2350;&#2344;&#2379;&#2344;&#2381;&#2350;&#2344;&#2368; &#2404;<br>&#2309;&#2350;&#2352;&#2340;&#2381;&#2357;&#2306; &#2354;&#2351;&#2360;&#2381;&#2340;&#2340;&#2381;&#2340;&#2381;&#2357;&#2306; &#2358;&#2370;&#2344;&#2381;&#2351;&#2366;&#2358;&#2370;&#2344;&#2381;&#2351;&#2306; &#2346;&#2352;&#2306; &#2346;&#2342;&#2350;&#2381; &#2405;<br>&#2309;&#2350;&#2344;&#2360;&#2381;&#2325;&#2306; &#2340;&#2341;&#2366;&#2342;&#2381;&#2357;&#2376;&#2340;&#2306; &#2344;&#2367;&#2352;&#2366;&#2354;&#2350;&#2381;&#2348;&#2306; &#2344;&#2367;&#2352;&#2334;&#2381;&#2332;&#2344;&#2350;&#2381; &#2404;<br>&#2332;&#2368;&#2357;&#2344;&#2381;&#2350;&#2369;&#2325;&#2381;&#2340;&#2367;&#2358;&#2381;&#2330; &#2360;&#2361;&#2332;&#2366; &#2340;&#2369;&#2352;&#2381;&#2351;&#2366; &#2330;&#2375;&#2340;&#2381;&#2351;&#2375;&#2325;&#2357;&#2366;&#2330;&#2325;&#2366;&#2307; &#2405;<p class="gl">Raja yoga, samadhi, unmani, manonmani, amaratva, laya, tattva, shunyashunya, parampada; amanaska, advaita, niralamba, niranjana, jivanmukti, sahaja and turiya are all names of one state.</p></div>
+      <div class="table-wrap"><table><tr><th>Term</th><th>Meaning (Muktibodhananda)</th></tr><tr><td>Raja yoga</td><td>The supreme state of union</td></tr><tr><td>Samadhi</td><td>Complete or perfect perception; concentration</td></tr><tr><td>Unmani</td><td>Without individual mind</td></tr><tr><td>Manonmani</td><td>Mind without mind: cosmic consciousness without finite consciousness</td></tr><tr><td>Amaratva</td><td>Beyond death; immortal</td></tr><tr><td>Laya</td><td>Dissolution</td></tr><tr><td>Tattva</td><td>Essence, &ldquo;thatness&rdquo;</td></tr><tr><td>Shunyashunya</td><td>The voidless void</td></tr><tr><td>Parampada</td><td>The supreme state</td></tr><tr><td>Amanaska</td><td>The condition without finite mind</td></tr><tr><td>Advaita</td><td>Non-duality</td></tr><tr><td>Niralamba</td><td>Without support</td></tr><tr><td>Niranjana</td><td>Without quality or stain</td></tr><tr><td>Jivanmukti</td><td>Liberation while living</td></tr><tr><td>Sahaja</td><td>The natural, spontaneous state</td></tr><tr><td>Turiya</td><td>The fourth state; includes all dimensions beyond the third</td></tr></table></div>
+      <div class="blk mem">
+        <span class="lbl">Memory aid &middot; sort the sixteen <span class="src add">added</span></span>
+        <p><b>Union:</b> raja yoga, samadhi, laya. <b>Mind gone:</b> unmani, manonmani, amanaska. <b>Beyond death or duality:</b> amaratva, advaita, jivanmukti. <b>Empty or pure:</b> shunyashunya, niralamba, niranjana. <b>The state itself:</b> tattva, parampada, sahaja, turiya. Four groups, say each aloud.</p>
+      </div>
+      <div class="blk know">
+        <span class="lbl">Know this &middot; what the other verses add <span class="src gen">HYP 4.5&ndash;20</span></span>
+        <ul class="plain"><li>Mind and atma unite like salt dissolving in the sea (4.5); when jivatma unites with paramatma, desires are destroyed (4.7).</li><li>Samadhi is natural once kundalini is awakened and karma is freed (4.11); sushumna consumes time, the day and night of ida and pingala (4.17).</li><li>Until prana flows in sushumna, all practices are laborious (4.20).</li><li>In the Gheranda Samhita the six types of samadhi (dhyana, nada, rasananda, laya, bhakti, raja yoga) are covered in Unit 4.</li></ul>
+      </div>
+      <div class="blk exam">
+        <span class="lbl">Exam angle &middot; &ldquo;Synonyms of samadhi&rdquo; <span class="src cls">class</span></span>
+        <p>Write 4.3&ndash;4 and list the sixteen names in two lines each of meaning. The questions ask for synonyms with meaning; the grouping above makes sixteen terms easy to recall.</p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Which verses list the synonyms?</div><div class="a">HYP 4.3&ndash;4</div></div>
+        <div class="recall-card"><div class="q">Unmani means?</div><div class="a">Without individual mind</div></div>
+        <div class="recall-card"><div class="q">Manonmani means?</div><div class="a">Mind without mind</div></div>
+        <div class="recall-card"><div class="q">Turiya means?</div><div class="a">The fourth state</div></div>
+        <div class="recall-card"><div class="q">Jivanmukti means?</div><div class="a">Liberation while living</div></div>
+      </div>
+
+      <div class="src-foot"><span class="src gen">HYP book</span> 4.3&ndash;4, Muktibodhananda <span class="src add">added</span></div>
+    </section>
+    <section class="section" id="sec-manas">
+      <div class="sec-head">
+        <div class="kicker">08 &#183; Mind and Prana</div>
+        <h2>Correlation of Manas and Prana</h2>
+        <p class="dek">HYP 4.21&ndash;30 and 2.2. The reason hatha yoga works through the breath: mind and prana rise and fall together.</p>
+      </div>
+      <div class="stat-strip"><div class="stat"><div class="v">2</div><div class="k">causes of chitta: vasana and prana</div></div><div class="stat"><div class="v">4.21&ndash;25</div><div class="k">the main verses</div></div><div class="stat"><div class="v">4.29</div><div class="k">mind &rarr; senses; prana &rarr; mind; laya &rarr; prana</div></div><div class="stat"><div class="v">1</div><div class="k">if one stops, so does the other</div></div></div>
+      <div class="blk und">
+        <span class="lbl">Understand it &middot; mind and prana move together <span class="src gen">HYP 4.21&ndash;25</span><span class="src cls">class</span></span>
+        <ul class="plain"><li><b>Manas</b> (thought and counter-thought) is a part of the whole mind (<i>antah karana</i>). <b>Prana</b> is the life force and the breath that carries it. The text says they are tied: restrain one and the other is restrained (4.21).</li><li>Chitta has two causes: <b>vasana</b> (deep impressions and desires) and <b>prana</b>. If one is destroyed the other becomes still (4.22). Where the mind is still, prana is still (4.23).</li><li>Verse 4.24: mind and prana are like <b>milk and water</b> mixed together; they act alike. Where there is pranic movement there is mind, and where there is mind there is prana. If one goes the other goes (4.25); if both are controlled, moksha.</li><li>Class notes (7 Oct, verse 2.2): <b>mind affects breath, breath affects mind.</b> On 28 Oct the line &ldquo;chale vate chalam chittam&rdquo; is marked as a sloka to write in the exam: when the breath moves, the mind moves; when the breath is still, the mind is still.</li></ul>
+      </div>
+      <div class="dv"><span class="dvn">verse 4.21</span>&#2346;&#2357;&#2344;&#2379; &#2348;&#2343;&#2381;&#2351;&#2340;&#2375; &#2351;&#2375;&#2344; &#2350;&#2344;&#2360;&#2381;&#2340;&#2375;&#2344;&#2376;&#2357; &#2348;&#2343;&#2381;&#2351;&#2340;&#2375; &#2404;<br>&#2350;&#2344;&#2358;&#2381;&#2330; &#2348;&#2343;&#2381;&#2351;&#2340;&#2375; &#2351;&#2375;&#2344; &#2346;&#2357;&#2344;&#2360;&#2381;&#2340;&#2375;&#2344; &#2348;&#2343;&#2381;&#2351;&#2340;&#2375; &#2405;<p class="gl">He who has restrained the breath has restrained the mind; he who has restrained the mind has restrained the breath.</p></div>
+      <div class="dv"><span class="dvn">verse 4.24</span>&#2342;&#2369;&#2327;&#2381;&#2343;&#2366;&#2350;&#2381;&#2348;&#2369;&#2357;&#2340;&#2381;&#2360;&#2306;&#2350;&#2367;&#2354;&#2367;&#2340;&#2366;&#2357;&#2369;&#2349;&#2380; &#2340;&#2380;<br>&#2340;&#2369;&#2354;&#2381;&#2351;&#2325;&#2381;&#2352;&#2367;&#2351;&#2380; &#2350;&#2366;&#2344;&#2360;&#2350;&#2366;&#2352;&#2369;&#2340;&#2380; &#2361;&#2367; &#2404;<br>&#2351;&#2340;&#2379; &#2350;&#2352;&#2369;&#2340;&#2381;&#2340;&#2340;&#2381;&#2352; &#2350;&#2344;&#2307;&#2346;&#2381;&#2352;&#2357;&#2371;&#2340;&#2381;&#2340;&#2367;&#2307;<br>&#2351;&#2340;&#2379; &#2350;&#2344;&#2360;&#2381;&#2340;&#2340;&#2381;&#2352; &#2350;&#2352;&#2369;&#2340;&#2381;&#2346;&#2381;&#2352;&#2357;&#2371;&#2340;&#2381;&#2340;&#2367;&#2307; &#2405;<p class="gl">Mind and breath are blended like milk and water and act alike; where the breath moves, the mind is active, and where the mind is active, the breath moves.</p></div>
+      <div class="dv"><span class="dvn">verse 2.2</span>&#2330;&#2354;&#2375; &#2357;&#2366;&#2340;&#2375; &#2330;&#2354;&#2306; &#2330;&#2367;&#2340;&#2381;&#2340;&#2306; &#2344;&#2367;&#2358;&#2381;&#2330;&#2354;&#2375; &#2344;&#2367;&#2358;&#2381;&#2330;&#2354;&#2306; &#2349;&#2357;&#2375;&#2340;&#2381; &#2404;<br>&#2351;&#2379;&#2327;&#2368; &#2360;&#2381;&#2341;&#2366;&#2339;&#2369;&#2340;&#2381;&#2357;&#2350;&#2366;&#2346;&#2381;&#2344;&#2379;&#2340;&#2367; &#2340;&#2340;&#2379; &#2357;&#2366;&#2351;&#2369;&#2306; &#2344;&#2367;&#2352;&#2379;&#2343;&#2351;&#2375;&#2340;&#2381; &#2405;<p class="gl">When the breath moves, the mind moves; when it is still, the mind is still. The yogi attains steadiness, so he should restrain the breath.</p></div>
+      <div class="blk know">
+        <span class="lbl">Know this &middot; the ladder from the senses to nada <span class="src gen">HYP 4.26&ndash;30</span></span>
+        <ul class="plain"><li><b>4.29:</b> mind rules the senses, prana rules the mind, <i>laya</i> rules prana, and laya rests on <i>nada</i>. So the steps run senses &rarr; mind &rarr; prana &rarr; laya &rarr; nada.</li><li><b>4.26&ndash;27:</b> mind and mercury are both unstable by nature; fix mercury and mind and what cannot be perfected? Mercury is the alchemy image for the shifting mind and prana.</li><li><b>4.30:</b> when mind and prana go into laya, an indescribable ecstasy arises; some call it moksha, some do not.</li><li>Practice link: <b>kevala kumbhaka</b> (4.31) comes before absorption of the mind; <b>nada</b> (4.64&ndash;102) is the method.</li><li>This is why <b>pranayama</b> comes before dharana and dhyana: breath is the easier handle, and the mind follows it.</li></ul>
+      </div>
+      <div class="blk und">
+        <span class="lbl">Understand it &middot; everyday proof <span class="src add">added</span></span>
+        <ul class="plain"><li>Notice anger, fear or hurry: the breath becomes short and quick. Notice a calm moment or sleep: the breath is long and slow. The two change together without effort.</li><li>A kite and its string: wind (prana) moves the kite (mind), but the kite also pulls the string. Hold the string steady and the kite settles. That is why a slow, steady breath calms thought.</li><li>Do not read this as a medical claim; the HYP says it as yoga theory.</li></ul>
+      </div>
+      <p class="honest"><b>Source note.</b> Your class notes mention the correlation as the verse 2.2 idea (mind affects breath, breath affects mind). The detailed verses are in HYP chapter 4 (4.21&ndash;30). Muktibodhananda explains <i>manas</i> and <i>chitta</i> as parts of the larger <i>antah karana</i> and says not to be confused by the terms.</p>
+      <div class="blk exam">
+        <span class="lbl">Exam angle &middot; &ldquo;Correlation of manas and prana&rdquo; <span class="src add">added</span></span>
+        <p>Define manas, prana; quote 4.21 or 2.2; explain milk and water (4.24); give the two causes of chitta (vasana, prana); then the ladder in 4.29 and the result (laya, nada). Close with kevala kumbhaka as the practical link.</p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Two causes of chitta?</div><div class="a">Vasana and prana (4.22)</div></div>
+        <div class="recall-card"><div class="q">Milk and water means?</div><div class="a">Mind and breath are mixed and act alike (4.24)</div></div>
+        <div class="recall-card"><div class="q">Ladder in 4.29?</div><div class="a">Senses, mind, prana, laya, nada</div></div>
+        <div class="recall-card"><div class="q">Verse 2.2 idea?</div><div class="a">Breath moves, mind moves; breath still, mind still</div></div>
+        <div class="recall-card"><div class="q">What links the two in practice?</div><div class="a">Pranayama, kevala kumbhaka, nada</div></div>
+      </div>
+
+      <div class="src-foot"><span class="src gen">HYP book</span> 4.21&ndash;31, 2.2 <span class="src cls">class</span> 7 Oct 2026 <span class="src add">added</span></div>
+    </section>
+    <section class="section" id="sec-slokas">
+      <div class="sec-head">
+        <div class="kicker">09 &#183; Slokas</div>
+        <h2>Key Slokas in Devanagari</h2>
+        <p class="dek">Verses for this unit that are not shown above, in the order of the sections, each with a one-line meaning.</p>
+      </div>
+      <p class="honest"><b>How these were copied.</b> The verses below are taken from your verses PDF by reading the page images, then checked by eye against the sense. The numbers are the PDF&#8217;s; in chapters 3 and 4 they match the Muktibodhananda book. The verses already shown in the sections above (3.6&ndash;7, 3.10&ndash;11, 3.19&ndash;20, 3.27, 3.32, 3.57, 3.61, 3.70, 3.76, 3.79, 4.3&ndash;4, 4.21, 4.24, 4.69, 4.82, 2.2) are not repeated. Check a verse against the PDF before you write it in an exam.</p>
+      <h3 class="sub"><span class="n">1</span>Maha mudra and the three Mahas</h3>
+      <div class="dv"><span class="dvn">verse 3.12&ndash;13</span>&#2315;&#2332;&#2381;&#2357;&#2368;&#2349;&#2370;&#2340;&#2366; &#2340;&#2341;&#2366; &#2358;&#2325;&#2381;&#2340;&#2367;&#2307; &#2325;&#2369;&#2339;&#2381;&#2337;&#2354;&#2368; &#2360;&#2361;&#2360;&#2366; &#2349;&#2357;&#2375;&#2340;&#2381; &#2404;<br>&#2340;&#2342;&#2366; &#2360;&#2366; &#2350;&#2352;&#2339;&#2366;&#2357;&#2360;&#2381;&#2341;&#2366; &#2332;&#2366;&#2351;&#2340;&#2375; &#2342;&#2381;&#2357;&#2367;&#2346;&#2369;&#2335;&#2366;&#2358;&#2381;&#2352;&#2351;&#2366; &#2405;<br>&#2340;&#2340;&#2307; &#2358;&#2344;&#2376;&#2307; &#2358;&#2344;&#2376;&#2352;&#2375;&#2357; &#2352;&#2375;&#2330;&#2351;&#2375;&#2344;&#2381;&#2344;&#2376;&#2357; &#2357;&#2375;&#2327;&#2340;&#2307; &#2404;<br>&#2350;&#2361;&#2366;&#2350;&#2369;&#2342;&#2381;&#2352;&#2366;&#2306; &#2330; &#2340;&#2375;&#2344;&#2376;&#2357; &#2357;&#2342;&#2344;&#2381;&#2340;&#2367; &#2357;&#2367;&#2348;&#2369;&#2343;&#2379;&#2340;&#2381;&#2340;&#2350;&#2366;&#2307; &#2405;<p class="gl">The kundalini straightens at once and ida and pingala become still, a death-like state; then breathe out slowly, never quickly. The wise call this maha mudra.</p></div>
+      <div class="dv"><span class="dvn">verse 3.16</span>&#2344; &#2361;&#2367; &#2346;&#2341;&#2381;&#2351;&#2350;&#2346;&#2341;&#2381;&#2351;&#2306; &#2357;&#2366; &#2352;&#2360;&#2366;&#2307; &#2360;&#2352;&#2381;&#2357;&#2375;&#2365;&#2346;&#2367; &#2344;&#2368;&#2352;&#2360;&#2366;&#2307; &#2404;<br>&#2309;&#2346;&#2367; &#2349;&#2369;&#2325;&#2381;&#2340;&#2306; &#2357;&#2367;&#2359;&#2306; &#2328;&#2379;&#2352;&#2306; &#2346;&#2368;&#2351;&#2370;&#2359;&#2350;&#2346;&#2367; &#2332;&#2368;&#2352;&#2381;&#2351;&#2340;&#2367; &#2405;<p class="gl">For one who practises it nothing is suitable or unsuitable; all tastes become tasteless; even a deadly poison taken is digested like nectar.</p></div>
+      <div class="dv"><span class="dvn">verse 3.28</span>&#2360;&#2379;&#2350;&#2360;&#2370;&#2352;&#2381;&#2351;&#2366;&#2327;&#2381;&#2344;&#2367;&#2360;&#2350;&#2381;&#2348;&#2344;&#2381;&#2343;&#2379; &#2332;&#2366;&#2351;&#2340;&#2375; &#2330;&#2366;&#2350;&#2371;&#2340;&#2366;&#2351; &#2357;&#2376; &#2404;<br>&#2350;&#2371;&#2340;&#2366;&#2357;&#2360;&#2381;&#2341;&#2366; &#2360;&#2350;&#2369;&#2340;&#2381;&#2346;&#2344;&#2381;&#2344;&#2366; &#2340;&#2340;&#2379; &#2357;&#2366;&#2351;&#2369;&#2306; &#2357;&#2367;&#2352;&#2375;&#2330;&#2351;&#2375;&#2340;&#2381; &#2405;<p class="gl">Moon, sun and fire are united; a death-like state arises; then the breath is released.</p></div>
+      <h3 class="sub"><span class="n">2</span>Khechari</h3>
+      <div class="dv"><span class="dvn">verse 3.38&ndash;39</span>&#2352;&#2360;&#2344;&#2366;&#2350;&#2370;&#2352;&#2381;&#2343;&#2381;&#2357;&#2327;&#2366;&#2306; &#2325;&#2371;&#2340;&#2381;&#2357;&#2366; &#2325;&#2381;&#2359;&#2339;&#2366;&#2352;&#2381;&#2343;&#2350;&#2346;&#2367; &#2340;&#2367;&#2359;&#2381;&#2336;&#2340;&#2367; &#2404;<br>&#2357;&#2367;&#2359;&#2376;&#2352;&#2381;&#2357;&#2367;&#2350;&#2369;&#2330;&#2381;&#2351;&#2340;&#2375; &#2357;&#2381;&#2351;&#2366;&#2343;&#2367;&#2350;&#2371;&#2340;&#2381;&#2351;&#2369;&#2332;&#2352;&#2366;&#2342;&#2367;&#2349;&#2367;&#2307; &#2405;<br>&#2344; &#2352;&#2379;&#2327;&#2379; &#2350;&#2352;&#2339;&#2306; &#2340;&#2344;&#2381;&#2342;&#2381;&#2352;&#2366; &#2344; &#2344;&#2367;&#2342;&#2381;&#2352;&#2366; &#2344; &#2325;&#2381;&#2359;&#2369;&#2343;&#2366; &#2340;&#2371;&#2359;&#2366; &#2404;<br>&#2344; &#2330; &#2350;&#2370;&#2352;&#2381;&#2330;&#2381;&#2331;&#2366; &#2349;&#2357;&#2375;&#2340;&#2381;&#2340;&#2360;&#2381;&#2351; &#2351;&#2379; &#2350;&#2369;&#2342;&#2381;&#2352;&#2366;&#2306; &#2357;&#2375;&#2340;&#2381;&#2340;&#2367; &#2326;&#2375;&#2330;&#2352;&#2368;&#2350;&#2381; &#2405;<p class="gl">Even half a moment with the tongue raised frees one from poison, disease, death and old age; no disease, death, laziness, sleep, hunger, thirst or fainting for him who knows khechari.</p></div>
+      <div class="dv"><span class="dvn">verse 3.40&ndash;41</span>&#2346;&#2368;&#2337;&#2381;&#2351;&#2340;&#2375; &#2344; &#2360; &#2352;&#2379;&#2327;&#2375;&#2339; &#2354;&#2367;&#2346;&#2381;&#2351;&#2340;&#2375; &#2344; &#2330; &#2325;&#2352;&#2381;&#2350;&#2339;&#2366; &#2404;<br>&#2348;&#2366;&#2343;&#2381;&#2351;&#2340;&#2375; &#2344; &#2360; &#2325;&#2366;&#2354;&#2375;&#2344; &#2351;&#2379; &#2350;&#2369;&#2342;&#2381;&#2352;&#2366;&#2306; &#2357;&#2375;&#2340;&#2381;&#2340;&#2367; &#2326;&#2375;&#2330;&#2352;&#2368;&#2350;&#2381; &#2405;<br>&#2330;&#2367;&#2340;&#2381;&#2340;&#2306; &#2330;&#2352;&#2340;&#2367; &#2326;&#2375; &#2351;&#2360;&#2381;&#2350;&#2366;&#2332;&#2381;&#2332;&#2367;&#2361;&#2381;&#2357;&#2366; &#2330;&#2352;&#2340;&#2367; &#2326;&#2375; &#2327;&#2340;&#2366; &#2404;<br>&#2340;&#2375;&#2344;&#2376;&#2359;&#2366; &#2326;&#2375;&#2330;&#2352;&#2368; &#2344;&#2366;&#2350; &#2350;&#2369;&#2342;&#2381;&#2352;&#2366; &#2360;&#2367;&#2342;&#2381;&#2343;&#2376;&#2352;&#2381;&#2344;&#2367;&#2352;&#2370;&#2346;&#2367;&#2340;&#2366; &#2405;<p class="gl">He is not troubled by disease, stained by karma or bound by time. Because the mind moves in space and the tongue moves in space, the siddhas named this khechari mudra.</p></div>
+      <div class="dv"><span class="dvn">verse 3.54</span>&#2319;&#2325;&#2306; &#2360;&#2371;&#2359;&#2381;&#2335;&#2367;&#2350;&#2351;&#2306; &#2348;&#2368;&#2332;&#2350;&#2375;&#2325;&#2366; &#2350;&#2369;&#2342;&#2381;&#2352;&#2366; &#2330; &#2326;&#2375;&#2330;&#2352;&#2368; &#2404;<br>&#2319;&#2325;&#2379; &#2342;&#2375;&#2357;&#2379; &#2344;&#2367;&#2352;&#2366;&#2354;&#2350;&#2381;&#2348; &#2319;&#2325;&#2366;&#2357;&#2360;&#2381;&#2341;&#2366; &#2350;&#2344;&#2379;&#2344;&#2381;&#2350;&#2344;&#2368; &#2405;<p class="gl">One seed, one mudra (khechari), one lord without support, and one state: manonmani.</p></div>
+      <h3 class="sub"><span class="n">3</span>Bandhas and the last three mudras</h3>
+      <div class="dv"><span class="dvn">verse 3.60</span>&#2360;&#2352;&#2381;&#2357;&#2375;&#2359;&#2366;&#2350;&#2375;&#2357; &#2348;&#2344;&#2381;&#2343;&#2366;&#2344;&#2366;&#2350;&#2369;&#2340;&#2381;&#2340;&#2350;&#2379; &#2361;&#2381;&#2351;&#2369;&#2337;&#2381;&#2337;&#2368;&#2351;&#2366;&#2344;&#2325;&#2307; &#2404;<br>&#2313;&#2337;&#2381;&#2337;&#2367;&#2351;&#2366;&#2344;&#2375; &#2342;&#2371;&#2338;&#2375; &#2348;&#2344;&#2381;&#2343;&#2375; &#2350;&#2369;&#2325;&#2381;&#2340;&#2367;&#2307; &#2360;&#2381;&#2357;&#2366;&#2349;&#2366;&#2357;&#2367;&#2325;&#2368; &#2349;&#2357;&#2375;&#2340;&#2381; &#2405;<p class="gl">Of all the bandhas uddiyana is the best; when it is mastered, liberation comes naturally.</p></div>
+      <div class="dv"><span class="dvn">verse 3.65</span>&#2309;&#2346;&#2366;&#2344;&#2346;&#2381;&#2352;&#2366;&#2339;&#2351;&#2379;&#2352;&#2376;&#2325;&#2381;&#2351;&#2306; &#2325;&#2381;&#2359;&#2351;&#2379; &#2350;&#2370;&#2340;&#2381;&#2352;&#2346;&#2369;&#2352;&#2368;&#2359;&#2351;&#2379;&#2307; &#2404;<br>&#2351;&#2369;&#2357;&#2366; &#2349;&#2357;&#2340;&#2367; &#2357;&#2371;&#2342;&#2381;&#2343;&#2379;&#2365;&#2346;&#2367; &#2360;&#2340;&#2340;&#2306; &#2350;&#2370;&#2354;&#2348;&#2344;&#2381;&#2343;&#2344;&#2366;&#2340;&#2381; &#2405;<p class="gl">The union of apana and prana, a decrease in urine and stool; by constant moola bandha even the old become young.</p></div>
+      <div class="dv"><span class="dvn">verse 3.72</span>&#2332;&#2366;&#2354;&#2344;&#2381;&#2343;&#2352;&#2375; &#2325;&#2371;&#2340;&#2375; &#2348;&#2344;&#2381;&#2343;&#2375; &#2325;&#2339;&#2381;&#2336;&#2360;&#2329;&#2381;&#2325;&#2379;&#2330;&#2354;&#2325;&#2381;&#2359;&#2339;&#2375; &#2404;<br>&#2344; &#2346;&#2368;&#2351;&#2370;&#2359;&#2306; &#2346;&#2340;&#2340;&#2381;&#2351;&#2327;&#2381;&#2344;&#2380; &#2344; &#2330; &#2357;&#2366;&#2351;&#2369;&#2307; &#2346;&#2381;&#2352;&#2325;&#2369;&#2346;&#2381;&#2351;&#2340;&#2367; &#2405;<p class="gl">When jalandhara bandha is done by contracting the throat, the nectar does not fall into the fire and the air is not disturbed.</p></div>
+      <div class="dv"><span class="dvn">verse 3.74&ndash;75</span>&#2350;&#2370;&#2354;&#2360;&#2381;&#2341;&#2366;&#2344;&#2306; &#2360;&#2350;&#2366;&#2325;&#2369;&#2334;&#2381;&#2330;&#2381;&#2351; &#2313;&#2337;&#2381;&#2337;&#2367;&#2351;&#2366;&#2344;&#2306; &#2340;&#2369; &#2325;&#2366;&#2352;&#2351;&#2375;&#2340;&#2381; &#2404;<br>&#2311;&#2337;&#2366;&#2306; &#2330; &#2346;&#2367;&#2329;&#2381;&#2327;&#2354;&#2366;&#2306; &#2348;&#2342;&#2381;&#2343;&#2381;&#2357;&#2366; &#2357;&#2366;&#2361;&#2351;&#2375;&#2340;&#2381;&#2346;&#2358;&#2381;&#2330;&#2367;&#2350;&#2375; &#2346;&#2341;&#2367; &#2405;<br>&#2309;&#2344;&#2375;&#2344;&#2376;&#2357; &#2357;&#2367;&#2343;&#2366;&#2344;&#2375;&#2344; &#2346;&#2381;&#2352;&#2351;&#2366;&#2340;&#2367; &#2346;&#2357;&#2344;&#2379; &#2354;&#2351;&#2350;&#2381; &#2404;<br>&#2340;&#2340;&#2379; &#2344; &#2332;&#2366;&#2351;&#2340;&#2375; &#2350;&#2371;&#2340;&#2381;&#2351;&#2369;&#2352;&#2381;&#2332;&#2352;&#2366;&#2352;&#2379;&#2327;&#2366;&#2342;&#2367;&#2325;&#2306; &#2340;&#2341;&#2366; &#2405;<p class="gl">Contract the root, perform uddiyana, lock ida and pingala and move the breath in the rear (sushumna) path; by this the breath dissolves, and death, old age and disease do not arise.</p></div>
+      <div class="dv"><span class="dvn">verse 3.78</span>&#2340;&#2340;&#2381;&#2352;&#2366;&#2360;&#2381;&#2340;&#2367; &#2325;&#2352;&#2339;&#2306; &#2342;&#2367;&#2357;&#2381;&#2351;&#2306; &#2360;&#2370;&#2352;&#2381;&#2351;&#2360;&#2381;&#2351; &#2350;&#2369;&#2326;&#2357;&#2334;&#2381;&#2330;&#2344;&#2350;&#2381; &#2404;<br>&#2327;&#2369;&#2352;&#2370;&#2346;&#2342;&#2375;&#2358;&#2340;&#2379; &#2332;&#2381;&#2334;&#2375;&#2351;&#2306; &#2344; &#2340;&#2369; &#2358;&#2366;&#2360;&#2381;&#2340;&#2381;&#2352;&#2366;&#2352;&#2381;&#2341;&#2325;&#2379;&#2335;&#2367;&#2349;&#2367;&#2307; &#2405;<p class="gl">There is a divine technique that cheats the mouth of the sun; it is learned from the guru, not from crores of scripture meanings.</p></div>
+      <h3 class="sub"><span class="n">4</span>Nada, samadhi and laya</h3>
+      <div class="dv"><span class="dvn">verse 4.76</span>&#2352;&#2369;&#2342;&#2381;&#2352;&#2327;&#2381;&#2352;&#2344;&#2381;&#2341;&#2367;&#2306; &#2351;&#2342;&#2366; &#2349;&#2367;&#2340;&#2381;&#2340;&#2381;&#2357;&#2366; &#2358;&#2352;&#2381;&#2357;&#2346;&#2368;&#2336;&#2327;&#2340;&#2379;&#2365;&#2344;&#2367;&#2354;&#2307; &#2404;<br>&#2344;&#2367;&#2359;&#2381;&#2346;&#2340;&#2381;&#2340;&#2380; &#2357;&#2376;&#2339;&#2357;&#2307; &#2358;&#2348;&#2381;&#2342;&#2307; &#2325;&#2381;&#2357;&#2339;&#2342;&#2381;&#2357;&#2368;&#2339;&#2366;&#2325;&#2381;&#2357;&#2339;&#2379; &#2349;&#2357;&#2375;&#2340;&#2381; &#2405;<p class="gl">When the Rudra granthi is pierced and the air reaches the seat of Sharva, the flute-like sound is heard in nishpatti, like the sound of a vina.</p></div>
+      <div class="dv"><span class="dvn">verse 4.85&ndash;86</span>&#2310;&#2342;&#2380; &#2332;&#2354;&#2343;&#2367;&#2332;&#2368;&#2350;&#2370;&#2340;&#2349;&#2375;&#2352;&#2368;&#2333;&#2352;&#2381;&#2333;&#2352;&#2360;&#2350;&#2381;&#2349;&#2357;&#2366;&#2307; &#2404;<br>&#2350;&#2343;&#2381;&#2351;&#2375; &#2350;&#2352;&#2381;&#2342;&#2354;&#2358;&#2329;&#2381;&#2326;&#2379;&#2340;&#2381;&#2341;&#2366; &#2328;&#2339;&#2381;&#2335;&#2366;&#2325;&#2366;&#2361;&#2354;&#2332;&#2366;&#2360;&#2381;&#2340;&#2341;&#2366; &#2405;<br>&#2309;&#2344;&#2381;&#2340;&#2375; &#2340;&#2369; &#2325;&#2367;&#2329;&#2381;&#2325;&#2367;&#2339;&#2368;&#2357;&#2306;&#2358;&#2357;&#2368;&#2339;&#2366;&#2349;&#2381;&#2352;&#2350;&#2352;&#2344;&#2367;&#2307;&#2360;&#2381;&#2357;&#2344;&#2366;&#2307; &#2404;<br>&#2311;&#2340;&#2367; &#2344;&#2366;&#2344;&#2366;&#2357;&#2367;&#2343;&#2366; &#2344;&#2366;&#2342;&#2366;&#2307; &#2358;&#2381;&#2352;&#2370;&#2351;&#2344;&#2381;&#2340;&#2375; &#2342;&#2375;&#2361;&#2350;&#2343;&#2381;&#2351;&#2327;&#2366;&#2307; &#2405;<p class="gl">First, sounds of the ocean, clouds, kettledrum and jharjhara; in the middle, mardala, conch, bell and horn; last, tinkling bells, flute, vina and bee. These many sounds are heard from the middle of the body.</p></div>
+      <div class="dv"><span class="dvn">verse 4.29</span>&#2311;&#2344;&#2381;&#2342;&#2381;&#2352;&#2367;&#2351;&#2366;&#2339;&#2366;&#2306; &#2350;&#2344;&#2379; &#2344;&#2366;&#2341;&#2379; &#2350;&#2344;&#2379;&#2344;&#2366;&#2341;&#2360;&#2381;&#2340;&#2369; &#2350;&#2366;&#2352;&#2369;&#2340;&#2307; &#2404;<br>&#2350;&#2366;&#2352;&#2369;&#2340;&#2360;&#2381;&#2351; &#2354;&#2351;&#2379; &#2344;&#2366;&#2341;&#2307; &#2360; &#2354;&#2351;&#2379; &#2344;&#2366;&#2342;&#2350;&#2366;&#2358;&#2381;&#2352;&#2367;&#2340;&#2307; &#2405;<p class="gl">The mind is the lord of the senses, prana is the lord of the mind, laya is the lord of prana, and laya rests on nada.</p></div>
+      <div class="dv"><span class="dvn">verse 4.101</span>&#2340;&#2366;&#2357;&#2342;&#2366;&#2325;&#2366;&#2358;&#2360;&#2329;&#2381;&#2325;&#2354;&#2381;&#2346;&#2379; &#2351;&#2366;&#2357;&#2330;&#2381;&#2331;&#2348;&#2381;&#2342;&#2307; &#2346;&#2381;&#2352;&#2357;&#2352;&#2381;&#2340;&#2340;&#2375; &#2404;<br>&#2344;&#2367;&#2307;&#2358;&#2348;&#2381;&#2342;&#2306; &#2340;&#2340;&#2381;&#2346;&#2352;&#2306; &#2348;&#2381;&#2352;&#2361;&#2381;&#2350; &#2346;&#2352;&#2350;&#2366;&#2340;&#2381;&#2350;&#2375;&#2340;&#2367; &#2327;&#2368;&#2351;&#2340;&#2375; &#2405;<p class="gl">As long as the sound is heard the idea of space (akasha) remains; the soundless is the supreme Brahman, called the supreme self.</p></div>
+
+      <div class="src-foot">Verses from your verses PDF <span class="src gen">HYP verses PDF</span> meanings <span class="src add">added</span></div>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
+</script>
