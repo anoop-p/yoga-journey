@@ -1,3 +1,6 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Skeletal System</title>
 <style>
   :root{
@@ -129,6 +132,87 @@
     .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
     .scrim.show{ display:block; }
   }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  @media (max-width:640px){ .fig.wide-svg{ overflow-x:auto; -webkit-overflow-scrolling:touch; } .fig.wide-svg svg{ min-width:540px; } .fig.wide-svg::after{ content:"swipe sideways to see the whole diagram"; display:block; font-size:11px; color:var(--muted); text-align:center; margin-top:4px; } }
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .fig.photo img{ max-width:100%; height:auto; border-radius:8px; }
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 
@@ -147,373 +231,284 @@
     </div>
     <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
     <nav class="tree" id="tree">
-      <button class="nav-item" data-target="overview"><span class="num">00</span><span>Functions &amp; Divisions</span></button>
-      <button class="nav-item" data-target="bones"><span class="num">01</span><span>Bone Classification &amp; Structure</span></button>
-      <button class="nav-item" data-target="joints"><span class="num">02</span><span>Joints</span></button>
-      <button class="nav-item" data-target="movements"><span class="num">03</span><span>Joint Movements &amp; Practice</span></button>
+      <button class="nav-item" data-target="overview"><span class="num">01</span><span>Skeleton: Big Picture</span></button>
+      <button class="nav-item" data-target="axial"><span class="num">02</span><span>Axial Skeleton (80)</span></button>
+      <button class="nav-item" data-target="spine"><span class="num">03</span><span>Vertebral Column & Thorax</span></button>
+      <button class="nav-item" data-target="append"><span class="num">04</span><span>Appendicular Skeleton (126)</span></button>
+      <button class="nav-item" data-target="types"><span class="num">05</span><span>Types of Bone</span></button>
+      <button class="nav-item" data-target="structure"><span class="num">06</span><span>Bone Structure & Tissue</span></button>
+      <button class="nav-item" data-target="cells"><span class="num">07</span><span>Bone Cells, Growth & Minerals</span></button>
+      <button class="nav-item" data-target="yoga"><span class="num">08</span><span>Bones & Yogic Practice</span></button>
     </nav>
     <div class="sidebar-footer">
-      Reference: Anatomy &amp; Physiology &mdash; M.Sc. Notes, Unit 1 (Skeletal System) &amp; Unit 2 (Joints)
+      Reference: class notes 17 Sep&ndash;1 Oct 2026; Anatomy &amp; Physiology M.Sc. Notes (skeletal PDF); Yoga &amp; Human Body notes; Ross &amp; Wilson ch. 16 and standard textbooks (your references folder)
     </div>
   </aside>
 
   <main id="main">
-
-    <!-- 00 OVERVIEW -->
     <section class="section" id="sec-overview">
-      <div class="kicker">00 &middot; Foundations</div>
-      <h2>Functions &amp; Divisions</h2>
-      <p class="dek">206 bones, one framework, doing six different jobs at once.</p>
-
-      <figure>
-        <img src="assets/diagrams/skeletal-system-overview.jpg" alt="The Skeletal System overview: divisions (axial and appendicular), types of bones, anterior and posterior full-skeleton views with labels, vertebral column regions, rib cage, skull, and pelvic bone">
-        <figcaption>Axial skeleton (80 bones) in the trunk and head; appendicular skeleton (126 bones) in the limbs and girdles.</figcaption>
-      </figure>
-
-      <div class="card">
-        <h3><span class="tag">Def</span>Skeletal System</h3>
-        <div class="dsf">
-          <div class="row"><div class="label">Def</div><p>The framework of bones, cartilages, joints, and ligaments that supports and protects the body. An adult has 206 bones, though this varies slightly between individuals (accessory bones, fused sutures).</p></div>
-        </div>
+      <div class="sec-head">
+        <div class="kicker">01 &#183; Big picture</div>
+        <h2>The Skeletal System: Frame, Armour and Factory</h2>
+        <p class="dek">206 bones in two divisions. Each bone is a living organ that works with muscles, joints, ligaments and cartilage.</p>
       </div>
+<div class="stat-strip"><div class="stat"><div class="v">206</div><div class="k">bones in the adult</div></div><div class="stat"><div class="v">80 + 126</div><div class="k">axial + appendicular</div></div><div class="stat"><div class="v">6</div><div class="k">functions</div></div><div class="stat"><div class="v">5</div><div class="k">bone shapes</div></div></div>
+<div class="table-wrap"><table>
+<tr><th>Your syllabus line</th><th>Where it is on this page</th></tr>
+<tr><td>Skeletal system: divisions, types of bone, salient features</td><td>1 (divisions, functions), 5 (types of bone), 6 (structure), 7 (cells, growth)</td></tr>
+<tr><td>Axial and appendicular skeletal system</td><td>2 and 3 (axial), 4 (appendicular)</td></tr>
+<tr><td>Exercise physiology: musculo-skeletal system in yogic practices</td><td>8 (bones and yogic practice); joints and muscles are on their own pages</td></tr>
+</table></div>
+<div class="spread"><figure class="fig photo"><img src="assets/diagrams/skeletal-system-overview.jpg" alt="Skeletal system chart: front and back view of the skeleton, divisions, vertebral column, rib cage, skull, pelvis and the five types of bone"><figcaption>Teacher's overview chart (from your diagram folder): divisions, bone types, spine, rib cage, skull, pelvis.</figcaption></figure><ol class="key"><li><b>Skeleton</b> &#8211; the framework of bones, cartilage, joints and ligaments; about <b>206 bones</b> in an adult.<span class="src cls">class</span></li><li><b>Axial skeleton (80)</b> &#8211; the central axis: skull, hyoid, ossicles, vertebral column, thoracic cage.<span class="src cls">class</span></li><li><b>Appendicular skeleton (126)</b> &#8211; the limbs plus the girdles that hang them on the axis.<span class="src cls">class</span></li><li><b>Five shapes</b> &#8211; long, short, flat, irregular, sesamoid (section 5).<span class="src cls">class</span></li><li><b>Bone is living tissue</b> &#8211; it has blood supply, is built and broken down all life long (section 7).<span class="src cls">class</span></li></ol></div>
+<h3 class="sub"><span class="n">1A</span>Six functions of the skeleton</h3>
+<div class="table-wrap"><table>
+<tr><th>Function</th><th>What it means</th><th>Example</th></tr>
+<tr><td><b>Support</b></td><td>Rigid frame that carries body weight and anchors soft tissue</td><td>Vertebral column holds up the trunk<span class="src cls">class</span></td></tr>
+<tr><td><b>Protection</b></td><td>Bone boxes round soft organs</td><td>Skull: brain. Vertebrae: spinal cord. Ribs: heart and lungs<span class="src cls">class</span></td></tr>
+<tr><td><b>Movement</b></td><td>Bones act as <b>levers (rigid bars)</b> that muscles pull through tendons</td><td>Biceps pulls the radius to bend the elbow<span class="src cls">class</span></td></tr>
+<tr><td><b>Mineral store</b></td><td>Reservoir of calcium and phosphate, released into blood when needed</td><td>Calcium kept steady in blood<span class="src cls">class</span></td></tr>
+<tr><td><b>Blood-cell making</b></td><td><b>Red marrow</b> makes red cells, white cells and platelets (haemopoiesis)</td><td>Flat bones, ends of long bones<span class="src cls">class</span></td></tr>
+<tr><td><b>Fat store</b></td><td><b>Yellow marrow</b> stores fat as an energy reserve</td><td>Medullary cavity of long bones<span class="src cls">class</span></td></tr>
+</table></div>
+<div class="blk und"><span class="lbl">Understand it</span><p>The skeleton is more than a coat-hanger. Think of it as a <b>building with a job list</b>: it holds the building up (support), puts walls round the valuable rooms (protection), gives the muscles something firm to pull on (movement), and also runs a <b>bank</b> (calcium) and a <b>factory</b> (blood cells in red marrow) inside its own walls.</p><p>Tendon joins <b>muscle to bone</b>; ligament joins <b>bone to bone</b>. Cartilage cushions the joints. Together with muscles these make the <b>musculo-skeletal system</b>.<span class="src cls">class</span></p></div>
+<div class="cols2"><div class="blk mem"><span class="lbl">Memory aid</span><p><b>S-P-M-M-B-F</b>: <b>S</b>upport, <b>P</b>rotect, <b>M</b>ove, <b>M</b>ineral store, <b>B</b>lood-making, <b>F</b>at store. Or say: &#8220;Stand, Protect, Move, Minerals, Blood, Fat.&#8221;</p></div>
+<div class="blk conf"><span class="lbl">Common confusion</span><p><b>Tendon vs ligament:</b> tendon = muscle&#8594;bone (T for <i>Tie muscle</i>); ligament = bone&#8594;bone (L for <i>Link bones</i>). <b>Red vs yellow marrow:</b> red makes blood, yellow stores fat.</p></div>
+</div>
+<div class="blk exam"><span class="lbl">Exam angle</span><p>Short note: &#8220;Functions of the skeletal system&#8221;. List the six functions with one example each, then state 206 bones = 80 axial + 126 appendicular.</p></div>
+<div class="blk say"><span class="lbl">Explain it to someone &#183; 30 seconds</span><p>&#8220;The skeleton is 206 bones. It holds us up, protects the brain, heart and lungs, lets muscles pull to make movement, stores calcium and fat, and the red marrow inside makes our blood cells.&#8221;</p></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">How many bones in an adult skeleton?</div><div class="a">About 206: 80 axial + 126 appendicular</div></div><div class="recall-card"><div class="q">Six functions?</div><div class="a">Support, protection, movement (levers), mineral storage, blood-cell making (red marrow), fat storage (yellow marrow)</div></div><div class="recall-card"><div class="q">Tendon vs ligament?</div><div class="a">Tendon: muscle to bone. Ligament: bone to bone</div></div><div class="recall-card"><div class="q">Red vs yellow marrow?</div><div class="a">Red: makes blood cells. Yellow: stores fat</div></div><div class="recall-card"><div class="q">Why are bones called levers?</div><div class="a">Muscles pull on them through tendons to produce movement at joints</div></div></div></div>
 
-      <div class="card story" style="box-shadow:none;">
-        <p style="margin-bottom:0;">Six functions, in one place: <b>support</b> (a rigid frame bearing body weight and anchoring soft tissue), <b>protection</b> (cranium round the brain, thoracic cage round heart and lungs, vertebral column round the spinal cord), <b>movement</b> (bones act as levers that muscles pull on via tendons), <b>mineral storage</b> (calcium and phosphate, released into blood as needed), <b>haematopoiesis</b> (red marrow in flat bones and long-bone ends makes red cells, white cells, platelets), and <b>fat/energy storage</b> (yellow marrow in the medullary cavity stores triglycerides).</p>
-      </div>
-
-      <p style="font-size:13px; font-weight:600; color:var(--ink); margin:22px 0 10px;">Two divisions</p>
-      <div class="table-wrap">
-        <table>
-          <tr><th>Feature</th><th>Axial Skeleton</th><th>Appendicular Skeleton</th></tr>
-          <tr><td>Bones</td><td>80</td><td>126</td></tr>
-          <tr><td>Location</td><td>Skull, vertebral column, thoracic cage, hyoid</td><td>Limbs and girdles</td></tr>
-          <tr><td>Primary role</td><td>Protection &amp; support of trunk organs</td><td>Locomotion &amp; manipulation</td></tr>
-          <tr><td>Mobility</td><td>Relatively less mobile (except cervical spine)</td><td>Highly mobile, especially shoulder &amp; hip</td></tr>
-        </table>
-      </div>
-
-      <p style="font-size:13px; font-weight:600; color:var(--ink); margin:22px 0 10px;">What's actually in each division</p>
-      <div class="table-wrap">
-        <table>
-          <tr><th>Axial (80)</th><th>Count</th></tr>
-          <tr><td>Skull &mdash; cranial bones</td><td>8</td></tr>
-          <tr><td>Skull &mdash; facial bones</td><td>14</td></tr>
-          <tr><td>Ear ossicles (malleus, incus, stapes &mdash; both ears)</td><td>6</td></tr>
-          <tr><td>Hyoid</td><td>1</td></tr>
-          <tr><td>Vertebral column (7 cervical, 12 thoracic, 5 lumbar, 1 fused sacrum, 1 fused coccyx)</td><td>26</td></tr>
-          <tr><td>Ribs (7 true, 3 false, 2 floating &mdash; 12 pairs)</td><td>24</td></tr>
-          <tr><td>Sternum</td><td>1</td></tr>
-        </table>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <tr><th>Appendicular (126)</th><th>Count</th></tr>
-          <tr><td>Pectoral girdle (clavicle + scapula, both sides)</td><td>4</td></tr>
-          <tr><td>Upper limb, each arm: humerus, radius, ulna, carpals (8), metacarpals (5), phalanges (14) &mdash; &times;2</td><td>60</td></tr>
-          <tr><td>Pelvic girdle (two coxal bones, each fused from ilium + ischium + pubis)</td><td>2</td></tr>
-          <tr><td>Lower limb, each leg: femur, patella, tibia, fibula, tarsals (7), metatarsals (5), phalanges (14) &mdash; &times;2</td><td>60</td></tr>
-        </table>
-      </div>
-      <p style="font-size:13.5px;">Ribs: the first 7 pairs (<b>true ribs</b>) attach directly to the sternum by their own cartilage; the next 3 pairs (<b>false ribs</b>) attach indirectly, via the 7th rib's cartilage; the last 2 pairs (<b>floating ribs</b>) don't attach to the sternum at all. The pelvic girdle's two coxal bones meet at the front at the <b>pubic symphysis</b> and each has a socket, the <b>acetabulum</b>, where the femur head articulates to form the hip joint.</p>
-
-      <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
-        <div class="recall-strip">
-          <div class="recall-card"><div class="q">How many bones in the adult human skeleton?</div><div class="a">206</div></div>
-          <div class="recall-card"><div class="q">Which skeleton division has 80 bones?</div><div class="a">The axial skeleton</div></div>
-          <div class="recall-card"><div class="q">Which skeleton division has 126 bones?</div><div class="a">The appendicular skeleton</div></div>
-          <div class="recall-card"><div class="q">Where is red bone marrow, and what does it do?</div><div class="a">Flat bones and long-bone ends; makes red cells, white cells, and platelets (haematopoiesis)</div></div>
-          <div class="recall-card"><div class="q">How many pairs of ribs, and how are they grouped?</div><div class="a">12 pairs &mdash; 7 true, 3 false, 2 floating</div></div>
-          <div class="recall-card"><div class="q">How many vertebrae, and in what regions?</div><div class="a">26 &mdash; 7 cervical, 12 thoracic, 5 lumbar, 1 fused sacrum, 1 fused coccyx</div></div>
-          <div class="recall-card"><div class="q">What forms the hip socket?</div><div class="a">The acetabulum, on the coxal (hip) bone</div></div>
-        </div>
-      </div>
     </section>
 
-    <!-- 01 BONE CLASSIFICATION & STRUCTURE -->
-    <section class="section" id="sec-bones">
-      <div class="kicker">01 &middot; Shape &amp; structure</div>
-      <h2>Bone Classification &amp; Structure</h2>
-      <p class="dek">Five shapes for five mechanical jobs; every long bone shares the same basic anatomy, right down to the microscopic level.</p>
-
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+    <section class="section" id="sec-axial">
+      <div class="sec-head">
+        <div class="kicker">02 &#183; Axial skeleton</div>
+        <h2>Axial Skeleton: Skull, Hyoid and Ossicles</h2>
+        <p class="dek">The central axis of the body: 80 bones that protect the brain, spinal cord, heart and lungs.</p>
       </div>
+<div class="stat-strip"><div class="stat"><div class="v">80</div><div class="k">axial bones</div></div><div class="stat"><div class="v">22</div><div class="k">skull bones</div></div><div class="stat"><div class="v">8 + 14</div><div class="k">cranial + facial</div></div><div class="stat"><div class="v">6</div><div class="k">ear ossicles</div></div></div>
+<div class="spread"><figure class="fig photo"><img src="assets/diagrams/axial-skeleton-highlighted.jpg" alt="Skeleton with the axial parts highlighted in blue: skull, ossicles of the inner ear, hyoid, rib cage and vertebral column"><figcaption>The axial skeleton highlighted (from your diagram folder).</figcaption></figure><ol class="key"><li><b>Skull (22)</b> &#8211; 8 cranial + 14 facial bones.<span class="src gen">PDF</span></li><li><b>Ear ossicles (6)</b> &#8211; malleus, incus, stapes in each ear; the smallest bones.<span class="src cls">class</span></li><li><b>Hyoid (1)</b> &#8211; U-shaped neck bone for tongue and neck muscles.<span class="src cls">class</span></li><li><b>Vertebral column</b> &#8211; 33 vertebrae (class) or 26 bones (PDF); see the note in section 3.<span class="src cls">class</span></li><li><b>Thoracic cage</b> &#8211; sternum + 12 pairs of ribs + thoracic vertebrae.<span class="src cls">class</span></li><li><b>Count</b> &#8211; 22 + 6 + 1 + 26 + 25 = <b>80</b> (the PDF count; sternum 1 + ribs 24).<span class="src gen">PDF</span></li></ol></div>
+<h3 class="sub"><span class="n">2A</span>The skull: cranial and facial bones</h3>
+<div class="spread"><figure class="fig photo"><img src="assets/diagrams/skull-anatomy-cranial-facial-bones.jpg" alt="Skull coloured by bone: cranial bones frontal, parietal, occipital, temporal, sphenoid, ethmoid above; facial bones nasal, lacrimal, zygomatic, maxilla, mandible, palatine, vomer below"><figcaption>Cranial bones (top) and facial bones (below), from your diagram folder.</figcaption></figure><ol class="key"><li><b>Frontal</b> &#8211; forehead (front).<span class="src cls">class</span></li><li><b>Parietal</b> (2) &#8211; top and sides of the roof.<span class="src cls">class</span></li><li><b>Temporal</b> (2) &#8211; near the ear.<span class="src cls">class</span></li><li><b>Occipital</b> &#8211; extreme back, meets the neck; has the foramen magnum for the spinal cord.<span class="src cls">class</span><span class="src gen">general</span></li><li><b>Sphenoid</b> and <b>Ethmoid</b> &#8211; deep bones of the skull floor and between the eyes.<span class="src cls">class</span></li><li><b>Facial 14:</b> maxillae 2, zygomatic 2, nasal 2, lacrimal 2, palatine 2, inferior nasal conchae 2, vomer 1, <b>mandible 1</b>.<span class="src gen">PDF</span></li><li><b>Mandible</b> &#8211; the only <b>movable</b> skull bone (jaw); everything else is joined by immovable sutures.<span class="src cls">class</span></li></ol></div>
+<div class="table-wrap"><table>
+<tr><th>Group</th><th>Bones</th><th>Count</th><th>Job</th></tr>
+<tr><td>Cranial</td><td>Frontal 1, parietal 2, temporal 2, occipital 1, sphenoid 1, ethmoid 1</td><td>8</td><td>Closed box that protects the brain<span class="src cls">class</span></td></tr>
+<tr><td>Facial</td><td>Maxillae 2, zygomatic 2, nasal 2, lacrimal 2, palatine 2, inferior conchae 2, vomer 1, mandible 1</td><td>14</td><td>Shape of the face; frame of mouth and nose<span class="src gen">PDF</span></td></tr>
+</table></div>
+<div class="blk mem"><span class="lbl">Memory aid</span><p><b>Cranial 8:</b> <i>&#8220;PEST FOO&#8221;</i> = <b>P</b>arietal&#215;2, <b>E</b>thmoid, <b>S</b>phenoid, <b>T</b>emporal&#215;2, <b>F</b>rontal, <b>O</b>ccipital (that is 2+1+1+2+1+1 = 8). <b>Facial 14:</b> say <b>&#8220;Mandible, Vomer, then 2 each of Maxilla, Zygomatic, Nasal, Lacrimal, Palatine, Concha&#8221;</b> = 1+1+12 = 14. (Mnemonics here are made up for these notes.)<span class="src add">added</span></p></div>
+<h3 class="sub"><span class="n">2B</span>Hyoid and ear ossicles</h3>
+<div class="table-wrap"><table>
+<tr><th>Bone</th><th>Count</th><th>Key facts</th></tr>
+<tr><td><b>Hyoid</b></td><td>1</td><td>Single U-shaped neck bone; <b>does not join any other bone</b> (held by muscles and ligaments); attachment for tongue and neck muscles; helps swallowing and speech.<span class="src cls">class</span><span class="src gen">PDF</span></td></tr>
+<tr><td><b>Ossicles</b></td><td>6 (3 per ear)</td><td>Malleus (hammer), incus (anvil), stapes (stirrup). Carry sound vibrations. <b>Stapes = smallest bone in the body.</b><span class="src cls">class</span><span class="src gen">general</span></td></tr>
+</table></div>
+<h3 class="sub"><span class="n">2C</span>Sutures: why the skull does not move</h3>
+<div class="spread rev"><ol class="key"><li>Cranial bones are joined by <b>sutures</b>, a fibrous joint found <b>only in the skull</b>.<span class="src cls">class</span></li><li>Example: the <b>coronal suture</b> between frontal and parietal bones.<span class="src cls">class</span></li><li>In a baby the gaps (fontanelles) are soft; with age sutures ossify into solid bone (<b>synostosis</b>).<span class="src gen">PDF</span></li><li>More on joint types on the Joints page.<span class="src add">added</span></li></ol><figure class="fig photo"><img src="assets/diagrams/skull-sutures.jpg" alt="Side view of a skull with the sutures between the cranial bones marked"><figcaption>Sutures are the zig-zag lines between skull bones (from your joints folder).</figcaption></figure></div>
+<div class="blk exam"><span class="lbl">Exam angle</span><p>&#8220;Name the bones of the skull.&#8221; Write two groups: <b>cranial 8</b> (names) and <b>facial 14</b> (names), then add mandible as the only movable skull bone, with the hyoid and ossicles listed separately as the rest of the axial group.</p></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">How many skull bones?</div><div class="a">22: 8 cranial + 14 facial</div></div><div class="recall-card"><div class="q">Name the 8 cranial bones</div><div class="a">Frontal, 2 parietal, 2 temporal, occipital, sphenoid, ethmoid</div></div><div class="recall-card"><div class="q">Only movable skull bone?</div><div class="a">Mandible</div></div><div class="recall-card"><div class="q">Hyoid: what is special?</div><div class="a">U-shaped, in the neck, joins no other bone</div></div><div class="recall-card"><div class="q">Smallest bone?</div><div class="a">Stapes (ear ossicle)</div></div></div></div>
 
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>Bones aren't all one shape because they don't all do the same mechanical job. <b>Long bones</b> (femur, humerus) act as levers &mdash; a shaft plus two ends. <b>Short bones</b> (carpals, tarsals) give stability with limited motion. <b>Flat bones</b> (sternum, ribs, cranial bones) protect organs and offer broad surfaces for muscle to attach to. <b>Irregular bones</b> (vertebrae, hip bone) don't fit any other category. <b>Sesamoid bones</b> (patella, pisiform) sit embedded inside tendons, reducing friction and changing the angle a muscle pulls at.</p>
-        <div class="analogy">
-          <b>Longest to shortest, same skeleton</b>
-          The <b>femur</b> (thigh bone) is the longest bone in the body &mdash; a long bone built to carry the whole body's weight through the hip and knee. At the opposite extreme, the <b>stapes</b>, one of the three tiny auditory ossicles in the middle ear (with the malleus and incus), is the shortest bone in the body &mdash; built purely to transmit sound vibrations, nothing to do with weight-bearing at all.
-        </div>
-      </div>
-
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Reference &middot; bone shapes</div>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Type</th><th>Description</th><th>Examples</th></tr>
-            <tr><td>Long</td><td>Longer than wide; shaft (diaphysis) + two ends (epiphyses); act as levers</td><td>Femur, humerus, phalanges</td></tr>
-            <tr><td>Short</td><td>Roughly cube-shaped; stability with limited motion</td><td>Carpals, tarsals</td></tr>
-            <tr><td>Flat</td><td>Thin, flattened, often curved; protect organs, broad muscle attachment</td><td>Sternum, ribs, scapula, cranial bones</td></tr>
-            <tr><td>Irregular</td><td>Complex shapes fitting no other category</td><td>Vertebrae, sacrum, hip bone</td></tr>
-            <tr><td>Sesamoid</td><td>Small, embedded in tendons; reduce friction, alter angle of pull</td><td>Patella, pisiform</td></tr>
-          </table>
-        </div>
-
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Gross structure of a long bone</p>
-        <ul class="notes">
-          <li><b>Diaphysis</b> &mdash; the shaft; mainly compact bone around the medullary (marrow) cavity</li>
-          <li><b>Epiphysis</b> &mdash; the expanded ends; spongy (cancellous) bone under a thin compact-bone shell</li>
-          <li><b>Epiphyseal plate/line</b> &mdash; hyaline-cartilage growth plate in children, responsible for lengthwise bone growth; ossifies to a line in adults</li>
-          <li><b>Periosteum</b> &mdash; tough fibrous outer covering (not at joint surfaces); carries osteoblasts, osteoprogenitor cells, blood vessels, nerves; where tendons/ligaments attach</li>
-          <li><b>Endosteum</b> &mdash; thin lining of the medullary cavity and trabeculae, carrying osteoblasts and osteoclasts</li>
-          <li><b>Articular cartilage</b> &mdash; hyaline cartilage over the epiphyseal (joint) surfaces, reducing friction</li>
-        </ul>
-
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Microscopic structure &mdash; the osteon (Haversian system)</p>
-        <ul class="notes">
-          <li><b>Central (Haversian) canal</b> &mdash; runs the bone's long axis, carries blood vessels and nerves</li>
-          <li><b>Lamellae</b> &mdash; concentric rings of mineralised matrix around the central canal</li>
-          <li><b>Lacunae</b> &mdash; small spaces between lamellae, housing osteocytes</li>
-          <li><b>Canaliculi</b> &mdash; tiny channels linking lacunae to each other and to the central canal, for nutrient/waste exchange</li>
-          <li><b>Perforating (Volkmann's) canals</b> &mdash; transverse channels linking osteons to each other and to the periosteum/medullary cavity</li>
-          <li>Spongy bone has no true osteons &mdash; a trabecular lattice along stress lines, with red marrow filling the spaces</li>
-        </ul>
-
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Bone cells</p>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Cell</th><th>Location</th><th>Function</th></tr>
-            <tr><td>Osteoprogenitor cells</td><td>Periosteum &amp; endosteum</td><td>Stem cells &mdash; differentiate into osteoblasts</td></tr>
-            <tr><td>Osteoblasts</td><td>Bone surfaces</td><td>Synthesise/secrete osteoid (organic matrix); mineralisation</td></tr>
-            <tr><td>Osteocytes</td><td>Trapped in lacunae</td><td>Mature bone cells; maintain matrix, sense mechanical strain</td></tr>
-            <tr><td>Osteoclasts</td><td>Bone surfaces (monocyte lineage)</td><td>Resorb bone matrix; remodelling &amp; calcium homeostasis</td></tr>
-          </table>
-        </div>
-      </div>
-
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Note</div>
-        <p style="font-size:14.5px;">Your notes don't draw a specific asana link for bone shape or microscopic structure on their own &mdash; the practice connections your notes actually make (Q22: how asanas/pranayama benefit muscles <i>and</i> bones) are drawn at the joint and movement level, in Section 03, not at the tissue level covered here.</p>
-      </div>
-
-      <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
-        <div class="recall-strip">
-          <div class="recall-card"><div class="q">Which is the longest bone in the human body?</div><div class="a">The femur</div></div>
-          <div class="recall-card"><div class="q">Name the shortest bone in the human body.</div><div class="a">The stapes (one of the three auditory ossicles)</div></div>
-          <div class="recall-card"><div class="q">What is the shaft of a long bone called?</div><div class="a">The diaphysis</div></div>
-          <div class="recall-card"><div class="q">Which bone cell resorbs bone matrix?</div><div class="a">Osteoclasts</div></div>
-        </div>
-      </div>
-
-      <figure style="margin-top:8px;">
-        <img src="assets/diagrams/long-bone-structure.jpg" alt="Structure of a long bone: epiphysis, metaphysis, diaphysis (shaft), and epiphyseal plate at each end">
-        <figcaption>A long bone: epiphysis (ends) &middot; metaphysis &middot; diaphysis (shaft) &middot; epiphyseal plate (growth plate, in children).</figcaption>
-      </figure>
     </section>
 
-    <!-- 02 JOINTS -->
-    <section class="section" id="sec-joints">
-      <div class="kicker">02 &middot; Articulations</div>
-      <h2>Joints</h2>
-      <p class="dek">A joint is any point of contact between two bones &mdash; classified either by how much it moves, or by what tissue holds it together.</p>
-
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+    <section class="section" id="sec-spine">
+      <div class="sec-head">
+        <div class="kicker">03 &#183; Axial skeleton</div>
+        <h2>Vertebral Column and Thoracic Cage</h2>
+        <p class="dek">The spine is the axis of the body and the centre of asana practice. The rib cage guards the organs of breathing.</p>
       </div>
+<div class="stat-strip"><div class="stat"><div class="v">33</div><div class="k">vertebrae by class count</div></div><div class="stat"><div class="v">26</div><div class="k">bones in PDF count</div></div><div class="stat"><div class="v">4</div><div class="k">natural curves</div></div><div class="stat"><div class="v">12 pairs</div><div class="k">ribs</div></div></div>
+<h3 class="sub"><span class="n">3A</span>The vertebral column</h3>
+<div class="spread"><figure class="fig photo"><img src="assets/diagrams/vertebral-column-regions.jpg" alt="Side view of the spine with cervical, thoracic, lumbar, sacral and coccygeal regions marked, with spinal cord, discs and vertebra labelled"><figcaption>Regions of the spine (from your diagram folder).</figcaption></figure><ol class="key"><li><b>Cervical</b> &#8211; 7 (C1&#8211;C7), neck. C1 = <b>atlas</b>, C2 = <b>axis</b>.<span class="src cls">class</span><span class="src gen">general</span></li><li><b>Thoracic</b> &#8211; 12 (T1&#8211;T12); each carries a pair of ribs.<span class="src cls">class</span></li><li><b>Lumbar</b> &#8211; 5 (L1&#8211;L5); biggest vertebrae, carry the most weight.<span class="src cls">class</span></li><li><b>Sacral</b> &#8211; 5 fused into one bone (S1&#8211;S5).<span class="src cls">class</span></li><li><b>Coccygeal</b> &#8211; 4 fused (tailbone).<span class="src cls">class</span></li><li><b>Total 7+12+5+5+4 = 33</b> (class notes).<span class="src cls">class</span></li></ol></div>
+<p class="honest"><b>Source note.</b> Class notes and the Yoga &amp; Human Body notes say <b>33 vertebrae</b>. The teacher's PDF says <b>26 bones</b> (7+12+5 plus sacrum as 1 and coccyx as 1), because the sacrum and coccyx are fused. Both are right: <b>33 vertebrae at birth, 26 separate bones in the adult</b>. The 80-bone total uses 26. In the exam, write 33 and add the note that sacrum and coccyx are fused, so adults have 26 bones.<span class="src gen">general</span></p>
+<div class="table-wrap"><table>
+<tr><th>Region</th><th>Number</th><th>Key features</th></tr>
+<tr><td>Cervical</td><td>7</td><td>Smallest, most mobile; <b>atlas (C1)</b> carries the skull (nodding &#8220;yes&#8221;); <b>axis (C2)</b> has the <b>dens</b> that lets the head turn (&#8220;no&#8221;).<span class="src gen">general</span></td></tr>
+<tr><td>Thoracic</td><td>12</td><td>Have rib facets; move little because of the rib cage.<span class="src cls">class</span><span class="src gen">general</span></td></tr>
+<tr><td>Lumbar</td><td>5</td><td>Largest and strongest; take body weight; most bending in the lower back.<span class="src gen">general</span></td></tr>
+<tr><td>Sacrum</td><td>5 fused</td><td>Triangular; joins the hip bones at the sacro-iliac joints.<span class="src cls">class</span></td></tr>
+<tr><td>Coccyx</td><td>4 fused</td><td>Tailbone; small vestigial remnant.<span class="src cls">class</span></td></tr>
+</table></div>
+<h3 class="sub"><span class="n">3B</span>Four curves of the spine</h3>
+<div class="table-wrap"><table>
+<tr><th>Curve</th><th>Region</th><th>Bulges</th><th>Note</th></tr>
+<tr><td>Cervical lordosis</td><td>Neck</td><td>Forwards</td><td>Secondary; forms when the baby lifts the head<span class="src gen">general</span></td></tr>
+<tr><td>Thoracic kyphosis</td><td>Upper back</td><td>Backwards</td><td>Primary (present from birth)<span class="src gen">general</span></td></tr>
+<tr><td>Lumbar lordosis</td><td>Lower back</td><td>Forwards</td><td>Secondary; forms when the child stands<span class="src gen">general</span></td></tr>
+<tr><td>Sacral kyphosis</td><td>Sacrum and coccyx</td><td>Backwards</td><td>Primary<span class="src gen">general</span></td></tr>
+</table></div>
+<div class="blk know"><span class="lbl">Why curves? (YHB notes)</span><p>The curves <b>absorb shock, keep balance and spread body weight</b>. A straight rod breaks under load; a curved spring-like column bends and recoils.<span class="src gen">general</span></p></div>
+<div class="cols2"><div class="blk know"><span class="lbl">Functions of the column</span><ul class="plain"><li>Supports the head and trunk.<span class="src cls">class</span></li><li>Protects the spinal cord.<span class="src cls">class</span></li><li>Attachment for muscles.<span class="src cls">class</span></li><li>Allows trunk movement and keeps the body upright.<span class="src cls">class</span></li></ul></div>
+<div class="blk mem"><span class="lbl">Memory aid</span><p><b>7-12-5-5-4</b> = C-T-L-S-C. The first three (7+12+5 = 24) are the free, movable vertebrae; the last two (5 and 4) are fused. 24 + 5 + 4 = 33.<span class="src add">added</span></p></div>
+</div>
+<div class="blk und"><span class="lbl">Understand it</span><p>A vertebra is a ring of bone. Stack 24 rings with a <b>cushion (disc)</b> between each and you get a flexible tube that holds the spinal cord in its hollow and still bends. Neck rings are small and mobile; lower-back rings are big and strong because they carry more weight, like a pillar that gets thicker towards the ground. Sacrum and coccyx are fused to make a solid base for the hips.</p></div>
+<details class="deeper"><summary>Go deeper &#183; a typical vertebra and the disc</summary><div class="inner"><p>A typical vertebra has a <b>body</b> in front (weight bearing), a <b>vertebral arch</b> behind that forms the hole (<b>vertebral foramen</b>) for the spinal cord, a <b>spinous process</b> at the back, two <b>transverse processes</b> at the sides for muscle attachment, and <b>facet joints</b> above and below that guide movement. Between the bodies sits the <b>intervertebral disc</b> (fibrocartilage) which absorbs shock: the &#8220;symphysis&#8221; joint type on the Joints page.<span class="src gen">general</span></p><p style="margin-bottom:0">Facet orientation decides movement by region: the PDF says range at each region depends on it; standard texts add that the neck moves in all directions, the thoracic spine mostly rotates, and the lumbar spine mostly bends forwards and backwards.<span class="src gen">general</span></p></div></details>
+<h3 class="sub"><span class="n">3C</span>Thoracic cage: sternum and ribs</h3>
+<div class="spread"><figure class="fig photo"><img src="assets/diagrams/rib-cage-true-false-floating.jpg" alt="Rib cage showing ribs 1 to 12, true ribs, floating ribs 11 and 12, costal cartilage, sternum, clavicle and scapula"><figcaption>Rib cage with true, false and floating ribs (from your diagram folder).</figcaption></figure><ol class="key"><li><b>True ribs 1&#8211;7</b> &#8211; attach directly to the sternum through their own costal cartilage.<span class="src cls">class</span></li><li><b>False ribs 8&#8211;10</b> &#8211; do not attach directly; their cartilage joins the one above.<span class="src cls">class</span><span class="src gen">general</span></li><li><b>Floating ribs 11&#8211;12</b> &#8211; no front attachment at all.<span class="src cls">class</span></li><li><b>12 pairs = 24 ribs</b>; every rib joins a thoracic vertebra behind.<span class="src cls">class</span></li><li><b>Costal cartilage</b> &#8211; hyaline cartilage that gives the cage its spring for breathing.<span class="src gen">general</span></li></ol></div>
+<div class="spread rev"><ol class="key"><li><b>Manubrium</b> (top, green) &#8211; joins the clavicles and first ribs.<span class="src gen">general</span></li><li><b>Body</b> (middle, blue) &#8211; long flat part where the other true ribs attach.<span class="src gen">general</span></li><li><b>Xiphoid process</b> (tip, purple) &#8211; small cartilage tip that hardens with age.<span class="src gen">general</span></li><li>Thoracic cage = <b>sternum + 12 pairs of ribs + thoracic vertebrae</b>; it protects heart, lungs and great vessels and helps breathing.<span class="src cls">class</span></li></ol><figure class="fig photo"><img src="assets/diagrams/sternum-regions.jpg" alt="Front view of the sternum coloured by part: manubrium green, body blue, xiphoid process purple, with ribs attached"><figcaption>Sternum: manubrium, body, xiphoid process (from your diagram folder).</figcaption></figure></div>
+<div class="blk mem"><span class="lbl">Memory aid</span><p><b>7-3-2</b>: 7 true, 3 false, 2 floating = 12 pairs. &#8220;Seven are True to the sternum, three Borrow from the one above, two Float.&#8221;<span class="src add">added</span></p></div>
+<div class="blk exam"><span class="lbl">Exam angle</span><p>&#8220;Describe the vertebral column.&#8221; Give regions with numbers (7-12-5-5-4), the curves, the functions, and the note that sacrum and coccyx are fused. &#8220;Classify ribs&#8221;: true 1&#8211;7, false 8&#8211;10, floating 11&#8211;12 with the reason.</p></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Vertebrae in each region?</div><div class="a">Cervical 7, thoracic 12, lumbar 5, sacral 5 fused, coccygeal 4 fused = 33</div></div><div class="recall-card"><div class="q">Why 26 in the PDF?</div><div class="a">Sacrum and coccyx each count as one fused bone: 24 + 1 + 1 = 26</div></div><div class="recall-card"><div class="q">Four spinal curves?</div><div class="a">Cervical lordosis, thoracic kyphosis, lumbar lordosis, sacral kyphosis</div></div><div class="recall-card"><div class="q">Classify the ribs</div><div class="a">True 1-7 (attach to sternum), false 8-10, floating 11-12</div></div><div class="recall-card"><div class="q">Three parts of the sternum?</div><div class="a">Manubrium, body, xiphoid process</div></div></div></div>
 
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>Joints can be described two ways, and it's worth keeping them separate. <b>Functionally</b> &mdash; by how much they move &mdash; a joint is synarthrosis (immovable, like a skull suture), amphiarthrosis (slightly movable, like an intervertebral disc), or diarthrosis (freely movable, like the shoulder). <b>Structurally</b> &mdash; by what tissue joins the bones &mdash; a joint is fibrous, cartilaginous, or synovial. The two systems line up loosely (fibrous joints tend to be immovable, synovial joints tend to be freely movable) but they're answering different questions, and exam questions sometimes ask for one specifically.</p>
-        <div class="analogy">
-          <b>Synovial joints, the moving majority</b>
-          Synovial joints are the most common and most mobile type &mdash; a fluid-filled capsule (synovial fluid lubricates and nourishes the joint), lined with articular cartilage at the bone ends, and reinforced by ligaments. Their six sub-types (plane, hinge, pivot, condyloid, saddle, ball-and-socket) each permit a different range and axis of movement, which is exactly what asana practice works with and against.
-        </div>
-        <div class="figure-grid">
-          <figure>
-            <img src="assets/diagrams/skull-sutures.jpg" alt="Lateral view of the skull with the jagged suture lines between cranial bones labelled">
-            <figcaption>A suture &mdash; interlocking, fibrous, essentially immovable.</figcaption>
-          </figure>
-          <figure>
-            <img src="assets/diagrams/synovial-joint-structure-handdrawn.jpg" alt="Hand-drawn labelled diagram of a synovial (knee) joint: femur, articular cartilage, meniscus, synovial membrane, synovial fluid, ligament, joint capsule, tibia, tendon">
-            <figcaption>A synovial joint, drawn out &mdash; articular cartilage, meniscus, synovial membrane and fluid, ligament, joint capsule.</figcaption>
-          </figure>
-        </div>
-      </div>
-
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Q17 &middot; Name two types of joints in the body (5 marks)</div>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:0 0 6px;">Functional classification (by movement)</p>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Class</th><th>Movement</th><th>Example</th></tr>
-            <tr><td>Synarthrosis</td><td>Immovable</td><td>Sutures of the skull</td></tr>
-            <tr><td>Amphiarthrosis</td><td>Slightly movable</td><td>Pubic symphysis, intervertebral discs</td></tr>
-            <tr><td>Diarthrosis</td><td>Freely movable</td><td>Shoulder, hip, knee, elbow</td></tr>
-          </table>
-        </div>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Structural classification (by tissue)</p>
-        <ul class="notes">
-          <li><b>Fibrous</b> &mdash; dense fibrous tissue; generally immovable/slightly movable.
-            <ul>
-              <li>Sutures &mdash; skull only, interlocking, ossify with age</li>
-              <li>Syndesmoses &mdash; ligament/membrane, e.g. distal tibiofibular joint, radio-ulnar interosseous membrane</li>
-              <li>Gomphoses &mdash; peg-in-socket, e.g. a tooth in its socket</li>
-            </ul>
-            <div class="figure-grid" style="margin-top:10px;">
-              <figure>
-                <img src="assets/diagrams/syndesmosis-joint-radius-ulna.jpg" alt="Forearm radius and ulna with the antebrachial interosseous membrane highlighted, labelled as a syndesmosis joint">
-                <figcaption>Syndesmosis &mdash; the radius and ulna, bound along their shafts by the interosseous membrane.</figcaption>
-              </figure>
-              <figure>
-                <img src="assets/diagrams/gomphosis-joint-tooth.jpg" alt="Cross-section of a tooth in its socket in the mandible, with the gomphosis joint labelled at the periodontal ligament">
-                <figcaption>Gomphosis &mdash; a tooth pegged into its socket by the periodontal ligament.</figcaption>
-              </figure>
-            </div>
-          </li>
-          <li><b>Cartilaginous</b> &mdash; united by cartilage; little to moderate movement.
-            <ul>
-              <li>Synchondroses &mdash; hyaline cartilage, often temporary, e.g. epiphyseal growth plates</li>
-              <li>Symphyses &mdash; fibrocartilage, e.g. pubic symphysis, intervertebral discs</li>
-            </ul>
-          </li>
-          <li><b>Synovial</b> &mdash; fluid-filled cavity; the most mobile type. Structure: articular cartilage, joint capsule (fibrous layer + synovial membrane), synovial fluid, reinforcing ligaments, and (in some joints) menisci, fat pads, bursae.</li>
-        </ul>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Axes of movement</p>
-        <p style="font-size:14.5px;">A synovial joint's range of motion is described by how many axes it moves through. Picture three lines through the joint: the <b>X-axis</b> (up-and-down movement), the <b>Y-axis</b> (side-to-side movement), and the <b>Z-axis</b> (three-dimensional/rotational movement). A joint that moves through only one of these is <b>uniaxial</b>, through two is <b>biaxial</b>, and through all three is <b>multiaxial</b> (polyaxial). This is the same classification the "Axes" column below uses for each synovial joint type.</p>
-
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Types of synovial joint</p>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Type</th><th>Axes</th><th>Movement</th><th>Example</th></tr>
-            <tr><td>Plane (gliding)</td><td>&mdash;</td><td>Short, non-axial/translational gliding</td><td>Intercarpal, acromioclavicular</td></tr>
-            <tr><td>Hinge</td><td>Uniaxial</td><td>Flexion/extension only</td><td>Elbow, knee, interphalangeal</td></tr>
-            <tr><td>Pivot</td><td>Uniaxial</td><td>Rotation on a central axis</td><td>Atlanto-axial, proximal radio-ulnar</td></tr>
-            <tr><td>Condyloid</td><td>Biaxial</td><td>Flexion/extension, abduction/adduction</td><td>Wrist (radiocarpal), metacarpophalangeal</td></tr>
-            <tr><td>Saddle</td><td>Biaxial</td><td>Concave-to-convex articulation; greater range than condyloid</td><td>Thumb carpometacarpal</td></tr>
-            <tr><td>Ball-and-socket</td><td>Multiaxial</td><td>All movements plus rotation; most mobile of all</td><td>Shoulder (glenohumeral), hip (acetabulofemoral)</td></tr>
-          </table>
-        </div>
-
-        <figure style="margin-top:4px;">
-          <img src="assets/diagrams/ball-and-socket-joint-shoulder.jpg" alt="Diagram of a ball-and-socket joint model next to the shoulder (glenohumeral) joint, with arrows showing rotation through multiple axes">
-          <figcaption>Ball-and-socket (shoulder): a spherical head in a cup-shaped socket, free to rotate through all three axes &mdash; the structural basis of "multiaxial."</figcaption>
-        </figure>
-      </div>
-
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Applied</div>
-        <div class="practice-link">
-          <b>Joint design sets the natural limits of an asana</b>
-          The notes are explicit on this: ball-and-socket joints (hip, shoulder) permit the greatest multiaxial freedom but depend heavily on surrounding muscle and ligament for stability &mdash; and the hip's deeper socket favours stability over mobility compared with the shallower shoulder joint. Hinge joints (knee, elbow) are built principally for uniaxial flexion/extension, so forcing rotation or lateral movement at them &mdash; the notes give poorly aligned padmasana or virasana as examples &mdash; risks ligamentous strain. The vertebral column, as a chain of amphiarthrotic symphyses (the discs) plus paired facet (plane) joints, permits cumulative flexion, extension, lateral flexion, and rotation, with how much motion available at each region set by the local facet-joint orientation.
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
-        <div class="recall-strip">
-          <div class="recall-card"><div class="q">Name any two types of joints in the body.</div><div class="a">Any two of: fibrous, cartilaginous, synovial (structural); or synarthrosis, amphiarthrosis, diarthrosis (functional)</div></div>
-          <div class="recall-card"><div class="q">What fluid lubricates a synovial joint?</div><div class="a">Synovial fluid</div></div>
-          <div class="recall-card"><div class="q">Which synovial joint type is uniaxial, flexion/extension only?</div><div class="a">Hinge (e.g. elbow, knee)</div></div>
-          <div class="recall-card"><div class="q">Which synovial joint type allows the most freedom of movement?</div><div class="a">Ball-and-socket &mdash; multiaxial (e.g. shoulder, hip)</div></div>
-          <div class="recall-card"><div class="q">Give an example each of a suture, syndesmosis, and gomphosis.</div><div class="a">Suture &mdash; skull; syndesmosis &mdash; distal tibiofibular joint; gomphosis &mdash; a tooth in its socket</div></div>
-          <div class="recall-card"><div class="q">What does "biaxial" mean, and which joint type is it?</div><div class="a">Movement through two of the three axes (e.g. the X and Y axes) &mdash; condyloid and saddle joints</div></div>
-        </div>
-      </div>
     </section>
 
-    <!-- 03 JOINT MOVEMENTS & PRACTICE -->
-    <section class="section" id="sec-movements">
-      <div class="kicker">03 &middot; Applied biomechanics</div>
-      <h2>Joint Movements &amp; Practice</h2>
-      <p class="dek">The vocabulary that names every movement an asana asks a joint to make.</p>
-
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+    <section class="section" id="sec-append">
+      <div class="sec-head">
+        <div class="kicker">04 &#183; Appendicular skeleton</div>
+        <h2>Appendicular Skeleton: Girdles and Limbs</h2>
+        <p class="dek">The limbs and the girdles that hang them on the axis: movement, locomotion and handling objects.</p>
       </div>
+<div class="stat-strip"><div class="stat"><div class="v">126</div><div class="k">appendicular bones</div></div><div class="stat"><div class="v">4</div><div class="k">shoulder-girdle bones</div></div><div class="stat"><div class="v">30</div><div class="k">bones per limb</div></div><div class="stat"><div class="v">2</div><div class="k">hip bones</div></div></div>
+<div class="spread"><figure class="fig photo"><img src="assets/diagrams/appendicular-skeleton.jpg" alt="Skeleton with the appendicular bones in red: shoulder girdle, arm bones, hip bone and leg bones"><figcaption>Appendicular skeleton in red (from your diagram folder).</figcaption></figure><ol class="key"><li><b>Pectoral girdle</b> &#8211; clavicle (collar bone) + scapula (shoulder blade) each side; connects the arm to the axial skeleton.<span class="src cls">class</span></li><li><b>Upper limb</b> &#8211; humerus (arm); ulna and radius (forearm); 8 carpals (wrist); 5 metacarpals (palm); 14 phalanges (fingers).<span class="src cls">class</span></li><li><b>Pelvic girdle</b> &#8211; two hip bones; each = ilium + ischium + pubis.<span class="src cls">class</span></li><li><b>Lower limb</b> &#8211; femur (thigh); patella (knee-cap); tibia and fibula (leg); 7 tarsals (ankle); 5 metatarsals; 14 phalanges (toes).<span class="src cls">class</span></li><li><b>Count</b> &#8211; arm 1+2+8+5+14 = <b>30</b>; leg 1+1+2+7+5+14 = <b>30</b>. Two arms + two legs = 120; plus 2 clavicles, 2 scapulae, 2 hip bones = <b>126</b>.<span class="src gen">PDF</span></li></ol></div>
+<h3 class="sub"><span class="n">4A</span>Shoulder girdle vs pelvic girdle</h3>
+<div class="table-wrap"><table>
+<tr><th></th><th>Pectoral (shoulder) girdle</th><th>Pelvic girdle</th></tr>
+<tr><td>Bones</td><td>Clavicle + scapula (4)</td><td>Two hip bones (ilium + ischium + pubis)<span class="src cls">class</span></td></tr>
+<tr><td>Joins the axial skeleton</td><td>At the sternum (clavicle is the only bony link)</td><td>Sacrum behind; pubic symphysis in front</td></tr>
+<tr><td>Mobility</td><td><b>Very mobile</b>, less stable</td><td>Strong, <b>weight-bearing</b>, less mobile<span class="src gen">PDF</span></td></tr>
+<tr><td>Function</td><td>Helps upper limb movement<span class="src cls">class</span></td><td>Supports body weight, transfers it from trunk to legs, protects pelvic organs, muscle attachment<span class="src cls">class</span></td></tr>
+<tr><td>Socket</td><td>Glenoid cavity of the scapula (shallow)</td><td>Acetabulum (deep)<span class="src gen">general</span></td></tr>
+</table></div>
+<div class="blk und"><span class="lbl">Understand it</span><p>The shoulder is built for <b>reach</b> (the hand can go almost anywhere); the hip is built for <b>carrying</b> (it takes the whole body weight when you walk). That is why a shoulder dislocates easily and a hip rarely does: <b>mobility and stability trade off</b>.<span class="src gen">PDF</span></p></div>
+<h3 class="sub"><span class="n">4B</span>Upper limb, step by step</h3>
+<div class="table-wrap"><table>
+<tr><th>Region</th><th>Bones</th><th>Notes</th></tr>
+<tr><td>Arm</td><td><b>Humerus</b> (1)</td><td>Shoulder to elbow; the head fits the scapula's glenoid cavity.<span class="src cls">class</span></td></tr>
+<tr><td>Forearm</td><td><b>Radius</b> (thumb side) and <b>ulna</b> (little-finger side)</td><td>Olecranon of the ulna forms the point of the elbow.<span class="src gen">PDF</span></td></tr>
+<tr><td>Wrist</td><td><b>8 carpals</b></td><td>Short bones in two rows.<span class="src cls">class</span></td></tr>
+<tr><td>Palm</td><td><b>5 metacarpals</b></td><td>Between wrist and fingers.<span class="src cls">class</span></td></tr>
+<tr><td>Fingers</td><td><b>14 phalanges</b></td><td>Thumb 2, each finger 3.<span class="src cls">class</span><span class="src gen">general</span></td></tr>
+</table></div>
+<h3 class="sub"><span class="n">4C</span>Lower limb, step by step</h3>
+<div class="table-wrap"><table>
+<tr><th>Region</th><th>Bones</th><th>Notes</th></tr>
+<tr><td>Thigh</td><td><b>Femur</b></td><td>Longest, strongest bone.<span class="src gen">PDF</span></td></tr>
+<tr><td>Knee-cap</td><td><b>Patella</b></td><td>Sesamoid bone in the quadriceps tendon.<span class="src gen">PDF</span></td></tr>
+<tr><td>Leg</td><td><b>Tibia</b> (shin, main weight-bearer) and <b>fibula</b> (slender, lateral)</td><td>Fibula helps stabilise the ankle.<span class="src gen">PDF</span></td></tr>
+<tr><td>Ankle and heel</td><td><b>7 tarsals</b></td><td>Calcaneus = heel bone.<span class="src gen">general</span></td></tr>
+<tr><td>Foot</td><td><b>5 metatarsals</b>, <b>14 phalanges</b></td><td>Big toe 2, other toes 3.<span class="src cls">class</span><span class="src gen">general</span></td></tr>
+</table></div>
+<div class="cols2"><div class="blk mem"><span class="lbl">Memory aid</span><p><b>Arm 1-2-8-5-14</b>; <b>leg 1-1-2-7-5-14</b>. Wrist 8, ankle 7; palm and sole both 5; fingers and toes both 14.<span class="src add">added</span></p></div>
+<div class="blk conf"><span class="lbl">Common confusion</span><p><b>Carpals 8 vs tarsals 7.</b> <b>Radius is on the thumb side</b> (anatomical position); ulna is on the little-finger side. The <b>hip bone</b> is one bone fused from three and belongs to the pelvic girdle.</p></div>
+</div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Parts of the appendicular skeleton?</div><div class="a">Pectoral girdle, upper limbs, pelvic girdle, lower limbs: 126 bones</div></div><div class="recall-card"><div class="q">Shoulder girdle bones?</div><div class="a">Clavicle (collar bone) and scapula (shoulder blade)</div></div><div class="recall-card"><div class="q">Three bones fused in a hip bone?</div><div class="a">Ilium, ischium, pubis</div></div><div class="recall-card"><div class="q">Bones in one hand?</div><div class="a">8 carpals + 5 metacarpals + 14 phalanges = 27</div></div><div class="recall-card"><div class="q">Bones in one foot?</div><div class="a">7 tarsals + 5 metatarsals + 14 phalanges = 26</div></div></div></div>
 
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>Movements at synovial joints fall into four groups: <b>gliding</b> (flat bone surfaces sliding past each other, no angle change), <b>angular</b> movements (the angle between two bones increases or decreases), <b>rotation</b> (a bone turns around its own long axis), and <b>special movements</b> (named motions that only happen at specific joints). Most of them come in opposite pairs &mdash; one direction, then its reverse &mdash; so learning them as pairs halves the list: flexion/extension, lateral flexion, hyperextension, abduction/adduction, supination/pronation, inversion/eversion, dorsiflexion/plantarflexion, protraction/retraction, elevation/depression. Circumduction and opposition stand apart &mdash; circumduction strings flexion, abduction, extension, and adduction together into one conical sweep, and opposition is the thumb's own movement, touching its tip to the other fingertips.</p>
-        <div class="analogy">
-          <b>Why bones and muscles and pranayama share one exam question</b>
-          Range of motion at any joint is set by four things together: the shape of the articulating surfaces, the strength and placement of ligaments, muscle bulk, and the tension of the opposing (antagonist) muscle. That's exactly why the exam pairs "muscles and bones" in one question (Q22) &mdash; asana practice works on the joint's bony geometry (fixed) and its surrounding soft tissue (adaptable) at the same time, and neither half of that picture is separable from the other in practice.
-        </div>
-      </div>
-
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Reference &middot; movement terminology, by category</div>
-
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:0 0 6px;">1. Gliding</p>
-        <p style="font-size:14.5px;">Relatively flat bone surfaces move back-and-forth and side-to-side against each other, with no real change in joint angle. Example: intercarpal and intertarsal joints.</p>
-
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">2. Angular movements &mdash; the angle between two bones changes</p>
-        <ul class="notes">
-          <li><b>Flexion / Extension</b> &mdash; decreasing / increasing the angle between two bones (e.g. elbow, knee)</li>
-          <li><b>Lateral flexion</b> &mdash; the trunk bending sideways, right or left, at the waist; along the frontal plane, at the intervertebral joints</li>
-          <li><b>Hyperextension</b> &mdash; extension carried past the anatomical position (e.g. shoulder, wrist, hip); hinge joints such as the elbow, knee, and interphalangeal joints normally block it via ligament and bone alignment</li>
-          <li><b>Abduction / Adduction</b> &mdash; moving a limb away from / toward the midline (shoulder, wrist, hip, metacarpophalangeal joints of the fingers &mdash; not the thumb)</li>
-          <li><b>Circumduction</b> &mdash; not a movement on its own, but a continuous sequence of flexion, abduction, extension, and adduction tracing a cone (shoulder, hip)</li>
-        </ul>
-
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">3. Rotation &mdash; a bone turns around its own long axis</p>
-        <ul class="notes">
-          <li><b>Medial (internal) rotation</b> &mdash; the limb bone's anterior surface turns toward the midline</li>
-          <li><b>Lateral (external) rotation</b> &mdash; the limb bone's anterior surface turns away from the midline</li>
-        </ul>
-        <p style="font-size:14.5px;">Example: the atlanto-axial joint (shoulder and hip also rotate medially/laterally).</p>
-
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">4. Special movements &mdash; named, joint-specific</p>
-        <ul class="notes">
-          <li><b>Supination / Pronation</b> &mdash; forearm rotation at the radioulnar joints so the palm faces anteriorly / posteriorly</li>
-          <li><b>Inversion / Eversion</b> &mdash; turning the sole of the foot medially / laterally at the intertarsal joints</li>
-          <li><b>Dorsiflexion / Plantarflexion</b> &mdash; lifting the foot toward the shin / pointing the toes away, at the ankle (talocrural) joint</li>
-          <li><b>Protraction / Retraction</b> &mdash; moving a body part anteriorly / back to anatomical position in the transverse plane (e.g. scapular)</li>
-          <li><b>Elevation / Depression</b> &mdash; lifting / lowering a body part &mdash; e.g. shrugging the shoulders at the acromioclavicular joint, or closing/opening the mouth at the temporomandibular joint</li>
-          <li><b>Opposition</b> &mdash; at the thumb's carpometacarpal joint, moving the thumb across the palm to touch the fingertips</li>
-        </ul>
-      </div>
-
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Q22 &middot; How asanas and pranayama are good for muscles and bones (10 marks) &mdash; the bones-specific angle</div>
-        <div class="practice-link">
-          <b>What the notes actually connect</b>
-          The notes cue specific asanas against specific joint movements &mdash; elbow flexion in bhujangasana's preparatory phase, spinal extension in the full pose, arm abduction in tadasana variations &mdash; and frame this explicitly as "essential for accurately cueing and analysing asanas." That is the connection your notes draw: movement vocabulary maps directly onto naming and cueing what a given asana is doing at a given joint.
-        </div>
-        <p style="font-size:14.5px;">On why this matters for the joints themselves (not just the muscles crossing them, which the Muscular System topic covers): the notes state that a hinge joint like the knee or elbow is built for uniaxial flexion/extension, and that forcing rotation or lateral movement at it &mdash; misaligned padmasana or virasana are the examples given &mdash; risks ligamentous strain, not muscular strain. That is a joint-structure argument, distinct from the muscular-fatigue and stretch-tolerance content in the Muscular System topic, which is why Q22 asks about muscles <i>and</i> bones as two separate halves of the same answer.</p>
-      </div>
-
-      <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
-        <div class="recall-strip">
-          <div class="recall-card"><div class="q">What are bio-mechanical movements?</div><div class="a">Named movements produced at joints by muscles acting on bones as levers &mdash; flexion, extension, abduction, rotation, and so on</div></div>
-          <div class="recall-card"><div class="q">Lifting the foot toward the shin is called?</div><div class="a">Dorsiflexion</div></div>
-          <div class="recall-card"><div class="q">A conical movement combining flexion, abduction, extension, adduction?</div><div class="a">Circumduction</div></div>
-          <div class="recall-card"><div class="q">Why does forcing rotation at the knee risk injury?</div><div class="a">The knee is a hinge joint, built for uniaxial flexion/extension only &mdash; forcing rotation risks ligamentous strain</div></div>
-          <div class="recall-card"><div class="q">What is extension carried past the anatomical position called?</div><div class="a">Hyperextension</div></div>
-          <div class="recall-card"><div class="q">Bending the trunk sideways at the waist is called?</div><div class="a">Lateral flexion (at the intervertebral joints)</div></div>
-          <div class="recall-card"><div class="q">Touching the thumb to the fingertips is called?</div><div class="a">Opposition (thumb carpometacarpal joint)</div></div>
-          <div class="recall-card"><div class="q">Which of the four movement categories has no angle change at all?</div><div class="a">Gliding (e.g. intercarpal, intertarsal joints)</div></div>
-        </div>
-      </div>
-
-      <p class="source-note">Source: Anatomy &amp; Physiology &mdash; M.Sc. Notes, Unit 1 (Skeletal System) and Unit 2 (Joints &mdash; Classification and Movements, Oct 2026).</p>
     </section>
+
+    <section class="section" id="sec-types">
+      <div class="sec-head">
+        <div class="kicker">05 &#183; Types of bone</div>
+        <h2>Classification of Bones by Shape</h2>
+        <p class="dek">Shape follows function: levers, blocks, shields, odd shapes and pulleys.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">5</div><div class="k">shapes of bone</div></div><div class="stat"><div class="v">1</div><div class="k">sesamoid example to know: patella</div></div><div class="stat"><div class="v">Long</div><div class="k">levers for movement</div></div></div>
+<div class="table-wrap"><table>
+<tr><th>Type</th><th>Description</th><th>Examples</th><th>Function</th></tr>
+<tr><td><b>Long</b></td><td>Longer than wide; shaft + two ends</td><td>Femur, humerus, tibia, radius, ulna, phalanges</td><td>Movement (levers), support of body weight<span class="src cls">class</span></td></tr>
+<tr><td><b>Short</b></td><td>Roughly cube-shaped</td><td>Carpals, tarsals</td><td>Stability with limited movement<span class="src cls">class</span></td></tr>
+<tr><td><b>Flat</b></td><td>Thin, flattened, often curved</td><td>Sternum, ribs, scapula, cranial bones</td><td>Protection, broad muscle attachment, blood-cell making (marrow)<span class="src cls">class</span></td></tr>
+<tr><td><b>Irregular</b></td><td>Complex shapes</td><td>Vertebrae, sacrum, hip bone, facial bones</td><td>Varied: protection, attachment<span class="src cls">class</span><span class="src gen">PDF</span></td></tr>
+<tr><td><b>Sesamoid</b></td><td>Small bones that develop <b>inside tendons</b></td><td>Patella (also pisiform)</td><td>Reduce friction; change the angle of muscle pull; movement<span class="src cls">class</span><span class="src gen">PDF</span></td></tr>
+</table></div>
+<p class="honest"><b>Source note.</b> Class notes put <b>facial bones</b> under irregular bones; the PDF lists vertebrae, sacrum and hip bone. Both lists are fine; exams usually want vertebrae.</p>
+<div class="blk und"><span class="lbl">Understand it</span><p>A bone's shape follows its job. A <b>long bone</b> is a lever: long arm, so a small movement of the muscle gives a big swing at the end. A <b>short bone</b> is a block: wrist and ankle need strength and a little give, not a long swing. A <b>flat bone</b> is a shield: wide and thin like a helmet or a breastplate, with a large surface for muscles. An <b>irregular bone</b> has odd bumps because many muscles and ligaments attach and it must guard the spinal cord. A <b>sesamoid bone</b> sits in a tendon like a pulley wheel on a rope: it lifts the tendon away from the joint, giving the muscle a better angle.<span class="src gen">general</span></p></div>
+<div class="cols2"><div class="blk mem"><span class="lbl">Memory aid</span><p><b>L-S-F-I-S</b>: <i>&#8220;Long Strong Fighters In Silence&#8221;</i> (made up). Or the examples: <b>femur, carpal, scapula, vertebra, patella</b>, one for each type in order.<span class="src add">added</span></p></div>
+<div class="blk conf"><span class="lbl">Common confusion</span><p><b>Patella is a sesamoid bone, not a short bone</b>, because it grows inside the quadriceps tendon. <b>Ribs and sternum are flat</b>, <b>vertebrae are irregular</b>. <b>Phalanges are long bones</b> although they are small.</p></div>
+</div>
+<div class="blk exam"><span class="lbl">Exam angle</span><p>&#8220;Classify bones with examples.&#8221; Write a five-row table (type, features, examples, function). Add one line on why the shape fits the function.</p></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Five types of bone by shape?</div><div class="a">Long, short, flat, irregular, sesamoid</div></div><div class="recall-card"><div class="q">Example of a sesamoid bone?</div><div class="a">Patella (kneecap)</div></div><div class="recall-card"><div class="q">Examples of short bones?</div><div class="a">Carpals and tarsals</div></div><div class="recall-card"><div class="q">Examples of flat bones?</div><div class="a">Sternum, ribs, scapula, cranial bones</div></div><div class="recall-card"><div class="q">Functions of long bones?</div><div class="a">Movement (levers) and support of body weight</div></div></div></div>
+
+    </section>
+
+    <section class="section" id="sec-structure">
+      <div class="sec-head">
+        <div class="kicker">06 &#183; Salient features</div>
+        <h2>Structure of Bone: Long Bone, Compact and Spongy Tissue</h2>
+        <p class="dek">From the whole bone down to a single osteon.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">3</div><div class="k">regions of a long bone</div></div><div class="stat"><div class="v">2</div><div class="k">bone tissues: compact + spongy</div></div><div class="stat"><div class="v">2</div><div class="k">coverings: periosteum, endosteum</div></div></div>
+<h3 class="sub"><span class="n">6A</span>Gross structure of a long bone</h3>
+<div class="spread"><figure class="fig photo"><img src="assets/diagrams/long-bone-compact-spongy-bone.jpg" alt="Long bone cut open showing epiphysis, metaphysis, diaphysis, spongy bone, medullary cavity and compact bone"><figcaption>A long bone cut open (from your diagram folder).</figcaption></figure><ol class="key"><li><b>Diaphysis</b> &#8211; the long central shaft; mostly compact bone round a hollow <b>medullary cavity</b> (yellow marrow in adults).<span class="src cls">class</span><span class="src gen">PDF</span></li><li><b>Epiphysis</b> &#8211; the expanded ends; spongy bone inside, thin compact bone outside, covered by <b>articular cartilage</b> where it forms a joint.<span class="src cls">class</span><span class="src gen">PDF</span></li><li><b>Metaphysis</b> &#8211; the region between shaft and end; in a growing child it holds the <b>epiphyseal (growth) plate</b> that makes the bone longer. In adults it becomes the epiphyseal line.<span class="src cls">class</span></li><li><b>Periosteum</b> &#8211; tough outer membrane with blood vessels, nerves and bone-forming cells; tendons and ligaments attach to it.<span class="src cls">class</span><span class="src gen">PDF</span></li><li><b>Endosteum</b> &#8211; thin lining of the medullary cavity and the spongy bone.<span class="src cls">class</span></li></ol></div>
+<div class="table-wrap"><table>
+<tr><th>Part</th><th>Tissue</th><th>Job</th></tr>
+<tr><td>Diaphysis</td><td>Compact bone, hollow centre</td><td>Strength; carries the load; marrow cavity</td></tr>
+<tr><td>Epiphysis</td><td>Spongy inside, compact shell</td><td>Wide joint surface; red marrow; spreads load<span class="src gen">PDF</span></td></tr>
+<tr><td>Metaphysis / growth plate</td><td>Hyaline cartilage (child)</td><td>Lengthwise growth<span class="src gen">PDF</span></td></tr>
+<tr><td>Periosteum</td><td>Fibrous membrane</td><td>Feeds bone, grows bone in width, anchors tendons<span class="src gen">PDF</span></td></tr>
+<tr><td>Endosteum</td><td>Thin cell layer</td><td>Lines inner surfaces; bone formation and breakdown<span class="src gen">PDF</span></td></tr>
+<tr><td>Articular cartilage</td><td>Hyaline cartilage</td><td>Smooth, shock-absorbing joint surface<span class="src gen">PDF</span></td></tr>
+</table></div>
+<h3 class="sub"><span class="n">6B</span>Compact bone vs spongy bone</h3>
+<div class="table-wrap"><table>
+<tr><th></th><th>Compact (dense) bone</th><th>Spongy (trabecular, cancellous) bone</th></tr>
+<tr><td>Where</td><td>Outer shell of all bones; shaft of long bones</td><td>Inside flat and irregular bones; ends of long bones<span class="src cls">class</span></td></tr>
+<tr><td>Look</td><td>Solid, smooth</td><td>Honeycomb of thin struts (<b>trabeculae</b>) with marrow in the gaps<span class="src cls">class</span></td></tr>
+<tr><td>Unit</td><td><b>Osteon (Haversian system)</b></td><td>No true osteons; trabeculae line up along stress lines<span class="src gen">PDF</span></td></tr>
+<tr><td>Job</td><td>Strength, mechanical support, resists stress<span class="src cls">class</span></td><td>Light weight, houses red marrow, absorbs and spreads load<span class="src gen">PDF</span></td></tr>
+</table></div>
+<div class="blk und"><span class="lbl">Understand it</span><p>Engineers make the same trade: a <b>solid tube</b> (compact shaft) is strong against bending for its weight, and a <b>lattice</b> (spongy ends) is light and spreads force. A bone is both, so it is strong without being heavy. That is why a long bone is a hollow tube rather than a solid rod.<span class="src gen">general</span></p></div>
+<h3 class="sub"><span class="n">6C</span>Microscopic structure: the osteon</h3>
+<div class="spread"><figure class="fig photo"><img src="assets/diagrams/compact-spongy-bone-haversian-system.jpg" alt="Wedge of bone showing osteons of compact bone, lamellae, lacunae containing osteocytes, canaliculi, Haversian canal, Volkmann's canal, periosteum and trabeculae of spongy bone"><figcaption>Compact and spongy bone with the Haversian system (from your diagram folder).</figcaption></figure><ol class="key"><li><b>Central (Haversian) canal</b> &#8211; carries blood vessels and nerves along the bone.<span class="src gen">PDF</span></li><li><b>Lamellae</b> &#8211; concentric rings of hard matrix round the canal, like tree rings.<span class="src gen">PDF</span></li><li><b>Lacunae</b> &#8211; tiny spaces between lamellae; each holds an <b>osteocyte</b>.<span class="src gen">PDF</span></li><li><b>Canaliculi</b> &#8211; hair-thin channels joining lacunae to each other and to the canal; they pass food and waste.<span class="src gen">PDF</span></li><li><b>Perforating (Volkmann's) canals</b> &#8211; cross-channels joining osteons to each other and to the periosteum.<span class="src gen">PDF</span></li></ol></div>
+<div class="spread rev"><ol class="key"><li>An osteon is a <b>tiny tube-within-tube</b>: a central canal for supply, wrapped by rings of matrix, with cells living in small rooms between the rings.<span class="src gen">general</span></li><li>Matrix = <b>collagen</b> (gives toughness) + <b>calcium salts</b> (give hardness).<span class="src gen">general</span></li></ol><figure class="fig photo"><img src="assets/diagrams/osteon-bone-structure-3d.jpg" alt="3D cut-away of bone showing osteon, bone matrix, compact bone and spongy bone"><figcaption>3D view: osteon, compact bone, bone matrix and spongy bone.</figcaption></figure></div>
+<div class="cols2"><div class="blk mem"><span class="lbl">Memory aid</span><p><b>C-L-L-C-V</b>: Central canal, Lamellae, Lacunae, Canaliculi, Volkmann's canal &#8211; from the middle outwards. Say &#8220;<b>Cats Like Lazy Cats, Very</b> much&#8221; (made up).<span class="src add">added</span></p></div>
+<div class="blk conf"><span class="lbl">Common confusion</span><p><b>Haversian canal runs along</b> the bone; <b>Volkmann's canal runs across</b>. <b>Periosteum is outside</b>; <b>endosteum is inside</b>. <b>Epiphysis is the end, diaphysis the shaft</b> (&#8220;dia&#8221; = through the middle).</p></div>
+</div>
+<div class="blk exam"><span class="lbl">Exam angle</span><p>&#8220;Describe the structure of a long bone with a labelled diagram.&#8221; Draw a long bone: epiphysis, metaphysis (growth plate), diaphysis, marrow cavity, compact and spongy bone, periosteum, endosteum, articular cartilage. Add the osteon as a second small diagram.</p></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Three regions of a long bone?</div><div class="a">Diaphysis (shaft), epiphysis (ends), metaphysis (between; growth plate)</div></div><div class="recall-card"><div class="q">Periosteum vs endosteum?</div><div class="a">Periosteum covers the outside; endosteum lines the inside</div></div><div class="recall-card"><div class="q">Compact vs spongy bone?</div><div class="a">Compact: solid, dense, strength. Spongy: trabeculae, light, red marrow</div></div><div class="recall-card"><div class="q">Parts of an osteon?</div><div class="a">Central canal, lamellae, lacunae (osteocytes), canaliculi</div></div><div class="recall-card"><div class="q">Volkmann's canals?</div><div class="a">Cross-channels joining osteons and the periosteum</div></div></div></div>
+
+    </section>
+
+    <section class="section" id="sec-cells">
+      <div class="sec-head">
+        <div class="kicker">07 &#183; Bone tissue</div>
+        <h2>Bone Cells, Growth, Remodelling and Minerals</h2>
+        <p class="dek">Bone is a living, always-changing tissue: builders, demolishers, caretakers, and a mineral bank.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">4</div><div class="k">bone cell types</div></div><div class="stat"><div class="v">3</div><div class="k">tissues in bone (class): osteoblast, osteoclast, osteocyte</div></div><div class="stat"><div class="v">2</div><div class="k">marrow types</div></div></div>
+<h3 class="sub"><span class="n">7A</span>Bone cells</h3>
+<div class="table-wrap"><table>
+<tr><th>Cell</th><th>Where</th><th>Job</th><th>Say it simply</th></tr>
+<tr><td><b>Osteoprogenitor</b></td><td>Periosteum, endosteum</td><td>Stem cells that become osteoblasts<span class="src gen">PDF</span></td><td>The apprentice supply</td></tr>
+<tr><td><b>Osteoblast</b></td><td>Bone surfaces</td><td>Builds the organic matrix (osteoid) and starts mineralising it<span class="src cls">class</span><span class="src gen">PDF</span></td><td><b>Builder</b></td></tr>
+<tr><td><b>Osteocyte</b></td><td>Trapped in lacunae</td><td>Mature bone cell; maintains matrix, senses strain<span class="src cls">class</span><span class="src gen">PDF</span></td><td><b>Caretaker</b></td></tr>
+<tr><td><b>Osteoclast</b></td><td>Bone surfaces</td><td>Breaks down (resorbs) bone; important in remodelling and calcium control<span class="src cls">class</span><span class="src gen">PDF</span></td><td><b>Demolition crew</b></td></tr>
+</table></div>
+<div class="blk mem"><span class="lbl">Memory aid</span><p><b>Blast = Build, Clast = Crush, Cyte = Care (mature cell).</b> &#8220;<b>Osteoblast Builds</b>, <b>Osteoclast Chops</b>, <b>Osteocyte Cares</b>.&#8221;<span class="src add">added</span></p></div>
+<h3 class="sub"><span class="n">7B</span>Growth, repair and remodelling</h3>
+<ul class="plain"><li>Bone is <b>living</b>: it is built by osteoblasts and broken by osteoclasts <b>all through life</b> (remodelling). Builders and demolishers working together keep bone strong and keep blood calcium steady.<span class="src gen">PDF</span></li><li><b>Lengthwise growth</b> happens at the epiphyseal plate; when growth stops the plate becomes a line.<span class="src gen">PDF</span></li><li><b>Width growth</b> comes from new bone laid down by the periosteum.<span class="src gen">general</span></li><li><b>Ossification</b> = bone formation. Bone forms from hyaline cartilage (most bones) or directly from membrane (flat skull bones).<span class="src gen">general</span></li><li><b>Wolff's law</b>: bone grows stronger where it is loaded and weaker where it is not, so weight-bearing activity builds bone and long rest or bed rest thins it.<span class="src gen">general</span></li></ul><h3 class="sub"><span class="n">7C</span>Bone as a mineral bank and blood factory</h3>
+<div class="table-wrap"><table>
+<tr><th>Item</th><th>Facts</th></tr>
+<tr><td>Calcium and phosphate</td><td>Stored in the matrix; released into blood when needed<span class="src gen">PDF</span></td></tr>
+<tr><td>Red marrow</td><td>Makes red cells, white cells, platelets; found in flat bones and ends of long bones<span class="src gen">PDF</span></td></tr>
+<tr><td>Yellow marrow</td><td>Fat store in the medullary cavity<span class="src gen">PDF</span></td></tr>
+<tr><td>Cartilage types in the body</td><td><b>Hyaline</b> (joints, growth plate), <b>fibrocartilage</b> (discs, withstands pressure, vertebra), <b>elastic</b> (ear)<span class="src cls">class</span><span class="src gen">general</span></td></tr>
+</table></div>
+<p class="honest"><b>Source note.</b> Class notes say &#8220;3 tissues in bone: osteoblast, osteoclast, osteocyte&#8221;. These are <b>cells</b>, not tissues; the PDF adds a fourth cell, the osteoprogenitor. In the exam write &#8220;bone cells&#8221;.</p>
+<details class="deeper"><summary>Go deeper &#183; what happens when the balance goes wrong</summary><div class="inner"><p><b>Osteoporosis</b>: osteoclasts remove bone faster than osteoblasts build, so bone becomes thin and brittle (common after menopause and with age). <b>Rickets</b> in children and <b>osteomalacia</b> in adults: soft bones, usually from low vitamin D or calcium. Weight-bearing exercise, calcium and vitamin D help. This is standard textbook content, not in your class notes.<span class="src gen">general</span></p></div></details>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Which cell builds bone?</div><div class="a">Osteoblast</div></div><div class="recall-card"><div class="q">Which cell breaks bone down?</div><div class="a">Osteoclast</div></div><div class="recall-card"><div class="q">Mature bone cell?</div><div class="a">Osteocyte (lives in a lacuna)</div></div><div class="recall-card"><div class="q">Where does lengthwise growth occur?</div><div class="a">Epiphyseal (growth) plate in the metaphysis</div></div><div class="recall-card"><div class="q">What does Wolff's law say?</div><div class="a">Bone adapts to load: more load, stronger bone</div></div></div></div>
+
+    </section>
+
+    <section class="section" id="sec-yoga">
+      <div class="sec-head">
+        <div class="kicker">08 &#183; Exercise physiology</div>
+        <h2>Bones and Yogic Practice</h2>
+        <p class="dek">What the skeleton means for asana: levers, spine, load and safe limits.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">Bones</div><div class="k">are the levers</div></div><div class="stat"><div class="v">4</div><div class="k">spinal curves take load</div></div><div class="stat"><div class="v">Load</div><div class="k">builds bone</div></div><div class="stat"><div class="v">No force</div><div class="k">past the joint's design</div></div></div>
+<div class="blk know"><span class="lbl">What your notes connect to the skeleton</span><ul class="plain"><li>Bones are <b>rigid levers</b>; skeletal muscles act on them to move joints (class notes). The movement words used to cue asanas are on the Joints page.<span class="src cls">class</span></li><li>The <b>vertebral column</b> is central to asana: it supports the trunk and allows flexion, extension, lateral flexion and rotation (PDF).<span class="src gen">PDF</span></li><li>A <b>hinge joint</b> (knee, elbow) is built for flexion and extension only; forcing rotation, as in poorly aligned <b>padmasana</b> or <b>virasana</b>, strains ligaments rather than muscle.<span class="src gen">PDF</span></li><li><b>Range of motion</b> depends on the bone shape of the joint, ligament strength, muscle bulk and the tension of the opposing muscle; so a pose should not be forced just because its final shape looks a certain way.<span class="src gen">PDF</span></li></ul></div>
+<div class="table-wrap"><table>
+<tr><th>Skeletal idea</th><th>What it means for practice</th><th>Source</th></tr>
+<tr><td>Four spinal curves</td><td>Curves absorb shock and spread load; practice that respects them (not flattening or exaggerating) protects the discs<span class="src gen">general</span></td><td>YHB notes + standard texts</td></tr>
+<tr><td>Ball-and-socket joints: hip deep, shoulder shallow</td><td>Hip favours stability, shoulder favours mobility, so shoulders need more muscular control in weight-bearing poses<span class="src gen">PDF</span></td><td>PDF</td></tr>
+<tr><td>Bone adapts to load (Wolff's law)</td><td>Weight-bearing standing and arm-support poses load bone; regular loading keeps bone strong while long inactivity thins it<span class="src gen">general</span><span class="src add">added</span></td><td>General; the notes do not draw this link themselves</td></tr>
+<tr><td>Individual structure varies</td><td>Femur and socket shape differ from person to person, so the same pose looks different in different bodies<span class="src gen">PDF</span></td><td>PDF</td></tr>
+</table></div>
+<div class="blk und"><span class="lbl">Understand it</span><p>For a yoga student the skeleton gives two lessons. First, <b>bone shape sets the hard limit</b> of a movement (the bone hits the bone), and muscles and ligaments set the soft limit that practice can change. Second, <b>bone responds to load</b>, so steady, correct loading over years is good for bone; forcing a joint beyond its design damages the soft tissue around it, not the bone.<span class="src gen">general</span></p></div>
+<div class="blk exam"><span class="lbl">Exam angle &#183; question paper Q22, bones half</span><p>&#8220;How asanas and pranayama are good for muscles and bones (10 marks).&#8221; For the bones half: (1) bones are levers, spine supports and allows trunk movement; (2) weight-bearing and regular loading maintain bone strength; (3) joint design explains limits, so forcing hinge joints into rotation strains ligaments. Pair it with the muscle half on the Muscular page.</p></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Why is forcing padmasana at the knee risky?</div><div class="a">The knee is a hinge joint (flexion/extension); forced rotation strains ligaments. Rotation should come from the hip</div></div><div class="recall-card"><div class="q">What sets the range of motion at a joint?</div><div class="a">Bone shape, ligaments, muscle bulk and antagonist muscle tension</div></div><div class="recall-card"><div class="q">Which joint is built more for stability, hip or shoulder?</div><div class="a">Hip (deep socket); the shoulder is shallow and mobile</div></div></div></div>
+
+    </section>
+
+<p class="src-foot">Sources: class notes 17 Sep&#8211;1 Oct 2026 (typed); Anatomy &amp; Physiology M.Sc. Notes, Unit 1 (teacher's PDF); Yoga &amp; Human Body notes (skeleton, spinal column); Ross &amp; Wilson ch. 16; standard anatomy texts for the &#8220;general&#8221; tags; question paper Q22. Photographic diagrams are from your diagram folder; stock-photo images with watermarks were left out. Mnemonics tagged &#8220;added&#8221; are made up for these notes.</p>
 
   </main>
 </div>
@@ -527,51 +522,52 @@
   var menuBtn = document.getElementById('menuBtn');
   var searchEl = document.getElementById('search');
 
-  function activate(id, scroll){
-    sections.forEach(function(s){ s.hidden = (s.id !== 'sec-' + id); });
+  function setActive(id){
     navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
-    if (scroll) window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
-    try { history.replaceState(null, '', '#' + id); } catch(e){}
-    closeSidebar();
   }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
 
   navItems.forEach(function(btn){
-    btn.addEventListener('click', function(){ activate(btn.dataset.target, true); });
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
   });
-
-  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
-  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
   menuBtn.addEventListener('click', openSidebar);
   scrim.addEventListener('click', closeSidebar);
 
   searchEl.addEventListener('input', function(){
     var q = searchEl.value.trim().toLowerCase();
     navItems.forEach(function(btn){
-      var text = btn.textContent.toLowerCase();
-      btn.hidden = q.length > 0 && text.indexOf(q) === -1;
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
     });
   });
 
-  Array.prototype.slice.call(document.querySelectorAll('.layer-nav')).forEach(function(nav){
-    var scope = nav.closest('.section') || document;
-    var layerButtons = Array.prototype.slice.call(nav.querySelectorAll('.layer-item'));
-    var layerPanels = Array.prototype.slice.call(scope.querySelectorAll('.layer-panel'));
-    layerButtons.forEach(function(btn){
-      btn.addEventListener('click', function(){
-        var target = btn.dataset.layer;
-        layerButtons.forEach(function(b){ b.classList.toggle('active', b === btn); });
-        layerPanels.forEach(function(p){ p.hidden = (p.dataset.panel !== target); });
-      });
-    });
-  });
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
 
   Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
     card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
   });
 
-  var startId = 'overview';
   var hash = (location.hash || '').replace('#','');
-  if (hash && document.getElementById('sec-' + hash)) startId = hash;
-  activate(startId, false);
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
 })();
 </script>

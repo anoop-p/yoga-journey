@@ -1,0 +1,620 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Joints</title>
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  @media (max-width:640px){ .fig.wide-svg{ overflow-x:auto; -webkit-overflow-scrolling:touch; } .fig.wide-svg svg{ min-width:540px; } .fig.wide-svg::after{ content:"swipe sideways to see the whole diagram"; display:block; font-size:11px; color:var(--muted); text-align:center; margin-top:4px; } }
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .fig.photo img{ max-width:100%; height:auto; border-radius:8px; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Joints</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../index.html">&larr; Unit 2 &middot; Skeletal &amp; Muscular System</a>
+    <div class="brand">
+      <div class="eyebrow">Anatomy &amp; Physiology</div>
+      <h1>Joints</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="overview"><span class="num">01</span><span>Joints: Big Picture</span></button>
+      <button class="nav-item" data-target="classes"><span class="num">02</span><span>Fibrous & Cartilaginous</span></button>
+      <button class="nav-item" data-target="synovial"><span class="num">03</span><span>Synovial Joints</span></button>
+      <button class="nav-item" data-target="moves"><span class="num">04</span><span>Movements & Articulation</span></button>
+      <button class="nav-item" data-target="upper"><span class="num">05</span><span>Shoulder & Elbow</span></button>
+      <button class="nav-item" data-target="hand"><span class="num">06</span><span>Wrist, Hand & Fingers</span></button>
+      <button class="nav-item" data-target="lower"><span class="num">07</span><span>Hip, Knee & Ankle</span></button>
+      <button class="nav-item" data-target="yoga"><span class="num">08</span><span>Joints in Yogic Practice</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Reference: class notes Oct 2026; Joints &ndash; Classification and Movements; Articulation; Shoulder, Elbow, Wrist-Hand, Hip, Knee, Ankle joint notes (PDFs); Yoga &amp; Human Body notes
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="section" id="sec-overview">
+      <div class="sec-head">
+        <div class="kicker">01 &#183; Big picture</div>
+        <h2>Joints (Articulations): Classification</h2>
+        <p class="dek">Where bones meet. Sort them by what holds them together, or by how much they move.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">3</div><div class="k">structural classes</div></div><div class="stat"><div class="v">3</div><div class="k">functional classes</div></div><div class="stat"><div class="v">6</div><div class="k">synovial types</div></div><div class="stat"><div class="v">6</div><div class="k">joints studied in detail</div></div></div>
+<div class="table-wrap"><table>
+<tr><th>Your syllabus line</th><th>Where it is on this page</th></tr>
+<tr><td>Joints: structural and functional classification</td><td>1 (overview, both classifications), 2 (fibrous, cartilaginous), 3 (synovial)</td></tr>
+<tr><td>Types of joints</td><td>3 (six synovial types with examples)</td></tr>
+<tr><td>Articulation</td><td>4 (what articulation means, all movements); 5, 6, 7 (shoulder, elbow, wrist/hand, hip, knee, ankle)</td></tr>
+<tr><td>Exercise physiology: musculo-skeletal system in yogic practices</td><td>8 (joint-by-joint yoga table and safety rules)</td></tr>
+</table></div>
+<h3 class="sub"><span class="n">1A</span>What a joint is and does</h3>
+<ul class="plain"><li>A <b>joint (articulation)</b> is the place where two or more bones meet.<span class="src cls">class</span></li><li>Functions: <b>connect bones, allow movement, give stability, absorb shock</b> and give flexibility.<span class="src cls">class</span><span class="src gen">PDF</span></li><li>Not all joints move: some are nearly immovable and mainly give stability and protection.<span class="src gen">PDF</span></li></ul><h3 class="sub"><span class="n">1B</span>Two ways to sort joints</h3>
+<figure class="fig wide-svg"><svg viewBox="0 0 620 230" role="img" aria-label="Joint classification tree: structural classes fibrous, cartilaginous, synovial, matched to functional classes synarthrosis, amphiarthrosis, diarthrosis">
+<text class="t tb tc" x="310" y="18">Joints</text>
+<rect class="fa" x="60" y="30" width="200" height="30" rx="8"/><text class="t tb tc" x="160" y="50">Structural: tissue between bones</text>
+<rect class="ft" x="360" y="30" width="200" height="30" rx="8"/><text class="t tb tc" x="460" y="50">Functional: amount of movement</text>
+<rect class="fs" x="6" y="90" width="130" height="50" rx="8"/><text class="t tb tc" x="71" y="110">Fibrous</text><text class="t ts tc" x="71" y="126">suture, syndesmosis,</text><text class="t ts tc" x="71" y="136">gomphosis</text>
+<rect class="fs" x="146" y="90" width="130" height="50" rx="8"/><text class="t tb tc" x="211" y="110">Cartilaginous</text><text class="t ts tc" x="211" y="126">synchondrosis,</text><text class="t ts tc" x="211" y="136">symphysis</text>
+<rect class="fs" x="286" y="90" width="100" height="50" rx="8"/><text class="t tb tc" x="336" y="110">Synovial</text><text class="t ts tc" x="336" y="126">6 types</text>
+<rect class="fg" x="400" y="90" width="100" height="50" rx="8"/><text class="t tb tc" x="450" y="112">Synarthrosis</text><text class="t ts tc" x="450" y="128">immovable</text>
+<rect class="fg" x="508" y="90" width="108" height="50" rx="8"/><text class="t tb tc" x="562" y="112">Amphiarthrosis</text><text class="t ts tc" x="562" y="128">slightly movable</text>
+<rect class="fg" x="400" y="150" width="216" height="40" rx="8"/><text class="t tb tc" x="508" y="168">Diarthrosis</text><text class="t ts tc" x="508" y="182">freely movable</text>
+<path class="lnt" d="M160 60 V76 H71 V90 M160 76 H211 V90 M160 76 H336 V90 M460 60 V76 H450 V90 M460 76 H562 V90 M460 76 H508 V150"/>
+<text class="t ts tc" x="310" y="215">Rough match: fibrous = synarthrosis, cartilaginous = amphiarthrosis, synovial = diarthrosis</text>
+</svg><figcaption>The two classifications and how they roughly line up.</figcaption></figure><div class="table-wrap"><table>
+<tr><th>Functional class</th><th>Movement</th><th>Examples</th><th>Job</th></tr>
+<tr><td><b>Synarthrosis</b></td><td>Immovable or nearly</td><td>Skull sutures, gomphosis (tooth)</td><td>Protection and stability<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Amphiarthrosis</b></td><td>Slightly movable</td><td>Pubic symphysis, intervertebral discs</td><td>Limited movement, flexibility, shock absorption<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Diarthrosis</b></td><td>Freely movable</td><td>Shoulder, hip, knee, elbow (most synovial joints)</td><td>Large movement<span class="src gen">PDF</span></td></tr>
+</table></div>
+<p class="honest"><b>Source note.</b> The rough match above is a good memory tool but not perfect: a <b>syndesmosis</b> is fibrous yet can allow slight movement (so amphiarthrosis, e.g. the tibiofibular joint), and a <b>synchondrosis</b> such as the first sternocostal joint is nearly immovable. Learn the examples for each type, not just the word match.<span class="src gen">general</span></p>
+<div class="blk mem"><span class="lbl">Memory aid</span><p><b>Syn</b>arthrosis = <b>S</b>till; <b>Amphi</b>arthrosis = <b>A bit</b> of movement; <b>Dia</b>rthrosis = <b>D</b>oes everything. Structural: <b>F-C-S</b> = &#8220;<b>F</b>ibre, <b>C</b>artilage, <b>S</b>ynovial fluid&#8221;.<span class="src add">added</span></p></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Two ways to classify joints?</div><div class="a">Structural (tissue and cavity) and functional (amount of movement)</div></div><div class="recall-card"><div class="q">Three structural classes?</div><div class="a">Fibrous, cartilaginous, synovial</div></div><div class="recall-card"><div class="q">Three functional classes?</div><div class="a">Synarthrosis (immovable), amphiarthrosis (slightly movable), diarthrosis (freely movable)</div></div><div class="recall-card"><div class="q">Which structural class has a joint cavity?</div><div class="a">Synovial only</div></div><div class="recall-card"><div class="q">Four functions of joints?</div><div class="a">Connect bones, allow movement, give stability, absorb shock</div></div></div></div>
+
+    </section>
+
+    <section class="section" id="sec-classes">
+      <div class="sec-head">
+        <div class="kicker">02 &#183; Structural classes</div>
+        <h2>Fibrous and Cartilaginous Joints</h2>
+        <p class="dek">No joint cavity; held by fibres or cartilage; little or no movement.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">3</div><div class="k">fibrous types</div></div><div class="stat"><div class="v">2</div><div class="k">cartilaginous types</div></div><div class="stat"><div class="v">0</div><div class="k">joint cavity in either</div></div></div>
+<h3 class="sub"><span class="n">2A</span>Fibrous joints: held by dense fibrous tissue</h3>
+<div class="table-wrap"><table>
+<tr><th>Type</th><th>What joins the bones</th><th>Example</th><th>Movement</th></tr>
+<tr><td><b>Suture</b></td><td>Thin fibrous tissue; interlocking edges</td><td>Skull, e.g. <b>coronal suture</b></td><td>None in adults (ossify with age)<span class="src cls">class</span><span class="src gen">PDF</span></td></tr>
+<tr><td><b>Syndesmosis</b></td><td>Ligament or interosseous membrane</td><td>Radius&#8211;ulna (shaft), distal tibiofibular</td><td>Slight<span class="src cls">class</span><span class="src gen">PDF</span></td></tr>
+<tr><td><b>Gomphosis</b></td><td>Periodontal ligament (peg in socket)</td><td>Tooth in jaw socket</td><td>None<span class="src cls">class</span><span class="src gen">PDF</span></td></tr>
+</table></div>
+<div class="spread"><figure class="fig photo"><img src="assets/diagrams/syndesmosis-joint-radius-ulna.jpg" alt="Forearm bones ulna and radius joined by the interosseous membrane, labelled syndesmosis and antebrachial interosseous membrane"><figcaption>Syndesmosis: the membrane between radius and ulna (from your diagram folder).</figcaption></figure><ol class="key"><li>The <b>interosseous membrane</b> is a sheet of fibres filling the gap between the two forearm bones.<span class="src cls">class</span></li><li>It lets the radius turn around the ulna (pronation and supination) while holding the bones together.<span class="src gen">general</span></li><li>The same idea at the ankle: the <b>distal tibiofibular syndesmosis</b> holds the ankle mortise together.<span class="src gen">PDF</span></li></ol></div>
+<div class="spread rev"><ol class="key"><li><b>Gomphosis</b> = &#8220;bolting together&#8221;: the tooth root sits in the alveolar socket and is held by the periodontal ligament.<span class="src cls">class</span><span class="src gen">PDF</span></li><li>It is considered immovable; the only fibrous joint that is not between two bones.<span class="src gen">general</span></li></ol><figure class="fig photo"><img src="assets/diagrams/gomphosis-joint-tooth.jpg" alt="Tooth in jaw socket labelled tooth, gomphosis joint and mandible"><figcaption>Gomphosis: a tooth fixed in its socket.</figcaption></figure></div>
+<div class="spread"><figure class="fig photo"><img src="assets/diagrams/skull-sutures.jpg" alt="Side view of skull with sutures between cranial bones indicated"><figcaption>Skull sutures: the fibrous seams that fuse with age.</figcaption></figure><ol class="key"><li>Sutures give <b>strong protection to the brain</b> and allow essentially no movement in adult life.<span class="src gen">PDF</span></li><li>In a baby, membranous gaps allow the head to be squeezed at birth and the brain to grow.<span class="src gen">general</span></li></ol></div>
+<h3 class="sub"><span class="n">2B</span>Cartilaginous joints: held by cartilage</h3>
+<div class="table-wrap"><table>
+<tr><th>Type</th><th>Cartilage</th><th>Examples</th><th>Movement</th></tr>
+<tr><td><b>Synchondrosis</b> (primary)</td><td><b>Hyaline</b> cartilage</td><td>Epiphyseal (growth) plate; first sternocostal joint</td><td>Very limited; often temporary<span class="src cls">class</span><span class="src gen">PDF</span></td></tr>
+<tr><td><b>Symphysis</b> (secondary)</td><td><b>Fibrocartilage</b></td><td>Pubic symphysis; intervertebral discs</td><td>Limited; absorbs shock<span class="src cls">class</span><span class="src gen">PDF</span></td></tr>
+</table></div>
+<div class="blk und"><span class="lbl">Understand it</span><p><b>Fibrous = glue, cartilaginous = rubber, synovial = oil-filled hinge.</b> Where the body wants strength and no movement it uses fibrous tissue. Where it wants a little give and shock absorption (spine, pubis) it puts a pad of fibrocartilage between the bones. Where it wants free movement it makes a lubricated cavity. Joint design always follows the job.</p></div>
+<div class="cols2"><div class="blk mem"><span class="lbl">Memory aid</span><p>Fibrous 3: <b>S-S-G</b> (Suture, Syndesmosis, Gomphosis). Cartilaginous 2: <b>Syn-chondrosis = hyaline</b> (&#8220;chon&#8221; = cartilage, &#8220;syn&#8221;); <b>Symphysis = fibrocartilage</b> (pubic symphysis, discs). H before F: Hyaline then Fibro.<span class="src add">added</span></p></div>
+<div class="blk conf"><span class="lbl">Common confusion</span><p>Class notes spell the cartilaginous types as &#8220;synchondrosis&#8221; (also written sincontrosis) and &#8220;symphysis&#8221;. <b>Intervertebral disc is a cartilaginous joint (symphysis), not synovial.</b> The <b>facet joints</b> between vertebrae are the synovial ones.</p></div>
+</div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Three fibrous joints with examples?</div><div class="a">Suture (skull), syndesmosis (radius-ulna, tibia-fibula), gomphosis (tooth)</div></div><div class="recall-card"><div class="q">Synchondrosis vs symphysis?</div><div class="a">Synchondrosis: hyaline cartilage (growth plate). Symphysis: fibrocartilage (pubic symphysis, disc)</div></div><div class="recall-card"><div class="q">Which joint is in a tooth socket?</div><div class="a">Gomphosis, held by the periodontal ligament</div></div><div class="recall-card"><div class="q">Is the intervertebral disc synovial?</div><div class="a">No: cartilaginous (symphysis)</div></div></div></div>
+
+    </section>
+
+    <section class="section" id="sec-synovial">
+      <div class="sec-head">
+        <div class="kicker">03 &#183; Synovial joints</div>
+        <h2>Synovial Joints: Structure and Six Types</h2>
+        <p class="dek">The freely movable joints: a lubricated cavity, a capsule and ligaments, in six shapes.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">6</div><div class="k">types of synovial joint</div></div><div class="stat"><div class="v">5</div><div class="k">core parts of every one</div></div><div class="stat"><div class="v">3</div><div class="k">accessory structures</div></div></div>
+<h3 class="sub"><span class="n">3A</span>Structure of a synovial joint</h3>
+<div class="spread"><figure class="fig photo"><img src="assets/diagrams/synovial-joint-structure-handdrawn.jpg" alt="Hand-drawn synovial joint at the knee labelled femur, articular cartilage, meniscus, tibia, synovial membrane, synovial fluid, ligament, joint capsule and tendon"><figcaption>Hand-drawn synovial joint (from your diagram folder).</figcaption></figure><ol class="key"><li><b>Articular cartilage</b> &#8211; smooth hyaline cartilage on the bone ends; cuts friction, absorbs shock.<span class="src cls">class</span></li><li><b>Joint cavity</b> &#8211; the space between the bones, filled with fluid.<span class="src cls">class</span></li><li><b>Joint capsule</b> &#8211; outer <b>fibrous layer</b> (strength) and inner <b>synovial membrane</b> (makes fluid).<span class="src cls">class</span><span class="src gen">PDF</span></li><li><b>Synovial fluid</b> &#8211; thick lubricant; reduces friction, feeds the cartilage, cushions.<span class="src cls">class</span></li><li><b>Ligaments</b> (bone to bone) stabilise and limit movement; <b>tendons</b> (muscle to bone) transmit muscle pull.<span class="src gen">PDF</span></li><li><b>Accessory structures</b> &#8211; menisci (knee), articular discs (TMJ), bursae (fluid sacs).<span class="src gen">PDF</span></li></ol></div>
+<div class="blk und"><span class="lbl">Understand it</span><p>Why a cavity and fluid? Two bone ends rubbing would wear like two dry planks. The <b>cartilage</b> is a smooth, springy coating; the <b>fluid</b> is oil that also <b>feeds</b> the cartilage (cartilage has no blood supply of its own); the <b>capsule</b> is a sleeve that keeps the oil in; <b>ligaments</b> are straps that hold the bones in the right relation. Class notes say &#8220;360 degree movement is possible because of synovial fluid&#8221;: more exactly, movement is possible because of the cavity and smooth lubricated surfaces, and the <b>joint shape</b> decides how much.<span class="src gen">general</span></p></div>
+<h3 class="sub"><span class="n">3B</span>The six types of synovial joint</h3>
+<div class="table-wrap"><table>
+<tr><th>Type</th><th>Shape</th><th>Axes</th><th>Movements</th><th>Examples</th></tr>
+<tr><td><b>Plane (gliding)</b></td><td>Flat surfaces</td><td>Non-axial</td><td>Short slides</td><td>Intercarpal, intertarsal, vertebral facet, acromioclavicular<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Hinge</b></td><td>Cylinder in a groove</td><td>1 (uniaxial)</td><td>Flexion, extension</td><td>Elbow (humeroulnar), interphalangeal, ankle; <b>knee = modified hinge</b><span class="src gen">PDF</span></td></tr>
+<tr><td><b>Pivot</b></td><td>Peg in a ring</td><td>1 (uniaxial)</td><td>Rotation</td><td>Atlanto-axial (C1&#8211;C2: head turns), proximal radio-ulnar<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Condyloid (ellipsoid)</b></td><td>Oval ball in oval cup</td><td>2 (biaxial)</td><td>Flexion, extension, abduction, adduction, circumduction; no true rotation</td><td>Wrist (radiocarpal), metacarpophalangeal (knuckles)<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Saddle</b></td><td>Two saddle-shaped surfaces</td><td>2 (biaxial)</td><td>Same as condyloid but greater range; opposition</td><td>Thumb carpometacarpal<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Ball-and-socket</b></td><td>Round head in a cup</td><td>3 (multiaxial)</td><td>All movements + circumduction</td><td>Shoulder, hip<span class="src gen">PDF</span></td></tr>
+</table></div>
+<div class="blk mem"><span class="lbl">Memory aid</span><p>Order by freedom: <b>Plane &#8594; Hinge &#8594; Pivot &#8594; Condyloid &#8594; Saddle &#8594; Ball-and-socket</b> = <b>P-H-P-C-S-B</b> = &#8220;<b>P</b>eople <b>H</b>ave <b>P</b>retty <b>C</b>lear <b>S</b>mart <b>B</b>rains&#8221; (made up). Axes: <b>0, 1, 1, 2, 2, 3</b>. Remember the five everyday ones: <b>door hinge</b> (elbow), <b>pivot</b> = turn the head &#8220;no&#8221;, <b>ball-and-socket</b> = shoulder, hip.<span class="src add">added</span></p></div>
+<div class="cols2"><div class="blk conf"><span class="lbl">Common confusion</span><p><b>Condyloid vs saddle:</b> both are biaxial; saddle has more range and gives the thumb its <b>opposition</b>. <b>Knee is not a pure hinge</b>: it is a <b>modified hinge</b> that rotates a little when bent. <b>Elbow complex has two types</b>: hinge (humeroulnar) and pivot (proximal radio-ulnar).</p></div>
+<div class="blk exam"><span class="lbl">Exam angle</span><p>&#8220;Types of synovial joints with examples&#8221; is a classic 5&#8211;10 mark question. Draw a 5-column table (type, shape, axes, movement, example) and add one yoga example, such as hip (ball-and-socket) in baddha konasana.</p></div>
+</div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Six types of synovial joint?</div><div class="a">Plane, hinge, pivot, condyloid, saddle, ball-and-socket</div></div><div class="recall-card"><div class="q">Example of pivot joints?</div><div class="a">Atlanto-axial (head rotation); proximal radio-ulnar (forearm rotation)</div></div><div class="recall-card"><div class="q">Which joint lets the thumb oppose?</div><div class="a">Saddle joint at the first carpometacarpal</div></div><div class="recall-card"><div class="q">Why is the knee a modified hinge?</div><div class="a">Flexion and extension plus slight rotation when flexed</div></div><div class="recall-card"><div class="q">What makes synovial fluid?</div><div class="a">The synovial membrane lining the capsule</div></div></div></div>
+
+    </section>
+
+    <section class="section" id="sec-moves">
+      <div class="sec-head">
+        <div class="kicker">04 &#183; Articulation</div>
+        <h2>Articulation and Movements at Joints</h2>
+        <p class="dek">The vocabulary used to name and cue every movement.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">4</div><div class="k">groups of movement</div></div><div class="stat"><div class="v">8</div><div class="k">movement pairs</div></div><div class="stat"><div class="v">2</div><div class="k">stand alone: rotation, circumduction</div></div></div>
+<h3 class="sub"><span class="n">4A</span>What articulation means</h3>
+<ul class="plain"><li><b>Articulation</b> is the union of bones at a joint. How the two bones meet decides <b>range, direction, stability and function</b> of the joint.<span class="src gen">PDF</span></li><li>Examples: humerus + scapula = shoulder; humerus + radius + ulna = elbow; femur + tibia + patella = knee; femur + acetabulum = hip.<span class="src gen">PDF</span></li><li><b>Hinge joints move in one plane</b> (like a door); <b>ball-and-socket in many</b>. The bone swings, turns or glides, and the <b>joint type decides which</b> movement is possible.<span class="src add">added</span></li></ul><h3 class="sub"><span class="n">4B</span>All the movements in four groups</h3>
+<div class="table-wrap"><table>
+<tr><th>Group</th><th>Movement</th><th>Meaning</th><th>Example</th></tr>
+<tr><td><b>Gliding</b></td><td>Gliding</td><td>Surfaces slide with no angle change</td><td>Intercarpal, intertarsal<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Angular</b> (angle changes)</td><td><b>Flexion</b> / <b>Extension</b></td><td>Decrease / increase the angle between bones</td><td>Bend and straighten elbow<span class="src gen">PDF</span></td></tr>
+<tr><td></td><td><b>Abduction</b> / <b>Adduction</b></td><td>Away from / towards the midline</td><td>Raise arm sideways<span class="src gen">PDF</span></td></tr>
+<tr><td></td><td><b>Lateral flexion</b></td><td>Trunk bends sideways</td><td>Side bend at the waist (intervertebral joints)<span class="src cls">class</span></td></tr>
+<tr><td></td><td><b>Hyperextension</b></td><td>Extension beyond the neutral position</td><td>Gentle spinal extension in bhujangasana<span class="src gen">PDF</span></td></tr>
+<tr><td></td><td><b>Circumduction</b></td><td>Flexion + abduction + extension + adduction in sequence: a cone; the distal end draws a circle</td><td>Big arm circle<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Rotational</b></td><td><b>Rotation</b> (medial / lateral)</td><td>A bone turns around its own long axis</td><td>Turn the head; hip rotation<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Special</b></td><td><b>Pronation</b> / <b>Supination</b></td><td>Forearm turns: palm down (radius crosses ulna) / palm up</td><td>Palm up = holding a bowl of soup<span class="src gen">PDF</span></td></tr>
+<tr><td></td><td><b>Dorsiflexion</b> / <b>Plantarflexion</b></td><td>Top of foot toward the shin / foot points down</td><td>Lift toes / stand on tiptoes<span class="src gen">PDF</span></td></tr>
+<tr><td></td><td><b>Inversion</b> / <b>Eversion</b></td><td>Sole turns inward / outward</td><td>Foot turns medially / laterally<span class="src gen">PDF</span></td></tr>
+<tr><td></td><td><b>Protraction</b> / <b>Retraction</b></td><td>Forward / backward in the horizontal plane</td><td>Scapula forward / toward the spine<span class="src gen">PDF</span></td></tr>
+<tr><td></td><td><b>Elevation</b> / <b>Depression</b></td><td>Lift / lower a part</td><td>Shrug shoulders / lower them; also close or open the jaw (TMJ)<span class="src gen">PDF</span><span class="src cls">class</span></td></tr>
+<tr><td></td><td><b>Opposition</b> / <b>Reposition</b></td><td>Thumb across the palm to touch the fingertips / back</td><td>Pinch, grip, button a shirt<span class="src gen">PDF</span></td></tr>
+</table></div>
+<p class="honest"><b>Source note.</b> Class notes define depression as &#8220;moving downward&#8221; and elevation as &#8220;moving upward&#8221; (the shoulder shrug), and the typed notes loosely describe supination, inversion and eversion. The PDF definitions above are the cleaner version. Pronation and supination happen at the <b>radio-ulnar joints, not at the wrist</b>.</p>
+<h3 class="sub"><span class="n">4C</span>Learn them as pairs, head to toe</h3>
+<ul class="plain"><li>Pairs halve the list: <b>flexion/extension, abduction/adduction, pronation/supination, dorsiflexion/plantarflexion, inversion/eversion, protraction/retraction, elevation/depression, opposition/reposition</b>; and rotation and circumduction stand alone.<span class="src gen">PDF</span></li></ul><div class="table-wrap"><table>
+<tr><th>Body part (head to toe)</th><th>Pair to practise</th><th>Easy test</th></tr>
+<tr><td>1. Neck</td><td>Flexion / extension</td><td>Nod &#8220;yes&#8221;, look up</td></tr>
+<tr><td>2. Shoulder blades</td><td>Protraction / retraction</td><td>Roll shoulders forward, then squeeze blades together</td></tr>
+<tr><td>3. Shoulders</td><td>Elevation / depression</td><td>Shrug up, then drop down</td></tr>
+<tr><td>4. Arms</td><td>Abduction / adduction</td><td>Arms out sideways, then back to the body; finish with a big arm circle (circumduction)</td></tr>
+<tr><td>5. Forearms</td><td>Pronation / supination</td><td>Palms down, then palms up (soup bowl)</td></tr>
+<tr><td>6. Hips</td><td>Medial / lateral rotation</td><td>Sit, turn toes in, then out</td></tr>
+<tr><td>7. Ankles</td><td>Dorsiflexion / plantarflexion</td><td>Toes to shin, then point</td></tr>
+<tr><td>8. Feet</td><td>Inversion / eversion</td><td>Soles in, then soles out</td></tr>
+</table></div>
+<p class="honest"><b>Source note.</b> This head-to-toe ladder is an <b>added study aid</b> (your earlier chat about mapping the pairs to body parts could not be recovered). Each pair is paired with a body part where it is easiest to feel; it is not from your textbook.</p>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Flexion vs extension?</div><div class="a">Flexion decreases the joint angle; extension increases it</div></div><div class="recall-card"><div class="q">Circumduction?</div><div class="a">A cone-shaped sweep combining flexion, abduction, extension, adduction</div></div><div class="recall-card"><div class="q">Which joint movements are pronation/supination?</div><div class="a">Forearm rotation at the radio-ulnar joints, not the wrist</div></div><div class="recall-card"><div class="q">Inversion at which joints?</div><div class="a">Mainly subtalar and intertarsal, not the ankle (talocrural) joint</div></div><div class="recall-card"><div class="q">Opposition?</div><div class="a">Thumb across the palm to touch the fingertips (first CMC joint)</div></div></div></div>
+
+    </section>
+
+    <section class="section" id="sec-upper">
+      <div class="sec-head">
+        <div class="kicker">05 &#183; Articulation</div>
+        <h2>Shoulder and Elbow</h2>
+        <p class="dek">Mobility at the shoulder, stability at the elbow: the best pair to compare.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">Ball-and-socket</div><div class="k">shoulder: glenohumeral</div></div><div class="stat"><div class="v">Hinge + pivot</div><div class="k">elbow complex</div></div><div class="stat"><div class="v">4</div><div class="k">rotator cuff muscles (SITS)</div></div><div class="stat"><div class="v">3</div><div class="k">elbow articulations</div></div></div>
+<h3 class="sub"><span class="n">5A</span>Shoulder joint (glenohumeral)</h3>
+<div class="spread"><figure class="fig photo"><img src="assets/diagrams/shoulder-joint-structure.jpg" alt="Shoulder joint section labelled clavicle, supraspinatus, glenoid labrum, glenoid cavity, scapula, articular cartilage, synovial membrane, fibrous membrane, articular capsule, acromioclavicular ligament, coracoacromial ligament, acromion, subacromial bursa, tendon sheath, head of humerus, humerus and biceps brachii"><figcaption>Shoulder joint in section (from your diagram folder).</figcaption></figure><ol class="key"><li><b>Type</b> &#8211; synovial ball-and-socket, multiaxial. Bones: <b>head of humerus</b> (ball) + <b>glenoid cavity of scapula</b> (socket); the clavicle helps movement and stability.<span class="src gen">PDF</span></li><li><b>Shallow socket</b> &#8594; huge range of movement but less bony stability; dislocation is relatively easy.<span class="src gen">PDF</span></li><li><b>Glenoid labrum</b> &#8211; fibrocartilage rim that deepens the socket.<span class="src gen">PDF</span></li><li><b>Loose capsule</b> &#8211; allows large range. Cartilage (hyaline) coats the humeral head and glenoid.<span class="src gen">PDF</span></li><li><b>Ligaments</b> &#8211; glenohumeral (superior, middle, inferior), coracohumeral, transverse humeral, coraco-acromial.<span class="src gen">PDF</span></li><li><b>Subacromial bursa</b> reduces friction under the acromion during arm elevation.<span class="src gen">PDF</span></li></ol></div>
+<div class="table-wrap"><table>
+<tr><th>Movement</th><th>Main muscles</th></tr>
+<tr><td>Flexion</td><td>Anterior deltoid, pectoralis major, coracobrachialis, biceps<span class="src gen">PDF</span></td></tr>
+<tr><td>Extension</td><td>Posterior deltoid, latissimus dorsi, teres major, long head of triceps<span class="src gen">PDF</span></td></tr>
+<tr><td>Abduction</td><td>Supraspinatus starts it; middle deltoid takes over<span class="src gen">PDF</span></td></tr>
+<tr><td>Adduction</td><td>Pectoralis major, latissimus dorsi, teres major<span class="src gen">PDF</span></td></tr>
+<tr><td>Medial rotation</td><td>Subscapularis, pectoralis major, latissimus dorsi, teres major, anterior deltoid<span class="src gen">PDF</span></td></tr>
+<tr><td>Lateral rotation</td><td>Infraspinatus, teres minor, posterior deltoid<span class="src gen">PDF</span></td></tr>
+<tr><td>Circumduction</td><td>All four angular movements in sequence<span class="src gen">PDF</span></td></tr>
+</table></div>
+<div class="cols2"><div class="blk mem"><span class="lbl">Memory aid</span><p><b>SITS</b> = rotator cuff: <b>S</b>upraspinatus, <b>I</b>nfraspinatus, <b>T</b>eres minor, <b>S</b>ubscapularis. Deltoid: <b>A</b>nterior = <b>F</b>lexion, <b>M</b>iddle = <b>A</b>bduction, <b>P</b>osterior = <b>E</b>xtension (&#8220;AF, MA, PE&#8221;).<span class="src gen">PDF</span></p></div>
+<div class="blk und"><span class="lbl">Understand it</span><p>The shoulder is a <b>big ball on a small saucer</b>. The rotator cuff muscles are four small hands that keep the ball centred in the saucer while the big muscles move the arm. That is why the cuff is about <b>dynamic stability</b>, not just movement.<span class="src gen">PDF</span></p></div>
+</div>
+<details class="deeper"><summary>Go deeper &#183; shoulder complex, scapular muscles, nerves and problems</summary><div class="inner"><p><b>Shoulder complex</b> = glenohumeral + acromioclavicular + sternoclavicular joints + scapulothoracic articulation, all moving together.<span class="src gen">PDF</span></p><div class="table-wrap"><table>
+<tr><th>Scapular muscle</th><th>Action</th></tr>
+<tr><td>Trapezius</td><td>Elevation, retraction, upward rotation</td></tr>
+<tr><td>Serratus anterior</td><td>Protraction, upward rotation; essential for overhead arm movement</td></tr>
+<tr><td>Rhomboids</td><td>Retraction, downward rotation</td></tr>
+<tr><td>Levator scapulae</td><td>Elevation</td></tr>
+</table></div>
+<div class="table-wrap"><table>
+<tr><th>Nerve</th><th>Supplies</th></tr>
+<tr><td>Axillary</td><td>Deltoid, teres minor</td></tr>
+<tr><td>Suprascapular</td><td>Supraspinatus, infraspinatus</td></tr>
+<tr><td>Upper and lower subscapular</td><td>Subscapularis</td></tr>
+<tr><td>Musculocutaneous</td><td>Coracobrachialis, biceps</td></tr>
+</table></div>
+<p><b>Problems:</b> dislocation (anterior is common), rotator cuff injury (supraspinatus tendon), impingement, bursitis, adhesive capsulitis (frozen shoulder).<span class="src gen">PDF</span></p></div></details>
+<h3 class="sub"><span class="n">5B</span>Elbow complex</h3>
+<div class="spread"><figure class="fig photo"><img src="assets/diagrams/elbow-joint-extensor-muscles.jpg" alt="Lateral view of the elbow showing humerus, biceps, common extensor tendon, extensor muscles, ulna, olecranon and triceps"><figcaption>Lateral view of the elbow (from your diagram folder).</figcaption></figure><ol class="key"><li><b>Three articulations</b>: humero-ulnar, humero-radial, proximal radio-ulnar.<span class="src gen">PDF</span></li><li><b>Type</b> &#8211; synovial; mainly <b>hinge</b>; the proximal radio-ulnar joint is a <b>pivot</b>.<span class="src gen">PDF</span></li><li><b>Bones</b> &#8211; humerus (trochlea, capitulum, epicondyles), ulna (olecranon, trochlear notch), radius (head).<span class="src gen">PDF</span></li><li><b>Stable</b> &#8211; the trochlea fits the trochlear notch; <b>shoulder = mobility, elbow = stability</b>.<span class="src gen">PDF</span></li><li><b>Ligaments</b> &#8211; ulnar (medial) collateral, radial (lateral) collateral, annular (ring round the radial head).<span class="src gen">PDF</span></li><li><b>Olecranon</b> &#8211; the point of the elbow; triceps attaches here. <b>Carrying angle</b> keeps the forearm slightly away from the body.<span class="src gen">PDF</span></li></ol></div>
+<div class="table-wrap"><table>
+<tr><th>Movement</th><th>Main muscles</th></tr>
+<tr><td>Flexion</td><td>Brachialis, biceps brachii, brachioradialis<span class="src gen">PDF</span></td></tr>
+<tr><td>Extension</td><td>Triceps brachii; anconeus assists<span class="src gen">PDF</span></td></tr>
+<tr><td>Pronation</td><td>Pronator teres, pronator quadratus<span class="src gen">PDF</span></td></tr>
+<tr><td>Supination</td><td>Biceps brachii, supinator<span class="src gen">PDF</span></td></tr>
+</table></div>
+<details class="deeper"><summary>Go deeper &#183; nerves and elbow problems</summary><div class="inner"><p><b>Nerves:</b> musculocutaneous (biceps, brachialis), radial (triceps, extensors), median (flexors, pronators), ulnar (behind the medial epicondyle: the &#8220;funny bone&#8221;).<span class="src gen">PDF</span></p><p><b>Problems:</b> tennis elbow (lateral epicondylitis, common extensor tendon), golfer's elbow (medial epicondylitis), dislocation, olecranon bursitis, nursemaid's elbow in children (annular ligament, sudden pull).<span class="src gen">PDF</span></p></div></details>
+<div class="blk exam"><span class="lbl">Exam angle</span><p>&#8220;Describe the shoulder joint&#8221; or &#8220;elbow joint&#8221;: type, bones, articular surfaces, capsule and synovial membrane, ligaments, muscles by movement, stability, one clinical point, one yoga point. Compare: shoulder = mobility, elbow = stability.</p></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Type of shoulder joint?</div><div class="a">Synovial ball-and-socket, glenohumeral joint</div></div><div class="recall-card"><div class="q">What is the rotator cuff?</div><div class="a">SITS: supraspinatus, infraspinatus, teres minor, subscapularis</div></div><div class="recall-card"><div class="q">Which muscle starts abduction?</div><div class="a">Supraspinatus; then the middle deltoid</div></div><div class="recall-card"><div class="q">Three articulations of the elbow?</div><div class="a">Humero-ulnar, humero-radial, proximal radio-ulnar</div></div><div class="recall-card"><div class="q">Main elbow flexors / extensor?</div><div class="a">Flexors: brachialis, biceps, brachioradialis. Extensor: triceps</div></div></div></div>
+
+    </section>
+
+    <section class="section" id="sec-hand">
+      <div class="sec-head">
+        <div class="kicker">06 &#183; Articulation</div>
+        <h2>Wrist, Hand and Finger Joints</h2>
+        <p class="dek">Many small joints: two axes at the wrist, a saddle thumb, hinge fingers.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">8</div><div class="k">carpal bones</div></div><div class="stat"><div class="v">27</div><div class="k">bones in a hand</div></div><div class="stat"><div class="v">3</div><div class="k">joint groups: CMC, MCP, IP</div></div><div class="stat"><div class="v">2</div><div class="k">axes at the wrist</div></div></div>
+<h3 class="sub"><span class="n">6A</span>Wrist (radiocarpal) joint</h3>
+<div class="table-wrap"><table>
+<tr><th>Feature</th><th>Detail</th></tr>
+<tr><td>Region</td><td>Not one joint: radiocarpal + midcarpal + intercarpal joints<span class="src gen">PDF</span></td></tr>
+<tr><td>Radiocarpal joint</td><td>Distal radius + articular disc (TFCC) above; <b>scaphoid, lunate, triquetrum</b> below (pisiform does not take part)<span class="src gen">PDF</span></td></tr>
+<tr><td>Type</td><td>Synovial <b>condyloid (ellipsoid)</b>, two axes<span class="src gen">PDF</span></td></tr>
+<tr><td>Movements</td><td>Flexion, extension, radial deviation (abduction), ulnar deviation (adduction), circumduction<span class="src gen">PDF</span></td></tr>
+<tr><td>Carpal bones</td><td>Proximal row (thumb to little finger): scaphoid, lunate, triquetrum, pisiform. Distal row: trapezium, trapezoid, capitate, hamate<span class="src gen">PDF</span></td></tr>
+<tr><td>Ligaments</td><td>Palmar and dorsal radiocarpal, radial and ulnar collateral, intercarpal<span class="src gen">PDF</span></td></tr>
+</table></div>
+<div class="blk conf"><span class="lbl">Common confusion</span><p><b>Pronation and supination are NOT wrist movements</b>; they happen at the radio-ulnar joints and the hand just comes along with the radius. The ulna does not touch the carpals directly: the <b>TFCC disc</b> sits between them.<span class="src gen">PDF</span></p></div>
+<h3 class="sub"><span class="n">6B</span>Hand and finger joints</h3>
+<div class="table-wrap"><table>
+<tr><th>Joint</th><th>Between</th><th>Type</th><th>Movements</th></tr>
+<tr><td><b>CMC</b> (2nd, 3rd)</td><td>Metacarpal and distal carpal</td><td>Stable</td><td>Stability of the hand<span class="src gen">PDF</span></td></tr>
+<tr><td><b>CMC</b> (4th, 5th)</td><td>Metacarpal and carpal</td><td>More mobile</td><td>Cupping the palm<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Thumb CMC</b></td><td>1st metacarpal and trapezium</td><td><b>Saddle</b></td><td>Flexion, extension, abduction, adduction, <b>opposition</b>, reposition<span class="src gen">PDF</span></td></tr>
+<tr><td><b>MCP</b> (knuckles)</td><td>Metacarpal head and proximal phalanx</td><td>Condyloid</td><td>Flexion, extension, abduction, adduction, circumduction<span class="src gen">PDF</span></td></tr>
+<tr><td><b>PIP, DIP</b></td><td>Between finger phalanges</td><td>Hinge</td><td>Flexion, extension<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Thumb IP</b></td><td>Thumb phalanges (only one IP)</td><td>Hinge</td><td>Flexion, extension<span class="src gen">PDF</span></td></tr>
+</table></div>
+<div class="table-wrap"><table>
+<tr><th>Muscle</th><th>Action</th></tr>
+<tr><td>Flexor digitorum superficialis (FDS)</td><td>Flexes the PIP joints<span class="src gen">PDF</span></td></tr>
+<tr><td>Flexor digitorum profundus (FDP)</td><td>Flexes the DIP joints<span class="src gen">PDF</span></td></tr>
+<tr><td>Extensor digitorum</td><td>Main finger extensor<span class="src gen">PDF</span></td></tr>
+<tr><td>Lumbricals</td><td>MCP flexion + IP extension; fine control<span class="src gen">PDF</span></td></tr>
+<tr><td>Dorsal / palmar interossei</td><td>Abduct / adduct the fingers<span class="src gen">PDF</span></td></tr>
+</table></div>
+<div class="cols2"><div class="blk mem"><span class="lbl">Memory aid</span><p><b>FDS = PIP, FDP = DIP</b>; <b>DAB, PAD</b>: Dorsal interossei ABduct, Palmar interossei ADduct. <b>8 + 5 + 14 = 27</b> bones: Four fingers &#215; 3 + thumb 2 = 14 phalanges. Carpals: &#8220;<b>S</b>ome <b>L</b>overs <b>T</b>ry <b>P</b>ositions <b>T</b>hat <b>T</b>hey <b>C</b>an&#8217;t <b>H</b>andle&#8221; (scaphoid, lunate, triquetrum, pisiform, trapezium, trapezoid, capitate, hamate).<span class="src gen">PDF</span><span class="src add">added</span></p></div>
+<div class="blk und"><span class="lbl">Understand it</span><p>The wrist is a <b>two-way joint</b> (up-down and side-side), the thumb saddle gives a <b>third freedom</b> (opposition), and the finger joints are simple <b>hinges</b>. That is why we can bend fingers like a hinge but spread them and cup the palm only at the knuckles.<span class="src gen">general</span></p></div>
+</div>
+<details class="deeper"><summary>Go deeper &#183; carpal tunnel, snuffbox, nerves and problems</summary><div class="inner"><p><b>Carpal tunnel</b>: floor and sides = carpal bones; roof = flexor retinaculum; contents = <b>median nerve + flexor tendons</b>. Compression gives <b>carpal tunnel syndrome</b>: numbness, tingling, weak grip (thumb, index, middle, half of ring finger).<span class="src gen">PDF</span></p><p><b>Anatomical snuffbox</b>: hollow at the thumb side of the wrist; floor = scaphoid and trapezium. Tenderness suggests a <b>scaphoid fracture</b> (fall on an outstretched hand), which has a poor blood supply.<span class="src gen">PDF</span></p><p><b>Grips</b>: power grip (large or heavy objects) and precision grip (thumb opposition, small objects). <b>Fist</b> = MCP, PIP and DIP flexion with the thumb across.<span class="src gen">PDF</span></p><p><b>Nerves of the hand</b>: median (thenar muscles, thumb opposition), ulnar (interossei, adductor pollicis, medial two lumbricals), radial (extensors, dorsolateral skin).<span class="src gen">PDF</span></p></div></details>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Type and axes of the wrist joint?</div><div class="a">Condyloid (ellipsoid), two axes: flexion/extension and radial/ulnar deviation</div></div><div class="recall-card"><div class="q">Carpals in two rows?</div><div class="a">Proximal: scaphoid, lunate, triquetrum, pisiform. Distal: trapezium, trapezoid, capitate, hamate</div></div><div class="recall-card"><div class="q">Which joint gives opposition?</div><div class="a">Saddle joint, first carpometacarpal</div></div><div class="recall-card"><div class="q">FDS vs FDP?</div><div class="a">FDS flexes PIP; FDP flexes DIP</div></div><div class="recall-card"><div class="q">What passes through the carpal tunnel?</div><div class="a">Median nerve and flexor tendons</div></div></div></div>
+
+    </section>
+
+    <section class="section" id="sec-lower">
+      <div class="sec-head">
+        <div class="kicker">07 &#183; Articulation</div>
+        <h2>Hip, Knee and Ankle</h2>
+        <p class="dek">The weight-bearing joints: built for stability and load transfer.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">Ball-and-socket</div><div class="k">hip</div></div><div class="stat"><div class="v">Modified hinge</div><div class="k">knee</div></div><div class="stat"><div class="v">Hinge</div><div class="k">ankle (talocrural)</div></div><div class="stat"><div class="v">4</div><div class="k">ligaments of the knee: A-P-M-L</div></div></div>
+<h3 class="sub"><span class="n">7A</span>Hip joint</h3>
+<div class="table-wrap"><table>
+<tr><th>Feature</th><th>Detail</th></tr>
+<tr><td>Type</td><td>Synovial <b>ball-and-socket</b>; <b>head of femur</b> + <b>acetabulum</b> of the hip bone<span class="src gen">PDF</span></td></tr>
+<tr><td>Why stable</td><td><b>Deep socket</b> + <b>acetabular labrum</b> + strong capsule + strong ligaments + muscles<span class="src gen">PDF</span></td></tr>
+<tr><td>Ligaments</td><td><b>Iliofemoral</b> (Y-shaped; limits extension), <b>pubofemoral</b> (limits abduction), <b>ischiofemoral</b>, ligament of head of femur (teres)<span class="src gen">PDF</span></td></tr>
+<tr><td>Muscles</td><td>Flexors: iliopsoas, rectus femoris, sartorius, TFL. Extensors: gluteus maximus, hamstrings. Abductors: gluteus medius and minimus, TFL. Adductors: adductor group, gracilis, pectineus. Lateral rotators: piriformis, obturators, gemelli, quadratus femoris<span class="src gen">PDF</span></td></tr>
+<tr><td>Key actions</td><td>Gluteus maximus extends; <b>gluteus medius keeps the pelvis level in one-leg standing</b><span class="src gen">PDF</span></td></tr>
+<tr><td>Load path</td><td>Trunk &#8594; pelvis &#8594; hip &#8594; femur &#8594; knee &#8594; tibia &#8594; ankle &#8594; foot<span class="src gen">PDF</span></td></tr>
+</table></div>
+<h3 class="sub"><span class="n">7B</span>Knee joint</h3>
+<div class="spread"><figure class="fig photo"><img src="assets/diagrams/knee-ligaments-and-menisci.jpg" alt="Knee front view showing anterior cruciate ligament, posterior cruciate ligament, lateral and medial menisci, lateral and medial collateral ligaments"><figcaption>Knee ligaments and menisci (from your diagram folder).</figcaption></figure><ol class="key"><li><b>Type</b> &#8211; synovial <b>modified hinge</b>: flexion, extension, small rotation when bent.<span class="src gen">PDF</span></li><li><b>Bones</b> &#8211; femur + tibia + patella. Tibiofemoral joint and patellofemoral joint.<span class="src gen">PDF</span></li><li><b>Menisci</b> &#8211; medial (C-shaped, less mobile, more injured) and lateral (O-shaped, more mobile): cushion, spread load, add stability.<span class="src gen">PDF</span></li><li><b>Cruciate ligaments</b> &#8211; <b>ACL</b> stops the tibia sliding forward; <b>PCL</b> stops it sliding backward.<span class="src gen">PDF</span></li><li><b>Collateral ligaments</b> &#8211; <b>MCL</b> (medial, attached to medial meniscus) and <b>LCL</b> (lateral) resist side forces.<span class="src gen">PDF</span></li><li><b>Screw-home</b> &#8211; a small twist locks the knee in full extension; <b>popliteus unlocks</b> it.<span class="src gen">PDF</span></li></ol></div>
+<div class="spread rev"><ol class="key"><li><b>Patella</b> &#8211; sesamoid bone in the quadriceps tendon; protects the front of the knee and improves the quadriceps lever.<span class="src gen">PDF</span></li><li><b>Extensor mechanism</b> &#8211; quadriceps &#8594; quadriceps tendon &#8594; patella &#8594; patellar ligament &#8594; tibial tuberosity.<span class="src gen">PDF</span></li><li><b>Muscles</b> &#8211; quadriceps extend; hamstrings flex (and extend the hip); popliteus unlocks; biceps femoris laterally rotates, semi-muscles medially rotate.<span class="src gen">PDF</span></li></ol><figure class="fig photo"><img src="assets/diagrams/knee-joint-bones-femur-tibia-patella.jpg" alt="Knee bones labelled femur, patella, lateral condyle, medial condyle, fibula and tibia"><figcaption>Bones of the knee (from your joints folder).</figcaption></figure></div>
+<h3 class="sub"><span class="n">7C</span>Ankle joint</h3>
+<div class="table-wrap"><table>
+<tr><th>Feature</th><th>Detail</th></tr>
+<tr><td>Meaning</td><td>&#8220;Ankle joint&#8221; = <b>talocrural joint</b> (tibia + fibula over the talus)<span class="src gen">PDF</span></td></tr>
+<tr><td>Type</td><td>Synovial <b>hinge</b>: dorsiflexion and plantarflexion<span class="src gen">PDF</span></td></tr>
+<tr><td>Mortise</td><td>Socket made by the distal tibia and fibula (both malleoli) round the talus<span class="src gen">PDF</span></td></tr>
+<tr><td>Ligaments</td><td><b>Lateral:</b> ATFL (most often sprained), CFL, PTFL. <b>Medial:</b> deltoid ligament. Plus the distal tibiofibular syndesmosis<span class="src gen">PDF</span></td></tr>
+<tr><td>Muscles</td><td>Dorsiflexors: tibialis anterior, extensor hallucis, extensor digitorum longus. Plantarflexors: gastrocnemius, soleus (balance), tibialis posterior, fibularis<span class="src gen">PDF</span></td></tr>
+<tr><td>Inversion / eversion</td><td>Mostly at the <b>subtalar and intertarsal</b> joints, not at the ankle<span class="src gen">PDF</span></td></tr>
+</table></div>
+<div class="cols2"><div class="blk mem"><span class="lbl">Memory aid</span><p><b>A-P-M-L</b>: ACL anterior, PCL posterior, MCL medial, LCL lateral. <b>Knee = Femur + Tibia + Patella.</b> <b>Popliteus unlocks.</b> Ankle: <b>deltoid = medial, ATFL-CFL-PTFL = lateral</b>.<span class="src gen">PDF</span></p></div>
+<div class="blk conf"><span class="lbl">Common confusion</span><p><b>The knee does not rotate on its own in poses</b>: rotation comes from the hip. <b>Dorsiflexion and plantarflexion are at the ankle; inversion and eversion are at the foot joints below it.</b> Hip = <b>stable ball-and-socket</b>; shoulder = <b>mobile</b> ball-and-socket.</p></div>
+</div>
+<div class="table-wrap"><table>
+<tr><th></th><th>Hip</th><th>Knee</th><th>Ankle</th></tr>
+<tr><td>Type</td><td>Ball-and-socket</td><td>Modified hinge</td><td>Hinge</td></tr>
+<tr><td>Priority</td><td>Stability + mobility + weight bearing</td><td>Stability with flexion/extension</td><td>Stability, load transfer, balance</td></tr>
+<tr><td>Main movements</td><td>6 + circumduction</td><td>Flexion, extension, small rotation</td><td>Dorsiflexion, plantarflexion</td></tr>
+<tr><td>Common problems</td><td>Osteoarthritis, femoral neck fracture, dislocation, FAI</td><td>ACL, meniscus, patellofemoral pain, osteoarthritis</td><td>Lateral sprain (ATFL), high ankle sprain, Achilles tendinopathy</td></tr>
+</table></div>
+<details class="deeper"><summary>Go deeper &#183; hip, knee and ankle problems and nerve supply</summary><div class="inner"><p><b>Hip:</b> osteoarthritis; femoral neck fracture (risk of avascular necrosis from the medial circumflex femoral artery); dislocation (an emergency); trochanteric bursitis; femoroacetabular impingement (deep flexion). Nerves: femoral, obturator, superior gluteal.<span class="src gen">PDF</span></p><p><b>Knee:</b> ACL injury (pivoting, landing), meniscal injury (twisting, locking), patellofemoral pain, patellar tendinopathy, prepatellar bursitis (kneeling).<span class="src gen">PDF</span></p><p><b>Ankle:</b> lateral sprain, high ankle sprain (syndesmosis), fracture, Achilles tendinopathy, chronic instability. The Achilles tendon joins gastrocnemius and soleus to the calcaneus.<span class="src gen">PDF</span></p></div></details>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Why is the hip stable?</div><div class="a">Deep acetabulum, labrum, strong capsule, strong ligaments and muscles</div></div><div class="recall-card"><div class="q">A-P-M-L in the knee?</div><div class="a">ACL anterior, PCL posterior, MCL medial, LCL lateral</div></div><div class="recall-card"><div class="q">Which muscle unlocks the knee?</div><div class="a">Popliteus</div></div><div class="recall-card"><div class="q">Which ligament is most often sprained at the ankle?</div><div class="a">Anterior talofibular ligament (ATFL)</div></div><div class="recall-card"><div class="q">Ankle: which movements at the talocrural joint?</div><div class="a">Dorsiflexion and plantarflexion only</div></div></div></div>
+
+    </section>
+
+    <section class="section" id="sec-yoga">
+      <div class="sec-head">
+        <div class="kicker">08 &#183; Exercise physiology</div>
+        <h2>Joints in Yogic Practice</h2>
+        <p class="dek">Joint actions behind common asanas, and the safety rules your notes repeat.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">Hip</div><div class="k">rotates; knee must not</div></div><div class="stat"><div class="v">Hinge</div><div class="k">joints: no forced twisting</div></div><div class="stat"><div class="v">Pain</div><div class="k">sharp or persistent: stop</div></div></div>
+<div class="table-wrap"><table>
+<tr><th>Asana</th><th>Joint actions (from your joint notes)</th><th>Key safety point</th></tr>
+<tr><td>Tadasana</td><td>Hips and knees near neutral, ankles near neutral</td><td>Do not hyperextend the knees; even weight across the feet<span class="src gen">PDF</span></td></tr>
+<tr><td>Vrikshasana</td><td>Standing hip stabilises (gluteus medius); raised leg hip flexion + abduction + external rotation</td><td>Support knee not hyperextended; wall if ankle unstable<span class="src gen">PDF</span></td></tr>
+<tr><td>Virabhadrasana I and II</td><td>Front hip flexion (II also abduction), back leg extended, knee flexed, ankle adjustments</td><td>Front knee tracks over the second toe; no inward collapse<span class="src gen">PDF</span></td></tr>
+<tr><td>Trikonasana</td><td>Hip abduction and rotation, spinal lateral flexion, knee extension</td><td>Range varies between people<span class="src gen">PDF</span></td></tr>
+<tr><td>Bhujangasana</td><td>Spinal extension, shoulder extension, elbow extension</td><td>Controlled; no forcing<span class="src gen">PDF</span></td></tr>
+<tr><td>Paschimottanasana</td><td>Hip flexion, spinal flexion, knee extension</td><td>Respect hamstring and hip limits<span class="src gen">PDF</span></td></tr>
+<tr><td>Padmasana / Baddha Konasana</td><td>Hip flexion + abduction + external rotation, knee flexion</td><td><b>Never force the knee; rotation must come from the hip</b><span class="src gen">PDF</span></td></tr>
+<tr><td>Utkatasana, Malasana</td><td>Knee and hip flexion with ankle dorsiflexion</td><td>Heels lift if dorsiflexion is limited: reduce depth or use a prop<span class="src gen">PDF</span></td></tr>
+<tr><td>Adho Mukha Svanasana, Phalakasana, Chaturanga</td><td>Wrist extension (weight-bearing), elbow extension (flexion in chaturanga), shoulder flexion</td><td>Active hands, keep elbows close, avoid hyperextending the elbow<span class="src gen">PDF</span></td></tr>
+<tr><td>Gomukhasana</td><td>Opposite shoulder positions (flexion/abduction/external rotation vs extension/adduction/internal rotation); hip flexion + adduction</td><td>Do not force the knees together<span class="src gen">PDF</span></td></tr>
+</table></div>
+<div class="blk know"><span class="lbl">Safety rules repeated across your joint notes</span><ul class="plain"><li><b>Do not force range.</b> Anatomy varies between people; the shape of a pose is not the goal.<span class="src gen">PDF</span></li><li><b>Hip does the rotation, knee does not.</b> Limited hip mobility overloads the knee.<span class="src gen">PDF</span></li><li><b>A stable joint (elbow) should not be pushed for extra mobility</b>; move within its natural range and avoid repeated hyperextension.<span class="src gen">PDF</span></li><li><b>Mobility, stability and control</b> are equally important; progress gradually into deep poses.<span class="src gen">PDF</span></li><li><b>Wrist:</b> spread the fingers, press through the hands, spread the load, load gradually.<span class="src gen">PDF</span></li><li><b>Stop</b> for sharp or persistent pain, numbness or tingling.<span class="src gen">PDF</span></li></ul></div>
+<div class="blk exam"><span class="lbl">Exam angle &#183; question paper Q22 (bones half)</span><p>Link <b>joint design to practice</b>: ball-and-socket joints give range but depend on muscles (shoulder) or are stable (hip); hinge joints are built for one plane, so forcing rotation strains ligaments; range depends on bone shape, ligaments, muscle bulk and antagonist tension.</p></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Which joint should rotate in padmasana?</div><div class="a">The hip, not the knee</div></div><div class="recall-card"><div class="q">Why do heels lift in utkatasana or malasana?</div><div class="a">Limited ankle dorsiflexion</div></div><div class="recall-card"><div class="q">Which poses load the wrist in extension?</div><div class="a">Plank, downward dog, chaturanga, side plank, arm balances</div></div><div class="recall-card"><div class="q">What sets joint range of motion?</div><div class="a">Bone shape, ligaments, muscle bulk, antagonist muscle tension</div></div></div></div>
+
+    </section>
+
+<p class="src-foot">Sources: class notes (joints, typed); Joints &#8211; Classification and Movements (handwritten notes converted to doc); Joints: Movements and Articulation (PDF); Shoulder, Elbow, Wrist-Hand-Finger, Hip, Knee and Ankle joint notes (teacher's PDFs); the textbook-pages PDF for Ross &amp; Wilson ch. 17; standard anatomy texts for the &#8220;general&#8221; tags. Photographic diagrams are from your diagram folder; watermarked stock images were left out. Mnemonics tagged &#8220;added&#8221; are made up for these notes.</p>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
+</script>

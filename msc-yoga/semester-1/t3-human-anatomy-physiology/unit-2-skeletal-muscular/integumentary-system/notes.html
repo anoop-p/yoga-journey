@@ -1,0 +1,458 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Integumentary System</title>
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  @media (max-width:640px){ .fig.wide-svg{ overflow-x:auto; -webkit-overflow-scrolling:touch; } .fig.wide-svg svg{ min-width:540px; } .fig.wide-svg::after{ content:"swipe sideways to see the whole diagram"; display:block; font-size:11px; color:var(--muted); text-align:center; margin-top:4px; } }
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .fig.photo img{ max-width:100%; height:auto; border-radius:8px; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Integumentary System</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../index.html">&larr; Unit 2 &middot; Skeletal &amp; Muscular System</a>
+    <div class="brand">
+      <div class="eyebrow">Anatomy &amp; Physiology</div>
+      <h1>Integumentary System</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="overview"><span class="num">01</span><span>Integumentary System</span></button>
+      <button class="nav-item" data-target="layers"><span class="num">02</span><span>Epidermis, Dermis, Hypodermis</span></button>
+      <button class="nav-item" data-target="appendages"><span class="num">03</span><span>Hair, Nails & Glands</span></button>
+      <button class="nav-item" data-target="receptors"><span class="num">04</span><span>Receptors & Functions</span></button>
+      <button class="nav-item" data-target="yoga"><span class="num">05</span><span>Skin & Yogic Practice</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Reference: class notes Oct 2026 (integumentary); Integumentary System notes (PDF); Yoga &amp; Human Body notes (skin, temperature regulation); Ross &amp; Wilson ch. 14
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="section" id="sec-overview">
+      <div class="sec-head">
+        <div class="kicker">01 &#183; Big picture</div>
+        <h2>Integumentary System: The Skin as an Organ</h2>
+        <p class="dek">The body's outer covering: barrier, thermostat and sensor in one.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">Largest</div><div class="k">organ of the body</div></div><div class="stat"><div class="v">1.5&#8211;2 m&#178;</div><div class="k">area in an adult</div></div><div class="stat"><div class="v">2</div><div class="k">layers of skin proper</div></div><div class="stat"><div class="v">6</div><div class="k">functions</div></div></div>
+<div class="table-wrap"><table>
+<tr><th>Your syllabus line</th><th>Where it is on this page</th></tr>
+<tr><td>Integumentary system: skin structure</td><td>1 (what it includes), 2 (epidermis, dermis, hypodermis), 3 (hair, nails, glands), 4 (receptors)</td></tr>
+<tr><td>Skin functions</td><td>1 and 4 (protection, temperature, sensation, excretion, vitamin D, water-loss prevention)</td></tr>
+<tr><td>Exercise physiology: musculo-skeletal system in yogic practices</td><td>5 (skin, sweating and temperature in practice)</td></tr>
+</table></div>
+<div class="spread"><figure class="fig photo"><img src="assets/diagrams/skin-structure.jpg" alt="Hand-drawn diagram of skin structure: epidermis strata corneum, lucidum, granulosum, spinosum, basale, with keratinocytes, melanocytes, Langerhans cells and Merkel cells; dermis papillary and reticular layers; hypodermis; hair follicle, sebaceous gland, sweat gland, blood vessels and nerve endings"><figcaption>Structure of the skin (figure from your integumentary PDF).</figcaption></figure><ol class="key"><li><b>Integumentary system</b> = skin + hair + nails + sweat glands + sebaceous (oil) glands + sensory receptors. &#8220;Integument&#8221; means covering.<span class="src cls">class</span><span class="src gen">PDF</span></li><li><b>Epidermis</b> &#8211; outer layer; keratinised stratified squamous epithelium; <b>no blood vessels</b>.<span class="src cls">class</span></li><li><b>Dermis</b> &#8211; middle layer of connective tissue: papillary (loose) and reticular (dense) parts.<span class="src cls">class</span></li><li><b>Hypodermis</b> &#8211; fat and loose connective tissue beneath; not part of the skin proper.<span class="src gen">PDF</span></li><li><b>Appendages</b> &#8211; hair, nails, sweat and sebaceous glands.<span class="src cls">class</span></li></ol></div>
+<h3 class="sub"><span class="n">1A</span>What the skin does</h3>
+<div class="table-wrap"><table>
+<tr><th>Function</th><th>How</th></tr>
+<tr><td><b>Protection</b></td><td>Physical barrier; keratin resists friction; blocks many microbes; melanin partly shields DNA from UV<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Temperature regulation</b></td><td>Sweat evaporation cools; skin blood vessels dilate or narrow; fat insulates<span class="src gen">PDF</span><span class="src gen">general</span></td></tr>
+<tr><td><b>Sensation</b></td><td>Touch, pressure, pain and temperature receptors<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Excretion</b></td><td>Small amounts of salts and urea in sweat<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Vitamin D synthesis</b></td><td>Made in skin with sunlight<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Water-loss prevention</b></td><td>Lipid barrier of the outer layers<span class="src gen">PDF</span></td></tr>
+</table></div>
+<div class="blk und"><span class="lbl">Understand it</span><p>Skin is a <b>living raincoat with sensors</b>. The outer layer is a tough waterproof coat of dead, keratin-filled cells that is shed and renewed all the time. Under it is a strong, stretchy layer with blood vessels and nerves; under that, a fat cushion. Without it we would lose water, catch infections and could not control temperature.<span class="src gen">PDF</span></p></div>
+<div class="blk mem"><span class="lbl">Memory aid</span><p><b>P-T-S-E-V-W</b>: &#8220;<b>P</b>rotect, <b>T</b>emperature, <b>S</b>ense, <b>E</b>xcrete, <b>V</b>itamin D, <b>W</b>ater-keep.&#8221; Layers outside to inside: <b>E-D-H</b> (<b>E</b>pidermis, <b>D</b>ermis, <b>H</b>ypodermis).<span class="src add">added</span></p></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Largest organ?</div><div class="a">The skin (about 1.5 to 2 square metres)</div></div><div class="recall-card"><div class="q">What does the integumentary system include?</div><div class="a">Skin, hair, nails, sweat glands, sebaceous glands, sensory receptors</div></div><div class="recall-card"><div class="q">Six functions of skin?</div><div class="a">Protection, temperature regulation, sensation, excretion, vitamin D synthesis, water-loss prevention</div></div><div class="recall-card"><div class="q">Layers of skin proper?</div><div class="a">Epidermis and dermis (hypodermis lies beneath)</div></div><div class="recall-card"><div class="q">Which layer has no blood vessels?</div><div class="a">Epidermis</div></div></div></div>
+
+    </section>
+
+    <section class="section" id="sec-layers">
+      <div class="sec-head">
+        <div class="kicker">02 &#183; Skin structure</div>
+        <h2>Epidermis, Dermis and Hypodermis</h2>
+        <p class="dek">Three layers: renewing barrier, strong supply layer, fat cushion.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">5</div><div class="k">epidermal strata (thick skin)</div></div><div class="stat"><div class="v">4</div><div class="k">strata in thin skin</div></div><div class="stat"><div class="v">4</div><div class="k">epidermal cell types</div></div><div class="stat"><div class="v">2</div><div class="k">dermal layers</div></div></div>
+<h3 class="sub"><span class="n">2A</span>Epidermis</h3>
+<div class="table-wrap"><table>
+<tr><th>Cell</th><th>Job</th></tr>
+<tr><td><b>Keratinocytes</b></td><td>Most numerous; make keratin; barrier and friction resistance<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Melanocytes</b></td><td>Make melanin: colour and partial UV protection (tanning increases melanin)<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Langerhans cells</b></td><td>Immune cells that spot foreign substances<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Merkel cells</b></td><td>Linked to sensory nerves; light touch and fine detail<span class="src gen">PDF</span></td></tr>
+</table></div>
+<div class="table-wrap"><table>
+<tr><th>Layer (deep to surface)</th><th>Features</th></tr>
+<tr><td><b>1. Stratum basale</b> (germinativum)</td><td>Deepest; single layer; dividing stem cells renew the skin; melanocytes and Merkel cells<span class="src gen">PDF</span></td></tr>
+<tr><td><b>2. Stratum spinosum</b></td><td>Several layers joined by desmosomes; strength against stretch; cells look spiny<span class="src gen">PDF</span></td></tr>
+<tr><td><b>3. Stratum granulosum</b></td><td>Granules; makes the water-resistant lipid barrier<span class="src gen">PDF</span></td></tr>
+<tr><td><b>4. Stratum lucidum</b></td><td>Thin clear layer; <b>only in thick skin</b> (palms, soles)<span class="src gen">PDF</span></td></tr>
+<tr><td><b>5. Stratum corneum</b></td><td>Many layers of dead, flat, keratin-filled cells; shed and replaced; barrier against friction, water loss and microbes<span class="src gen">PDF</span></td></tr>
+</table></div>
+<div class="cols2"><div class="blk mem"><span class="lbl">Memory aid</span><p>Deep to surface: <b>B</b>asale, <b>S</b>pinosum, <b>G</b>ranulosum, <b>L</b>ucidum, <b>C</b>orneum = <b>&#8220;Before Signing, Get Legal Counsel&#8221;</b> (from your PDF).<span class="src gen">PDF</span></p></div>
+<div class="blk conf"><span class="lbl">Common confusion</span><p><b>Epidermis has no blood vessels</b>; it is fed by diffusion from the dermis. <b>Thick skin has 5 layers, thin skin 4</b> (no lucidum). <b>Melanin protects only partly.</b><span class="src gen">PDF</span></p></div>
+</div>
+<h3 class="sub"><span class="n">2B</span>Dermis</h3>
+<div class="table-wrap"><table>
+<tr><th></th><th>Papillary layer</th><th>Reticular layer</th></tr>
+<tr><td>Position</td><td>Superficial</td><td>Deeper and thicker</td></tr>
+<tr><td>Tissue</td><td>Loose connective tissue</td><td>Dense irregular connective tissue (collagen)</td></tr>
+<tr><td>Contents</td><td>Small vessels, sensory endings, dermal papillae</td><td>Larger vessels, nerves, hair follicles, glands, receptors</td></tr>
+<tr><td>Job</td><td>Feeds the epidermis; ridges (fingerprints) in palms and soles</td><td>Strength, structure, flexibility</td></tr>
+</table></div>
+<ul class="plain"><li>Dermis parts: <b>collagen</b> (strength), <b>elastic fibres</b> (stretch and recoil), <b>fibroblasts</b> (make collagen, elastin, repair).<span class="src gen">PDF</span></li><li>Dermis holds <b>blood and lymph vessels, nerves, receptors, hair follicles and glands</b>; the gland ducts open through the epidermis.<span class="src gen">PDF</span></li><li><b>Fingerprints</b> are ridge patterns formed by the dermal papillae and stay stable through life.<span class="src gen">PDF</span></li></ul><div class="table-wrap"><table>
+<tr><th></th><th>Epidermis</th><th>Dermis</th></tr>
+<tr><td>Tissue</td><td>Keratinised stratified squamous epithelium</td><td>Connective tissue</td></tr>
+<tr><td>Blood vessels</td><td>Absent</td><td>Present</td></tr>
+<tr><td>Main cells</td><td>Keratinocytes (+ melanocytes, Langerhans, Merkel)</td><td>Fibroblasts</td></tr>
+<tr><td>Main proteins</td><td>Keratin</td><td>Collagen and elastin</td></tr>
+<tr><td>Role</td><td>Barrier and protection</td><td>Strength, elasticity, nourishment, sensation</td></tr>
+</table></div>
+<h3 class="sub"><span class="n">2C</span>Hypodermis (subcutaneous tissue)</h3>
+<ul class="plain"><li>Loose connective tissue + <b>adipose (fat)</b> + vessels + nerves. Not part of the skin proper.<span class="src gen">PDF</span></li><li>Jobs: <b>store energy, insulate, cushion against shock, attach the skin</b> while letting it move.<span class="src gen">PDF</span></li></ul><div class="blk exam"><span class="lbl">Exam angle</span><p>&#8220;Describe the structure of the skin.&#8221; Draw the diagram with epidermis (five strata), dermis (papillary, reticular), hypodermis, hair follicle, sebaceous and sweat gland, vessels, receptors. Add: epidermis avascular; dermis vascular.</p></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Five strata deep to surface?</div><div class="a">Basale, spinosum, granulosum, lucidum, corneum</div></div><div class="recall-card"><div class="q">Which layer is only in thick skin?</div><div class="a">Stratum lucidum</div></div><div class="recall-card"><div class="q">Cells of epidermis?</div><div class="a">Keratinocytes, melanocytes, Langerhans cells, Merkel cells</div></div><div class="recall-card"><div class="q">Dermis layers?</div><div class="a">Papillary (loose) and reticular (dense)</div></div><div class="recall-card"><div class="q">Hypodermis jobs?</div><div class="a">Energy storage, insulation, cushioning, attachment</div></div></div></div>
+
+    </section>
+
+    <section class="section" id="sec-appendages">
+      <div class="sec-head">
+        <div class="kicker">03 &#183; Appendages</div>
+        <h2>Hair, Nails and Skin Glands</h2>
+        <p class="dek">Extensions of the skin: keratin structures and two kinds of gland.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">2</div><div class="k">sweat gland types</div></div><div class="stat"><div class="v">1</div><div class="k">oil gland: sebaceous</div></div><div class="stat"><div class="v">Keratin</div><div class="k">hair and nails</div></div></div>
+<h3 class="sub"><span class="n">3A</span>Hair</h3>
+<div class="table-wrap"><table>
+<tr><th>Part</th><th>Description</th></tr>
+<tr><td>Hair shaft</td><td>The part above the skin<span class="src gen">PDF</span></td></tr>
+<tr><td>Hair root</td><td>Part inside the follicle<span class="src gen">PDF</span></td></tr>
+<tr><td>Hair bulb</td><td>Expanded base of the root<span class="src gen">PDF</span></td></tr>
+<tr><td>Hair matrix</td><td>Dividing cells that build the shaft<span class="src gen">PDF</span></td></tr>
+<tr><td>Dermal papilla</td><td>Vessel-rich tissue that feeds the hair<span class="src gen">PDF</span></td></tr>
+</table></div>
+<ul class="plain"><li>Functions: protection in some regions, filtering particles (nose), protecting the eyes (eyelashes), detecting movement, some sun and heat protection on the scalp.<span class="src gen">PDF</span></li><li>No hair follicles on the palms and soles.<span class="src gen">PDF</span></li></ul><h3 class="sub"><span class="n">3B</span>Glands</h3>
+<div class="table-wrap"><table>
+<tr><th></th><th>Eccrine sweat</th><th>Apocrine sweat</th><th>Sebaceous</th></tr>
+<tr><td>Where</td><td>Widespread; most on palms, soles, forehead</td><td>Armpits, genital region</td><td>With hair follicles; absent from palms and soles</td></tr>
+<tr><td>Starts</td><td>Early life</td><td>Puberty</td><td>&#8211;</td></tr>
+<tr><td>Secretes</td><td>Watery sweat to the skin surface</td><td>Into hair follicles; richer in organic substances</td><td><b>Sebum</b> (oil)</td></tr>
+<tr><td>Job</td><td><b>Cooling by evaporation</b>; small excretion of salts and urea</td><td>Not the main cooling glands; bacteria cause odour</td><td>Lubricates skin and hair; surface barrier; excess can cause acne</td></tr>
+</table></div>
+<div class="blk know"><span class="lbl">Evaporative cooling</span><p>When body temperature rises, eccrine sweating rises and evaporation removes heat. In <b>high humidity</b> evaporation is less effective, so sweating alone does not guarantee cooling (for example during Surya Namaskar in a warm room).<span class="src gen">PDF</span></p></div>
+<h3 class="sub"><span class="n">3C</span>Nails</h3>
+<ul class="plain"><li>Hard <b>keratin</b> plates on fingers and toes. Parts: nail plate, nail bed, nail root, nail matrix, <b>lunula</b>, eponychium (cuticle).<span class="src cls">class</span><span class="src gen">PDF</span></li><li>Jobs: protect fingertips and toe tips, give a firm surface to press against, help pick up small objects, improve fine touch.<span class="src gen">PDF</span></li></ul><div class="cols2"><div class="blk mem"><span class="lbl">Memory aid</span><p><b>Eccrine = Everywhere, cooling. Apocrine = Armpits, odour.</b> Sebaceous = Sebum = oil.<span class="src add">added</span></p></div>
+<div class="blk conf"><span class="lbl">Common confusion</span><p><b>Eccrine, not apocrine, are the main cooling glands.</b> Sebaceous glands are oil glands, not sweat glands. Keratin is the protein in epidermis, hair and nails.<span class="src gen">PDF</span></p></div>
+</div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Eccrine vs apocrine?</div><div class="a">Eccrine: widespread, cooling. Apocrine: armpits, genital region, from puberty, odour</div></div><div class="recall-card"><div class="q">What do sebaceous glands make?</div><div class="a">Sebum, an oil that lubricates skin and hair</div></div><div class="recall-card"><div class="q">What are nails made of?</div><div class="a">Hard keratin</div></div><div class="recall-card"><div class="q">Parts of a hair?</div><div class="a">Shaft, root, bulb, matrix, dermal papilla</div></div><div class="recall-card"><div class="q">Where are there no hair follicles?</div><div class="a">Palms and soles</div></div></div></div>
+
+    </section>
+
+    <section class="section" id="sec-receptors">
+      <div class="sec-head">
+        <div class="kicker">04 &#183; Sensation and function</div>
+        <h2>Sensory Receptors and Temperature Regulation</h2>
+        <p class="dek">How the skin senses the world and keeps the body at a steady temperature.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">6</div><div class="k">receptor types</div></div><div class="stat"><div class="v">Dermis</div><div class="k">holds most receptors</div></div><div class="stat"><div class="v">Hypothalamus</div><div class="k">temperature control centre</div></div></div>
+<div class="table-wrap"><table>
+<tr><th>Receptor</th><th>Where</th><th>Detects</th></tr>
+<tr><td><b>Free nerve endings</b></td><td>Throughout skin</td><td>Pain, temperature, itch, some touch<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Merkel cell-neurite complex</b></td><td>Base of epidermis</td><td>Sustained light touch, edges, texture<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Meissner corpuscles</b></td><td>Dermal papillae of fingertips and palms</td><td>Light touch, low-frequency vibration<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Pacinian corpuscles</b></td><td>Deep dermis, hypodermis</td><td>Deep pressure, high-frequency vibration<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Ruffini endings</b></td><td>Dermis</td><td>Skin stretch<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Hair follicle receptors</b></td><td>Around follicles</td><td>Hair movement<span class="src gen">PDF</span></td></tr>
+</table></div>
+<h3 class="sub"><span class="n">4A</span>Skin and temperature control (Yoga &amp; Human Body notes)</h3>
+<div class="table-wrap"><table>
+<tr><th>Body is too hot</th><th>Body is too cold</th></tr>
+<tr><td>Sweating increases; skin blood vessels dilate (vasodilation)<span class="src gen">general</span></td><td>Skin vessels narrow (vasoconstriction); shivering; more metabolic heat<span class="src gen">general</span></td></tr>
+</table></div>
+<ul class="plain"><li>Control centre: <b>hypothalamus</b>. Heat made by muscle activity, metabolism and hormones; lost by <b>radiation, conduction, convection, evaporation</b>.<span class="src gen">general</span></li></ul><div class="blk mem"><span class="lbl">Memory aid</span><p><b>Light touch = Meissner and Merkel</b>, <b>deep pressure and vibration = Pacinian</b>, <b>pain and temperature = free nerve endings</b>.<span class="src add">added</span></p></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Which receptor detects deep pressure?</div><div class="a">Pacinian corpuscle</div></div><div class="recall-card"><div class="q">Which detect light touch on fingertips?</div><div class="a">Meissner corpuscles and Merkel cell-neurite complexes</div></div><div class="recall-card"><div class="q">Pain is detected by?</div><div class="a">Free nerve endings (nociceptors)</div></div><div class="recall-card"><div class="q">Who controls body temperature?</div><div class="a">Hypothalamus</div></div><div class="recall-card"><div class="q">Skin in heat?</div><div class="a">Sweating and vasodilation</div></div></div></div>
+
+    </section>
+
+    <section class="section" id="sec-yoga">
+      <div class="sec-head">
+        <div class="kicker">05 &#183; Exercise physiology</div>
+        <h2>Skin and Yogic Practice</h2>
+        <p class="dek">Sweating, temperature and touch in practice.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">Sweat</div><div class="k">cools the body</div></div><div class="stat"><div class="v">Hands, feet</div><div class="k">thick skin, many receptors</div></div><div class="stat"><div class="v">Humidity</div><div class="k">reduces cooling</div></div></div>
+<div class="blk know"><span class="lbl">What your notes link to practice</span><ul class="plain"><li><b>Sweating during vigorous practice</b> (Surya Namaskar, exercise in warmth) is eccrine cooling; evaporation is less effective in humid air, so sweating alone does not guarantee cooling.<span class="src gen">PDF</span></li><li>Skin receptors in the hands and feet (Meissner, Pacinian, Merkel) give the <b>touch and pressure feedback</b> that helps balance and grounding. This is a link added here from receptor function; your notes do not write it directly.<span class="src add">added</span></li><li>Muscle work makes heat; the skin gives it off. Muscle activity is one of the main heat sources (Yoga &amp; Human Body notes), and skin vessels dilating and sweating are the main ways of losing it.<span class="src gen">general</span></li></ul></div>
+<div class="blk exam"><span class="lbl">Exam angle</span><p>&#8220;Functions of skin&#8221; is a typical short note: protection, temperature regulation, sensation, excretion, vitamin D, water-loss prevention, with one line each. Pair it with structure (epidermis, dermis, hypodermis) in a 5-mark question.</p></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Which glands cool the body in exercise?</div><div class="a">Eccrine sweat glands, by evaporation</div></div><div class="recall-card"><div class="q">Why can sweating fail to cool?</div><div class="a">High humidity reduces evaporation</div></div><div class="recall-card"><div class="q">What gives touch and pressure feedback in hands and feet?</div><div class="a">Skin receptors: Meissner, Merkel, Pacinian</div></div></div></div>
+
+    </section>
+
+<p class="src-foot">Sources: class notes (integumentary, typed); Integumentary System &#8211; M.Sc. Study Notes (teacher's PDF, includes the skin diagram); Yoga &amp; Human Body notes (skin functions, temperature regulation); Ross &amp; Wilson ch. 14 (The skin); standard texts for the &#8220;general&#8221; tags. Mnemonics tagged &#8220;added&#8221; are made up for these notes.</p>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
+</script>

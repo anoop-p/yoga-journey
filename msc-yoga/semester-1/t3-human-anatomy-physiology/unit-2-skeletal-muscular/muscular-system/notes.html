@@ -1,156 +1,88 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Muscular System</title>
 <style>
   :root{
-    --bg:#f3f1ea;
-    --surface:#ffffff;
-    --surface-2:#ebe7db;
-    --border:#d9d3c2;
-    --ink:#1e231f;
-    --ink-soft:#4d5449;
-    --muted:#7a8072;
-    --accent:#b1502e;
-    --accent-soft:#f0dccd;
-    --teal:#2f6a5e;
-    --teal-soft:#dde9e4;
-    --gold:#a9822c;
-    --gold-soft:#f1e6c9;
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
     --code-bg:#eae5d6;
     --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --bg:#181a16;
-      --surface:#212420;
-      --surface-2:#262924;
-      --border:#3a3d35;
-      --ink:#ece8dd;
-      --ink-soft:#c3c2b5;
-      --muted:#8d9285;
-      --accent:#e0895f;
-      --accent-soft:#3a2a20;
-      --teal:#7fbfae;
-      --teal-soft:#213330;
-      --gold:#d9b862;
-      --gold-soft:#3a3016;
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
       --code-bg:#2a2c24;
       --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"]{
-    --bg:#181a16;
-    --surface:#212420;
-    --surface-2:#262924;
-    --border:#3a3d35;
-    --ink:#ece8dd;
-    --ink-soft:#c3c2b5;
-    --muted:#8d9285;
-    --accent:#e0895f;
-    --accent-soft:#3a2a20;
-    --teal:#7fbfae;
-    --teal-soft:#213330;
-    --gold:#d9b862;
-    --gold-soft:#3a3016;
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
     --code-bg:#2a2c24;
     --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
     color-scheme: dark;
   }
-
   *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3,h4{
-    font-family:"Fraunces", Georgia, serif;
-    font-weight:600;
-    text-wrap:balance;
-    margin:0 0 .4em;
-    color:var(--ink);
-  }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
   p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
   code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
   a{ color:var(--accent); }
-
   .app{ display:flex; min-height:100%; }
-
-  /* ---------- Sidebar ---------- */
-  .sidebar{
-    width:280px; flex-shrink:0; background:var(--surface);
-    border-right:1px solid var(--border); position:sticky; top:0;
-    height:100vh; overflow-y:auto; padding:20px 14px 40px;
-  }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
   .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
   .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
   .back-link:hover{ color:var(--accent); }
   .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
   .brand h1{ font-size:20px; margin:2px 0 0; }
-
-  .search{
-    width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border);
-    background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px;
-  }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
   .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
   .search::placeholder{ color:var(--muted); }
-
   nav.tree{ display:flex; flex-direction:column; gap:2px; }
-  .tree button.nav-item{
-    all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px;
-    padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35;
-  }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
   .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
   .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
   .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
   .tree button.nav-item.active .num{ color:var(--accent); }
   .tree .nav-item[hidden]{ display:none; }
-
   .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
-
-  /* ---------- Main ---------- */
   main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
   .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
   .section[hidden]{ display:none; }
-  .kicker{
-    display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em;
-    text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px;
-  }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
   .section h2{ font-size:30px; margin-bottom:6px; }
   .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
-
-  .card{
-    background:var(--surface); border:1px solid var(--border); border-radius:12px;
-    padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px;
-  }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
   .card h3{ font-size:16px; margin-bottom:10px; }
-  .card h3 .tag{
-    display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em;
-    text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px;
-    margin-right:9px; vertical-align:middle; position:relative; top:-1px;
-  }
-
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
   .dsf{ display:flex; flex-direction:column; gap:10px; }
   .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
   .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
   .dsf .row p{ margin:0; font-size:14.5px; }
   @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
-
   ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
   ul.notes li{ margin-bottom:5px; }
   ul.notes ul{ margin-top:5px; }
   .mal{ color:var(--muted); font-style:italic; }
-
   .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
   @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
-
   .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
   .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
   .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
   .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
-
   table{ width:100%; border-collapse:collapse; font-size:13.5px; }
   th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
   th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
@@ -158,22 +90,16 @@
   .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
   .table-wrap table{ margin:0; }
   .table-wrap th, .table-wrap td{ padding:11px 14px; }
-
   .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
   .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
   .flow .arrow{ color:var(--muted); }
-
   figure{ margin:0 0 22px; }
   figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
   figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
-
   .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
   .figure-grid figure{ margin:0; }
   @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
-
   .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
-
-  /* ---------- Layer model ---------- */
   .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
   .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
   .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
@@ -184,9 +110,6 @@
   .layer-panel .story p b{ color:var(--ink); }
   .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
   .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
-  .explain-diagram{ display:flex; flex-wrap:wrap; gap:6px; margin:14px 0; font-size:13px; font-family:"IBM Plex Mono", monospace; }
-  .explain-diagram .step{ background:var(--surface-2); border:1px solid var(--border); border-radius:7px; padding:6px 10px; }
-  .explain-diagram .arrow{ color:var(--muted); }
   .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
   .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
   .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
@@ -197,15 +120,10 @@
   .recall-card.flipped .a{ display:block; }
   .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
   .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
-
-  .mobile-bar{
-    display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border);
-    padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px;
-  }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
   .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
   .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
   .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
-
   @media (max-width: 860px){
     .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
     .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
@@ -214,6 +132,87 @@
     .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
     .scrim.show{ display:block; }
   }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  @media (max-width:640px){ .fig.wide-svg{ overflow-x:auto; -webkit-overflow-scrolling:touch; } .fig.wide-svg svg{ min-width:540px; } .fig.wide-svg::after{ content:"swipe sideways to see the whole diagram"; display:block; font-size:11px; color:var(--muted); text-align:center; margin-top:4px; } }
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .fig.photo img{ max-width:100%; height:auto; border-radius:8px; }
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 
@@ -232,405 +231,367 @@
     </div>
     <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
     <nav class="tree" id="tree">
-      <button class="nav-item" data-target="overview"><span class="num">00</span><span>Muscle Tissue Types</span></button>
-      <button class="nav-item" data-target="structure"><span class="num">01</span><span>Skeletal Muscle Structure</span></button>
-      <button class="nav-item" data-target="contraction"><span class="num">02</span><span>Sliding Filament Theory</span></button>
-      <button class="nav-item" data-target="tone-fatigue"><span class="num">03</span><span>Tone &amp; Fatigue</span></button>
-      <button class="nav-item" data-target="biomechanics"><span class="num">04</span><span>Biomechanics</span></button>
-      <button class="nav-item" data-target="yoga"><span class="num">05</span><span>Exercise Physiology in Yoga</span></button>
+      <button class="nav-item" data-target="overview"><span class="num">01</span><span>Muscle Types & Properties</span></button>
+      <button class="nav-item" data-target="structure"><span class="num">02</span><span>Skeletal Muscle Structure</span></button>
+      <button class="nav-item" data-target="contract"><span class="num">03</span><span>Contraction & NMJ</span></button>
+      <button class="nav-item" data-target="other"><span class="num">04</span><span>Smooth & Cardiac Muscle</span></button>
+      <button class="nav-item" data-target="tone"><span class="num">05</span><span>Tone & Types of Contraction</span></button>
+      <button class="nav-item" data-target="fibres"><span class="num">06</span><span>Fibre Types & Energy</span></button>
+      <button class="nav-item" data-target="fatigue"><span class="num">07</span><span>Muscle Fatigue</span></button>
+      <button class="nav-item" data-target="bio"><span class="num">08</span><span>Biomechanics & Levers</span></button>
+      <button class="nav-item" data-target="yoga"><span class="num">09</span><span>Muscles in Yogic Practice</span></button>
     </nav>
     <div class="sidebar-footer">
-      Reference: Anatomy &amp; Physiology &mdash; Unit 3, The Muscular System (consolidated notes PDF)
+      Reference: class notes 28 Sep&ndash;Oct 2026; Muscular System notes (PDF); Skeletal Muscle Structure and Function and Nervous Control (Ch. 2 and 3 scans); Yoga &amp; Human Body notes; Ross &amp; Wilson ch. 18
     </div>
   </aside>
 
   <main id="main">
-
-    <!-- 00 OVERVIEW -->
     <section class="section" id="sec-overview">
-      <div class="kicker">00 &middot; Foundations</div>
-      <h2>Muscle Tissue Types</h2>
-      <p class="dek">Three kinds of muscle tissue, doing three very different jobs &mdash; only one of them is under your conscious control.</p>
-
-      <div class="figure-grid">
-        <figure>
-          <img src="assets/diagrams/muscular-tissue-types.jpg" alt="Muscular tissue types: skeletal, cardiac, and visceral (smooth) muscle, classified by striation, control, and distribution">
-          <figcaption>Skeletal, cardiac, and smooth (visceral) muscle &mdash; classified by striation, voluntary/involuntary control, and location.</figcaption>
-        </figure>
-        <figure>
-          <img src="assets/diagrams/skeletal-muscle-structure.jpg" alt="Structure of a skeletal muscle: epimysium, perimysium, endomysium, fascicle, muscle fibre, tendon, bone">
-          <figcaption>A skeletal muscle's connective-tissue wrapping, from whole muscle down to a single fibre.</figcaption>
-        </figure>
+      <div class="sec-head">
+        <div class="kicker">01 &#183; Big picture</div>
+        <h2>Muscular System: Types and Properties</h2>
+        <p class="dek">Three kinds of muscle tissue, one shared ability: to shorten and pull.</p>
       </div>
+<div class="stat-strip"><div class="stat"><div class="v">3</div><div class="k">muscle types</div></div><div class="stat"><div class="v">4</div><div class="k">core properties</div></div><div class="stat"><div class="v">5</div><div class="k">jobs of skeletal muscle</div></div><div class="stat"><div class="v">~40%</div><div class="k">of body weight is muscle (general)</div></div></div>
+<div class="table-wrap"><table>
+<tr><th>Your syllabus line</th><th>Where it is on this page</th></tr>
+<tr><td>Muscular system: skeletal, smooth, cardiac muscles</td><td>1 (comparison), 2 (skeletal structure), 4 (smooth and cardiac)</td></tr>
+<tr><td>Muscle contraction</td><td>3 (neuromuscular junction, sliding filament), 5 (types of contraction, tone), 6 (fibre types, energy)</td></tr>
+<tr><td>Muscle fatigue</td><td>7</td></tr>
+<tr><td>Biomechanics</td><td>8 (torque, levers, length-tension, force-velocity, muscle roles)</td></tr>
+<tr><td>Exercise physiology: musculo-skeletal system in yogic practices</td><td>9</td></tr>
+</table></div>
+<div class="spread"><figure class="fig photo"><img src="assets/diagrams/muscular-tissue-types.jpg" alt="Infographic of muscular tissue: striated and non-striated, voluntary and involuntary, skeletal, cardiac and visceral smooth muscle, with a comparison table"><figcaption>Teacher-style infographic of the three muscle types (from your diagram folder).</figcaption></figure><ol class="key"><li><b>Skeletal muscle</b> &#8211; attached to bones by tendons; striated; voluntary; long multinucleate fibres.<span class="src cls">class</span><span class="src gen">PDF</span></li><li><b>Smooth muscle</b> &#8211; walls of hollow organs and vessels; non-striated; involuntary; spindle cells.<span class="src cls">class</span><span class="src gen">PDF</span></li><li><b>Cardiac muscle</b> &#8211; heart wall only; striated; involuntary; branched cells joined by intercalated discs.<span class="src cls">class</span><span class="src gen">PDF</span></li><li><b>Memory line</b> &#8211; skeletal moves the body, smooth moves things inside the body, cardiac pumps blood.<span class="src gen">PDF</span></li></ol></div>
+<div class="table-wrap"><table>
+<tr><th>Feature</th><th>Skeletal</th><th>Smooth</th><th>Cardiac</th></tr>
+<tr><td>Location</td><td>Attached to bones</td><td>Walls of hollow organs, vessels</td><td>Heart wall (myocardium)</td></tr>
+<tr><td>Control</td><td>Voluntary (somatic)</td><td>Involuntary (autonomic)</td><td>Involuntary, rhythmic</td></tr>
+<tr><td>Striations</td><td>Striated</td><td>Non-striated</td><td>Striated</td></tr>
+<tr><td>Cell shape</td><td>Long cylinders</td><td>Spindle-shaped</td><td>Short, branched</td></tr>
+<tr><td>Nuclei</td><td>Many, at the edge</td><td>One, central</td><td>One (sometimes two), central</td></tr>
+<tr><td>Special feature</td><td>Motor units, NMJ</td><td>Gap junctions; dense bodies; stretch well</td><td>Intercalated discs, automaticity (SA node)</td></tr>
+<tr><td>Speed and fatigue</td><td>Fast, forceful, tires</td><td>Slow, sustained, tire-resistant</td><td>Rhythmic, continuous, very fatigue-resistant</td></tr>
+</table></div>
+<h3 class="sub"><span class="n">1A</span>Properties and functions of muscle</h3>
+<div class="table-wrap"><table>
+<tr><th>Property</th><th>Meaning</th><th>Example</th></tr>
+<tr><td><b>Excitability</b></td><td>Responds to a stimulus (nerve impulse)</td><td>Deciding to lift the arm<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Contractility</b></td><td>Develops tension and force</td><td>Biceps shortens lifting a dumbbell<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Extensibility</b></td><td>Can be stretched</td><td>Hamstrings lengthen in forward bend<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Elasticity</b></td><td>Returns towards resting length</td><td>Over-stretching can damage<span class="src gen">PDF</span></td></tr>
+</table></div>
+<ul class="plain"><li><b>Functions of skeletal muscle:</b> produce movement, maintain posture, stabilise joints, produce heat, support and protect soft tissue.<span class="src gen">PDF</span></li><li>The four properties are <b>highly relevant to asana practice</b> (Yoga &amp; Human Body notes): stretch uses extensibility, return uses elasticity.<span class="src gen">general</span></li></ul><div class="blk mem"><span class="lbl">Memory aid</span><p><b>E-C-E-E</b>: &#8220;<b>E</b>xcite, <b>C</b>ontract, <b>E</b>xtend, <b>E</b>lastic-back.&#8221; <b>Skeletal 3 S:</b> <b>S</b>triated, <b>S</b>omatic (voluntary), <b>S</b>everal nuclei.<span class="src add">added</span></p></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Three muscle types?</div><div class="a">Skeletal, smooth, cardiac</div></div><div class="recall-card"><div class="q">Four properties of muscle?</div><div class="a">Excitability, contractility, extensibility, elasticity</div></div><div class="recall-card"><div class="q">Which muscle is striated and involuntary?</div><div class="a">Cardiac muscle</div></div><div class="recall-card"><div class="q">Which has one central nucleus and no sarcomeres?</div><div class="a">Smooth muscle</div></div><div class="recall-card"><div class="q">Functions of skeletal muscle?</div><div class="a">Movement, posture, joint stability, heat, support and protection</div></div></div></div>
 
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
-      </div>
-
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>Every muscle in the body is one of three types, and the differences all trace back to one question: does it need to respond instantly to your will, or does it need to keep working forever without you thinking about it?</p>
-        <div class="analogy">
-          <b>Skeletal, cardiac, smooth &mdash; three answers to "who's in charge?"</b>
-          <b>Skeletal muscle</b> is attached to bone, striated (banded, under a microscope), and <b>voluntary</b> &mdash; you decide when your biceps contracts. It's fast and forceful but fatigues relatively quickly. <b>Cardiac muscle</b> exists only in the heart wall &mdash; also striated, but <b>involuntary</b> and rhythmic, built to contract continuously without you ever telling it to. <b>Smooth muscle</b> lines hollow organs and blood vessels &mdash; not striated at all, involuntary, slow and sustained, and highly fatigue-resistant (it has to keep your gut and blood vessels working around the clock).
-        </div>
-        <p>Structurally, a whole skeletal muscle is wrapped and subdivided by three nested layers of connective tissue: <b>epimysium</b> around the whole muscle, <b>perimysium</b> around each bundle of fibres (a fascicle), and <b>endomysium</b> around each individual muscle fibre. All three are continuous with the tendon that anchors the muscle to bone.</p>
-      </div>
-
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Reference &middot; comparison table</div>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Feature</th><th>Skeletal</th><th>Cardiac</th><th>Smooth</th></tr>
-            <tr><td>Location</td><td>Attached to bones</td><td>Heart wall only</td><td>Walls of hollow organs, blood vessels</td></tr>
-            <tr><td>Appearance</td><td>Striated</td><td>Striated</td><td>Non-striated</td></tr>
-            <tr><td>Cell shape / nuclei</td><td>Long, cylindrical, multinucleate</td><td>Branched, usually uninucleate</td><td>Spindle-shaped, uninucleate</td></tr>
-            <tr><td>Control</td><td>Voluntary</td><td>Involuntary</td><td>Involuntary</td></tr>
-            <tr><td>Contraction</td><td>Fast, forceful, fatigues relatively quickly</td><td>Rhythmic, continuous, fatigue-resistant</td><td>Slow, sustained, fatigue-resistant</td></tr>
-            <tr><td>Special features</td><td>Motor units, neuromuscular junction</td><td>Intercalated discs, autorhythmicity</td><td>Gap junctions; can stretch considerably</td></tr>
-          </table>
-        </div>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">The three connective-tissue wrappings</p>
-        <p style="font-size:13.5px;"><b>Epimysium</b> &mdash; whole muscle &middot; <b>Perimysium</b> &mdash; each fascicle (bundle of fibres) &middot; <b>Endomysium</b> &mdash; each individual muscle fibre. Easy memory: EPI = entire, PERI = around each bundle, ENDO = inside, each fibre.</p>
-      </div>
-
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Applied</div>
-        <p style="font-size:14.5px;">This classification is exactly what makes asana practice possible in the first place: it's <i>skeletal</i> muscle you're consciously lengthening and contracting in a pose, while cardiac and smooth muscle keep your heart and internal organs working throughout the practice without any conscious input from you.</p>
-      </div>
-
-      <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
-        <div class="recall-strip">
-          <div class="recall-card"><div class="q">Which muscle type is voluntary?</div><div class="a">Skeletal</div></div>
-          <div class="recall-card"><div class="q">Which muscle type is non-striated?</div><div class="a">Smooth (visceral)</div></div>
-          <div class="recall-card"><div class="q">Where is cardiac muscle found?</div><div class="a">The heart wall only</div></div>
-          <div class="recall-card"><div class="q">Epimysium wraps what?</div><div class="a">The whole muscle</div></div>
-          <div class="recall-card"><div class="q">Endomysium wraps what?</div><div class="a">Each individual muscle fibre</div></div>
-        </div>
-      </div>
     </section>
 
-    <!-- 01 STRUCTURE -->
     <section class="section" id="sec-structure">
-      <div class="kicker">01 &middot; Zooming in</div>
-      <h2>Skeletal Muscle Structure</h2>
-      <p class="dek">Inside one muscle fibre, down to the level that actually does the contracting.</p>
-
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      <div class="sec-head">
+        <div class="kicker">02 &#183; Skeletal muscle</div>
+        <h2>Structure of Skeletal Muscle</h2>
+        <p class="dek">From the whole muscle to one sarcomere: wrappers, fibres, filaments.</p>
       </div>
+<div class="stat-strip"><div class="stat"><div class="v">6</div><div class="k">levels: muscle &#8594; sarcomere</div></div><div class="stat"><div class="v">3</div><div class="k">connective coverings</div></div><div class="stat"><div class="v">2</div><div class="k">contractile filaments</div></div><div class="stat"><div class="v">Z to Z</div><div class="k">one sarcomere</div></div></div>
+<h3 class="sub"><span class="n">2A</span>From whole muscle down to the sarcomere</h3>
+<div class="spread"><figure class="fig photo"><img src="assets/diagrams/skeletal-muscle-layers.jpg" alt="Skeletal muscle structure: muscle, bundle, fascicle, muscle fibre, myofibril and sarcomere with actin and myosin, Z lines, A, I and H bands"><figcaption>Muscle to sarcomere in layers (from your diagram folder).</figcaption></figure><ol class="key"><li><b>Whole muscle</b> (e.g. biceps) &#8211; wrapped in <b>epimysium</b>; joins bone through a tendon.<span class="src gen">PDF</span></li><li><b>Fascicle</b> (bundle) &#8211; wrapped in <b>perimysium</b>; carries vessels and nerves between bundles.<span class="src gen">PDF</span></li><li><b>Muscle fibre</b> (a muscle cell) &#8211; wrapped in <b>endomysium</b>; long, cylindrical, multinucleate, striated.<span class="src gen">PDF</span></li><li><b>Myofibril</b> &#8211; long thread inside the fibre with repeating <b>sarcomeres</b>.<span class="src gen">PDF</span></li><li><b>Sarcomere</b> &#8211; contractile unit from <b>Z disc to Z disc</b>; thick (myosin) and thin (actin) filaments.<span class="src gen">PDF</span></li><li><b>Myofilaments</b> &#8211; actin (thin) and myosin (thick) proteins.<span class="src gen">PDF</span></li></ol></div>
+<div class="spread rev"><ol class="key"><li><b>Epi</b> = upon &#8594; <b>E</b>ntire muscle.</li><li><b>Peri</b> = around &#8594; each <b>fascicle</b> (bundle).</li><li><b>Endo</b> = within &#8594; each single <b>fibre</b>.</li><li>All three are continuous with each other and with the <b>tendon</b>, so force travels towards the bone.<span class="src gen">PDF</span></li><li>They also carry <b>blood vessels and nerves</b> into the muscle.<span class="src gen">PDF</span></li></ol><figure class="fig photo"><img src="assets/diagrams/epimysium-perimysium-endomysium.jpg" alt="Infographic of epimysium, perimysium and endomysium showing the hierarchy of muscle coverings with easy memory points"><figcaption>Hierarchy of connective tissue coverings (from your diagram folder).</figcaption></figure></div>
+<h3 class="sub"><span class="n">2B</span>Inside a muscle fibre</h3>
+<div class="table-wrap"><table>
+<tr><th>Part</th><th>Description</th></tr>
+<tr><td>Sarcolemma</td><td>Plasma membrane of the fibre; carries the electrical signal<span class="src gen">PDF</span></td></tr>
+<tr><td>Sarcoplasm</td><td>Cytoplasm: mitochondria, glycogen, myoglobin, myofibrils<span class="src gen">PDF</span></td></tr>
+<tr><td>Myoglobin</td><td>Stores and supplies oxygen to the fibre<span class="src gen">PDF</span></td></tr>
+<tr><td>Mitochondria</td><td>Make most ATP by aerobic metabolism<span class="src gen">PDF</span></td></tr>
+<tr><td>Sarcoplasmic reticulum (SR)</td><td>Stores and releases <b>calcium</b><span class="src gen">PDF</span></td></tr>
+<tr><td>T-tubules</td><td>Inward extensions of the sarcolemma that carry the signal deep into the fibre<span class="src gen">PDF</span></td></tr>
+<tr><td>Tendon</td><td>Strong connective tissue joining muscle to bone and transmitting force<span class="src gen">PDF</span></td></tr>
+</table></div>
+<div class="table-wrap"><table>
+<tr><th>Sarcomere part</th><th>What it is</th><th>During contraction</th></tr>
+<tr><td><b>Z disc</b></td><td>Boundary; anchors the thin filaments</td><td>Z discs move closer</td></tr>
+<tr><td><b>A band</b></td><td>Length of the thick filaments (dark)</td><td><b>Stays the same</b></td></tr>
+<tr><td><b>I band</b></td><td>Thin filaments only (light)</td><td>Narrows</td></tr>
+<tr><td><b>H zone</b></td><td>Centre of the A band, thick filaments only</td><td>Narrows (may vanish)</td></tr>
+</table></div>
+<div class="blk mem"><span class="lbl">Memory aid</span><p><b>Z discs closer; I and H narrow; A unchanged.</b> Remember &#8220;<b>A</b> = <b>A</b>lways the same&#8221;. And <b>I</b> = thin (I is a thin letter), <b>A</b> = whole thick filament length.<span class="src gen">PDF</span><span class="src add">added</span></p></div>
+<div class="blk und"><span class="lbl">Understand it</span><p>A rope is made of strands, the strands of threads, and the threads of fibres; pulling the rope works because every level is bound together. A muscle is built the same way, with a wrapper (epimysium, perimysium, endomysium) at each level. When thousands of tiny sarcomere units each shorten a little in a chain, the whole muscle shortens a lot. A muscle can only <b>pull</b>: the filaments pull towards the centre and cannot push anything away, which is why bones need <b>pairs</b> of muscles on opposite sides.</p></div>
+<p class="honest"><b>Source note.</b> The Ch. 2 scan (R. Gopinath, Sports Science) describes this structure with different spellings (&#8220;fascia or epimysium&#8221;, &#8220;fasciculus&#8221;); and it says only about 50% of cross-bridges are in contact at a time. Both sources agree with the layering above.<span class="src gen">general</span></p>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Order from muscle to sarcomere?</div><div class="a">Muscle, fascicle, fibre, myofibril, sarcomere, filaments</div></div><div class="recall-card"><div class="q">Epi, peri and endomysium?</div><div class="a">Around whole muscle, around each fascicle, around each fibre</div></div><div class="recall-card"><div class="q">Boundary of a sarcomere?</div><div class="a">Z disc</div></div><div class="recall-card"><div class="q">What stays the same in contraction?</div><div class="a">A band</div></div><div class="recall-card"><div class="q">Job of the sarcoplasmic reticulum?</div><div class="a">Stores and releases calcium</div></div></div></div>
 
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>Each muscle fibre (a single muscle cell) is packed with many <b>myofibrils</b> running its length. Each myofibril is itself organised into repeating units called <b>sarcomeres</b> &mdash; the actual functional unit of contraction, running from one Z-disc to the next.</p>
-        <div class="analogy">
-          <b>What's inside a sarcomere</b>
-          <b>Thick filaments</b> are made of the protein <b>myosin</b>, whose "heads" form cross-bridges with actin. <b>Thin filaments</b> are made of <b>actin</b>, plus two regulatory proteins riding along it, <b>tropomyosin</b> and <b>troponin</b>. Under a microscope this produces visible bands: the <b>A-band</b> (thick filaments), the <b>I-band</b> (thin filaments only), the <b>H-zone</b> (centre of the A-band, thick filaments only), and the <b>Z-discs</b> that mark each sarcomere's boundary and anchor the thin filaments.
-        </div>
-      </div>
-
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Reference &middot; Def/Stru/Fun style</div>
-        <div class="dsf">
-          <div class="row"><div class="label">Def</div><p>The sarcomere is the smallest contractile unit of skeletal muscle, repeating along each myofibril from one Z-disc to the next.</p></div>
-          <div class="row"><div class="label">Stru</div><p>Thick filaments (myosin) interdigitate with thin filaments (actin + tropomyosin + troponin), organised into A-band, I-band, H-zone, and Z-discs.</p></div>
-          <div class="row"><div class="label">Fun</div><p>Provides the physical machinery that shortens when the muscle contracts (see next section for the mechanism).</p></div>
-        </div>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Levels of organisation</p>
-        <div class="explain-diagram">
-          <span class="step">Whole muscle</span><span class="arrow">&rarr;</span>
-          <span class="step">Fascicle</span><span class="arrow">&rarr;</span>
-          <span class="step">Muscle fibre (cell)</span><span class="arrow">&rarr;</span>
-          <span class="step">Myofibril</span><span class="arrow">&rarr;</span>
-          <span class="step">Sarcomere</span>
-        </div>
-      </div>
-
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Note</div>
-        <p style="font-size:14.5px;">This section is pure structural groundwork for the next one (Sliding Filament Theory), where the yoga-relevant content actually appears &mdash; no asana link stated for the sarcomere's anatomy on its own.</p>
-      </div>
-
-      <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
-        <div class="recall-strip">
-          <div class="recall-card"><div class="q">What is the functional unit of muscle contraction?</div><div class="a">The sarcomere</div></div>
-          <div class="recall-card"><div class="q">What protein makes up thick filaments?</div><div class="a">Myosin</div></div>
-          <div class="recall-card"><div class="q">What proteins make up thin filaments?</div><div class="a">Actin, with tropomyosin and troponin</div></div>
-          <div class="recall-card"><div class="q">What marks a sarcomere's boundary?</div><div class="a">Z-discs</div></div>
-        </div>
-      </div>
     </section>
 
-    <!-- 02 CONTRACTION -->
-    <section class="section" id="sec-contraction">
-      <div class="kicker">02 &middot; Mechanism</div>
-      <h2>Sliding Filament Theory</h2>
-      <p class="dek">How a nerve impulse becomes an actual shortening of the muscle &mdash; ten steps, worth knowing in order.</p>
-
-      <figure>
-        <img src="assets/diagrams/sliding-filament-theory.jpg" alt="Sliding filament theory: five stages of sarcomere contraction from resting state through calcium release, cross-bridge formation, power stroke, and relaxation">
-        <figcaption>Resting &rarr; Ca&#178;&#8314; release &rarr; cross-bridge formation &rarr; power stroke &rarr; relaxation.</figcaption>
-      </figure>
-
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+    <section class="section" id="sec-contract">
+      <div class="sec-head">
+        <div class="kicker">03 &#183; Contraction</div>
+        <h2>Muscle Contraction: NMJ and Sliding Filament Theory</h2>
+        <p class="dek">How a nerve impulse becomes a pull: the most-asked topic of the unit.</p>
       </div>
+<div class="stat-strip"><div class="stat"><div class="v">10</div><div class="k">steps: sliding filament (class)</div></div><div class="stat"><div class="v">Ca&#178;&#8314;</div><div class="k">the on-switch</div></div><div class="stat"><div class="v">ATP</div><div class="k">the fuel and the release</div></div><div class="stat"><div class="v">ACh</div><div class="k">the neurotransmitter</div></div></div>
+<h3 class="sub"><span class="n">3A</span>Neuromuscular junction (NMJ)</h3>
+<div class="spread"><figure class="fig photo"><img src="assets/diagrams/neuromuscular-junction.jpg" alt="Neuromuscular junction labelled presynaptic terminal, voltage-gated calcium channel, synaptic cleft 20 to 40 nm, acetylcholinesterase, nicotinic ACh receptors, postsynaptic membrane and junctional folds"><figcaption>Neuromuscular junction (from your diagram folder).</figcaption></figure><ol class="key"><li><b>Presynaptic terminal</b> &#8211; end of the motor neuron with vesicles of <b>acetylcholine (ACh)</b>.<span class="src cls">class</span><span class="src gen">PDF</span></li><li><b>Synaptic cleft</b> &#8211; tiny gap (about 20&#8211;50 nm).<span class="src cls">class</span><span class="src gen">PDF</span></li><li><b>Motor end plate</b> (post-synaptic) &#8211; folded part of the sarcolemma with ACh receptors.<span class="src cls">class</span><span class="src gen">PDF</span></li><li><b>Acetylcholinesterase</b> &#8211; enzyme in the cleft that breaks ACh down and ends the signal.<span class="src gen">PDF</span></li><li>NMJ = how the nerve talks to a skeletal muscle fibre: electrical &#8594; chemical &#8594; electrical.<span class="src gen">PDF</span></li></ol></div>
+<div class="table-wrap"><table>
+<tr><th>NMJ sequence</th><th>Event</th></tr>
+<tr><td>1</td><td>Nerve impulse reaches the axon terminal; voltage-gated Ca&#178;&#8314; channels open</td></tr>
+<tr><td>2</td><td>Ca&#178;&#8314; enters; vesicles release ACh into the cleft</td></tr>
+<tr><td>3</td><td>ACh crosses and binds receptors on the motor end plate</td></tr>
+<tr><td>4</td><td>Na&#8314; enters; end-plate potential; if big enough, a muscle action potential starts</td></tr>
+<tr><td>5</td><td>AChE breaks down ACh; signal ends</td></tr>
+</table></div>
+<h3 class="sub"><span class="n">3B</span>Sliding filament theory (very important)</h3>
+<ul class="plain"><li>Class note: <b>&#8220;very imp, must ask for exam&#8221;</b>. Thin filaments slide over thick filaments; neither filament shortens.<span class="src cls">class</span></li></ul><figure class="fig photo"><img src="assets/diagrams/sliding-filament-theory.jpg" alt="Sliding filament theory: thin actin and thick myosin between Z lines, the five stages resting state, calcium release, cross-bridge formation, power stroke and relaxation"><figcaption>Five stages of the sliding filament cycle (from your diagram folder).</figcaption></figure><div class="table-wrap"><table>
+<tr><th>Step</th><th>What happens</th></tr>
+<tr><td>1</td><td>Nerve impulse reaches the neuromuscular junction; ACh is released</td></tr>
+<tr><td>2</td><td>ACh binds the motor end plate; the sarcolemma depolarises (muscle action potential)</td></tr>
+<tr><td>3</td><td>The action potential spreads along the sarcolemma and down the T-tubules</td></tr>
+<tr><td>4</td><td>The sarcoplasmic reticulum releases Ca&#178;&#8314;</td></tr>
+<tr><td>5</td><td>Ca&#178;&#8314; binds <b>troponin</b>; <b>tropomyosin</b> moves off the myosin-binding sites on actin</td></tr>
+<tr><td>6</td><td>Myosin heads (charged by ATP) bind actin: <b>cross-bridges</b></td></tr>
+<tr><td>7</td><td><b>Power stroke</b>: the myosin head pivots and pulls the thin filament to the centre; ADP and phosphate released</td></tr>
+<tr><td>8</td><td>A new ATP binds, the cross-bridge detaches; ATP hydrolysis re-cocks the head (recovery stroke)</td></tr>
+<tr><td>9</td><td>The cycle repeats while Ca&#178;&#8314; and ATP are available; the sarcomere shortens</td></tr>
+<tr><td>10</td><td>When stimulation stops, Ca&#178;&#8314; is pumped back into the SR, tropomyosin re-covers the sites, the muscle relaxes</td></tr>
+</table></div>
+<h3 class="sub"><span class="n">3C</span>Relaxation</h3>
+<ul class="plain"><li>Stimulation stops, ACh action at the NMJ ends, calcium release from the SR falls.<span class="src cls">class</span></li><li>Ca&#178;&#8314; is <b>actively pumped back</b> into the SR (needs ATP); it leaves troponin; tropomyosin covers the binding sites again; cross-bridges stop; the muscle relaxes.<span class="src cls">class</span></li><li><b>ATP does two jobs:</b> it powers the power stroke and it <b>detaches</b> the head. Without ATP the heads stay stuck (rigor).<span class="src gen">general</span></li></ul><div class="cols2"><div class="blk und"><span class="lbl">Understand it</span><p>Think of a rowing crew. The <b>oars are the myosin heads</b>, the <b>water is the actin</b>. Calcium is the <b>coach shouting &#8220;row&#8221;</b> and removes a cover that was hiding the water. Each oar pulls (power stroke), lifts out of the water (ATP detaches it), and goes back for the next stroke. The boat (the sarcomere) shortens as every oar pulls together, and nobody rows when the coach stops.</p></div>
+<div class="blk mem"><span class="lbl">Memory aid</span><p><b>A-C-C-P-D</b>: <b>A</b>Ch, <b>C</b>alcium, <b>C</b>ross-bridge, <b>P</b>ower stroke, <b>D</b>etach (ATP). Or &#8220;<b>Nerve, ACh, Ca, Troponin, Bridge, Pull, ATP-release, Repeat</b>&#8221;.<span class="src add">added</span></p></div>
+</div>
+<h3 class="sub"><span class="n">3D</span>Motor unit and the all-or-none law</h3>
+<ul class="plain"><li><b>Motor unit</b> = one motor neuron + all the muscle fibres it supplies. Force is graded by <b>recruiting more motor units</b> and by firing rate.<span class="src gen">PDF</span></li><li><b>All-or-none principle:</b> if the stimulus is strong enough to fire the motor neuron, <b>all</b> fibres of that motor unit contract together; if it is too weak, <b>none</b> do.<span class="src gen">general</span></li><li>Small motor units (eyes, fingers) give fine control; large ones (thigh) give strong force.<span class="src gen">general</span></li></ul><h3 class="sub"><span class="n">3E</span>Energy for contraction (class chapter 2)</h3>
+<ul class="plain"><li>ATP is split by <b>ATPase</b> into ADP + phosphate, releasing energy.<span class="src gen">general</span></li><li>ATP is quickly rebuilt from <b>creatine phosphate (CP) + ADP</b>; CP is rebuilt later using energy from the breakdown of glycogen.<span class="src gen">general</span></li></ul><p class="honest"><b>Source note.</b> The Ch. 2 scan writes &#8220;creatinine phosphate&#8221;; the correct name is <b>creatine phosphate</b> (phosphocreatine). It also states the textbook example that the biceps, deltoid and gastrocnemius are mostly fast fibres; muscles in a real person are mixtures, so treat that as an example, not a rule.</p>
+<div class="blk exam"><span class="lbl">Exam angle</span><p>Draw the sarcomere before and after contraction and list the 10 steps (or group them as <b>NMJ &#8594; action potential &#8594; Ca&#178;&#8314; &#8594; cross-bridge &#8594; power stroke &#8594; relaxation</b>). The class notes mark this as a <b>very important</b> question.</p></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">What does ACh do?</div><div class="a">Crosses the NMJ and starts the muscle action potential</div></div><div class="recall-card"><div class="q">What does Ca&#178;&#8314; bind in skeletal muscle?</div><div class="a">Troponin, which moves tropomyosin off the actin sites</div></div><div class="recall-card"><div class="q">What does ATP do at the myosin head?</div><div class="a">Powers the stroke and detaches the head from actin</div></div><div class="recall-card"><div class="q">What breaks down ACh?</div><div class="a">Acetylcholinesterase</div></div><div class="recall-card"><div class="q">All-or-none law?</div><div class="a">A motor unit contracts fully or not at all</div></div></div></div>
 
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>The core idea is simple even though the steps are many: the thin (actin) filaments slide over the thick (myosin) filaments, shortening the sarcomere &mdash; without either filament changing its own length. It's like pulling on a rope hand-over-hand rather than the rope itself getting shorter.</p>
-        <div class="analogy">
-          <b>The chain reaction, in plain terms</b>
-          A nerve signal reaches the muscle, releases a chemical messenger (acetylcholine), and that triggers an electrical signal to sweep across the muscle fibre's membrane and down into its interior. That signal causes calcium to flood out of internal storage. Calcium is the "go" signal &mdash; it moves the blocking proteins out of the way so myosin can finally grab onto actin. Myosin heads then pull the actin inward in a "power stroke," powered by ATP, over and over, shortening the sarcomere as long as calcium and ATP are both available. When the nerve signal stops, calcium is pumped back into storage, the blockers move back into place, and the muscle relaxes.
-        </div>
-      </div>
-
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Section B style &mdash; the mechanism, in sequence</div>
-        <ul class="notes">
-          <li>A nerve impulse reaches the axon terminal at the neuromuscular junction, releasing <b>acetylcholine (ACh)</b>.</li>
-          <li>ACh binds receptors on the motor end plate, depolarising the sarcolemma and generating a muscle action potential.</li>
-          <li>The action potential travels along the sarcolemma and down T-tubules into the fibre's interior.</li>
-          <li>This triggers the <b>sarcoplasmic reticulum (SR)</b> to release <b>Ca&#178;&#8314;</b> into the sarcoplasm.</li>
-          <li>Ca&#178;&#8314; binds <b>troponin</b>, shifting <b>tropomyosin</b> away from myosin-binding sites on actin.</li>
-          <li>Myosin heads (energised by ATP hydrolysis) bind the exposed sites, forming cross-bridges.</li>
-          <li>The myosin head pivots (<b>power stroke</b>), pulling the thin filament toward the sarcomere centre; ADP + phosphate are released.</li>
-          <li>A new ATP binds myosin, causing cross-bridge detachment; ATP hydrolysis re-cocks the head.</li>
-          <li>The cycle repeats as long as Ca&#178;&#8314; and ATP are available.</li>
-          <li>Relaxation: stimulation stops, Ca&#178;&#8314; is pumped back into the SR, tropomyosin re-blocks the sites, and the muscle returns to resting length.</li>
-        </ul>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Neuromuscular junction (NMJ)</p>
-        <p style="font-size:13.5px;">The specialised synapse between a motor neuron and a muscle fibre. An action potential opens voltage-gated Ca&#178;&#8314; channels &rarr; vesicles release ACh &rarr; ACh crosses the synaptic cleft and binds nicotinic receptors on the motor end plate &rarr; ion channels open, generating an end-plate potential &rarr; if it reaches threshold, a muscle action potential fires. <b>Acetylcholinesterase (AChE)</b> then rapidly breaks down ACh in the cleft, ending the signal.</p>
-      </div>
-
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Applied &mdash; the physiology behind holding a pose</div>
-        <div class="practice-link">
-          <b>What a "held" asana actually is</b>
-          Every static hold in asana practice depends on this exact cycle running continuously in the relevant muscles &mdash; calcium, ATP, and cross-bridge cycling, repeated, for as long as the pose is held. It's why sustained holds are metabolically demanding even without any visible movement: the sliding-filament cycle doesn't pause just because the joint angle isn't changing (see Tone &amp; Fatigue and Exercise Physiology sections for what follows from this).</p>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
-        <div class="recall-strip">
-          <div class="recall-card"><div class="q">What ion triggers cross-bridge formation?</div><div class="a">Calcium (Ca&#178;&#8314;)</div></div>
-          <div class="recall-card"><div class="q">What does Ca&#178;&#8314; bind to?</div><div class="a">Troponin</div></div>
-          <div class="recall-card"><div class="q">What powers the myosin power stroke?</div><div class="a">ATP hydrolysis</div></div>
-          <div class="recall-card"><div class="q">What neurotransmitter crosses the NMJ?</div><div class="a">Acetylcholine (ACh)</div></div>
-          <div class="recall-card"><div class="q">What breaks down ACh in the synaptic cleft?</div><div class="a">Acetylcholinesterase (AChE)</div></div>
-        </div>
-      </div>
     </section>
 
-    <!-- 03 TONE & FATIGUE -->
-    <section class="section" id="sec-tone-fatigue">
-      <div class="kicker">03 &middot; At rest, and under load</div>
-      <h2>Muscle Tone &amp; Fatigue</h2>
-      <p class="dek">Why a "relaxed" muscle is never fully off, and why a working muscle eventually has to stop.</p>
-
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+    <section class="section" id="sec-other">
+      <div class="sec-head">
+        <div class="kicker">04 &#183; Other muscle types</div>
+        <h2>Smooth Muscle and Cardiac Muscle</h2>
+        <p class="dek">The two involuntary muscles: moving things inside the body, and pumping blood.</p>
       </div>
+<div class="stat-strip"><div class="stat"><div class="v">Smooth</div><div class="k">calmodulin + MLCK (no troponin)</div></div><div class="stat"><div class="v">Cardiac</div><div class="k">intercalated discs</div></div><div class="stat"><div class="v">SA node</div><div class="k">heart pacemaker</div></div><div class="stat"><div class="v">4.9 L/min</div><div class="k">cardiac output example</div></div></div>
+<h3 class="sub"><span class="n">4A</span>Smooth muscle</h3>
+<div class="table-wrap"><table>
+<tr><th>Feature</th><th>Smooth muscle</th></tr>
+<tr><td>Where</td><td>Walls of stomach, intestines, vessels, airways, bladder, uterus, iris<span class="src gen">PDF</span></td></tr>
+<tr><td>Control</td><td>Involuntary: autonomic nerves, hormones, local chemicals, stretch<span class="src gen">PDF</span></td></tr>
+<tr><td>Cell</td><td>Spindle-shaped, <b>one central nucleus</b>, no sarcomeres, <b>dense bodies</b> (like Z discs)<span class="src gen">PDF</span></td></tr>
+<tr><td>Speed</td><td>Slow, sustained, stretches a lot (bladder, stomach, uterus), fatigue-resistant<span class="src gen">PDF</span></td></tr>
+<tr><td>Calcium switch</td><td><b>Ca&#178;&#8314; + calmodulin &#8594; MLCK</b> phosphorylates myosin; <b>no troponin</b><span class="src gen">PDF</span></td></tr>
+<tr><td>Single-unit</td><td>Gap junctions; contracts as a sheet (gut, uterus, bladder)<span class="src gen">PDF</span></td></tr>
+<tr><td>Multi-unit</td><td>Cells controlled one by one (iris, ciliary muscle)<span class="src gen">PDF</span></td></tr>
+<tr><td>Jobs</td><td>Peristalsis, vasoconstriction/dilation, bronchoconstriction, bladder (detrusor), labour (myometrium), goosebumps (arrector pili)<span class="src gen">PDF</span></td></tr>
+</table></div>
+<h3 class="sub"><span class="n">4B</span>Cardiac muscle</h3>
+<div class="table-wrap"><table>
+<tr><th>Feature</th><th>Cardiac muscle</th></tr>
+<tr><td>Where</td><td>Wall of the heart only (myocardium)<span class="src gen">PDF</span></td></tr>
+<tr><td>Cell</td><td>Short, <b>branched</b>, striated, one (sometimes two) central nucleus, many mitochondria<span class="src gen">PDF</span></td></tr>
+<tr><td>Intercalated discs</td><td>Join cells: <b>fascia adherens</b> (force), <b>desmosomes</b> (strong attachment), <b>gap junctions</b> (electrical spread)<span class="src gen">PDF</span></td></tr>
+<tr><td>Automaticity</td><td><b>SA node</b> (pacemaker) starts each beat; nerves only speed or slow it<span class="src gen">PDF</span></td></tr>
+<tr><td>Conduction path</td><td>SA node &#8594; atrial muscle &#8594; AV node (delay) &#8594; AV bundle &#8594; bundle branches &#8594; Purkinje fibres &#8594; ventricles<span class="src gen">PDF</span></td></tr>
+<tr><td>Contraction</td><td>Ca&#178;&#8314; enters from outside, triggers more release from the SR (calcium-induced calcium release); troponin-based<span class="src gen">PDF</span></td></tr>
+<tr><td>Long refractory period</td><td>Prevents tetanus so the heart can relax and fill<span class="src gen">PDF</span></td></tr>
+<tr><td>Cardiac output</td><td><b>Heart rate &#215; stroke volume</b> (70 &#215; 70 mL = 4,900 mL/min)<span class="src gen">PDF</span></td></tr>
+</table></div>
+<div class="blk know"><span class="lbl">Yoga and smooth and cardiac muscle (your notes)</span><ul class="plain"><li>You <b>cannot directly control</b> smooth muscle; yoga may influence it <b>indirectly</b> through breathing, relaxation and autonomic activity.<span class="src gen">PDF</span></li><li>Slow breathing and relaxation can raise parasympathetic influence and lower heart rate in some people; they do <b>not</b> control each heartbeat.<span class="src gen">PDF</span></li><li>Do not say yoga strengthens cardiac muscle the way resistance training strengthens skeletal muscle; adapt practice in heart or lung disease.<span class="src gen">PDF</span></li></ul></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Smooth muscle calcium switch?</div><div class="a">Calmodulin and MLCK, not troponin</div></div><div class="recall-card"><div class="q">Cardiac muscle special junctions?</div><div class="a">Intercalated discs (fascia adherens, desmosomes, gap junctions)</div></div><div class="recall-card"><div class="q">Heart pacemaker?</div><div class="a">SA node</div></div><div class="recall-card"><div class="q">Cardiac output?</div><div class="a">Heart rate x stroke volume</div></div><div class="recall-card"><div class="q">Single-unit vs multi-unit smooth muscle?</div><div class="a">Single-unit: gap junctions, contracts as a sheet (gut). Multi-unit: individual control (iris)</div></div></div></div>
 
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p><b>Muscle tone</b> is the continuous, low-level contraction present in a muscle even at rest &mdash; it comes from small numbers of motor units firing at different times, so no single part of the muscle is ever fatigued by it. Tone is what keeps posture stable and joints ready to move without any conscious effort, and it's maintained through the <b>stretch (myotatic) reflex</b>: tiny sensors called muscle spindles detect small changes in muscle length, and the spinal cord reflexively fires back a background level of contraction.</p>
-        <p><b>Muscle fatigue</b> is different &mdash; a progressive, exercise-induced drop in a muscle's ability to generate force, reversible with rest. It comes from two directions: <b>peripheral</b> causes inside the muscle itself (running low on ATP/glycogen, build-up of metabolic by-products, calcium-release problems), and <b>central</b> causes originating in the nervous system (reduced drive from the motor cortex, motivation, perceived effort).</p>
-        <div class="analogy">
-          <b>Fatigue vs weakness vs soreness &mdash; not the same thing</b>
-          <b>Fatigue</b> is a temporary, activity-induced drop in force that recovers with rest. <b>Weakness</b> is a reduced maximum force capacity that isn't necessarily related to recent activity. <b>DOMS</b> (delayed-onset muscle soreness) comes from micro-trauma to muscle and connective tissue after unfamiliar eccentric exercise, typically peaking 24&ndash;72 hours later &mdash; not the same mechanism as either of the other two.
-        </div>
-        <p>Not every muscle fatigues at the same rate, either &mdash; it depends on which fibre type dominates. <b>Red fibres</b> are rich in the oxygen-storing pigment <b>myoglobin</b> and packed with mitochondria, so they run on aerobic respiration and resist fatigue &mdash; built for sustained, lower-intensity work (postural muscles, long holds). <b>White fibres</b> carry little myoglobin, rely more on anaerobic glycolysis, and fatigue faster as lactic acid builds up &mdash; built for short, forceful bursts. Most human muscles are a mix of both in varying proportions.</p>
-      </div>
-
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Reference</div>
-        <div class="dsf">
-          <div class="row"><div class="label">Tone</div><p>Continuous, partial, asynchronous motor-unit activation at rest; maintained via the stretch reflex (muscle spindles + gamma motor neurons); supports posture, joint stability, venous return, and body heat.</p></div>
-          <div class="row"><div class="label">Lost tone</div><p>Flaccid paralysis &mdash; e.g. lower motor neuron lesion, spinal shock, deep anaesthesia, prolonged bed rest.</p></div>
-          <div class="row"><div class="label">Increased tone</div><p>Spasticity/hypertonia &mdash; seen in upper motor neuron lesions.</p></div>
-        </div>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Fatigue &mdash; peripheral vs central</p>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Peripheral fatigue</th><th>Central fatigue</th></tr>
-            <tr><td>ATP/phosphocreatine/glycogen depletion</td><td>Reduced voluntary activation from the CNS</td></tr>
-            <tr><td>H&#8314;/phosphate build-up impairing Ca&#178;&#8314; release &amp; cross-bridges</td><td>Reduced motor cortex drive</td></tr>
-            <tr><td>Impaired Ca&#178;&#8314; release from the SR</td><td>Motivation / perceived exertion</td></tr>
-            <tr><td>Reduced ACh release/receptor sensitivity at the NMJ</td><td>Altered neurotransmitter balance</td></tr>
-          </table>
-        </div>
-
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Red fibres vs white fibres</p>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Feature</th><th>Red fibres</th><th>White fibres</th></tr>
-            <tr><td>Myoglobin</td><td>High (gives the red colour)</td><td>Low (pale appearance)</td></tr>
-            <tr><td>Mitochondria</td><td>Plentiful</td><td>Few</td></tr>
-            <tr><td>Metabolism</td><td>Aerobic</td><td>Anaerobic (glycolytic)</td></tr>
-            <tr><td>Fatigue resistance</td><td>High &mdash; sustained, lower-intensity work</td><td>Low &mdash; short, forceful bursts</td></tr>
-          </table>
-        </div>
-      </div>
-
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Applied</div>
-        <div class="practice-link">
-          <b>Why gentle isn't the same as ineffective</b>
-          Muscle tone, not maximal contraction, is what most postural and gentle asana work is actually training &mdash; it's the background readiness of a muscle, not its peak force, that supports upright posture and stable joints through a long hold or through daily life.
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
-        <div class="recall-strip">
-          <div class="recall-card"><div class="q">What maintains muscle tone?</div><div class="a">The stretch (myotatic) reflex, via muscle spindles</div></div>
-          <div class="recall-card"><div class="q">Loss of tone is called?</div><div class="a">Flaccid paralysis</div></div>
-          <div class="recall-card"><div class="q">Increased tone is called?</div><div class="a">Spasticity / hypertonia</div></div>
-          <div class="recall-card"><div class="q">Is fatigue the same as DOMS?</div><div class="a">No &mdash; different mechanisms, different timelines</div></div>
-          <div class="recall-card"><div class="q">Which fibre type has high myoglobin and resists fatigue?</div><div class="a">Red fibres (aerobic, mitochondria-rich)</div></div>
-          <div class="recall-card"><div class="q">Which fibre type relies on anaerobic glycolysis and fatigues fast?</div><div class="a">White fibres</div></div>
-        </div>
-      </div>
     </section>
 
-    <!-- 04 BIOMECHANICS -->
-    <section class="section" id="sec-biomechanics">
-      <div class="kicker">04 &middot; Mechanics</div>
-      <h2>Biomechanics of Muscle Action</h2>
-      <p class="dek">Muscles as levers, and the vocabulary for describing which muscle is doing what in a movement.</p>
-
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+    <section class="section" id="sec-tone">
+      <div class="sec-head">
+        <div class="kicker">05 &#183; Contraction</div>
+        <h2>Muscle Tone and Types of Contraction</h2>
+        <p class="dek">Tone keeps the body ready; contraction types describe what the muscle does in a movement.</p>
       </div>
+<div class="stat-strip"><div class="stat"><div class="v">3</div><div class="k">contraction types: iso-metric, -tonic, -kinetic</div></div><div class="stat"><div class="v">2</div><div class="k">isotonic kinds: concentric, eccentric</div></div><div class="stat"><div class="v">2</div><div class="k">tone problems: hypo-, hypertonia</div></div></div>
+<h3 class="sub"><span class="n">5A</span>Muscle tone</h3>
+<ul class="plain"><li><b>Tone</b> = continuous, low-level, involuntary contraction present even at rest. Not every fibre is strongly contracted; small groups fire <b>in relays</b>, so no group tires.<span class="src gen">PDF</span><span class="src gen">general</span></li><li>Maintained by the <b>stretch (myotatic) reflex</b>: <b>muscle spindles</b> sense length, the spinal cord fires back a little contraction; <b>gamma motor neurons</b> tune the spindle.<span class="src gen">general</span></li><li><b>Functions:</b> posture, joint stability, balance, readiness for movement, venous return, body heat.<span class="src gen">PDF</span><span class="src gen">general</span></li></ul><div class="table-wrap"><table>
+<tr><th>Tone state</th><th>Meaning</th><th>Cause</th></tr>
+<tr><td>Normal</td><td>Right tension for posture and movement</td><td></td></tr>
+<tr><td><b>Hypotonia</b></td><td>Abnormally low; floppy, poor posture; loose to passive movement</td><td>Lower motor neuron lesion, spinal shock, deep anaesthesia, long bed rest<span class="src gen">PDF</span><span class="src gen">general</span></td></tr>
+<tr><td><b>Hypertonia</b></td><td>Abnormally high; stiff, resists passive movement</td><td>Upper motor neuron lesions (spasticity)<span class="src gen">PDF</span><span class="src gen">general</span></td></tr>
+</table></div>
+<div class="blk conf"><span class="lbl">Common confusion</span><p><b>Hypotonia and hypertonia are abnormal tone, not types of contraction.</b> And <b>tone is not the same as contraction</b>: tone is always on at low level at rest; contraction is an active action for movement or holding.<span class="src gen">PDF</span></p></div>
+<h3 class="sub"><span class="n">5B</span>Isometric, isotonic and isokinetic contraction</h3>
+<figure class="fig wide-svg"><svg viewBox="0 0 640 170" role="img" aria-label="Three contraction types: isometric, same muscle length and no movement; isotonic concentric, muscle shortens; isotonic eccentric, muscle lengthens under load">
+<g><text class="t tb tc" x="105" y="16">Isometric</text><rect class="fs" x="20" y="40" width="170" height="40" rx="18"/><text class="t ts tc" x="105" y="64">length stays the same</text><text class="t ts tc" x="105" y="110">holding a pose or a weight</text><text class="t ts tc" x="105" y="126">tension, no movement</text></g>
+<g><text class="t tb tc" x="320" y="16">Concentric</text><rect class="ft" x="260" y="40" width="120" height="40" rx="18"/><path d="M236 60 H256 M384 60 H404" stroke="var(--teal)" stroke-width="3" fill="none"/><text class="t ts tc" x="320" y="64">shortens</text><text class="t ts tc" x="320" y="110">lifting, rising from a squat</text><text class="t ts tc" x="320" y="126">force + shortening</text></g>
+<g><text class="t tb tc" x="535" y="16">Eccentric</text><rect class="fa" x="440" y="40" width="190" height="40" rx="18"/><text class="t ts tc" x="535" y="64">lengthens under tension</text><text class="t ts tc" x="535" y="110">lowering a weight slowly</text><text class="t ts tc" x="535" y="126">brakes the movement</text></g>
+<text class="t ts tc" x="320" y="158">Concentric + eccentric = isotonic (the muscle length changes). Isokinetic = constant speed on a machine.</text>
+</svg><figcaption>Three ways a muscle works.</figcaption></figure><div class="table-wrap"><table>
+<tr><th></th><th>Isometric</th><th>Isotonic: concentric</th><th>Isotonic: eccentric</th><th>Isokinetic</th></tr>
+<tr><td>Muscle length</td><td>Same</td><td>Shortens</td><td>Lengthens under tension</td><td>Changes</td></tr>
+<tr><td>Joint movement</td><td>None</td><td>Yes</td><td>Yes (controlled)</td><td>Yes, at constant angular speed</td></tr>
+<tr><td>Job</td><td>Posture, stabilising, holding</td><td>Produces movement against resistance</td><td>Controls speed, brakes, absorbs shock</td><td>Testing, rehabilitation</td></tr>
+<tr><td>Everyday</td><td>Standing, holding a bag</td><td>Climbing stairs, rising from a chair</td><td>Walking downstairs, sitting down slowly</td><td>Dynamometer only</td></tr>
+<tr><td>Yoga<span class="src cls">class</span></td><td>Holding virabhadrasana II, vrikshasana, plank</td><td>Rising from a squat-like pose</td><td>Lowering slowly into a squat; lowering in chaturanga</td><td>Not typical in asanas</td></tr>
+</table></div>
+<div class="cols2"><div class="blk mem"><span class="lbl">Memory aid</span><p><b>Iso-metric = same length; iso-tonic = same tension (but length changes); iso-kinetic = same speed.</b> <b>Concentric = Come together (shorten); Eccentric = Extends (lengthens).</b> Both make force.<span class="src gen">PDF</span><span class="src add">added</span></p></div>
+<div class="blk und"><span class="lbl">Understand it</span><p>Picture lowering a heavy bag onto the floor: your biceps are <b>lengthening</b> while still pulling, to stop the bag from crashing down. That is <b>eccentric</b> work, and it is why you can lower more weight than you can lift (see force-velocity in section 8).<span class="src gen">general</span></p></div>
+</div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Tone vs contraction?</div><div class="a">Tone: low-level, always on at rest. Contraction: active tension for movement or holding</div></div><div class="recall-card"><div class="q">Isometric example?</div><div class="a">Holding a plank</div></div><div class="recall-card"><div class="q">Concentric vs eccentric?</div><div class="a">Concentric: muscle shortens while making force. Eccentric: lengthens under tension</div></div><div class="recall-card"><div class="q">Isokinetic?</div><div class="a">Constant angular speed, on specialised equipment</div></div><div class="recall-card"><div class="q">Which reflex maintains tone?</div><div class="a">Stretch (myotatic) reflex via muscle spindles</div></div></div></div>
 
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>A joint acts as a <b>lever</b>: a bone (the rigid bar) rotates around the joint (the fulcrum) when a muscle (the effort) moves a load. Most levers in the body are <b>third-class</b> &mdash; the effort sits between the fulcrum and the load, as in the elbow flexing to lift something in the hand. This arrangement always trades away mechanical force in exchange for greater speed and range of motion, which is exactly what the body's movement needs most of the time.</p>
-        <div class="analogy">
-          <b>Who's doing what in a movement</b>
-          The <b>agonist</b> (prime mover) produces the movement. The <b>antagonist</b> opposes it and controls how smoothly it happens. A <b>synergist</b> assists the agonist. A <b>fixator/stabiliser</b> holds a bone still so the agonist has something solid to pull against. Two or more muscles pulling from different directions to rotate a joint together is a <b>force couple</b> &mdash; important for scapular and pelvic stability in asana.
-        </div>
-      </div>
-
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Reference &middot; lever classes</div>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Class</th><th>Arrangement</th><th>Characteristic</th><th>Example</th></tr>
-            <tr><td>First</td><td>Fulcrum between effort and load</td><td>Can favour force or speed</td><td>Head on the atlanto-occipital joint</td></tr>
-            <tr><td>Second</td><td>Load between fulcrum and effort</td><td>Always favours force; rare in the body</td><td>Standing on tiptoes</td></tr>
-            <tr><td>Third</td><td>Effort between fulcrum and load</td><td>Favours speed/range over force; most common</td><td>Elbow flexion (biceps)</td></tr>
-          </table>
-        </div>
-        <p style="font-size:13px; font-weight:600; color:var(--ink); margin:16px 0 6px;">Planes and axes</p>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Plane</th><th>Divides body into</th><th>Typical movement</th></tr>
-            <tr><td>Sagittal</td><td>Left / right</td><td>Flexion, extension</td></tr>
-            <tr><td>Frontal (coronal)</td><td>Anterior / posterior</td><td>Abduction, adduction, lateral flexion</td></tr>
-            <tr><td>Transverse</td><td>Superior / inferior</td><td>Rotation</td></tr>
-          </table>
-        </div>
-      </div>
-
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Applied</div>
-        <p style="font-size:14.5px;">This vocabulary (agonist/antagonist/synergist/fixator, force couple, line of pull) is exactly what's used to analyse and cue an asana &mdash; which muscle is doing the work, which is being stretched, and which are stabilising the base so the working muscle has something to act from.</p>
-      </div>
-
-      <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
-        <div class="recall-strip">
-          <div class="recall-card"><div class="q">Which lever class is most common in the body?</div><div class="a">Third class</div></div>
-          <div class="recall-card"><div class="q">What does the antagonist do?</div><div class="a">Opposes the agonist and controls the movement's speed/smoothness</div></div>
-          <div class="recall-card"><div class="q">What does a fixator do?</div><div class="a">Stabilises a bone/joint so the agonist has a stable base</div></div>
-          <div class="recall-card"><div class="q">What movement happens in the sagittal plane?</div><div class="a">Flexion, extension</div></div>
-        </div>
-      </div>
     </section>
 
-    <!-- 05 YOGA & EXERCISE PHYSIOLOGY -->
+    <section class="section" id="sec-fibres">
+      <div class="sec-head">
+        <div class="kicker">06 &#183; Exercise physiology</div>
+        <h2>Fibre Types, Energy Systems and Heat</h2>
+        <p class="dek">Why some muscles tire and others do not, and what fuels each kind of effort.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">2</div><div class="k">fibre types: slow (I), fast (II)</div></div><div class="stat"><div class="v">3</div><div class="k">energy systems</div></div><div class="stat"><div class="v">4</div><div class="k">kinds of heat</div></div><div class="stat"><div class="v">5 s&#8211;10 s</div><div class="k">ATP-PCr lasts seconds (general)</div></div></div>
+<h3 class="sub"><span class="n">6A</span>Slow and fast fibres</h3>
+<div class="table-wrap"><table>
+<tr><th></th><th>Slow-twitch (Type I, red)</th><th>Fast-twitch (Type II, white)</th></tr>
+<tr><td>Speed</td><td>Slow contraction, low myosin ATPase</td><td>2&#8211;3 times faster; fast Ca&#178;&#8314; release<span class="src gen">general</span></td></tr>
+<tr><td>Energy</td><td><b>Aerobic</b>; many large mitochondria, much myoglobin (red)</td><td><b>Anaerobic glycolytic</b> (&#8220;fast glycolytic&#8221;); little myoglobin (white)<span class="src gen">general</span></td></tr>
+<tr><td>Fatigue</td><td>Resists fatigue; endurance</td><td>Tires quickly; short, powerful bursts<span class="src gen">general</span></td></tr>
+<tr><td>Used for</td><td>Posture, long holds, distance running</td><td>Sprints, jumps, forceful moves<span class="src gen">general</span></td></tr>
+<tr><td>Genetics</td><td>About 13&#8211;60% of a muscle is slow (fixed by genes); elite sprinters about 74% fast, distance runners about 75% slow<span class="src gen">general</span></td></tr>
+</table></div>
+<p class="honest"><b>Source note.</b> The Ch. 2 scan names the biceps, deltoid, gastrocnemius and latissimus dorsi as mostly fast, and soleus, semitendinosus, vastus lateralis, rectus abdominis and rectus femoris as mostly slow. Textbooks differ on this (many place rectus femoris and vastus lateralis as mixed), and the exact mix varies person to person, so use it only as the book's example.</p>
+<h3 class="sub"><span class="n">6B</span>Three energy systems</h3>
+<div class="table-wrap"><table>
+<tr><th>System</th><th>Fuel</th><th>Speed and duration</th><th>Example</th></tr>
+<tr><td><b>ATP-PCr</b> (phosphagen)</td><td>Stored ATP + creatine phosphate</td><td>Instant; seconds</td><td>Jump-through, a quick burst<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Anaerobic glycolysis</b></td><td>Glycogen &#8594; lactic acid, no oxygen</td><td>About 10 seconds to 2 minutes</td><td>Strong prolonged hold, fast vinyasa<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Aerobic (oxidative)</b></td><td>Carbohydrate and fat with oxygen</td><td>Long duration, lower power</td><td>Most yoga practice<span class="src gen">PDF</span></td></tr>
+</table></div>
+<h3 class="sub"><span class="n">6C</span>Oxygen deficit, oxygen debt, treppe, heat</h3>
+<div class="table-wrap"><table>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td><b>Oxygen deficit</b></td><td>Oxygen needed in hard exercise that could not be taken in during it<span class="src gen">general</span></td></tr>
+<tr><td><b>Oxygen debt</b></td><td>Extra oxygen taken in above resting level during <b>recovery</b> after hard exercise<span class="src gen">general</span></td></tr>
+<tr><td><b>Treppe (staircase)</b></td><td>A rested muscle gives stronger twitches over the first few repeated stimuli, due to warming and metabolic products<span class="src gen">general</span></td></tr>
+<tr><td><b>Heat in contraction</b></td><td><b>Activation heat</b> (Ca&#178;&#8314; release), <b>shortening heat</b> (cross-bridge work), <b>relaxation heat</b> (lowering a weight), <b>delayed (recovery) heat</b> (after the work, with oxygen)<span class="src gen">general</span></td></tr>
+</table></div>
+<div class="blk und"><span class="lbl">Understand it</span><p>Your body has three fuel tanks. A <b>small tank of instant fuel</b> (ATP-PCr) for a sprint; a <b>medium tank</b> (glycogen without oxygen) for a hard minute or two, but it makes tiring by-products; and a <b>huge slow-burning tank</b> (aerobic) that is the engine for most of a yoga class. The <b>oxygen debt</b> is just the breathing you do afterwards to refill the first two.</p></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Slow fibres: key features?</div><div class="a">Red, aerobic, many mitochondria and myoglobin, fatigue-resistant</div></div><div class="recall-card"><div class="q">Fast fibres: key features?</div><div class="a">White, anaerobic glycolytic, fast, powerful, tire quickly</div></div><div class="recall-card"><div class="q">Three energy systems?</div><div class="a">ATP-PCr, anaerobic glycolysis, aerobic</div></div><div class="recall-card"><div class="q">Oxygen debt?</div><div class="a">Extra oxygen taken in during recovery after hard exercise</div></div><div class="recall-card"><div class="q">Which energy system dominates yoga?</div><div class="a">Aerobic</div></div></div></div>
+
+    </section>
+
+    <section class="section" id="sec-fatigue">
+      <div class="sec-head">
+        <div class="kicker">07 &#183; Muscle fatigue</div>
+        <h2>Muscle Fatigue</h2>
+        <p class="dek">Why a working muscle eventually weakens, and how to delay it.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">2</div><div class="k">types: peripheral, central</div></div><div class="stat"><div class="v">6</div><div class="k">causes (class notes)</div></div><div class="stat"><div class="v">24&#8211;72 h</div><div class="k">typical DOMS peak (general)</div></div><div class="stat"><div class="v">Not</div><div class="k">the same as pain</div></div></div>
+<h3 class="sub"><span class="n">7A</span>What fatigue is and why it happens</h3>
+<ul class="plain"><li><b>Muscle fatigue</b> = a reduction in the ability to produce force during or after prolonged or intense activity; it recovers with rest.<span class="src gen">PDF</span></li><li>Signs: reduced strength and endurance, trembling, poor coordination, tiredness.<span class="src gen">PDF</span></li></ul><div class="table-wrap"><table>
+<tr><th>Cause</th><th>Explanation</th></tr>
+<tr><td>Energy depletion</td><td>ATP, creatine phosphate and glycogen run low<span class="src gen">PDF</span></td></tr>
+<tr><td>Metabolic by-products</td><td>Hydrogen ions and phosphate build up and weaken the contraction. The old &#8220;lactic acid&#8221; explanation is now seen as more complex<span class="src gen">PDF</span></td></tr>
+<tr><td>Low oxygen delivery</td><td>Demand outruns supply; fatigue can still occur when oxygen is enough<span class="src gen">PDF</span></td></tr>
+<tr><td>Dehydration</td><td>Loss of water and electrolytes<span class="src gen">PDF</span></td></tr>
+<tr><td>Electrolyte imbalance</td><td>Na&#8314;, K&#8314;, Ca&#178;&#8314; needed for nerves and contraction<span class="src gen">PDF</span></td></tr>
+<tr><td>Prolonged or intense work</td><td>Force falls gradually<span class="src gen">PDF</span></td></tr>
+</table></div>
+<h3 class="sub"><span class="n">7B</span>Peripheral vs central fatigue</h3>
+<div class="table-wrap"><table>
+<tr><th></th><th>Peripheral</th><th>Central</th></tr>
+<tr><td>Where</td><td>In the muscle (and sometimes the NMJ)</td><td>Brain and spinal cord: lower nerve drive</td></tr>
+<tr><td>Problem</td><td>Energy, ion balance, Ca&#178;&#8314; release, NMJ transmission</td><td>Reduced signal to the muscles</td></tr>
+<tr><td>Example</td><td>Cannot lift the same weight again after heavy lifting</td><td>Difficulty keeping pace in a long run</td></tr>
+</table></div>
+<h3 class="sub"><span class="n">7C</span>Fatigue vs soreness (DOMS)</h3>
+<div class="table-wrap"><table>
+<tr><th>Fatigue</th><th>Muscle soreness (DOMS)</th></tr>
+<tr><td>Drop in ability to make force</td><td>Pain or tenderness in muscle</td></tr>
+<tr><td>During or just after exercise</td><td>Starts hours later (peaks 24&#8211;72 h) after intense or new exercise, especially eccentric<span class="src gen">general</span></td></tr>
+<tr><td>Improves with rest</td><td>Improves over a few days</td></tr>
+</table></div>
+<div class="table-wrap"><table>
+<tr><th>Prevention</th><th>Why</th></tr>
+<tr><td>Rest and sleep</td><td>Recovery</td></tr>
+<tr><td>Nutrition (carbohydrate, protein, fat)</td><td>Energy, repair</td></tr>
+<tr><td>Hydration + electrolytes</td><td>Contraction and nerve function</td></tr>
+<tr><td>Warm-up</td><td>Prepares muscle and heart</td></tr>
+<tr><td>Gradual progression</td><td>Adaptation</td></tr>
+</table></div>
+<div class="blk know"><span class="lbl">Yoga and safety (notes)</span><p><b>Yoga:</b> holding plank or chaturanga for a long time fatigues the arms, shoulders and abdominals; <b>modify or rest</b> when alignment is lost. <b>Seek medical advice</b> for unusual weakness, chest pain, severe muscle pain or dark urine after intense exercise.<span class="src gen">PDF</span></p></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Define muscle fatigue</div><div class="a">A reduction in ability to produce force after prolonged or intense activity, reversible with rest</div></div><div class="recall-card"><div class="q">Peripheral vs central?</div><div class="a">Peripheral: in the muscle. Central: reduced drive from brain and cord</div></div><div class="recall-card"><div class="q">Fatigue vs DOMS?</div><div class="a">Fatigue: loss of force. DOMS: delayed pain and stiffness</div></div><div class="recall-card"><div class="q">Main causes?</div><div class="a">Energy depletion, by-products, low oxygen, dehydration, electrolyte imbalance</div></div><div class="recall-card"><div class="q">Prevention?</div><div class="a">Rest, nutrition, hydration, warm-up, gradual progression, sleep</div></div></div></div>
+
+    </section>
+
+    <section class="section" id="sec-bio">
+      <div class="sec-head">
+        <div class="kicker">08 &#183; Biomechanics</div>
+        <h2>Biomechanics: Torque, Levers and Muscle Roles</h2>
+        <p class="dek">The muscle pulls, the bone is the bar, the joint is the pivot.</p>
+      </div>
+<div class="stat-strip"><div class="stat"><div class="v">Force &#215; arm</div><div class="k">torque</div></div><div class="stat"><div class="v">3</div><div class="k">classes of lever</div></div><div class="stat"><div class="v">Pull only</div><div class="k">muscles never push</div></div><div class="stat"><div class="v">4</div><div class="k">roles: agonist, antagonist, synergist, stabiliser</div></div></div>
+<div class="blk und"><span class="lbl">Understand it &#183; the big idea</span><p><b>Muscle = engine, bone = bar, joint = pivot.</b> The muscle can only <b>pull</b>, by shortening; the filaments pull towards the centre and cannot push. So for any joint there are <b>pairs</b> of muscles that pull opposite ways: <b>one bends (flexor), one straightens (extensor)</b>.</p></div>
+<h3 class="sub"><span class="n">8A</span>Torque: the see-saw rule</h3>
+<ul class="plain"><li><b>Force</b> = a push or pull. <b>Torque</b> = turning effect of a force around a joint = <b>force &#215; moment arm</b> (perpendicular distance from the joint to the line of the force).<span class="src gen">PDF</span></li><li><b>See-saw:</b> a child sitting <b>far</b> from the middle can balance a heavy adult sitting <b>near</b> it. Same turning effect, different forces. A far push needs little force; a near push needs a lot.<span class="src add">added</span></li><li>The <b>biceps attaches close to the elbow</b>, so its moment arm is short while the weight in the hand is far from the elbow. The muscle must pull with <b>much more force than the weight</b>. If the muscle were attached farther from the joint, it would need less force for the same job.<span class="src add">added</span></li></ul><h3 class="sub"><span class="n">8B</span>Levers in the body</h3>
+<figure class="fig wide-svg"><svg viewBox="0 0 640 200" role="img" aria-label="Three classes of lever: first class with fulcrum in the middle (head and neck), second class with load in the middle (standing on tiptoes), third class with effort in the middle (biceps at the elbow)">
+<g><text class="t tb tc" x="106" y="16">1st class</text><path d="M20 90 H190" stroke="var(--ink-soft)" stroke-width="7"/><path d="M105 94 L90 120 H120Z" class="fa"/><text class="t ts tc" x="105" y="140">F in the middle</text><text class="t ts tc" x="30" y="76">E</text><text class="t ts tc" x="180" y="76">L</text><text class="t ts tc" x="105" y="158">head on the neck</text><text class="t ts tc" x="105" y="172">(atlanto-occipital)</text></g>
+<g><text class="t tb tc" x="320" y="16">2nd class</text><path d="M236 90 H406" stroke="var(--ink-soft)" stroke-width="7"/><path d="M240 94 L226 120 H254Z" class="fa"/><text class="t ts tc" x="320" y="76">L</text><text class="t ts tc" x="395" y="76">E</text><text class="t ts tc" x="320" y="140">L in the middle</text><text class="t ts tc" x="320" y="158">standing on tiptoes</text><text class="t ts tc" x="320" y="172">(ball of foot = F)</text></g>
+<g><text class="t tb tc" x="534" y="16">3rd class</text><path d="M450 90 H620" stroke="var(--ink-soft)" stroke-width="7"/><path d="M454 94 L440 120 H468Z" class="fa"/><text class="t ts tc" x="534" y="76">E</text><text class="t ts tc" x="610" y="76">L</text><text class="t ts tc" x="534" y="140">E in the middle</text><text class="t ts tc" x="534" y="158">biceps at the elbow</text><text class="t ts tc" x="534" y="172">(most limb movements)</text></g>
+<text class="t ts tc" x="320" y="194">F = fulcrum (joint), E = effort (muscle), L = load. Count the middle letter: F, L, E = 1, 2, 3.</text>
+</svg><figcaption>The three classes of lever.</figcaption></figure><div class="table-wrap"><table>
+<tr><th>Class</th><th>Order</th><th>Example</th><th>Notes</th></tr>
+<tr><td><b>First</b></td><td>Effort &#8211; Fulcrum &#8211; Load</td><td>Head and neck (atlanto-occipital)</td><td>Balance and control of head posture<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Second</b></td><td>Fulcrum &#8211; Load &#8211; Effort</td><td>Standing on tiptoes (gastrocnemius and soleus through the Achilles tendon)</td><td>Mechanical advantage: big load, less effort<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Third</b></td><td>Fulcrum &#8211; Effort &#8211; Load</td><td>Elbow flexion by biceps</td><td>Speed and range at the hand; most limb movements<span class="src gen">PDF</span></td></tr>
+</table></div>
+<h3 class="sub"><span class="n">8C</span>Other biomechanical ideas</h3>
+<div class="table-wrap"><table>
+<tr><th>Idea</th><th>Meaning</th></tr>
+<tr><td><b>Length-tension</b></td><td>Muscle makes most force at an <b>optimal length</b> (good filament overlap); too short or too long gives less<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Force-velocity</b></td><td>Concentric: the faster it shortens, the less force. Eccentric: can resist more force than it can produce concentrically (you can lower a heavier dumbbell than you can lift)<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Agonist</b></td><td>Prime mover (biceps in a curl)<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Antagonist</b></td><td>Opposes or controls (triceps)<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Synergist</b></td><td>Assists (brachialis, brachioradialis)<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Stabiliser</b></td><td>Holds a joint steady (rotator cuff)<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Open kinetic chain</b></td><td>Hand or foot free: seated knee extension, biceps curl<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Closed kinetic chain</b></td><td>Hand or foot fixed on a surface: squat, push-up, plank<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Parallel fibres</b></td><td>Fibres along the muscle; long shortening range (sartorius)<span class="src gen">PDF</span></td></tr>
+<tr><td><b>Pennate fibres</b></td><td>Fibres at an angle to the tendon; more force for the size (rectus femoris, gastrocnemius)<span class="src gen">PDF</span></td></tr>
+</table></div>
+<div class="table-wrap"><table>
+<tr><th>Dumbbell curl phase</th><th>What happens</th></tr>
+<tr><td>Concentric</td><td>Elbow flexion; biceps, brachialis shorten</td></tr>
+<tr><td>Hold</td><td>Isometric</td></tr>
+<tr><td>Eccentric</td><td>Lowered slowly; flexors lengthen under tension</td></tr>
+<tr><td>Roles</td><td>Agonist biceps, antagonist triceps, synergists brachialis and brachioradialis, stabilisers shoulder and trunk</td></tr>
+</table></div>
+<div class="spread rev"><ol class="key"><li>Examples of pairs: <b>deltoid</b> abducts; <b>pectoralis major</b> and <b>latissimus dorsi</b> adduct.<span class="src gen">PDF</span></li><li><b>Biceps</b> has two heads (long and short) at the shoulder and crosses the elbow.<span class="src gen">PDF</span></li><li>More on the shoulder muscles and the rotator cuff is on the Joints page.</li></ol><figure class="fig photo"><img src="assets/diagrams/shoulder-muscles-anterior-view.jpg" alt="Anterior view of shoulder and chest muscles: deltoid, pectoralis major, biceps brachii, trapezius, serratus anterior, with clavicle and acromion labelled"><figcaption>Shoulder muscles from the front (from your diagram folder).</figcaption></figure></div>
+<div class="spread"><figure class="fig photo"><img src="assets/diagrams/deltoid-muscle-location.jpg" alt="Front and back view of the upper body with the deltoid muscle marked over the shoulder"><figcaption>Deltoid on the shoulder (from your diagram folder).</figcaption></figure><ol class="key"><li><b>Deltoid</b>: anterior fibres flex, middle fibres abduct, posterior fibres extend the shoulder.<span class="src gen">PDF</span></li><li>Fast-twitch example in the Ch. 2 scan; many muscles are mixed.<span class="src gen">general</span></li></ol></div>
+<div class="blk exam"><span class="lbl">Exam angle</span><p>&#8220;What is biomechanics? Explain levers with examples&#8221;: define muscle biomechanics, then torque = force &#215; moment arm, 3 lever classes with the example, length-tension, force-velocity. Exam definition: <i>the study of the mechanical properties of muscles and how they produce force, create and control movement, and contribute to posture and joint stability.</i><span class="src gen">PDF</span></p></div>
+<div class="blk mem"><span class="lbl">Memory aid</span><p><b>1-2-3 = F-L-E</b>: 1st has <b>F</b>ulcrum in the middle, 2nd has <b>L</b>oad in the middle, 3rd has <b>E</b>ffort in the middle. Example images: <b>neck (see-saw)</b>, <b>tiptoe (wheelbarrow)</b>, <b>biceps (fishing rod)</b>.<span class="src add">added</span></p></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Torque formula?</div><div class="a">Force x moment arm</div></div><div class="recall-card"><div class="q">Lever class of biceps at the elbow?</div><div class="a">Third class: fulcrum, effort, load (effort in the middle)</div></div><div class="recall-card"><div class="q">Second-class example?</div><div class="a">Standing on tiptoes</div></div><div class="recall-card"><div class="q">Agonist vs antagonist?</div><div class="a">Agonist: prime mover. Antagonist: opposes or controls it</div></div><div class="recall-card"><div class="q">Open vs closed chain?</div><div class="a">Open: end free (curl). Closed: end fixed (squat, plank)</div></div></div></div>
+
+    </section>
+
     <section class="section" id="sec-yoga">
-      <div class="kicker">05 &middot; Applied</div>
-      <h2>Exercise Physiology in Yoga</h2>
-      <p class="dek">The section your notes write specifically for this connection &mdash; how muscle contraction types and energy systems map onto actual asana practice.</p>
-
-      <div class="layer-nav">
-        <button class="layer-item active" data-layer="understand"><span class="n">Layer 1</span>Understand</button>
-        <button class="layer-item" data-layer="explain"><span class="n">Layer 2 &middot; 5-mark</span>Explain</button>
-        <button class="layer-item" data-layer="practice"><span class="n">Layer 3</span>Connect to practice</button>
+      <div class="sec-head">
+        <div class="kicker">09 &#183; Exercise physiology</div>
+        <h2>Muscles in Yogic Practice</h2>
+        <p class="dek">Contraction types, energy and adaptations behind asana and pranayama.</p>
       </div>
+<div class="stat-strip"><div class="stat"><div class="v">Isometric</div><div class="k">holds</div></div><div class="stat"><div class="v">Eccentric</div><div class="k">slow lowering</div></div><div class="stat"><div class="v">Aerobic</div><div class="k">most practice</div></div><div class="stat"><div class="v">Spindle + GTO</div><div class="k">stretch tolerance</div></div></div>
+<div class="table-wrap"><table>
+<tr><th>Asana</th><th>Muscle role (from your notes)</th><th>Contraction type</th></tr>
+<tr><td>Plank</td><td>Abdominals stabilise trunk, shoulder muscles support, glutes align pelvis, legs keep alignment<span class="src gen">PDF</span></td><td>Mostly isometric</td></tr>
+<tr><td>Chaturanga Dandasana</td><td>Triceps control the elbow; pectoralis major and anterior deltoid support shoulder; trunk keeps alignment<span class="src gen">PDF</span></td><td>Eccentric while lowering</td></tr>
+<tr><td>Virabhadrasana</td><td>Quadriceps control the knee, glutes stabilise hips, trunk controls posture<span class="src gen">PDF</span></td><td>Isometric in the hold</td></tr>
+<tr><td>Vrikshasana</td><td>Standing-leg muscles for balance, hip stabilisers control pelvis, foot and ankle adjust, core stabilises<span class="src gen">PDF</span></td><td>Isometric</td></tr>
+<tr><td>Tadasana</td><td>Many muscles together hold posture<span class="src gen">PDF</span></td><td>Tone and low-level isometric</td></tr>
+<tr><td>Rising from a squat-like pose</td><td>Quadriceps and glutes shorten<span class="src gen">PDF</span></td><td>Concentric</td></tr>
+</table></div>
+<h3 class="sub"><span class="n">9A</span>Which energy system?</h3>
+<ul class="plain"><li>Brief explosive effort (jump-through) &#8594; <b>ATP-PCr</b>. Strong, longer holds or fast vinyasa &#8594; <b>anaerobic glycolysis</b>. Most yoga, being low to moderate and sustained &#8594; <b>aerobic</b>.<span class="src gen">PDF</span></li></ul><h3 class="sub"><span class="n">9B</span>Adaptations to regular practice (Q22, muscle half)</h3>
+<ul class="plain"><li>Better <b>motor-unit recruitment</b> and agonist-antagonist coordination: better balance and posture.<span class="src gen">PDF</span></li><li><b>Greater stretch tolerance</b> from sustained holds, through <b>muscle spindle and Golgi tendon organ</b> adaptation, not because the fibres actually lengthen.<span class="src gen">PDF</span></li><li>Better <b>proprioception</b> from sustained attention to joint position.<span class="src gen">PDF</span></li><li>More <b>muscular endurance and functional strength</b>, especially in postural stabilisers (deep spinal muscles, rotator cuff, hip stabilisers) from repeated isometric and eccentric loading.<span class="src gen">PDF</span></li><li>Slow movement + diaphragmatic breathing &#8594; more <b>parasympathetic</b> balance, lower resting heart rate and blood pressure.<span class="src gen">PDF</span></li><li>Flexibility gains in hip, shoulder and spine with regular practice.<span class="src gen">PDF</span></li></ul><div class="blk exam"><span class="lbl">Exam angle &#183; question paper Q22 (10 marks)</span><p>&#8220;How asanas and pranayama are good for muscles and bones.&#8221; <b>Muscle half:</b> contraction types in asana (isometric holds, eccentric lowering, concentric rising), tone and posture, stretch tolerance, endurance, nervous adaptations. <b>Bone half:</b> see the Skeletal and Joints pages. Add pranayama: diaphragm and intercostal muscles work in breathing, and slow breathing shifts the autonomic balance.</p></div>
+<div class="blk mem"><span class="lbl">Memory aid</span><p><b>H-L-R</b> for asana muscle work: <b>H</b>old = isometric, <b>L</b>ower = eccentric, <b>R</b>ise = concentric.<span class="src add">added</span></p></div>
+<div class="card"><div class="recall-hint">Quick recall &#8211; tap a card to reveal the answer.</div><div class="recall-strip"><div class="recall-card"><div class="q">Which contraction is a static asana hold?</div><div class="a">Isometric</div></div><div class="recall-card"><div class="q">Slow lowering from a pose?</div><div class="a">Eccentric</div></div><div class="recall-card"><div class="q">Rising from a squat?</div><div class="a">Concentric</div></div><div class="recall-card"><div class="q">Why does stretch tolerance increase?</div><div class="a">Spindle and Golgi tendon organ adaptation, not lengthening of fibres</div></div><div class="recall-card"><div class="q">Energy system for most yoga?</div><div class="a">Aerobic</div></div></div></div>
 
-      <!-- LAYER 1 -->
-      <div class="layer-panel story" data-panel="understand">
-        <p>Three types of muscle contraction show up constantly in asana, and naming them is what lets you describe a pose precisely rather than vaguely: <b>isometric</b> (tension without any length change &mdash; a static hold like plank or utkatasana), <b>isotonic</b> (tension with the muscle changing length &mdash; <b>concentric</b> when it shortens while generating force, e.g. rising into a pose; <b>eccentric</b> when it lengthens while generating force, e.g. slowly lowering out of urdhva dhanurasana), and <b>isokinetic</b> (constant speed throughout the range, with variable resistance &mdash; not something that occurs naturally in yoga, but useful as a comparison point against resistance training).</p>
-        <div class="analogy">
-          <b>Which energy system is running during practice</b>
-          Brief, explosive efforts (a jump-through) draw on the <b>ATP-PCr system</b> &mdash; instant energy, lasting seconds. Higher-intensity efforts lasting roughly 10 seconds to 2 minutes (a strong, prolonged hold or a fast vinyasa) lean on <b>anaerobic glycolysis</b>. Most yoga practice, being low-to-moderate intensity and sustained, runs mainly on the <b>aerobic (oxidative) system</b> &mdash; using oxygen to burn carbohydrate and fat for ATP over long durations, consistent with the generally mild cardiovascular demand measured in hatha yoga studies.</p>
-        </div>
-      </div>
-
-      <!-- LAYER 2 -->
-      <div class="layer-panel" data-panel="explain" hidden>
-        <div class="marks-tag">Reference</div>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Contraction type</th><th>What happens</th><th>Asana example</th></tr>
-            <tr><td>Isometric</td><td>Tension, no length/joint-angle change</td><td>Holding utkatasana or plank</td></tr>
-            <tr><td>Isotonic &mdash; concentric</td><td>Muscle shortens while generating force</td><td>Rising into a pose</td></tr>
-            <tr><td>Isotonic &mdash; eccentric</td><td>Muscle lengthens while generating force</td><td>Slowly lowering from urdhva dhanurasana</td></tr>
-            <tr><td>Isokinetic</td><td>Constant speed, variable resistance</td><td>Not natural to yoga &mdash; a resistance-training comparison</td></tr>
-          </table>
-        </div>
-      </div>
-
-      <!-- LAYER 3 -->
-      <div class="layer-panel" data-panel="practice" hidden>
-        <div class="marks-tag">Q22 &middot; Explain how asanas and pranayama are good for muscles and bones (10 marks)</div>
-        <div class="practice-link">
-          <b>Neuromuscular &amp; systemic adaptations to regular practice</b>
-          Improved motor-unit recruitment and agonist&ndash;antagonist coordination (better balance and postural control) &middot; increased stretch tolerance from sustained holds, via muscle spindles and Golgi tendon organs adapting rather than the muscle fibres actually lengthening &middot; better proprioception and interoception from sustained attention to joint position &middot; improved muscular endurance and functional strength, especially in postural stabilisers (deep spinal muscles, rotator cuff, hip stabilisers), from repeated isometric and eccentric loading &middot; a shift toward parasympathetic dominance, lower resting heart rate/blood pressure, and lower circulating cortisol, associated with slow movement plus diaphragmatic breathing &middot; measurable flexibility gains across hip, shoulder and spinal range of motion with regular practice.
-        </div>
-        <p style="font-size:13.5px;">This is the muscle half of Q22's answer. The bones half &mdash; how joint structure sets the natural limits of an asana, and how loading affects bone rather than muscle &mdash; is covered in the Skeletal System topic's Joint Movements &amp; Practice section, which the exam question pairs with this one.</p>
-      </div>
-
-      <div class="card">
-        <div class="recall-hint">Quick recall &mdash; tap a card to reveal the answer.</div>
-        <div class="recall-strip">
-          <div class="recall-card"><div class="q">Which contraction type is a static hold?</div><div class="a">Isometric</div></div>
-          <div class="recall-card"><div class="q">Muscle shortens while producing force = ?</div><div class="a">Concentric (isotonic)</div></div>
-          <div class="recall-card"><div class="q">Muscle lengthens while producing force = ?</div><div class="a">Eccentric (isotonic)</div></div>
-          <div class="recall-card"><div class="q">Which energy system dominates most yoga practice?</div><div class="a">Aerobic (oxidative) system</div></div>
-          <div class="recall-card"><div class="q">Increased stretch tolerance comes mainly from?</div><div class="a">Muscle spindle/Golgi tendon organ adaptation, not fibre lengthening</div></div>
-        </div>
-      </div>
-
-      <p class="source-note">Source: consolidated Anatomy &amp; Physiology notes, Unit 3 &mdash; The Muscular System (PDF).</p>
     </section>
+
+<p class="src-foot">Sources: class notes 28 Sep&#8211;Oct 2026 (typed); The Muscular System (consolidated teacher's PDF, topics 1&#8211;7); Chapters 2 and 3 scans (R. Gopinath, Sports Science: fibre types, all-or-none, treppe, oxygen debt, heat); Yoga &amp; Human Body notes; Ross &amp; Wilson ch. 18; Introduction to Kinesiology and Biomechanics; standard texts for &#8220;general&#8221; tags; question paper Q22. Photographic diagrams are from your diagram folder; the lever and contraction diagrams were drawn for these notes.</p>
 
   </main>
 </div>
@@ -644,53 +605,52 @@
   var menuBtn = document.getElementById('menuBtn');
   var searchEl = document.getElementById('search');
 
-  function activate(id, scroll){
-    sections.forEach(function(s){ s.hidden = (s.id !== 'sec-' + id); });
+  function setActive(id){
     navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
-    if (scroll) window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
-    try { history.replaceState(null, '', '#' + id); } catch(e){}
-    closeSidebar();
   }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
 
   navItems.forEach(function(btn){
-    btn.addEventListener('click', function(){ activate(btn.dataset.target, true); });
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
   });
-
-  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
-  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
   menuBtn.addEventListener('click', openSidebar);
   scrim.addEventListener('click', closeSidebar);
 
   searchEl.addEventListener('input', function(){
     var q = searchEl.value.trim().toLowerCase();
     navItems.forEach(function(btn){
-      var text = btn.textContent.toLowerCase();
-      btn.hidden = q.length > 0 && text.indexOf(q) === -1;
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
     });
   });
 
-  // Layer tabs (Understand / Explain / Connect to practice) -- one independent set per section
-  Array.prototype.slice.call(document.querySelectorAll('.layer-nav')).forEach(function(nav){
-    var scope = nav.closest('.section') || document;
-    var layerButtons = Array.prototype.slice.call(nav.querySelectorAll('.layer-item'));
-    var layerPanels = Array.prototype.slice.call(scope.querySelectorAll('.layer-panel'));
-    layerButtons.forEach(function(btn){
-      btn.addEventListener('click', function(){
-        var target = btn.dataset.layer;
-        layerButtons.forEach(function(b){ b.classList.toggle('active', b === btn); });
-        layerPanels.forEach(function(p){ p.hidden = (p.dataset.panel !== target); });
-      });
-    });
-  });
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
 
-  // Flip-to-reveal recall cards
   Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
     card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
   });
 
-  var startId = 'overview';
   var hash = (location.hash || '').replace('#','');
-  if (hash && document.getElementById('sec-' + hash)) startId = hash;
-  activate(startId, false);
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
 })();
 </script>
