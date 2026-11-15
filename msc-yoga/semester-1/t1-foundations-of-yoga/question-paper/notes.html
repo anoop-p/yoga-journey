@@ -1,0 +1,490 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model Question Paper</title>
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 14px; }
+  .mq .mqh{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
+  .mq .marks-tag{ margin-bottom:0; }
+  .mq .topic{ font-size:11px; color:var(--muted); }
+  .mq .mqt{ font-weight:600; color:var(--ink); margin:0 0 10px; max-width:none; }
+  .mq details.ans > summary{ cursor:pointer; list-style:none; display:inline-block; padding:6px 12px; border-radius:8px; background:var(--teal-soft); color:var(--teal); font-size:13px; font-weight:600; }
+  .mq details.ans > summary::-webkit-details-marker{ display:none; }
+  .mq details.ans[open] > summary{ background:var(--surface-2); color:var(--muted); }
+  .mq .ansb{ margin-top:12px; border-top:1px dashed var(--border); padding-top:10px; }
+  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 10px; padding-left:22px; }
+  .mq .ansb p{ margin:0 0 8px; }
+  .mq .ansb .pts{ font-size:12.5px; color:var(--muted); }
+  .mq .ansb .pts b{ color:var(--teal); }
+  .mq .ansb .hi{ background:var(--teal-soft); border-radius:8px; padding:8px 12px; margin:0 0 10px; color:var(--ink); }
+  .mqbar{ display:flex; gap:8px; flex-wrap:wrap; margin:0 0 16px; position:sticky; top:0; z-index:5; background:var(--bg); padding:8px 0; }
+  .mqbar button{ font:inherit; font-size:13px; padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft); cursor:pointer; }
+  .mqbar button.on{ background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Question Paper &amp; Model Answers</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../index.html">&larr; T1 &middot; Foundations of Yoga</a>
+    <div class="brand">
+      <div class="eyebrow">Foundations of Yoga</div>
+      <h1>Question Paper &amp; Model Answers</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="guide"><span class="num">01</span><span>How to Use &amp; Paper Map</span></button>
+      <button class="nav-item" data-target="a"><span class="num">02</span><span>Section A &middot; 2 marks</span></button>
+      <button class="nav-item" data-target="b"><span class="num">03</span><span>Section B &middot; 5 marks</span></button>
+      <button class="nav-item" data-target="c"><span class="num">04</span><span>Section C &middot; 10 marks</span></button>
+    </nav>
+    <div class="sidebar-footer">The Semester 1 paper with model answers written from standard sources. Tags: class, general, added (confirm with teacher)</div>
+  </aside>
+
+  <main id="main">
+<section class="section" id="sec-guide">
+<div class="sec-head"><div class="kicker">00 &#183; Read this first</div><h2>Foundations of Yoga: Question Paper</h2><p class="dek">The Semester 1 paper (MSC-I/1, DSCC-16, 60 marks, 2 hours) with model answers.</p></div>
+<div class="stat-strip"><div class="stat"><div class="v">13</div><div class="k">two-mark (any 10)</div></div><div class="stat"><div class="v">6</div><div class="k">five-mark (any 4)</div></div><div class="stat"><div class="v">3</div><div class="k">ten-mark (any 2)</div></div><div class="stat"><div class="v">60</div><div class="k">marks, 2 hours</div></div></div><p class="honest"><b>Honest note.</b> Your repo has no class notes for Foundations of Yoga yet, so every answer below is written from standard sources (the Upanishads, the Bhagavad Gita, the Yoga Sutra, the Buddhist and Jain texts and common textbook summaries), tagged <span class="src gen">general</span>. Two items are tagged <span class="src add">added</span>: they depend on how your teacher teaches the point. Check them against your class notes when you have them.</p><div class="table-wrap"><table><tr><th>Section</th><th>Questions</th><th>What it asks</th></tr><tr><td>A (2 marks)</td><td>1&ndash;13</td><td>Veda, Vedanga, Upanishad, Anekantavada, Ha and Tha, definition of yoga, Transcendental Meditation, father of modern yoga, author of the Bihar text, Gita definitions, Shat-sampatti, karma types</td></tr><tr><td>B (5 marks)</td><td>14&ndash;19</td><td>Eightfold path, Samkhya and Yoga, Tri-ratna, types of bhakta, Narada Bhakti Sutra, nadanusandhana</td></tr><tr><td>C (10 marks)</td><td>20&ndash;22</td><td>Eight noble paths, Rajayoga, Karma yoga</td></tr></table></div><ul><li>The chips filter all questions on the three question pages: 2, 5 or 10 marks.</li><li>The paper lists the eightfold path twice (Q14 and Q20). Answer Q14 short (5 marks) and Q20 in full (10 marks).</li><li>Time yourself: 3 minutes for 2 marks, 8 for 5 marks and 15 for 10 marks.</li></ul></section>
+<section class="section" id="sec-a">
+<div class="sec-head"><div class="kicker">01 &#183; Section A</div><h2>Section A: Two-mark questions (answer any 10)</h2><p class="dek">Questions 1 to 13. A good answer is one or two lines.</p></div>
+<div class="mqbar" id="mqbar"><button class="on" data-f="all">All</button><button data-f="2">2 marks</button><button data-f="5">5 marks</button><button data-f="10">10 marks</button><button data-f="reveal">Reveal all</button><button data-f="hide">Hide all</button></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q1 &#183; 2 marks</span><span class="topic">Vedas</span></div>
+<p class="mqt">What is the meaning of Veda?</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">Veda comes from the root <i>vid</i>, to know. It means knowledge, especially sacred knowledge.</div>
+<p>The four Vedas are Rig, Yajur, Sama and Atharva. They are the oldest scriptures of India and are called <i>shruti</i> (what was heard).</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q2 &#183; 2 marks</span><span class="topic">Vedanga</span></div>
+<p class="mqt">Write the names of the Vedangas.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">The six Vedangas are Shiksha, Kalpa, Vyakarana, Nirukta, Chhandas and Jyotisha.</div>
+<p>Shiksha is phonetics, Kalpa ritual, Vyakarana grammar, Nirukta word origin, Chhandas metre and Jyotisha astronomy. They are limbs that help in understanding the Vedas.</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q3 &#183; 2 marks</span><span class="topic">Upanishad</span></div>
+<p class="mqt">What is the meaning of Upanishad?</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">Upa (near) + ni (down) + shad (to sit): sitting down near the teacher to receive the highest knowledge.</div>
+<p>It also carries the sense of destroying ignorance. The Upanishads end the Vedas, so they are called <i>Vedanta</i>.</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q4 &#183; 2 marks</span><span class="topic">Jainism</span></div>
+<p class="mqt">What is Anekantavada?</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">The Jain teaching that reality has many sides, so no single view is the whole truth.</div>
+<p>It goes with <i>syadvada</i> (every statement is true from one standpoint) and <i>nayavada</i> (partial viewpoints). The usual image is blind men describing an elephant.</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q5 &#183; 2 marks</span><span class="topic">Hatha yoga</span></div>
+<p class="mqt">What is the meaning of Ha and Tha?</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">Ha is the sun (pingala nadi, pranic energy) and Tha is the moon (ida nadi, mental energy). Hatha yoga is their balance.</div>
+<p>Another reading takes <i>hatha</i> as force or effort. <span class="src cls">class</span></p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q6 &#183; 2 marks</span><span class="topic">Yoga Sutra</span></div>
+<p class="mqt">What is yoga according to the Yoga Sutra?</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi"><i>Yogash chitta-vritti-nirodhah</i> (1.2): yoga is the stilling of the movements of the mind.</div>
+<p>When the mind is still, the seer rests in his own nature (1.3).</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q7 &#183; 2 marks</span><span class="topic">Modern yoga</span></div>
+<p class="mqt">Who developed Transcendental Meditation?</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">Maharishi Mahesh Yogi.</div>
+<p>He taught it from the late 1950s. It is a mantra-based technique practised for about 20 minutes twice a day.</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q8 &#183; 2 marks</span><span class="topic">Modern yoga</span></div>
+<p class="mqt">Who is the father of modern yoga?</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">T. Krishnamacharya (1888&ndash;1989) is usually called the father of modern yoga.</div>
+<p>His students include B.K.S. Iyengar, K. Pattabhi Jois, T.K.V. Desikachar and Indra Devi. <span class="src add">added</span> Some books give this title to Swami Vivekananda, who first brought yoga to the West (1893); write what your teacher says.</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q9 &#183; 2 marks</span><span class="topic">Modern texts</span></div>
+<p class="mqt">Write the author of the text &ldquo;Asana Pranayama Mudra Bandha&rdquo;.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">Swami Satyananda Saraswati of the Bihar School of Yoga.</div>
+<p>He wrote it in 1969. It is also the reference book given in your syllabus for the practical papers.</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q10 &#183; 2 marks</span><span class="topic">Upanishads</span></div>
+<p class="mqt">What do you understand by Upanishad? Write the names of the major Upanishads.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">Upanishad means sitting near a teacher to receive the highest knowledge. There are ten principal (mukhya) Upanishads.</div>
+<p>Isha, Kena, Katha, Prashna, Mundaka, Mandukya, Taittiriya, Aitareya, Chandogya and Brihadaranyaka. Shvetashvatara is often added as the eleventh.</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q11 &#183; 2 marks</span><span class="topic">Bhagavad Gita</span></div>
+<p class="mqt">Write two definitions of yoga according to the Bhagavad Gita.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">(1) <i>Samatvam yoga uchyate</i> (2.48): evenness of mind is yoga. (2) <i>Yogah karmasu kaushalam</i> (2.50): yoga is skill in action.</div>
+<p>A third (6.23): yoga is separation from union with pain.</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q12 &#183; 2 marks</span><span class="topic">Vedanta</span></div>
+<p class="mqt">Write the names of Shat-sampatti.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">Shama, dama, uparati, titiksha, shraddha and samadhana.</div>
+<p>Calmness of mind, control of the senses, withdrawal from distraction, endurance, faith and one-pointedness. They are the third of the four means (sadhana chatushtaya) in Vedanta.</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q13 &#183; 2 marks</span><span class="topic">Yoga Sutra</span></div>
+<p class="mqt">Write the types of karma according to the Patanjali Yoga Darshan.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">Four (YS 4.7): shukla (white), krishna (black), shukla-krishna (mixed) and ashukla-akrishna (neither white nor black).</div>
+<p>The last belongs to the yogi who acts without desire for results; the first three belong to ordinary people. Karma ripens as birth, lifespan and experience (2.13).</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+</section>
+<section class="section" id="sec-b">
+<div class="sec-head"><div class="kicker">02 &#183; Section B</div><h2>Section B: Five-mark questions (answer any 4)</h2><p class="dek">Questions 14 to 19. About 150 words each, or a short table.</p></div>
+<div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q14 &#183; 5 marks</span><span class="topic">Buddhism</span></div>
+<p class="mqt">Explain the Ashtangika Marga (eightfold path) given in Buddhism.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<p>The Buddha gave the eightfold path as the fourth noble truth: the way to end suffering. It is a middle path between indulgence and harsh self-denial.</p><div class="table-wrap"><table><tr><th>Group</th><th>Step</th><th>Meaning</th></tr><tr><td>Wisdom (prajna)</td><td>1. Right view</td><td>Understanding the four noble truths</td></tr><tr><td></td><td>2. Right intention</td><td>Free of craving, ill-will and cruelty</td></tr><tr><td>Ethics (sila)</td><td>3. Right speech</td><td>Truthful, kind, no gossip</td></tr><tr><td></td><td>4. Right action</td><td>No killing, stealing or misconduct</td></tr><tr><td></td><td>5. Right livelihood</td><td>Earning without harming</td></tr><tr><td>Concentration (samadhi)</td><td>6. Right effort</td><td>Avoiding bad states, building good ones</td></tr><tr><td></td><td>7. Right mindfulness</td><td>Awareness of body, feelings, mind and mental states</td></tr><tr><td></td><td>8. Right concentration</td><td>The four jhanas (deep meditation)</td></tr></table></div><p>Right effort, mindfulness and concentration are the part that matches yoga practice.</p>
+<p class="pts"><b>Marks:</b> intro (1), eight steps (3), grouping (1). <span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q15 &#183; 5 marks</span><span class="topic">Samkhya and Yoga</span></div>
+<p class="mqt">Explain the relationship between Samkhya and Yoga Darshan.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<p>They are sister systems. Samkhya gives the theory; Yoga gives the practice. Both say there are two ultimate realities, Purusha (pure consciousness) and Prakriti (nature with three gunas), and that suffering ends when Purusha is seen as separate from Prakriti.</p><div class="table-wrap"><table><tr><th>Point</th><th>Samkhya</th><th>Yoga</th></tr><tr><td>Emphasis</td><td>Knowledge (jnana)</td><td>Practice (ashtanga)</td></tr><tr><td>Principles</td><td>25 tattvas</td><td>The same 25, plus Ishvara</td></tr><tr><td>God</td><td>Classical Samkhya does not need Ishvara</td><td>Ishvara is a special Purusha, untouched by kleshas</td></tr><tr><td>Mind</td><td>Buddhi, ahamkara and manas</td><td>Chitta as one inner instrument</td></tr><tr><td>Liberation</td><td>Viveka-khyati (discriminative knowledge)</td><td>Reached by yoga, ending in kaivalya</td></tr></table></div><p>Patanjali builds the Yoga Sutra on Samkhya ideas: the seer and the seen (2.17), the three gunas, and kaivalya (4.34).</p>
+<p class="pts"><b>Marks:</b> shared base (2), table (3). <span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q16 &#183; 5 marks</span><span class="topic">Jainism</span></div>
+<p class="mqt">Explain Tri-Ratna (given in Jainism).</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<p>The three jewels are the path to liberation (<i>moksha</i>), as given in the Tattvartha Sutra.</p><div class="table-wrap"><table><tr><th>Jewel</th><th>Meaning</th></tr><tr><td>Samyak darshana (right faith)</td><td>Faith in the true teachers, scriptures and the seven tattvas</td></tr><tr><td>Samyak jnana (right knowledge)</td><td>Knowing the soul and non-soul as they are</td></tr><tr><td>Samyak charitra (right conduct)</td><td>Living by the five great vows: ahimsa, satya, asteya, brahmacharya and aparigraha</td></tr></table></div><p>The three work together. Faith without knowledge is blind; knowledge without conduct does not free the soul.</p>
+<p class="pts"><b>Marks:</b> three jewels, 1 each; conclusion (2). <span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q17 &#183; 5 marks</span><span class="topic">Bhakti</span></div>
+<p class="mqt">Explain the types of bhakta.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<p>The Gita (7.16) names four kinds of people who worship God:</p><div class="table-wrap"><table><tr><th>Type</th><th>Meaning</th></tr><tr><td>Arta</td><td>The distressed, who pray in trouble</td></tr><tr><td>Jijnasu</td><td>The seeker of knowledge</td></tr><tr><td>Artharthi</td><td>The seeker of wealth and gain</td></tr><tr><td>Jnani</td><td>The wise one, who loves God for God&#8217;s sake</td></tr></table></div><p>All four are noble, but the Jnani is the best (7.17) because his devotion is steady and has no demand. <span class="src add">added</span> Your teacher may also teach the Bhagavata gradation (kanishtha, madhyama, uttama bhakta): ask which she wants.</p>
+<p class="pts"><b>Marks:</b> four types (4), best (1). <span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q18 &#183; 5 marks</span><span class="topic">Bhakti</span></div>
+<p class="mqt">Explain Bhakti according to the Narada Bhakti Sutra.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<p><b>Meaning.</b> Bhakti is supreme love for God (sutra 2); it is nectar itself (3). One who attains it is satisfied and wants nothing else (4).</p><p><b>Greatness.</b> It is greater than karma, jnana and yoga, because it is itself the fruit (25).</p><p><b>Eleven forms of attachment (sutra 82):</b> to God&#8217;s glory, form, worship, remembrance, service (dasya), friendship (sakhya), parental love (vatsalya), the love of lover and beloved (kanta), self-surrender, complete absorption (tanmayata) and the pain of separation (viraha).</p><p><b>Means.</b> Giving up attachment to objects, constant worship, hearing and singing God&#8217;s glory, and the grace of a great soul.</p>
+<p class="pts"><b>Marks:</b> meaning (1), greatness (1), eleven forms (2), means (1). <span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q19 &#183; 5 marks</span><span class="topic">Nadanusandhana</span></div>
+<p class="mqt">Explain the stages of Nadanusandhana.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<p>Nadanusandhana is listening to the inner sound until the mind rests in it (HYP chapter 4). There are four stages:</p><div class="table-wrap"><table><tr><th>Stage</th><th>What happens</th></tr><tr><td>Arambha (beginning)</td><td>The Brahma granthi is pierced; bliss; tinkling inner sounds</td></tr><tr><td>Ghata (vessel)</td><td>Prana enters sushumna; the Vishnu granthi is pierced; sound of a kettledrum</td></tr><tr><td>Parichaya (increase)</td><td>Sound of a drum; the great void; pain, old age and disease overcome</td></tr><tr><td>Nishpatti (consummation)</td><td>The Rudra granthi is pierced; sound of flute and vina; ends in raja yoga (samadhi)</td></tr></table></div><p>Method: close the ears with the hands, listen within and fix the mind there (4.82). Within fifteen days restlessness goes (4.83).</p>
+<p class="pts"><b>Marks:</b> four stages, 1 each; method (1). <span class="src cls">class</span></p>
+</div></details></div>
+</section>
+<section class="section" id="sec-c">
+<div class="sec-head"><div class="kicker">03 &#183; Section C</div><h2>Section C: Ten-mark questions (answer any 2)</h2><p class="dek">Questions 20 to 22. About 400 words each: introduction, body in headings, conclusion.</p></div>
+<div class="mq" data-m="10"><div class="mqh"><span class="marks-tag">Q20 &#183; 10 marks</span><span class="topic">Buddhism</span></div>
+<p class="mqt">Explain the eight noble paths of Buddhism.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<p><b>Introduction.</b> The Buddha (Siddhartha Gautama, 6th century BCE) taught that life has suffering and that suffering can end. His first sermon, at Sarnath, gave the four noble truths and the eightfold path.</p><h3 class="sub"><span class="n">A</span>The four noble truths</h3><ol><li><b>Dukkha:</b> life contains suffering (birth, old age, illness, death, loss).</li><li><b>Samudaya:</b> suffering has a cause, which is craving.</li><li><b>Nirodha:</b> suffering can end, which is nirvana.</li><li><b>Magga:</b> there is a path to that end: the eightfold path.</li></ol><h3 class="sub"><span class="n">B</span>The eightfold path (Ashtangika Marga)</h3><div class="table-wrap"><table><tr><th>Step</th><th>Meaning</th><th>Yoga link</th></tr><tr><td>Right view (samma ditthi)</td><td>Seeing life through the four truths</td><td>Viveka, knowledge</td></tr><tr><td>Right intention</td><td>Renunciation, goodwill, harmlessness</td><td>Ahimsa</td></tr><tr><td>Right speech</td><td>Truth, no slander, no harsh words</td><td>Satya</td></tr><tr><td>Right action</td><td>No killing, stealing or sexual misconduct</td><td>Yama</td></tr><tr><td>Right livelihood</td><td>A job that harms no one</td><td>Ahimsa in work</td></tr><tr><td>Right effort</td><td>Preventing and removing bad states, building good ones</td><td>Abhyasa</td></tr><tr><td>Right mindfulness</td><td>Awareness of body, feeling, mind and mind objects (satipatthana)</td><td>Dharana, dhyana</td></tr><tr><td>Right concentration</td><td>Four jhanas, from joy to equanimity</td><td>Samadhi</td></tr></table></div><p>The path is grouped into wisdom (view, intention), ethics (speech, action, livelihood) and concentration (effort, mindfulness, concentration). It is a middle way between indulgence and self-torture.</p><p><b>Conclusion.</b> The eight steps are practised together, not one after another. The goal is nirvana, the end of craving.</p>
+<p class="pts"><b>Marks:</b> intro (1), four truths (3), eight steps (5), conclusion (1). <span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="10"><div class="mqh"><span class="marks-tag">Q21 &#183; 10 marks</span><span class="topic">Rajayoga</span></div>
+<p class="mqt">Explain Rajayoga in detail.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<p><b>Introduction.</b> Raja yoga (royal yoga) is the path of mastering the mind, given by Patanjali in the Yoga Sutra (about 195 sutras in four padas). Hatha yoga is said to be a ladder to it. Its goal is kaivalya, the seer resting in his own nature.</p><h3 class="sub"><span class="n">A</span>The mind and its movements</h3><p>Yoga is <i>chitta-vritti-nirodha</i> (1.2). The five vrittis are pramana, viparyaya, vikalpa, nidra and smriti (1.6). The obstacles are the five kleshas: avidya, asmita, raga, dvesha and abhinivesha (2.3).</p><h3 class="sub"><span class="n">B</span>The eight limbs (ashtanga, 2.29)</h3><div class="table-wrap"><table><tr><th>Limb</th><th>Meaning</th></tr><tr><td>Yama</td><td>Ahimsa, satya, asteya, brahmacharya, aparigraha</td></tr><tr><td>Niyama</td><td>Shaucha, santosha, tapas, svadhyaya, Ishvara pranidhana</td></tr><tr><td>Asana</td><td>Steady, comfortable posture (2.46)</td></tr><tr><td>Pranayama</td><td>Regulating breath (2.49)</td></tr><tr><td>Pratyahara</td><td>Withdrawing the senses</td></tr><tr><td>Dharana</td><td>Holding the mind on one place</td></tr><tr><td>Dhyana</td><td>Unbroken flow of attention</td></tr><tr><td>Samadhi</td><td>Absorption in the object</td></tr></table></div><p>The first five are outer (bahiranga) and the last three are inner (antaranga). Together dharana, dhyana and samadhi are called samyama (3.4).</p><h3 class="sub"><span class="n">C</span>Other key ideas</h3><ul><li><b>Kriya yoga</b> (2.1): tapas, svadhyaya and Ishvara pranidhana, for beginners.</li><li><b>Abhyasa and vairagya</b> (1.12): practice and detachment.</li><li><b>Samadhi:</b> samprajnata (with seed) and asamprajnata (seedless), ending in kaivalya.</li></ul><p><b>Conclusion.</b> Raja yoga gives a full path from conduct (yama, niyama) through body and breath to meditation and liberation.</p>
+<p class="pts"><b>Marks:</b> intro (1), vrittis and kleshas (2), eight limbs (5), other ideas (1), conclusion (1). <span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="10"><div class="mqh"><span class="marks-tag">Q22 &#183; 10 marks</span><span class="topic">Karma yoga</span></div>
+<p class="mqt">Explain Karma Yoga in detail.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<p><b>Introduction.</b> Karma yoga is the yoga of selfless action, taught mainly in the Bhagavad Gita (chapters 3 and 5). Arjuna refused to fight; Krishna said no one can stay without action (3.5), so the question is how to act without being bound.</p><h3 class="sub"><span class="n">A</span>The core teaching</h3><ul><li><b>Right to action only</b> (2.47): you have a right to the work, not to its fruits.</li><li><b>Nishkama karma:</b> act without desire for results.</li><li><b>Equanimity</b> (2.48): be even in success and failure; that evenness is yoga.</li><li><b>Skill in action</b> (2.50): yoga is doing the work well.</li><li><b>Yajna</b> (3.9): action done as an offering is free; other action binds.</li></ul><h3 class="sub"><span class="n">B</span>Practice</h3><ol><li>Do your own duty (<i>svadharma</i>) fully (3.35).</li><li>Give up the sense of &ldquo;I am the doer&rdquo; (3.27).</li><li>Offer the action and its result to the Lord (<i>Ishvararpana</i>, 3.30).</li><li>Work for the welfare of all (<i>loka-sangraha</i>, 3.20).</li></ol><h3 class="sub"><span class="n">C</span>Benefits</h3><p>It cleans the mind, reduces ego and stress, and prepares for meditation and knowledge. Swami Vivekananda made karma yoga a core of his teaching, with service as worship.</p><p><b>Conclusion.</b> Karma yoga turns daily work into yoga without leaving the world.</p>
+<p class="pts"><b>Marks:</b> intro (1), core teaching (4), practice (3), conclusion (2). <span class="src gen">general</span></p>
+</div></details></div>
+</section>
+
+<script>
+(function(){
+  var bar=document.getElementById('mqbar'); if(!bar) return;
+  var btns=bar.querySelectorAll('button');
+  btns.forEach(function(b){ b.addEventListener('click',function(){
+    var f=b.getAttribute('data-f'), cards=document.querySelectorAll('.mq');
+    if(f==='reveal'||f==='hide'){ document.querySelectorAll('.mq details.ans').forEach(function(d){ if(f==='reveal') d.setAttribute('open',''); else d.removeAttribute('open'); }); return; }
+    btns.forEach(function(x){ x.classList.remove('on'); }); b.classList.add('on');
+    cards.forEach(function(c){ c.style.display=(f==='all'||c.getAttribute('data-m')===f)?'':'none'; });
+  }); });
+})();
+</script>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
+</script>

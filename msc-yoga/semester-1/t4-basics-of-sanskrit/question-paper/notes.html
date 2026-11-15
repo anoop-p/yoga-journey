@@ -1,0 +1,490 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model Question Paper</title>
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 14px; }
+  .mq .mqh{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
+  .mq .marks-tag{ margin-bottom:0; }
+  .mq .topic{ font-size:11px; color:var(--muted); }
+  .mq .mqt{ font-weight:600; color:var(--ink); margin:0 0 10px; max-width:none; }
+  .mq details.ans > summary{ cursor:pointer; list-style:none; display:inline-block; padding:6px 12px; border-radius:8px; background:var(--teal-soft); color:var(--teal); font-size:13px; font-weight:600; }
+  .mq details.ans > summary::-webkit-details-marker{ display:none; }
+  .mq details.ans[open] > summary{ background:var(--surface-2); color:var(--muted); }
+  .mq .ansb{ margin-top:12px; border-top:1px dashed var(--border); padding-top:10px; }
+  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 10px; padding-left:22px; }
+  .mq .ansb p{ margin:0 0 8px; }
+  .mq .ansb .pts{ font-size:12.5px; color:var(--muted); }
+  .mq .ansb .pts b{ color:var(--teal); }
+  .mq .ansb .hi{ background:var(--teal-soft); border-radius:8px; padding:8px 12px; margin:0 0 10px; color:var(--ink); }
+  .mqbar{ display:flex; gap:8px; flex-wrap:wrap; margin:0 0 16px; position:sticky; top:0; z-index:5; background:var(--bg); padding:8px 0; }
+  .mqbar button{ font:inherit; font-size:13px; padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft); cursor:pointer; }
+  .mqbar button.on{ background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Question Paper &amp; Model Answers</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../index.html">&larr; T4 &middot; Basics of Sanskrit</a>
+    <div class="brand">
+      <div class="eyebrow">Basics of Sanskrit</div>
+      <h1>Question Paper &amp; Model Answers</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="guide"><span class="num">01</span><span>How to Use &amp; Paper Map</span></button>
+      <button class="nav-item" data-target="a"><span class="num">02</span><span>Section A &middot; 2 marks</span></button>
+      <button class="nav-item" data-target="b"><span class="num">03</span><span>Section B &middot; 5 marks</span></button>
+      <button class="nav-item" data-target="c"><span class="num">04</span><span>Section C &middot; 10 marks</span></button>
+    </nav>
+    <div class="sidebar-footer">The Semester 1 paper with model answers from standard Sanskrit grammar. Tags: class, general, added (confirm with teacher)</div>
+  </aside>
+
+  <main id="main">
+<section class="section" id="sec-guide">
+<div class="sec-head"><div class="kicker">00 &#183; Read this first</div><h2>Basics of Sanskrit: Question Paper</h2><p class="dek">The Semester 1 paper (MSC-I/4, DSCC-19, 60 marks, 2 hours) with model answers.</p></div>
+<div class="stat-strip"><div class="stat"><div class="v">13</div><div class="k">two-mark (any 10)</div></div><div class="stat"><div class="v">6</div><div class="k">five-mark (any 4)</div></div><div class="stat"><div class="v">3</div><div class="k">ten-mark (any 2)</div></div><div class="stat"><div class="v">60</div><div class="k">marks, 2 hours</div></div></div><p class="honest"><b>Honest note.</b> Your repo has no class notes for Basics of Sanskrit, so these answers come from standard Sanskrit grammar (Panini&#8217;s rules and common primers), tagged <span class="src gen">general</span>. Words are given in Devanagari with Roman transliteration (IAST). Your teacher may use a different example set; the rules are the same. The Roman transliteration questions (6, 22) follow IAST, which is what the paper asks for.</p><div class="table-wrap"><table><tr><th>Section</th><th>Questions</th><th>What it asks</th></tr><tr><td>A (2 marks)</td><td>1&ndash;13</td><td>Upasarga and avyaya, ajanta, api, upasargas, guna sandhi, samyuktakshara, vibhakti, viccheda, nipata, karana, anvaya, anyatra, tada</td></tr><tr><td>B (5 marks)</td><td>14&ndash;19</td><td>Avyaya, sam/vi/su examples, varnas, karaka, subanta, savarna-dirgha sandhi</td></tr><tr><td>C (10 marks)</td><td>20&ndash;22</td><td>A Hatha Pradipika verse (anvaya, pratipadartha, bhava), sandhi, ten Yoga Sutras of Samadhi Pada</td></tr></table></div><p>The paper asks in three languages (Sanskrit, Hindi, English); answer in English with the Sanskrit forms.</p></section>
+<section class="section" id="sec-a">
+<div class="sec-head"><div class="kicker">01 &#183; Section A</div><h2>Section A: Two-mark questions (answer any 10)</h2><p class="dek">Questions 1 to 13.</p></div>
+<div class="mqbar" id="mqbar"><button class="on" data-f="all">All</button><button data-f="2">2 marks</button><button data-f="5">5 marks</button><button data-f="10">10 marks</button><button data-f="reveal">Reveal all</button><button data-f="hide">Hide all</button></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q1 &#183; 2 marks</span><span class="topic">Upasarga</span></div>
+<p class="mqt">Is &lsquo;vi&rsquo; an upasarga or an avyaya?</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">&lsquo;vi&rsquo; (वि) is an upasarga (prefix).</div>
+<p>There are 22 upasargas: pra, parā, apa, sam, anu, ava, nis, nir, dus, dur, vi, ā, ni, adhi, api, ati, su, ut, abhi, prati, pari, upa. Because an upasarga never changes its form, it also belongs to the wider class of avyayas, but the specific name is upasarga. Example: vi + jñāna = vijñāna (special knowledge).</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q2 &#183; 2 marks</span><span class="topic">Subanta</span></div>
+<p class="mqt">What is the meaning of &lsquo;Ajanta word&rsquo;?</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">A word that ends in a vowel (ac).</div>
+<p><i>Ac</i> means vowel and <i>anta</i> means ending. Examples: rāma (राम), hari (हरि), guru (गुरु), latā (लता). A word ending in a consonant is <i>halanta</i>: marut, vāc.</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q3 &#183; 2 marks</span><span class="topic">Nipata</span></div>
+<p class="mqt">What is the meaning of &lsquo;api&rsquo;? Write an example.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">api (अपि) means also, even, too.</div>
+<p>Example: <i>saḥ api gacchati</i> (सः अपि गच्छति), &ldquo;he also goes&rdquo;. In the Yoga Sutra: <i>tasya api</i> becomes <i>tasyāpi</i> (&ldquo;of that also&rdquo;).</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q4 &#183; 2 marks</span><span class="topic">Upasarga</span></div>
+<p class="mqt">Write two upasargas and their use.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">pra (forward) and sam (together, well).</div>
+<p>An upasarga is put before a verb or noun and changes its meaning. <i>pra + āṇa</i> = <i>prāṇa</i> (life breath); <i>sam + ādhi</i> = <i>samādhi</i> (absorption). Others: vi (apart, special), ud (up), ni (down).</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q5 &#183; 2 marks</span><span class="topic">Guna sandhi</span></div>
+<p class="mqt">Write an example of Guna sandhi from the Yoga Sutra.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">svādhyāya + īśvara = svādhyāyeśvara (2.1).</div>
+<p>The Yoga Sutra 2.1 reads <i>tapaḥ-svādhyāyeśvara-praṇidhānāni kriyā-yogaḥ</i>. Here a (of svādhyāya) + ī (of īśvara) = e. Rule: a or ā followed by i, u, ṛ becomes e, o, ar (<i>ād guṇaḥ</i>, 6.1.87).</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q6 &#183; 2 marks</span><span class="topic">Script</span></div>
+<p class="mqt">Write two samyuktaksharas in Roman transliteration.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">kṣ (क्ष) as in <i>kṣetra</i>, and jñ (ज्ञ) as in <i>jñāna</i>.</div>
+<p>Other conjuncts: tr (त्र) in <i>mitra</i>, śv (श्व) in <i>śvāsa</i>, sth (स्थ) in <i>sthira</i>. A samyuktakshara is two or more consonants joined with no vowel between them.</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q7 &#183; 2 marks</span><span class="topic">Vibhakti</span></div>
+<p class="mqt">How many vibhaktis are in Sanskrit? Note them.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">Seven (eight if the vocative is counted).</div>
+<p>Prathamā (nominative), dvitīyā (accusative), tṛtīyā (instrumental), caturthī (dative), pañcamī (ablative), ṣaṣṭhī (genitive), saptamī (locative), and sambodhana (vocative, counted as the eighth). Forms of <i>rāma</i>: rāmaḥ, rāmam, rāmeṇa, rāmāya, rāmāt, rāmasya, rāme, he rāma.</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q8 &#183; 2 marks</span><span class="topic">Sandhi</span></div>
+<p class="mqt">What is the meaning of &lsquo;vicchedaḥ&rsquo;?</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">Separation: splitting a joined (sandhi) word into its parts.</div>
+<p>Example: <i>yogānuśāsanam</i> = <i>yoga + anuśāsanam</i>. Sandhi joins; viccheda splits.</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q9 &#183; 2 marks</span><span class="topic">Nipata</span></div>
+<p class="mqt">Write two examples for nipatas.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">ca (and) and na (not).</div>
+<p>A nipata is an indeclinable particle. More: vā (or), eva (only), hi (indeed), tu (but), iti (thus), api (also). Examples: <i>rāmaḥ ca kṛṣṇaḥ ca</i> (Rama and Krishna); <i>saḥ na gacchati</i> (he does not go).</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q10 &#183; 2 marks</span><span class="topic">Karaka</span></div>
+<p class="mqt">Which vibhakti is used for the karana karaka?</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">Tritiya (the third, instrumental).</div>
+<p>Rule: <i>kartṛ-karaṇayos tṛtīyā</i> (Pāṇini 2.3.18). Example: <i>bālaḥ hastena likhati</i> (the boy writes with the hand).</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q11 &#183; 2 marks</span><span class="topic">Sloka</span></div>
+<p class="mqt">What is anvaya in a sloka?</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">Arranging the words of a verse in their normal prose order.</div>
+<p>Verse order is set by the metre. Anvaya puts them as karta, karma, kriya, so the meaning can be read. See Q20 for an example.</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q12 &#183; 2 marks</span><span class="topic">Avyaya</span></div>
+<p class="mqt">Give an example for &lsquo;anyatra&rsquo;.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">anyatra (अन्यत्र) means elsewhere, in another place.</div>
+<p>Example: <i>saḥ anyatra gacchati</i> (सः अन्यत्र गच्छति), &ldquo;he goes elsewhere&rdquo;. It is an avyaya: it never changes.</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="2"><div class="mqh"><span class="marks-tag">Q13 &#183; 2 marks</span><span class="topic">Avyaya</span></div>
+<p class="mqt">Note the meaning of &lsquo;tada&rsquo;.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="hi">tadā (तदा) means then, at that time.</div>
+<p>Example from the Yoga Sutra 1.3: <i>tadā draṣṭuḥ svarūpe &lsquo;vasthānam</i>, &ldquo;then the seer abides in his own nature&rdquo;. Its pair is <i>yadā</i> (when).</p>
+<p class="pts"><span class="src gen">general</span></p>
+</div></details></div>
+</section>
+<section class="section" id="sec-b">
+<div class="sec-head"><div class="kicker">02 &#183; Section B</div><h2>Section B: Five-mark questions (answer any 4)</h2><p class="dek">Questions 14 to 19.</p></div>
+<div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q14 &#183; 5 marks</span><span class="topic">Avyaya</span></div>
+<p class="mqt">What is meant by avyaya? Give 5 examples.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<p>An avyaya is an indeclinable word: it has the same form in every gender, number and case. The old verse says it does not change (<i>vyeti</i>) in any of the three genders, any case or any number.</p><div class="table-wrap"><table><tr><th>Avyaya</th><th>Meaning</th><th>Example</th></tr><tr><td>ca (च)</td><td>and</td><td>rāmaḥ ca lakṣmaṇaḥ ca</td></tr><tr><td>na (न)</td><td>not</td><td>saḥ na gacchati</td></tr><tr><td>eva (एव)</td><td>only, indeed</td><td>tvam eva</td></tr><tr><td>atha (अथ)</td><td>now, then</td><td>atha yogānuśāsanam</td></tr><tr><td>tadā (तदा)</td><td>then</td><td>tadā draṣṭuḥ svarūpe &lsquo;vasthānam</td></tr></table></div><p>Avyayas include upasargas, nipatas, adverbs (atra, tatra, sadā) and conjunctions.</p>
+<p class="pts"><b>Marks:</b> meaning (2), five examples (3). <span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q15 &#183; 5 marks</span><span class="topic">Upasarga</span></div>
+<p class="mqt">Give 3 examples each for sam, vi and su.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<div class="table-wrap"><table><tr><th>Prefix</th><th>Examples (meaning)</th></tr><tr><td>sam (सम्)</td><td>samādhi (absorption), saṃyama (control), saṃyoga (union)</td></tr><tr><td>vi (वि)</td><td>viveka (discrimination), viyoga (separation), vijñāna (special knowledge)</td></tr><tr><td>su (सु)</td><td>sukha (comfort), subhāṣita (well said), sujana (good person)</td></tr></table></div><p>Sam = together or fully, vi = apart or special, su = good or well.</p>
+<p class="pts"><b>Marks:</b> three groups, 1&#189; each. <span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q16 &#183; 5 marks</span><span class="topic">Varna</span></div>
+<p class="mqt">Note the classification of Varnas.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<p>Varna here means a letter or sound of the alphabet (the Sanskrit alphabet is in the Maheshvara Sutras). Two main groups:</p><div class="table-wrap"><table><tr><th>Group</th><th>Letters</th></tr><tr><td>Vowels (svara, ac)</td><td>Short: a, i, u, ṛ, ḷ. Long: ā, ī, ū, ṝ. Diphthongs: e, ai, o, au</td></tr><tr><td>Consonants (vyanjana, hal)</td><td><b>Five vargas (25):</b> ka-varga (k kh g gh ṅ), ca-varga (c ch j jh ñ), ṭa-varga (ṭ ṭh ḍ ḍh ṇ), ta-varga (t th d dh n), pa-varga (p ph b bh m). <b>Semivowels:</b> y r l v. <b>Sibilants:</b> ś ṣ s. <b>Aspirate:</b> h</td></tr><tr><td>Others</td><td>anusvara (ṃ) and visarga (ḥ)</td></tr></table></div><p>By place of production: kanthya (throat), talavya (palate), murdhanya (cerebral), dantya (teeth) and oshthya (lips). By effort: voiced or unvoiced, aspirated or unaspirated.</p>
+<p class="pts"><b>Marks:</b> vowels (2), consonants (2), place of production (1). <span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q17 &#183; 5 marks</span><span class="topic">Karaka</span></div>
+<p class="mqt">Discuss the karaka and its usage in Sanskrit.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<p>A karaka is the relation of a noun to the verb (<i>kriyānvayi kārakam</i>). It tells who does what, to whom, with what, from where and where. There are six karakas:</p><div class="table-wrap"><table><tr><th>Karaka</th><th>Vibhakti</th><th>Meaning</th><th>Example</th></tr><tr><td>kartā</td><td>prathamā</td><td>doer</td><td>bālaḥ paṭhati (the boy reads)</td></tr><tr><td>karma</td><td>dvitīyā</td><td>object</td><td>bālaḥ pustakaṃ paṭhati</td></tr><tr><td>karaṇa</td><td>tṛtīyā</td><td>instrument</td><td>hastena likhati</td></tr><tr><td>sampradāna</td><td>caturthī</td><td>receiver</td><td>bālāya phalaṃ dadāti</td></tr><tr><td>apādāna</td><td>pañcamī</td><td>point of separation</td><td>vṛkṣāt patati</td></tr><tr><td>adhikaraṇa</td><td>saptamī</td><td>place or time</td><td>gṛhe tiṣṭhati</td></tr></table></div><p>Sambandha (genitive: &ldquo;of&rdquo;) and sambodhana (address) are not karakas: they do not connect to the verb directly. Usage: if you know the karaka, you know the case ending, so the word order can change without changing the meaning.</p>
+<p class="pts"><b>Marks:</b> meaning (1), six karakas (4). <span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q18 &#183; 5 marks</span><span class="topic">Subanta</span></div>
+<p class="mqt">Write a note on subantas.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<p>A subanta is a word that ends in a <i>sup</i> case ending: a noun, pronoun or adjective that has taken its vibhakti and vacana (<i>suptiṅantaṃ padam</i>). There are 21 sup endings (seven cases &times; three numbers). A word that ends in <i>tiṅ</i> is a verb (tinanta).</p><p>Subantas are grouped by gender (masculine, feminine, neuter) and by final letter (ajanta or halanta). Example, <i>rāma</i> (masculine, ends in a):</p><div class="table-wrap"><table><tr><th>Case</th><th>Singular</th><th>Dual</th><th>Plural</th></tr><tr><td>1</td><td>rāmaḥ</td><td>rāmau</td><td>rāmāḥ</td></tr><tr><td>2</td><td>rāmam</td><td>rāmau</td><td>rāmān</td></tr><tr><td>3</td><td>rāmeṇa</td><td>rāmābhyām</td><td>rāmaiḥ</td></tr><tr><td>4</td><td>rāmāya</td><td>rāmābhyām</td><td>rāmebhyaḥ</td></tr><tr><td>5</td><td>rāmāt</td><td>rāmābhyām</td><td>rāmebhyaḥ</td></tr><tr><td>6</td><td>rāmasya</td><td>rāmayoḥ</td><td>rāmāṇām</td></tr><tr><td>7</td><td>rāme</td><td>rāmayoḥ</td><td>rāmeṣu</td></tr></table></div>
+<p class="pts"><b>Marks:</b> definition (2), classification (1), example table (2). <span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="5"><div class="mqh"><span class="marks-tag">Q19 &#183; 5 marks</span><span class="topic">Sandhi</span></div>
+<p class="mqt">Describe the Savarnadirgha sandhi.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<p><b>Rule:</b> <i>akaḥ savarṇe dīrghaḥ</i> (Pāṇini 6.1.101). When a simple vowel (a, i, u, ṛ, ḷ, short or long) is followed by a similar vowel, both become one long vowel.</p><div class="table-wrap"><table><tr><th>Combination</th><th>Result</th><th>Example</th></tr><tr><td>a/ā + a/ā</td><td>ā</td><td>yoga + anuśāsanam = yogānuśāsanam</td></tr><tr><td>i/ī + i/ī</td><td>ī</td><td>kavi + indra = kavīndra</td></tr><tr><td>u/ū + u/ū</td><td>ū</td><td>guru + upadeśa = gurūpadeśa</td></tr><tr><td>ṛ + ṛ</td><td>ṝ</td><td>pitṛ + ṛṇam = pitṝṇam</td></tr></table></div><p>From the Yoga Sutra: <i>tasya + api</i> = <i>tasyāpi</i> (1.51) and <i>yoga + anuśāsanam</i> = <i>yogānuśāsanam</i> (1.1).</p>
+<p class="pts"><b>Marks:</b> rule (1), table (3), example (1). <span class="src gen">general</span></p>
+</div></details></div>
+</section>
+<section class="section" id="sec-c">
+<div class="sec-head"><div class="kicker">03 &#183; Section C</div><h2>Section C: Ten-mark questions (answer any 2)</h2><p class="dek">Questions 20 to 22.</p></div>
+<div class="mq" data-m="10"><div class="mqh"><span class="marks-tag">Q20 &#183; 10 marks</span><span class="topic">Hatha Pradipika sloka</span></div>
+<p class="mqt">Take a sloka from the Hatha Pradipika and explain the anvaya, pratipadartha, bhava, etc.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<p><b>Verse (HYP 1.1):</b></p><p class="dv">श्रीआदिनाथाय नमोऽस्तु तस्मै येनोपदिष्टा हठयोगविद्या ।<br>विराजते प्रोन्नतराजयोगमारोढुमिच्छोरधिरोहिणीव ॥</p><p><i>śrī-ādināthāya namo &lsquo;stu tasmai yenopadiṣṭā haṭha-yoga-vidyā | virājate pronnata-rājayogam āroḍhum icchor adhirohiṇīva ||</i></p><h3 class="sub"><span class="n">A</span>Anvaya (prose order)</h3><p><i>yena haṭha-yoga-vidyā upadiṣṭā, tasmai śrī-ādināthāya namaḥ astu. (sā) pronnata-rājayogam āroḍhum icchoḥ adhirohiṇī iva virājate.</i></p><h3 class="sub"><span class="n">B</span>Pratipadartha (word meanings)</h3><div class="table-wrap"><table><tr><th>Word</th><th>Meaning</th></tr><tr><td>śrī-ādināthāya</td><td>to the revered Adinatha (Lord Shiva)</td></tr><tr><td>namaḥ astu</td><td>let there be salutation</td></tr><tr><td>tasmai</td><td>to him</td></tr><tr><td>yena</td><td>by whom</td></tr><tr><td>upadiṣṭā</td><td>was taught</td></tr><tr><td>haṭha-yoga-vidyā</td><td>the knowledge of hatha yoga</td></tr><tr><td>virājate</td><td>shines</td></tr><tr><td>pronnata-rājayogam</td><td>the very high raja yoga</td></tr><tr><td>āroḍhum icchoḥ</td><td>of one who wishes to climb</td></tr><tr><td>adhirohiṇī iva</td><td>like a staircase</td></tr></table></div><h3 class="sub"><span class="n">C</span>Translation and bhava (meaning)</h3><p><b>Translation:</b> Salutation to Lord Adinatha, who taught hatha yoga, which shines like a staircase for one who wishes to climb to the high peak of raja yoga.</p><p><b>Bhava:</b> The author begins with a salutation to the first teacher, Shiva, and states the aim of the book: hatha yoga is not an end but a ladder to raja yoga (samadhi). Beginners need a ladder to reach a high place; so hatha yoga prepares body and breath for the stilled mind.</p><p><b>Other points:</b> Metre: Upajati (Indravajra and Upendravajra mix). Figure of speech: <i>upama</i> (simile, &ldquo;iva&rdquo;). Sandhi: <i>namo &lsquo;stu</i> = namaḥ + astu; <i>yenopadiṣṭā</i> = yena + upadiṣṭā.</p>
+<p class="pts"><b>Marks:</b> verse (1), anvaya (2), pratipadartha (3), translation (2), bhava (2). <span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="10"><div class="mqh"><span class="marks-tag">Q21 &#183; 10 marks</span><span class="topic">Sandhi</span></div>
+<p class="mqt">Discuss the use and variations of Sandhis.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<p><b>Introduction.</b> Sandhi (joining) is the change of sounds when two words or parts meet. The rule is <i>saṃhitaikapade nityā nityā dhātūpasargayoḥ, nityā samāse vākye tu sā vivakṣām apekṣate</i>: it is compulsory inside a word and in compounds, and optional between words in a sentence. It makes speech smooth and is the basis of the verse metre. Splitting it back is called <i>viccheda</i>.</p><h3 class="sub"><span class="n">A</span>Three kinds</h3><div class="table-wrap"><table><tr><th>Kind</th><th>Meets</th><th>Types and example</th></tr><tr><td>Svara (ac) sandhi</td><td>vowel + vowel</td><td>Savarna-dirgha (yoga + anuśāsanam = yogānuśāsanam); Guna (svādhyāya + īśvara = svādhyāyeśvara); Vriddhi (sadā + eva = sadaiva); Yan (iti + ādi = ityādi); Ayadi (ne + anam = nayanam); Purvarupa (so + api = so &lsquo;pi); Pararupa; Prakritibhava</td></tr><tr><td>Vyanjana (hal) sandhi</td><td>consonant + consonant or vowel</td><td>Jastva (vāk + īśaḥ = vāgīśaḥ); Anusvara (sam + yoga = saṃyoga); Parasavarna; Schutva (tat + ca = tacca); Stutva</td></tr><tr><td>Visarga sandhi</td><td>visarga + any sound</td><td>Utva (saḥ + api = so &lsquo;pi); Ru-sandhi (punaḥ + api = punarapi); Visarga becomes s, ś or ṣ; lopa (saḥ + eṣaḥ = sa eṣaḥ)</td></tr></table></div><h3 class="sub"><span class="n">B</span>Use in yoga study</h3><p>Yoga Sutra and Hatha Pradipika verses are full of sandhi: <i>yogānuśāsanam</i>, <i>tasyāpi</i>, <i>svarūpe &lsquo;vasthānam</i>. Without splitting them, one cannot give the anvaya and pratipadartha.</p><p><b>Conclusion.</b> Sandhi is three families with a few rules each; learn the rule, an example and the split.</p>
+<p class="pts"><b>Marks:</b> intro (2), three kinds with examples (6), use and conclusion (2). <span class="src gen">general</span></p>
+</div></details></div>
+<div class="mq" data-m="10"><div class="mqh"><span class="marks-tag">Q22 &#183; 10 marks</span><span class="topic">Yoga Sutra</span></div>
+<p class="mqt">Note ten Yoga Sutras of Samadhi Pada in Roman transliteration as per the sequence.</p>
+<details class="ans"><summary>Tap to reveal answer</summary><div class="ansb">
+<p>The first ten sutras of the Samadhi Pada, in order:</p><div class="table-wrap"><table><tr><th>No.</th><th>Sutra (IAST)</th><th>Meaning</th></tr><tr><td>1.1</td><td>atha yogānuśāsanam</td><td>Now, the teaching of yoga</td></tr><tr><td>1.2</td><td>yogaś citta-vṛtti-nirodhaḥ</td><td>Yoga is the stilling of the mind&#8217;s movements</td></tr><tr><td>1.3</td><td>tadā draṣṭuḥ svarūpe &lsquo;vasthānam</td><td>Then the seer rests in his own nature</td></tr><tr><td>1.4</td><td>vṛtti-sārūpyam itaratra</td><td>Otherwise he takes the form of the movements</td></tr><tr><td>1.5</td><td>vṛttayaḥ pañcatayyaḥ kliṣṭākliṣṭāḥ</td><td>The movements are five, painful or not painful</td></tr><tr><td>1.6</td><td>pramāṇa-viparyaya-vikalpa-nidrā-smṛtayaḥ</td><td>Right knowledge, error, imagination, sleep, memory</td></tr><tr><td>1.7</td><td>pratyakṣānumānāgamāḥ pramāṇāni</td><td>Right knowledge: perception, inference, testimony</td></tr><tr><td>1.8</td><td>viparyayo mithyā-jñānam atad-rūpa-pratiṣṭham</td><td>Error: false knowledge not resting on the real form</td></tr><tr><td>1.9</td><td>śabda-jñānānupātī vastu-śūnyo vikalpaḥ</td><td>Imagination: follows words, has no real object</td></tr><tr><td>1.10</td><td>abhāva-pratyayālambanā vṛttir nidrā</td><td>Sleep: the movement based on the sense of absence</td></tr></table></div><p>Write them in this order, with numbers. The sutras name the vrittis that 1.6 lists and 1.7 to 1.11 describe.</p>
+<p class="pts"><b>Marks:</b> 1 mark per sutra. <span class="src gen">general</span></p>
+</div></details></div>
+</section>
+
+<script>
+(function(){
+  var bar=document.getElementById('mqbar'); if(!bar) return;
+  var btns=bar.querySelectorAll('button');
+  btns.forEach(function(b){ b.addEventListener('click',function(){
+    var f=b.getAttribute('data-f'), cards=document.querySelectorAll('.mq');
+    if(f==='reveal'||f==='hide'){ document.querySelectorAll('.mq details.ans').forEach(function(d){ if(f==='reveal') d.setAttribute('open',''); else d.removeAttribute('open'); }); return; }
+    btns.forEach(function(x){ x.classList.remove('on'); }); b.classList.add('on');
+    cards.forEach(function(c){ c.style.display=(f==='all'||c.getAttribute('data-m')===f)?'':'none'; });
+  }); });
+})();
+</script>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
+</script>
