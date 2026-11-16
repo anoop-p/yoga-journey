@@ -1,0 +1,367 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>T4 Unit 1: Devanagari and Varnamala</title>
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 14px; }
+  .mq .mqh{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
+  .mq .marks-tag{ margin-bottom:0; }
+  .mq .topic{ font-size:11px; color:var(--muted); }
+  .mq .mqt{ font-weight:600; color:var(--ink); margin:0 0 10px; max-width:none; }
+  .mq details.ans > summary{ cursor:pointer; list-style:none; display:inline-block; padding:6px 12px; border-radius:8px; background:var(--teal-soft); color:var(--teal); font-size:13px; font-weight:600; }
+  .mq details.ans > summary::-webkit-details-marker{ display:none; }
+  .mq details.ans[open] > summary{ background:var(--surface-2); color:var(--muted); }
+  .mq .ansb{ margin-top:12px; border-top:1px dashed var(--border); padding-top:10px; }
+  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 10px; padding-left:22px; }
+  .mq .ansb p{ margin:0 0 8px; }
+  .mq .ansb .pts{ font-size:12.5px; color:var(--muted); }
+  .mq .ansb .pts b{ color:var(--teal); }
+  .mq .ansb .hi{ background:var(--teal-soft); border-radius:8px; padding:8px 12px; margin:0 0 10px; color:var(--ink); }
+  .mqbar{ display:flex; gap:8px; flex-wrap:wrap; margin:0 0 16px; position:sticky; top:0; z-index:5; background:var(--bg); padding:8px 0; }
+  .mqbar button{ font:inherit; font-size:13px; padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft); cursor:pointer; }
+  .mqbar button.on{ background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Unit 1: Devanagari and Varnamala</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../index.html">&larr; T4 &middot; Basics of Sanskrit</a>
+    <div class="brand">
+      <div class="eyebrow">DSCC-19 &middot; Basics of Sanskrit</div>
+      <h1>Unit 1: Devanagari and Varnamala</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="guide"><span class="num">01</span><span>Read this first</span></button>
+      <button class="nav-item" data-target="orthography"><span class="num">02</span><span>Orthography</span></button>
+      <button class="nav-item" data-target="akshara"><span class="num">03</span><span>Akshara and Varna</span></button>
+      <button class="nav-item" data-target="script"><span class="num">04</span><span>Devanagari and its features</span></button>
+      <button class="nav-item" data-target="count"><span class="num">05</span><span>How many letters?</span></button>
+      <button class="nav-item" data-target="vowels"><span class="num">06</span><span>Vowels (svara)</span></button>
+      <button class="nav-item" data-target="consonants"><span class="num">07</span><span>Consonants (vyanjana)</span></button>
+      <button class="nav-item" data-target="forms"><span class="num">08</span><span>Purnakshara, ardhakshara, samyuktakshara</span></button>
+      <button class="nav-item" data-target="translit"><span class="num">09</span><span>Roman transliteration</span></button>
+      <button class="nav-item" data-target="chart"><span class="num">10</span><span>Full varnamala chart</span></button>
+      <button class="nav-item" data-target="words"><span class="num">11</span><span>Practice words</span></button>
+      <button class="nav-item" data-target="exam"><span class="num">12</span><span>How this part is asked</span></button>
+      <button class="nav-item" data-target="next"><span class="num">13</span><span>Still to come</span></button>
+    </nav>
+    <div class="sidebar-footer">Basics of Sanskrit &middot; Semester 1</div>
+  </aside>
+
+  <main id="main">
+<section class="section" id="sec-guide">
+<div class="sec-head"><div class="kicker">01 &#183; Read this first</div><h2>Unit 1: Devanagari and Varnamala</h2><p class="dek">What the teacher has covered so far: orthography, the letters and Roman transliteration.</p></div>
+<div class="stat-strip"><div class="stat"><div class="v">3</div><div class="k">classes covered</div></div><div class="stat"><div class="v">15</div><div class="k">vowels</div></div><div class="stat"><div class="v">33</div><div class="k">consonants</div></div><div class="stat"><div class="v">48</div><div class="k">primary letters</div></div><div class="stat"><div class="v">5</div><div class="k">diacritical marks</div></div></div><p class="honest"><b>Honest note.</b> These notes come from the recordings of Chapters 1, 2 and 3. They cover the first three points of the Unit 1 syllabus: orthography of the Devanagari varnamala, classification of varnas (purnakshara, samyuktakshara, mrduvyanjana) and writing the varnamala in Roman transliteration. Subantas, sandhis and samasa have not been taught yet. The speech-to-text spells many Sanskrit words loosely, so verses (the Medini Kosha and Mahabhashya lines) are described, not copied. Devanagari letters and pronunciation hints are <span class="src gen">general</span>, because the transcripts cannot carry them. Tags: <span class="src cls">class</span> from your class, <span class="src gen">general</span> standard grammar, <span class="src add">added</span> added by me, confirm with your teacher.</p><div class="table-wrap"><table><tr><th>Syllabus point</th><th>Where in these notes</th></tr><tr><td>Orthography of Devanagari varnamala</td><td>Sections 02 to 07</td></tr><tr><td>Classification of varnas: purnakshara, samyuktakshara, mrduvyanjana</td><td>Sections 07 and 08</td></tr><tr><td>Writing varnamala in Roman transliteration</td><td>Sections 09 to 11</td></tr><tr><td>Subantas, sandhis, samasa</td><td>Not taught yet (Section 13)</td></tr></table></div></section>
+<section class="section" id="sec-orthography">
+<div class="sec-head"><div class="kicker">02 &#183; Chapter 1</div><h2>Orthography</h2><p class="dek">The system of writing a language correctly.</p></div>
+<p>Orthography is the set of rules, symbols and conventions used to write a language correctly. It includes correct spelling, how each letter is written, and the order in which letters are arranged. <span class="src cls">class</span></p><div class="table-wrap"><table><tr><th>Sanskrit name</th><th>Meaning</th></tr><tr><td>Akshara-vinyasa (shastra)</td><td>Arrangement of letters</td></tr><tr><td>Varna-vinyasa (shastra)</td><td>Arrangement of varnas</td></tr><tr><td>Lekhana-paddhati</td><td>Method of writing</td></tr></table></div><h3 class="sub"><span class="n">A</span>Alphabet or alphabets?</h3><ul class="notes"><li>"Alphabet" is a collective noun: the whole set of letters of one language, like a garland made of many flowers. One language has one alphabet, one varnamala.</li><li>A single letter (A, B, ka, kha) is a letter, not an alphabet. Saying "A is an alphabet" is wrong.</li><li>"Alphabets" in the plural is used only for the sets of two or more languages: the Tamil and Telugu alphabets, the Malayalam and Hindi alphabets.</li><li>Other collective nouns work the same way: team, furniture, equipment. A single player is not a team.</li></ul><p class="src-foot"><span class="src cls">class</span> Chapter 1</p></section>
+<section class="section" id="sec-akshara">
+<div class="sec-head"><div class="kicker">03 &#183; Chapter 1</div><h2>Akshara and Varna</h2><p class="dek">Two words for "letter", with a subtle difference.</p></div>
+<p>Normally you may use either word for a letter. The subtle difference is between the sound and its written form. <span class="src cls">class</span></p><div class="table-wrap"><table><tr><th></th><th>Akshara</th><th>Varna</th></tr><tr><td>Meaning</td><td>The sound itself (phoneme)</td><td>The written form or shape of the sound (grapheme)</td></tr><tr><td>Root idea</td><td>na kshara: that which does not perish</td><td>varnayati: that which describes or gives a form</td></tr><tr><td>Quality</td><td>Permanent, unchanging</td><td>The shape given to the sound</td></tr><tr><td>Gender</td><td>Neuter (napumsaka-linga)</td><td>Masculine (pullinga)</td></tr></table></div><p>Why the sound is "imperishable": water turned into ice or vapour has not lost its fluid nature, because water exists elsewhere. In the same way the sound "a" stays the same in whatever word it is used. The teacher stressed that examples are only a way to understand the idea. <span class="src cls">class</span></p><ul class="notes"><li><b>Mahabhashya of Patanjali (2nd ahnika):</b> the akshara is imperishable; it is also called varna. So either word can be used.</li><li><b>Medini Kosha</b> (a Sanskrit dictionary) defines the letters from "a" up to "ksha" as 51, called varnas.</li><li>The three genders are masculine, feminine and neuter. Patanjali says gender is learned by usage, not taught by rule (lingam ashishyam lokashrayatvat).</li><li>If "akara" is used in the masculine it is a name of Vishnu (Vishnu Sahasranama), meaning all-pervading.</li><li>The grammarians also call sound <b>Shabda Brahma</b>: air passing through eight places in the mouth takes the form of sound and then returns to its source.</li></ul><p class="honest"><b>Honest note.</b> The verse quoted from the Medini Kosha and the Mahabhashya line are only partly legible in the transcript. Only their meaning is written here. Copy the exact Sanskrit from your teacher's PDF.</p></section>
+<section class="section" id="sec-script">
+<div class="sec-head"><div class="kicker">04 &#183; Chapter 1</div><h2>Devanagari and its features</h2><p class="dek">The script used to write the Sanskrit varnamala.</p></div>
+<p>A script (lipi) is the visual system used to write a language: the characters and the rules for writing them. Sanskrit and Hindi share one script, Devanagari. The word "Rama" can be written in Roman, Malayalam or Devanagari script and sounds the same. <span class="src cls">class</span></p><p><b>Meaning of Devanagari.</b> Deva (divine beings) + nagara (city). A nagara is a city with large buildings and facilities like mountains. Devanagari is "that which came from the city of the gods". It is feminine because bhasha and lipi are feminine words. The title shows the script's beauty and structure. <span class="src cls">class</span></p><h3 class="sub"><span class="n">A</span>Characteristics of the script</h3><div class="table-wrap"><table><tr><th>Feature</th><th>Detail</th></tr><tr><td>Number of letters</td><td>48 primary letters: 15 vowels + 33 consonants</td></tr><tr><td>Direction</td><td>Written left to right, in curved shapes without sharp edges</td></tr><tr><td>Headline</td><td>Letters hang from a horizontal top line, the shirorekha</td></tr><tr><td>Inherent vowel</td><td>Each consonant carries a short "a" (ka, ca). Other vowels are added as marks (ku, kru)</td></tr><tr><td>Phonetic</td><td>Words are written exactly as spoken. No silent letters (English: learn, know, sign, guitar)</td></tr><tr><td>Akshara system</td><td>Vowels are written separately; each consonant letter carries a vowel</td></tr><tr><td>Systematic</td><td>Letters are arranged in a grid by the place in the mouth where the sound is made</td></tr><tr><td>Sandhi</td><td>Sounds join when words come together</td></tr></table></div><p>Eight places of articulation (varnotpatti-sthana): chest, throat, head, root of the tongue, teeth, nose, lips, palate. The teacher will discuss these again in a later class. <span class="src cls">class</span></p><h3 class="sub"><span class="n">B</span>First look at sandhi</h3><p>When two words come close, the spelling changes to match the blended sound. The teacher's examples: <b>maha + isha = mahesha</b> (the two vowels become "e") and <b>ganga + udakam = gangodakam</b> (they become "o"). <span class="src cls">class</span> I identified these as <b>guna sandhi</b> examples, so confirm when sandhi is taught. <span class="src add">added</span></p></section>
+<section class="section" id="sec-count">
+<div class="sec-head"><div class="kicker">05 &#183; Chapter 1</div><h2>How many letters?</h2><p class="dek">Three counts, one to use in the exam.</p></div>
+<div class="table-wrap"><table><tr><th>Count</th><th>Source</th><th>Why it differs</th></tr><tr><td>51</td><td>Medini Kosha (a to ksha)</td><td>Includes some conjuncts such as ksha</td></tr><tr><td>63 or 64</td><td>Paniniya Shiksha (Panini)</td><td>Includes letters used only in the Vedas and special characters</td></tr><tr><td>48</td><td>Traditional view, used in this course</td><td>15 vowels + 33 consonants; conjuncts can be formed without limit, so they are not counted as primary letters</td></tr></table></div><p>Use <b>48</b> in the exam and mention the others as other views. <span class="src cls">class</span></p><p class="honest"><b>Honest note.</b> In Chapter 1 the transcript garbles the list of the last letters (ya ra la va, sha, sha, sha, ha and some conjuncts). In Chapter 2 the teacher is clear that the soft consonants are the last 8 (ya ra la va, sha sha sa ha). This page uses the Chapter 2 version.</p></section>
+<section class="section" id="sec-vowels">
+<div class="sec-head"><div class="kicker">06 &#183; Chapter 2</div><h2>Vowels (svara)</h2><p class="dek">15 of them, divided by length.</p></div>
+<p><b>Svara</b> is the vowel (singular, masculine). <b>Svarah</b> is the plural. There are 15: a, ā, i, ī, u, ū, ṛ, ṝ, ḷ, e, ai, o, au, plus aṃ (anusvara) and aḥ (visarga). Another version counts only 13 vowels and treats the last two as special characters. <span class="src cls">class</span></p><p><b>Naming a letter:</b> add "kara" after it: akara, ikara, kakara, makara. The one exception is ra, called <b>repha</b>, not "rakara". <span class="src cls">class</span></p><h3 class="sub"><span class="n">A</span>Length of vowels (matra)</h3><p>A matra is the time taken to say a sound.</p><div class="table-wrap"><table><tr><th>Type</th><th>Name</th><th>Time</th><th>Note</th></tr><tr><td>Short</td><td>Hrasva</td><td>1 matra (ekamatra)</td><td>a, i, u, ṛ</td></tr><tr><td>Long</td><td>Dirgha</td><td>2 matras (dvimatra)</td><td>Two short vowels join to make one long: a + a = ā</td></tr><tr><td>Prolonged</td><td>Pluta</td><td>3 matras (trimatra)</td><td>Said when calling from a distance ("Rama-a-a!"); written by adding a "3" after the vowel</td></tr></table></div><p>Which vowels have which lengths: <b>a, i, u, ṛ</b> have short, long and pluta. <b>ḷ</b> has only short and pluta in classical Sanskrit (its long form is Vedic only). <b>e, ai, o, au</b> have only long and pluta (their short forms are Vedic only). <span class="src cls">class</span></p><p>Why length matters: it changes the time of the word, the poetic metre (chandas) and even the meaning. The teacher gave a Vishnu Sahasranama word, pranadah (giver of life), which would mean something very different if the vowel length were wrong. <span class="src cls">class</span></p><p class="honest"><b>Honest note.</b> The contrasting word in the teacher's example is garbled in the transcript, so only the correct word is written here.</p><h3 class="sub"><span class="n">B</span>Anusvara and visarga</h3><div class="table-wrap"><table><tr><th>Name</th><th>Sound</th><th>Example</th></tr><tr><td>Anusvara aṃ</td><td>Nasal sound</td><td>rāmam, harim, gurum</td></tr><tr><td>Visarga aḥ</td><td>A light "h", like half a ha</td><td>rāmaḥ, hariḥ, guruḥ</td></tr></table></div><p>Both are called <b>ayogavaha</b>: they do not merge into the vowels or consonants but attach to the sound before them. Each takes half a matra (ardhamatra). <span class="src cls">class</span></p></section>
+<section class="section" id="sec-consonants">
+<div class="sec-head"><div class="kicker">07 &#183; Chapter 2</div><h2>Consonants (vyanjana)</h2><p class="dek">33 of them, in groups.</p></div>
+<p><b>Vyanjana</b> (singular) and <b>vyanjanani</b> (plural). Neuter gender. There are 33, and each takes half a matra. <span class="src cls">class</span></p><div class="table-wrap"><table><tr><th>Group (varga)</th><th>Letters</th></tr><tr><td>ka-varga</td><td>ka kha ga gha ṅa</td></tr><tr><td>ca-varga</td><td>ca cha ja jha ña</td></tr><tr><td>ṭa-varga</td><td>ṭa ṭha ḍa ḍha ṇa</td></tr><tr><td>ta-varga</td><td>ta tha da dha na</td></tr><tr><td>pa-varga</td><td>pa pha ba bha ma</td></tr><tr><td>The last 8</td><td>ya ra la va, śa ṣa sa ha</td></tr></table></div><ul class="notes"><li><b>Varga</b> means series. To refer to a series, take its first letter and add "varga": ka-varga, ca-varga. <span class="src cls">class</span></li><li>The last letter of every varga is a nasal sound (ṅa, ña, ṇa, na, ma). <span class="src cls">class</span></li><li>Writing tip: tha and dha in the ta-varga, and bha in the pa-varga, do not have the full headline. It runs only along the stem. Examples: ratham, dhanam, abhayam. <span class="src cls">class</span></li></ul><h3 class="sub"><span class="n">A</span>Classification of consonants</h3><div class="table-wrap"><table><tr><th>Name</th><th>Letters</th><th>Notes</th></tr><tr><td>Mrduvyanjana (soft consonants), beginner level</td><td>ya ra la va śa ṣa sa ha (the last 8)</td><td>Mrdu = soft. Made with light, open air flow, without the friction of ka, kha etc. Taught only to beginners; higher grammar does not use this term</td></tr><tr><td>Sparsha (touch)</td><td>ka to ma, the first 25</td><td>Masculine</td></tr><tr><td>Antastha</td><td>ya ra la va</td><td>Masculine</td></tr><tr><td>Ushman</td><td>śa ṣa sa ha</td><td>Masculine</td></tr></table></div><p>Gender summary from class: svara (masculine), vyanjana (neuter), sparsha (masculine), antastha (masculine), ushman (masculine). <span class="src cls">class</span></p><p class="honest"><b>Honest note.</b> The teacher puts ha with the ushman group in Chapter 2. Some grammar books treat ha separately, so check your textbook.</p></section>
+<section class="section" id="sec-forms">
+<div class="sec-head"><div class="kicker">08 &#183; Chapter 2</div><h2>Purnakshara, ardhakshara, samyuktakshara</h2><p class="dek">The three forms of a letter.</p></div>
+<div class="table-wrap"><table><tr><th>Term</th><th>Meaning</th><th>Examples</th></tr><tr><td>Purnakshara (full letter)</td><td>A consonant combined with a vowel. Also called gunitakshara because it includes a vowel. The inherent "a" counts</td><td>ka, ki, ku, ca, ti, pa</td></tr><tr><td>Ardhakshara (half letter)</td><td>A pure consonant with the vowel removed. Shown with a small slanting stroke below, the halanta. Takes half a matra</td><td>k (क्), c, t</td></tr><tr><td>Samyuktakshara (conjunct)</td><td>Two or more consonants joined with no vowel between them</td><td>kka, mma (amma), kṣa, tra</td></tr></table></div><p>How a samyuktakshara is formed: remove the vowel from the first consonant (making it an ardhakshara) and add another consonant. Example: k + ka = kka. In the word <b>amma</b>: a + m + ma, and the double ma is the samyuktakshara. <span class="src cls">class</span></p><p>Word endings: a word ending in a vowel is <b>ajanta</b>; a word ending in a consonant is <b>halanta</b>. These come back in Unit 1 under subantas. <span class="src gen">general</span></p><h3 class="sub"><span class="n">A</span>Summary from the end of Chapter 2</h3><ul class="notes"><li>Vowel = svara. Short 1 matra, long 2, pluta 3.</li><li>Anusvara and visarga = ayogavaha, half matra.</li><li>Consonant = vyanjana, half matra.</li><li>The last eight consonants = mrduvyanjana (soft).</li><li>Consonant with vowel = purnakshara (gunitakshara).</li><li>Consonant without vowel = ardhakshara.</li><li>Joined consonants = samyuktakshara.</li></ul></section>
+<section class="section" id="sec-translit">
+<div class="sec-head"><div class="kicker">09 &#183; Chapter 3</div><h2>Roman transliteration</h2><p class="dek">Changing the script, not the language.</p></div>
+<div class="table-wrap"><table><tr><th></th><th>Translation</th><th>Transliteration</th></tr><tr><td>What changes</td><td>The language</td><td>The script</td></tr><tr><td>Meaning</td><td>Stays the same</td><td>Stays the same</td></tr><tr><td>Example</td><td>mother = amma (Malayalam)</td><td>amma written in Roman letters instead of Malayalam letters</td></tr></table></div><p>It is what we do when we type our own language in English letters on a phone. <span class="src cls">class</span></p><p><b>The problem.</b> Sanskrit has 48 letters, the Roman script has 26. <b>The solution:</b> small marks added above or below Roman letters, called <b>diacritical marks</b>. So Roman transliteration means using diacritical marks on Roman letters to give the exact sound of the Devanagari letter. Example: Malayalam, Keralam: a line over the long a and a dot under the retroflex l. <span class="src cls">class</span></p><h3 class="sub"><span class="n">A</span>The 5 marks and where they are used</h3><div class="table-wrap"><table><tr><th>Mark</th><th>Where</th><th>Letters</th></tr><tr><td>Acute accent (slanting line above)</td><td>Sibilant</td><td>ś</td></tr><tr><td>Over dot</td><td>Nasal of the ka-varga</td><td>ṅ (rarely also the anusvara)</td></tr><tr><td>Under dot</td><td>Vowels and retroflex letters</td><td>ṛ ḷ ṭ ṭh ḍ ḍh ṇ ṣ and ṃ ḥ</td></tr><tr><td>Macron (line above)</td><td>Long vowels</td><td>ā ī ū ṝ</td></tr><tr><td>Tilde (curved line above n)</td><td>Nasal of the ca-varga</td><td>ñ</td></tr></table></div><p>Only <b>17 places</b> need a mark: the long vowels, ṛ ṝ ḷ, aṃ aḥ, ṅ ñ, the five retroflex letters, and ś ṣ. Do not memorise the technical names of the marks; learn how they are used. <span class="src cls">class</span></p><h3 class="sub"><span class="n">B</span>Rules</h3><ul class="notes"><li>The ṭa-varga and the ta-varga differ only by the dot below. Without the dot you have the ta-varga.</li><li>The anusvara is written ṃ. Sometimes it is seen as ṁ (dot above); same sound.</li><li><b>At the end of a word</b>, no mark is needed: the anusvara is written as a plain "m": rāmam.</li><li>In a conjunct there is no vowel between the consonants, so no "a" is written: kaṅkaṇam (ṅ + ka).</li></ul><p class="src-foot"><span class="src cls">class</span> Chapter 3. The mark table is arranged from the teacher's list.</p></section>
+<section class="section" id="sec-chart">
+<div class="sec-head"><div class="kicker">10 &#183; Chapter 3</div><h2>Full varnamala chart</h2><p class="dek">Devanagari, Roman transliteration and sound together.</p></div>
+<p class="honest"><b>Honest note.</b> The Devanagari letters and sound hints in this chart are <span class="src gen">general</span> (standard Sanskrit). The transcripts give the Roman list only. Check against your teacher's sheet.</p><h3 class="sub"><span class="n">A</span>Vowels</h3><div class="table-wrap"><table><tr><th>Devanagari</th><th>Roman</th><th>Say it like</th><th>Length</th></tr><tr><td>अ</td><td>a</td><td>a in about</td><td>short</td></tr><tr><td>आ</td><td>ā</td><td>a in father</td><td>long</td></tr><tr><td>इ</td><td>i</td><td>i in bit</td><td>short</td></tr><tr><td>ई</td><td>ī</td><td>ee in feet</td><td>long</td></tr><tr><td>उ</td><td>u</td><td>u in put</td><td>short</td></tr><tr><td>ऊ</td><td>ū</td><td>oo in boot</td><td>long</td></tr><tr><td>ऋ</td><td>ṛ</td><td>ri in rich</td><td>short</td></tr><tr><td>ॠ</td><td>ṝ</td><td>long ṛ</td><td>long</td></tr><tr><td>ऌ</td><td>ḷ</td><td>lri (rare)</td><td>short</td></tr><tr><td>ए</td><td>e</td><td>ay in they</td><td>long</td></tr><tr><td>ऐ</td><td>ai</td><td>ai in aisle</td><td>long</td></tr><tr><td>ओ</td><td>o</td><td>o in go</td><td>long</td></tr><tr><td>औ</td><td>au</td><td>ow in cow</td><td>long</td></tr><tr><td>अं</td><td>aṃ</td><td>nasal (anusvara)</td><td>half matra</td></tr><tr><td>अः</td><td>aḥ</td><td>light h (visarga)</td><td>half matra</td></tr></table></div><h3 class="sub"><span class="n">B</span>Consonants</h3><div class="table-wrap"><table><tr><th>Group</th><th>Devanagari</th><th>Roman</th></tr><tr><td>ka-varga</td><td>क ख ग घ ङ</td><td>ka kha ga gha ṅa</td></tr><tr><td>ca-varga</td><td>च छ ज झ ञ</td><td>ca cha ja jha ña</td></tr><tr><td>ṭa-varga</td><td>ट ठ ड ढ ण</td><td>ṭa ṭha ḍa ḍha ṇa</td></tr><tr><td>ta-varga</td><td>त थ द ध न</td><td>ta tha da dha na</td></tr><tr><td>pa-varga</td><td>प फ ब भ म</td><td>pa pha ba bha ma</td></tr><tr><td>Antastha</td><td>य र ल व</td><td>ya ra la va</td></tr><tr><td>Ushman</td><td>श ष स ह</td><td>śa ṣa sa ha</td></tr></table></div><p>The aspirated letters (kha, gha, cha, jha and so on) are the plain letter followed by a breath of "h". The retroflex letters are said with the tongue curled back. Say "ca" as in church. <span class="src gen">general</span></p><h3 class="sub"><span class="n">C</span>Vowel signs on a consonant</h3><div class="table-wrap"><table><tr><th>Vowel</th><th>Sign</th><th>With क</th></tr><tr><td>a</td><td>none</td><td>क ka</td></tr><tr><td>ā</td><td>ा</td><td>का kā</td></tr><tr><td>i</td><td>ि</td><td>कि ki</td></tr><tr><td>ī</td><td>ी</td><td>की kī</td></tr><tr><td>u</td><td>ु</td><td>कु ku</td></tr><tr><td>ū</td><td>ू</td><td>कू kū</td></tr><tr><td>ṛ</td><td>ृ</td><td>कृ kṛ</td></tr><tr><td>e</td><td>े</td><td>के ke</td></tr><tr><td>ai</td><td>ै</td><td>कै kai</td></tr><tr><td>o</td><td>ो</td><td>को ko</td></tr><tr><td>au</td><td>ौ</td><td>कौ kau</td></tr></table></div><p>The sign for short "i" is written before the consonant but said after it. A halanta stroke below removes the inherent "a": क् is k. <span class="src gen">general</span></p></section>
+<section class="section" id="sec-words">
+<div class="sec-head"><div class="kicker">11 &#183; Chapter 3</div><h2>Practice words</h2><p class="dek">Transliterate these to practise.</p></div>
+<p>The teacher's practice words, by the letter that needs a mark. Spellings are reconstructed from the audio, so check them against his sample sheet. <span class="src cls">class</span></p><div class="table-wrap"><table><tr><th>Letter</th><th>Example words</th></tr><tr><td>ā</td><td>rāmaḥ</td></tr><tr><td>ī</td><td>īśaḥ, gaurī</td></tr><tr><td>ū</td><td>sūryaḥ</td></tr><tr><td>ṛ</td><td>kṛṣṇaḥ, ṛṣiḥ</td></tr><tr><td>ṝ</td><td>ṝkāraḥ</td></tr><tr><td>ḷ</td><td>ḷkāraḥ</td></tr><tr><td>aṃ</td><td>rāmam, evaṃprakāraḥ</td></tr><tr><td>aḥ</td><td>rāmaḥ</td></tr><tr><td>ṅ</td><td>kaṅkaṇam</td></tr><tr><td>ñ</td><td>ñakāraḥ</td></tr><tr><td>ṭa-varga</td><td>kaṭaḥ, maṭhaḥ and others from the teacher's sheet</td></tr></table></div><p>More practice words from the syllabus itself: yoga, āsana, prāṇāyāma, haṭha, saṃskṛtam. Yoga Sutra 1.1 <b>atha yogānuśāsanam</b> and 1.2 <b>yogaś citta-vṛtti-nirodhaḥ</b> are good first sutras to transliterate; they belong to Unit 3. <span class="src gen">general</span></p><p>The teacher's advice: practise with words from your own syllabus, and ask your yoga teacher for the most important Yoga Sutras to transliterate. <span class="src cls">class</span></p></section>
+<section class="section" id="sec-exam">
+<div class="sec-head"><div class="kicker">12 &#183; Exam</div><h2>How this part is asked</h2><p class="dek">Questions in the Semester 1 paper that this unit answers.</p></div>
+<div class="table-wrap"><table><tr><th>Question</th><th>Marks</th><th>What to write</th><th>Section here</th></tr><tr><td>Q6: two samyuktakshara in Roman transliteration</td><td>2</td><td>Any two conjuncts with their letters: kṣa (k + ṣa), tra (t + ra), kka, mma</td><td>08, 09</td></tr><tr><td>Q16: note on the classification of varnas</td><td>5</td><td>Vowels (15: short, long, pluta; aṃ and aḥ as ayogavaha), consonants (33: five vargas, then ya ra la va, then ś ṣ s h), mrduvyanjana (last 8), then purnakshara, ardhakshara, samyuktakshara</td><td>06, 07, 08</td></tr><tr><td>Q22: ten Yoga Sutras in Roman transliteration</td><td>10</td><td>Marks depend on correct diacritical marks, so learn the 17 marked letters</td><td>09, 10</td></tr></table></div><p class="honest"><b>Honest note.</b> The question-paper page in this subject answers Q16 from standard grammar (vowels and consonants by place of production). Your teacher classifies by purnakshara, samyuktakshara and mrduvyanjana. The "what to write" column above is my reading of the paper; use your teacher's terms in the answer. <span class="src add">added</span></p></section>
+<section class="section" id="sec-next">
+<div class="sec-head"><div class="kicker">13 &#183; Coming next</div><h2>Still to come in Unit 1</h2><p class="dek">Not yet taught in class.</p></div>
+<ul class="notes"><li>Subantas: ajanta and halanta words, genders, vachanas, cases (vibhaktis)</li><li>Sandhis: savarnadirgha, vrddhi, guna, ayadi, stutva, shchutva</li><li>Samasa: tatpurusha, karmadharaya, dvigu, dvandva, bahuvrihi, avyayibhava</li></ul><p>These will be added as the recordings come in. See the <a href="../question-paper/notes.html">question paper page</a> for answers drawn from standard grammar in the meantime.</p></section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
+</script>
