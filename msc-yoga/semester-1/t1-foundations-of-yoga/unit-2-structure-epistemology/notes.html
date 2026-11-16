@@ -306,66 +306,7 @@
 })();
 </script>
 
-  <!--qr-start-->
-<style>.qr{margin:26px 0 4px;padding:14px 16px 16px;border:1px dashed var(--border);border-radius:12px;background:var(--surface-2)}
-.qr .qh{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:4px}
-.qr .qk{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--teal)}
-.qr .qs{font-size:12px;color:var(--muted)}
-.qr .qq{font-size:15px;font-weight:600;color:var(--ink);margin:0 0 3px}
-.qr .qd{font-size:12.5px;color:var(--ink-soft);margin:0 0 10px}
-.qr .qg{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:9px}
-.qr .qb{min-height:74px;padding:8px 10px;border:1px dashed var(--border);border-radius:10px;background:var(--surface);cursor:pointer;font:inherit;color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center}
-.qr .qb:hover{border-color:var(--teal)}
-.qr .qb .n{font-size:18px;color:var(--muted)}
-.qr .qb .t{font-size:11.5px;color:var(--muted)}
-.qr .qb.s1{border-style:solid;background:var(--gold-soft);border-color:var(--gold)}
-.qr .qb.s2{border-style:solid;background:var(--teal-soft);border-color:var(--teal)}
-.qr .qb .a{font-size:14px;font-weight:600}
-.qr .qb .h{font-size:11.5px;color:var(--ink-soft)}
-.qr .qf{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap;align-items:center}
-.qr .qf button{font:inherit;font-size:12.5px;padding:5px 11px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--ink);cursor:pointer}
-.qr .qf button:hover{border-color:var(--teal)}
-.qr .qm{font-size:12px;color:var(--ink-soft)}
-@media print{.qr{display:none}}</style>
-<script>(function(){
-var D={"raja": [{"q": "Four padas of the Yoga Sutra", "i": [["Samadhi", ""], ["Sadhana", ""], ["Vibhuti", ""], ["Kaivalya", ""]], "o": 1}, {"q": "Eight limbs", "i": [["Yama", ""], ["Niyama", ""], ["Asana", ""], ["Pranayama", ""], ["Pratyahara", ""], ["Dharana", ""], ["Dhyana", ""], ["Samadhi", ""]], "o": 1}, {"q": "Five kleshas", "i": [["Avidya", ""], ["Asmita", ""], ["Raga", ""], ["Dvesha", ""], ["Abhinivesha", ""]], "o": 1}, {"q": "Kriya yoga", "i": [["Tapas", ""], ["Svadhyaya", ""], ["Ishvara-pranidhana", ""]]}], "jnana": [{"q": "Sadhana chatushtaya", "i": [["Viveka", ""], ["Vairagya", ""], ["Shat-sampatti", ""], ["Mumukshutva", ""]], "o": 1}, {"q": "Shat-sampatti", "i": [["Shama", ""], ["Dama", ""], ["Uparati", ""], ["Titiksha", ""], ["Shraddha", ""], ["Samadhana", ""]], "o": 1}, {"q": "Three-stage method", "i": [["Shravana", ""], ["Manana", ""], ["Nididhyasana", ""]]}], "bhakti": [{"q": "Navavidha bhakti", "i": [["Shravana", ""], ["Kirtana", ""], ["Smarana", ""], ["Padasevana", ""], ["Archana", ""], ["Vandana", ""], ["Dasya", ""], ["Sakhya", ""], ["Atma-nivedana", ""]], "o": 1}, {"q": "Five bhavas", "i": [["Shanta", ""], ["Dasya", ""], ["Sakhya", ""], ["Vatsalya", ""], ["Madhurya", ""]]}], "karma": [{"q": "Three kinds of karma", "i": [["Sanchita", ""], ["Prarabdha", ""], ["Agami (kriyamana)", ""]]}], "mantra": [{"q": "Types of mantra", "i": [["Bija", ""], ["Saguna", ""], ["Nirguna", ""]]}, {"q": "Three forms of japa", "i": [["Vachika", ""], ["Upamshu", ""], ["Manasa", ""]]}], "kundalini": [{"q": "Three granthis", "i": [["Brahma", ""], ["Vishnu", ""], ["Rudra", ""]]}, {"q": "Four kumbhakas in the Yoga-Kundalini Upanishad", "i": [["Suryabheda", ""], ["Ujjayi", ""], ["Sitali", ""], ["Bhastrika", ""]]}]},KEY='yj_qr_v1';
-function load(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}}
-function save(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
-Object.keys(D).forEach(function(sid){
- var sec=document.getElementById('sec-'+sid); if(!sec) return;
- D[sid].forEach(function(c,ci){
-  var id=location.pathname+'#'+sid+':'+ci, st=c.i.map(function(){return 0});
-  var box=document.createElement('div'); box.className='qr';
-  box.innerHTML='<div class="qh"><span class="qk">Quick recall</span><span class="qs"></span></div><p class="qq">'+esc(c.q)+'</p><p class="qd">Say or write each one first, then tap its box. Tap a revealed box again if you knew it.</p><div class="qg"></div><div class="qf"><button type="button" data-a="all">Reveal all</button><button type="button" data-a="reset">Try again</button><span class="qm"></span></div>';
-  var g=box.querySelector('.qg');
-  function sync(){
-   var all=load(), miss=[], got=0;
-   st.forEach(function(v,i){ if(v===1) miss.push(c.i[i]); if(v===2) got++; });
-   if(miss.length){ all[id]={p:location.pathname,s:sid,t:document.title,q:c.q,m:miss,n:Date.now()}; }
-   else if(all[id]&&st.every(function(v){return v!==0})){ delete all[id]; }
-   save(all);
-   box.querySelector('.qs').textContent=got+' of '+c.i.length+' recalled';
-   box.querySelector('.qm').textContent=all[id]?'Saved to your review list':'';
-  }
-  function draw(){
-   g.innerHTML='';
-   c.i.forEach(function(it,i){
-    var b=document.createElement('button'); b.type='button'; b.className='qb s'+st[i];
-    b.innerHTML=st[i]===0?'<span class="n">'+(c.o?(i+1):'?')+'</span><span class="t">tap to reveal</span>':'<span class="a">'+esc(it[0])+'</span><span class="h">'+esc(it[1]||'')+'</span>';
-    b.onclick=function(){st[i]=st[i]===0?1:(st[i]===1?2:1);draw();};
-    g.appendChild(b);
-   });
-   sync();
-  }
-  box.querySelector('[data-a=all]').onclick=function(){st=st.map(function(v){return v||1});draw();};
-  box.querySelector('[data-a=reset]').onclick=function(){st=st.map(function(){return 0});draw();};
-  sec.appendChild(box); draw();
- });
-});
-})();</script>
-<!--qr-end-->
-</main>
+  </main>
 </div>
 
 <script>
