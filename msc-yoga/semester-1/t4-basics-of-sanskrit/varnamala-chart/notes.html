@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>T4 Varnamala Chart</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Malayalam:wght@400;600&display=swap">
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d8b560; --gold-soft:#34301f;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink);
+    font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  main{ max-width:980px; margin:0 auto; padding:56px 20px 90px; }
+  .crumbs{ font-size:12.5px; color:var(--muted); margin-bottom:18px; }
+  .crumbs a{ color:var(--muted); }
+  .kicker{ font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:14px; }
+  h1{ font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:34px; margin:0 0 8px; text-wrap:balance; }
+  .dek{ font-size:15px; color:var(--muted); margin:0 0 28px; max-width:62ch; }
+  h2{ font-family:"Fraunces", Georgia, serif; font-size:23px; margin:44px 0 4px; padding-top:18px; border-top:2px solid var(--accent); }
+  .sub{ font-size:13.5px; color:var(--muted); margin:0 0 16px; }
+  .stats{ display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px; margin:0 0 8px; }
+  .stat{ background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:10px 12px; }
+  .stat .v{ font-family:"Fraunces", Georgia, serif; font-size:22px; font-weight:600; color:var(--accent); }
+  .stat .k{ font-size:11.5px; color:var(--muted); }
+  .legend{ display:flex; gap:8px; margin:0 0 10px; }
+  .tag{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; padding:2px 8px; border-radius:5px; }
+  .tag.short{ background:var(--teal-soft); color:var(--teal); }
+  .tag.long{ background:var(--gold-soft); color:var(--gold); }
+  .grp-label{ font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); margin:18px 0 8px; font-weight:600; }
+  .ch{ background:var(--surface); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow);
+    padding:10px 6px 9px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:1px; min-width:0; }
+  .ch.empty{ background:transparent; border:1px dashed var(--border); box-shadow:none; }
+  .ch .d{ font-family:"Noto Sans Devanagari", "Kohinoor Devanagari", sans-serif; font-size:34px; line-height:1.25; }
+  .ch .r{ font-family:"IBM Plex Mono", monospace; font-size:15px; font-weight:600; color:var(--accent); }
+  .ch .m{ font-family:"Noto Sans Malayalam", sans-serif; font-size:13px; color:var(--muted); }
+  .ch .n{ font-size:10.5px; color:var(--teal); margin-top:2px; }
+  .ch.short{ border-top:3px solid var(--teal); }
+  .ch.long{ border-top:3px solid var(--gold); }
+  .ch.ayo{ border-top:3px solid var(--accent); }
+  .row5{ display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin:0 0 10px; max-width:800px; }
+  .swipe{ display:none; font-size:11.5px; color:var(--muted); margin:0 0 8px; }
+  .note a{ color:var(--accent); }
+  .row4{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; max-width:640px; }
+  .two{ display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:18px; }
+  .vgrid{ display:flex; flex-direction:column; gap:10px; overflow-x:auto; padding-bottom:4px; }
+  .vrow{ display:grid; grid-template-columns:96px repeat(5,minmax(78px,1fr)); gap:10px; align-items:stretch; min-width:560px; }
+  .vlabel{ display:flex; flex-direction:column; justify-content:center; font-size:13px; }
+  .vlabel small{ color:var(--muted); font-size:11.5px; }
+  .vhead .vcol{ font-size:11px; letter-spacing:.03em; text-transform:uppercase; color:var(--muted); font-weight:600; text-align:center; align-self:end; }
+  .note{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:22px 0 0; line-height:1.55; }
+  .note b{ color:var(--ink-soft); }
+  footer{ margin-top:48px; padding-top:18px; border-top:1px solid var(--border); font-size:12px; color:var(--muted); }
+  footer a{ color:var(--accent); }
+  @media (max-width:640px){
+    h1{ font-size:28px; }
+    .ch .d{ font-size:28px; }
+    .row4{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .row5{ gap:6px; }
+    .row5 .ch{ padding:8px 2px 7px; }
+    .row5 .ch .d{ font-size:26px; }
+    .swipe{ display:block; }
+  }
+  @media print{
+    body{ background:#fff; }
+    .crumbs, footer{ display:none; }
+    .ch{ box-shadow:none; }
+    h2{ break-after:avoid; }
+    .vgrid, .row5, .row4{ break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="crumbs"><a href="../../index.html">Semester 1</a> &rsaquo; <a href="../index.html">T4</a> &rsaquo; Varnamala chart</div>
+  <div class="kicker">T4 &middot; DSCC-19 &middot; Reference</div>
+  <h1>Varnamala Chart</h1>
+  <p class="dek">The whole Sanskrit alphabet on one page: Devanagari (large), Roman transliteration (orange) and the matching Malayalam letter (grey).</p>
+  <div class="stats"><div class="stat"><div class="v">13</div><div class="k">vowels</div></div><div class="stat"><div class="v">+ 2</div><div class="k">ayogavāha</div></div><div class="stat"><div class="v">= 15</div><div class="k">svara</div></div><div class="stat"><div class="v">25 + 4 + 4</div><div class="k">sparśa + antastha + ūṣman</div></div><div class="stat"><div class="v">= 33</div><div class="k">vyañjana</div></div><div class="stat"><div class="v">48</div><div class="k">varṇas in all</div></div></div>
+
+  <h2>Svara (vowels): 15</h2>
+  <p class="sub">स्वर &middot; masculine. 13 vowels plus the two ayogavāha letters. Short and long pairs sit side by side.</p>
+  <div class="legend"><span class="tag short">hrasva · short</span><span class="tag long">dīrgha · long</span></div><div class="row5"><div class="ch short"><span class="d">अ</span><span class="r">a</span><span class="m">അ</span></div><div class="ch short"><span class="d">इ</span><span class="r">i</span><span class="m">ഇ</span></div><div class="ch short"><span class="d">उ</span><span class="r">u</span><span class="m">ഉ</span></div><div class="ch short"><span class="d">ऋ</span><span class="r">ṛ</span><span class="m">ഋ</span></div><div class="ch short"><span class="d">ऌ</span><span class="r">ḷ</span><span class="m">ഌ</span></div></div><div class="row5"><div class="ch long"><span class="d">आ</span><span class="r">ā</span><span class="m">ആ</span></div><div class="ch long"><span class="d">ई</span><span class="r">ī</span><span class="m">ഈ</span></div><div class="ch long"><span class="d">ऊ</span><span class="r">ū</span><span class="m">ഊ</span></div><div class="ch long"><span class="d">ॠ</span><span class="r">ṝ</span><span class="m">ൠ</span></div><div class="ch empty"></div></div><div class="grp-label">Always long in Sanskrit (e, ai, o, au have no short form)</div><div class="row4"><div class="ch long"><span class="d">ए</span><span class="r">e</span><span class="m">ഏ</span></div><div class="ch long"><span class="d">ऐ</span><span class="r">ai</span><span class="m">ഐ</span></div><div class="ch long"><span class="d">ओ</span><span class="r">o</span><span class="m">ഓ</span></div><div class="ch long"><span class="d">औ</span><span class="r">au</span><span class="m">ഔ</span></div></div><div class="grp-label">Ayogavāha (attach to the sound before them)</div><div class="row4"><div class="ch ayo"><span class="d">अं</span><span class="r">aṃ</span><span class="m">അം</span><span class="n">anusvāra</span></div><div class="ch ayo"><span class="d">अः</span><span class="r">aḥ</span><span class="m">അഃ</span><span class="n">visarga</span></div></div>
+
+  <h2>Vyañjana (consonants): 33</h2>
+  <p class="sub">व्यञ्जन &middot; neuter. Five groups (varga) from the back of the mouth to the front, then the last eight.</p>
+  <div class="grp-label">Sparśa: the 25 &ldquo;touching&rdquo; consonants</div>
+  <p class="swipe">Swipe the table sideways to see all five columns.</p>
+  <div class="vgrid"><div class="vrow vhead"><div class="vlabel"></div><div class="vcol">1 plain</div><div class="vcol">2 aspirated</div><div class="vcol">3 voiced</div><div class="vcol">4 voiced + aspirated</div><div class="vcol">5 nasal</div></div><div class="vrow"><div class="vlabel"><b>ka-varga</b><small>throat</small></div><div class="ch "><span class="d">क</span><span class="r">ka</span><span class="m">ക</span></div><div class="ch "><span class="d">ख</span><span class="r">kha</span><span class="m">ഖ</span></div><div class="ch "><span class="d">ग</span><span class="r">ga</span><span class="m">ഗ</span></div><div class="ch "><span class="d">घ</span><span class="r">gha</span><span class="m">ഘ</span></div><div class="ch "><span class="d">ङ</span><span class="r">ṅa</span><span class="m">ങ</span></div></div><div class="vrow"><div class="vlabel"><b>ca-varga</b><small>palate</small></div><div class="ch "><span class="d">च</span><span class="r">ca</span><span class="m">ച</span></div><div class="ch "><span class="d">छ</span><span class="r">cha</span><span class="m">ഛ</span></div><div class="ch "><span class="d">ज</span><span class="r">ja</span><span class="m">ജ</span></div><div class="ch "><span class="d">झ</span><span class="r">jha</span><span class="m">ഝ</span></div><div class="ch "><span class="d">ञ</span><span class="r">ña</span><span class="m">ഞ</span></div></div><div class="vrow"><div class="vlabel"><b>ṭa-varga</b><small>roof of mouth</small></div><div class="ch "><span class="d">ट</span><span class="r">ṭa</span><span class="m">ട</span></div><div class="ch "><span class="d">ठ</span><span class="r">ṭha</span><span class="m">ഠ</span></div><div class="ch "><span class="d">ड</span><span class="r">ḍa</span><span class="m">ഡ</span></div><div class="ch "><span class="d">ढ</span><span class="r">ḍha</span><span class="m">ഢ</span></div><div class="ch "><span class="d">ण</span><span class="r">ṇa</span><span class="m">ണ</span></div></div><div class="vrow"><div class="vlabel"><b>ta-varga</b><small>teeth</small></div><div class="ch "><span class="d">त</span><span class="r">ta</span><span class="m">ത</span></div><div class="ch "><span class="d">थ</span><span class="r">tha</span><span class="m">ഥ</span></div><div class="ch "><span class="d">द</span><span class="r">da</span><span class="m">ദ</span></div><div class="ch "><span class="d">ध</span><span class="r">dha</span><span class="m">ധ</span></div><div class="ch "><span class="d">न</span><span class="r">na</span><span class="m">ന</span></div></div><div class="vrow"><div class="vlabel"><b>pa-varga</b><small>lips</small></div><div class="ch "><span class="d">प</span><span class="r">pa</span><span class="m">പ</span></div><div class="ch "><span class="d">फ</span><span class="r">pha</span><span class="m">ഫ</span></div><div class="ch "><span class="d">ब</span><span class="r">ba</span><span class="m">ബ</span></div><div class="ch "><span class="d">भ</span><span class="r">bha</span><span class="m">ഭ</span></div><div class="ch "><span class="d">म</span><span class="r">ma</span><span class="m">മ</span></div></div></div>
+  <div class="two"><div><div class="grp-label">Antastha (in between)</div><div class="row4"><div class="ch "><span class="d">य</span><span class="r">ya</span><span class="m">യ</span></div><div class="ch "><span class="d">र</span><span class="r">ra</span><span class="m">ര</span></div><div class="ch "><span class="d">ल</span><span class="r">la</span><span class="m">ല</span></div><div class="ch "><span class="d">व</span><span class="r">va</span><span class="m">വ</span></div></div></div><div><div class="grp-label">Ūṣman (hissing)</div><div class="row4"><div class="ch "><span class="d">श</span><span class="r">śa</span><span class="m">ശ</span></div><div class="ch "><span class="d">ष</span><span class="r">ṣa</span><span class="m">ഷ</span></div><div class="ch "><span class="d">स</span><span class="r">sa</span><span class="m">സ</span></div><div class="ch "><span class="d">ह</span><span class="r">ha</span><span class="m">ഹ</span></div></div></div></div>
+
+  <p class="note"><b>Honest note.</b> The letters, counts and grouping follow your class notes (Chapters 1 to 3). The Devanagari shapes, the Malayalam matches and the place names under each varga are standard grammar, added for reference. Check against your teacher&rsquo;s sheet before the exam. See the <a href="../glossary/notes.html">glossary</a> for the Sanskrit names and the <a href="../unit-1-devanagari-varnamala/notes.html">Unit 1 notes</a> for how the letters join.</p>
+
+  <footer>Source on <a href="https://github.com/anoop-p/yoga-journey">GitHub</a>.</footer>
+</main>
+</body>
+</html>
