@@ -1,0 +1,900 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raja Yoga</title>
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .sk{ font-family:"Fraunces",Georgia,serif; font-style:italic; color:var(--ink); }
+  .flow{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 12px; }
+  .flow span{ background:var(--teal-soft); color:var(--teal); border-radius:8px; padding:5px 10px; font-size:13px; font-weight:600; }
+  .flow i{ color:var(--muted); font-style:normal; }
+  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 16px; }
+  .mq .mqh{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
+  .mq .topic{ font-size:11px; color:var(--muted); }
+  .mq .mqt{ font-weight:600; color:var(--ink); margin:0 0 10px; max-width:none; }
+  .mq details.ans > summary{ cursor:pointer; list-style:none; display:inline-block; padding:6px 12px; border-radius:8px; background:var(--teal-soft); color:var(--teal); font-size:13px; font-weight:600; }
+  .mq details.ans > summary::-webkit-details-marker{ display:none; }
+  .mq details.ans[open] > summary{ background:var(--surface-2); color:var(--muted); }
+  .mq .ansb{ margin-top:12px; border-top:1px dashed var(--border); padding-top:10px; }
+  .mq .ansb p{ margin:0 0 8px; }
+  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 12px; padding-left:22px; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Raja Yoga</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../../index.html">&larr; T1 &middot; Foundations of Yoga</a>
+    <div class="brand">
+      <div class="eyebrow">Foundations of Yoga &middot; Unit 2</div>
+      <h1>Raja Yoga</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="intro"><span class="num">01</span><span>Introduction</span></button>
+      <button class="nav-item" data-target="background"><span class="num">02</span><span>Historical &amp; Philosophical Background</span></button>
+      <button class="nav-item" data-target="structure"><span class="num">03</span><span>Structure</span></button>
+      <button class="nav-item" data-target="method"><span class="num">04</span><span>Method</span></button>
+      <button class="nav-item" data-target="epistemology"><span class="num">05</span><span>Epistemology</span></button>
+      <button class="nav-item" data-target="metaphysics"><span class="num">06</span><span>Metaphysics &amp; Liberation</span></button>
+      <button class="nav-item" data-target="answers"><span class="num">07</span><span>Exam Answers</span></button>
+      <button class="nav-item" data-target="recall"><span class="num">08</span><span>Sutras &amp; Recall</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Sources: your Raja Yoga notes and the Yoga Darshana (epistemology, metaphysics, ethics, liberation) notes. Arranged in your teacher&#8217;s six-part answer structure
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="section" id="sec-intro">
+      <div class="sec-head">
+        <div class="kicker">01 &middot; Introduction</div>
+        <h2>Meaning, Definition and Aim</h2>
+        <p class="dek">What Raja Yoga means, how Patanjali defines yoga, and where the path is meant to end. Start every answer here.</p>
+      </div>
+      <div class="stat-strip">
+        <div class="stat"><div class="v">195</div><div class="k">sutras (about 195/196) in the Yoga Sutra</div></div>
+        <div class="stat"><div class="v">4</div><div class="k">padas</div></div>
+        <div class="stat"><div class="v">5</div><div class="k">citta-vrittis</div></div>
+        <div class="stat"><div class="v">5</div><div class="k">kleshas</div></div>
+        <div class="stat"><div class="v">8</div><div class="k">limbs (ashtanga)</div></div>
+      </div>
+      <h3 class="sub"><span class="n">1A</span>Meaning of the word</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Term</th><th>Meaning</th></tr>
+        <tr><td><b>Raja</b></td><td>King, royal, supreme: the &ldquo;royal path&rdquo; of mental discipline <span class="src cls">Raja notes</span></td></tr>
+        <tr><td><b>Yoga</b> (root <i>yuj</i>)</td><td>Union, and also yoking or disciplining the mind. In Patanjali the working meaning is <b>control of the mind</b> (YS 1.2) <span class="src cls">Raja notes</span> <span class="src add">added</span></td></tr>
+        <tr><td><b>Raja Yoga</b></td><td>The path that stresses control and purification of the mind, concentration, meditation, samadhi, discriminative knowledge and liberation <span class="src cls">Raja notes</span></td></tr>
+        <tr><td><b>Patanjala Yoga Darshana</b></td><td>The proper name of the system. &ldquo;Raja Yoga&rdquo; is a later, broader label; the root text is the Yoga Sutra <span class="src cls">Raja notes</span></td></tr>
+      </table></div>
+      <p class="honest"><b>Source note.</b> Your notes stress that <b>Raja Yoga is a later name</b> for Patanjali&#8217;s system. If a question says &ldquo;Raja Yoga&rdquo;, answer from the Yoga Sutra and say once that it is also called Patanjala Yoga Darshana.</p>
+      <h3 class="sub"><span class="n">1B</span>Definition and aim</h3>
+      <div class="blk know">
+        <span class="lbl">Know this &middot; YS 1.2</span>
+        <p><b>Yogash citta-vritti-nirodhah:</b> Yoga is the stilling (nirodha) of the fluctuations (vrittis) of the mind-stuff (citta). <span class="src cls">Raja notes</span></p>
+        <p><b>YS 1.3:</b> when the mind is still, the Seer (drashta) abides in its own true nature. <span class="src cls">Darshana notes</span></p>
+      </div>
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Ordinary experience is a stream: a perception leads to a feeling, the feeling to a memory, the memory to a desire, the desire to an imagined plan, and back to perception. Each item in that stream is a <b>vritti</b>. Yoga does not try to destroy the mind. It trains the mind until the stream settles, and then the <b>Seer</b> (Purusha, pure consciousness) is no longer mistaken for the stream. <span class="src cls">Raja notes</span> <span class="src add">added</span></p>
+        <p>Think of a pond. While the surface is disturbed you see only ripples; when it is still you see the bottom. The ripples are the vrittis, the stillness is nirodha, and the bottom is Purusha. <span class="src add">added: an analogy of mine, not from your notes</span></p>
+      </div>
+      <p><b>Three levels of aim:</b> <span class="src cls">Raja notes</span></p>
+      <div class="table-wrap"><table>
+        <tr><th>Level</th><th>Aim</th></tr>
+        <tr><td>Immediate</td><td>Citta-vritti-nirodha: stilling the fluctuations of the mind</td></tr>
+        <tr><td>Deeper</td><td>Viveka-khyati: discriminative knowledge of Purusha as distinct from Prakriti</td></tr>
+        <tr><td>Ultimate</td><td><b>Kaivalya</b>: liberation, complete freedom of Purusha from identification with Prakriti</td></tr>
+      </table></div>
+      <div class="flow"><span>Mental disturbance</span><i>&rarr;</i><span>Yoga practice</span><i>&rarr;</i><span>Citta purified and one-pointed</span><i>&rarr;</i><span>Meditation and samadhi</span><i>&rarr;</i><span>Discriminative knowledge</span><i>&rarr;</i><span>Freedom from identification</span><i>&rarr;</i><span>KAIVALYA</span></div>
+      <div class="blk mem">
+        <span class="lbl">Whole system in one line</span>
+        <p>&ldquo;Still the mind &rarr; develop discrimination &rarr; distinguish Purusha from Prakriti &rarr; attain Kaivalya.&rdquo; <span class="src cls">Raja notes</span></p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Meaning of &ldquo;Raja&rdquo;?</div><div class="a">King, royal, supreme: the royal path of mental discipline</div></div>
+        <div class="recall-card"><div class="q">What is the proper name of the system?</div><div class="a">Patanjala Yoga Darshana (Raja Yoga is a later name)</div></div>
+        <div class="recall-card"><div class="q">Definition of yoga, YS 1.2?</div><div class="a">Yogash citta-vritti-nirodhah</div></div>
+        <div class="recall-card"><div class="q">Ultimate goal?</div><div class="a">Kaivalya</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-background">
+      <div class="sec-head">
+        <div class="kicker">02 &middot; Historical and philosophical background</div>
+        <h2>Patanjali, the Sutra and Samkhya</h2>
+        <p class="dek">Where Raja Yoga comes from, the text it rests on and how it differs from Samkhya, the philosophy it shares.</p>
+      </div>
+      <h3 class="sub"><span class="n">2A</span>Patanjali and the Yoga Sutra</h3>
+      <p>Maharshi Patanjali is regarded as the great <b>systematiser</b> of yoga philosophy. His principal work is the <b>Patanjala Yoga Sutra</b>, about 195/196 sutras in four chapters (padas). <span class="src cls">Raja notes</span></p>
+      <div class="table-wrap"><table>
+        <tr><th>Pada</th><th>Meaning</th><th>Main subject</th></tr>
+        <tr><td>1. Samadhi Pada</td><td>Chapter on samadhi</td><td>Nature of yoga, citta-vritti, samadhi, abhyasa and vairagya, Ishvara</td></tr>
+        <tr><td>2. Sadhana Pada</td><td>Chapter on practice</td><td>Kriya yoga, kleshas, ashtanga yoga (yama to pratyahara)</td></tr>
+        <tr><td>3. Vibhuti Pada</td><td>Chapter on manifestations or powers</td><td>Dharana, dhyana, samadhi, samyama and the vibhutis</td></tr>
+        <tr><td>4. Kaivalya Pada</td><td>Chapter on liberation</td><td>Karma, Purusha, Prakriti, kaivalya</td></tr>
+      </table></div>
+      <div class="blk mem">
+        <span class="lbl">Memory aid</span>
+        <p>Order of the padas: <b>Samadhi &rarr; Sadhana &rarr; Vibhuti &rarr; Kaivalya</b> (what the goal is like, how to practise, what arises, where it ends). <span class="src cls">Raja notes</span> <span class="src add">added</span></p>
+      </div>
+      <h3 class="sub"><span class="n">2B</span>Texts around the Sutra</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Text</th><th>Role</th></tr>
+        <tr><td>Patanjala Yoga Sutra</td><td>Primary text</td></tr>
+        <tr><td>Vyasa Bhashya</td><td>The major classical commentary</td></tr>
+        <tr><td>Tattva Vaisharadi (Vachaspati Mishra)</td><td>Commentary</td></tr>
+        <tr><td>Rajamartanda (Bhoja)</td><td>Commentary</td></tr>
+        <tr><td>Samkhya Karika</td><td>Related philosophical text, the source of the Samkhya framework Yoga shares</td></tr>
+      </table></div>
+      <p><span class="src cls">Raja notes</span> Your notes also credit the Vyasa commentary with the five levels of mind (chitta-bhumis, section 3).</p>
+      <p class="honest"><b>Source note.</b> Your notes do not give a date or biography for Patanjali, so none is given here. If your teacher expects dates, add them from class.</p>
+      <h3 class="sub"><span class="n">2C</span>Place among the six darshanas</h3>
+      <p>Yoga Darshana is one of the six classical schools (Shad Darshanas). It shares its theory with <b>Samkhya</b>: Purusha, Prakriti, the gunas and the evolution of the tattvas. What Yoga adds is <b>Ishvara</b> and, above all, a detailed practical method (sadhana). <span class="src cls">Darshana notes</span></p>
+      <div class="table-wrap"><table>
+        <tr><th>Feature</th><th>Samkhya</th><th>Patanjala Yoga</th></tr>
+        <tr><td>Character</td><td>Philosophical analysis</td><td>Philosophy <b>plus</b> systematic practice</td></tr>
+        <tr><td>Reality</td><td>Purusha and Prakriti (25 tattvas)</td><td>Same, plus Ishvara (so &ldquo;sesvara Samkhya&rdquo;, Samkhya with God)</td></tr>
+        <tr><td>Purusha</td><td>Many</td><td>Many</td></tr>
+        <tr><td>Causation</td><td>Satkaryavada, parinamavada</td><td>Same</td></tr>
+        <tr><td>Mind</td><td>Buddhi, ahamkara, manas treated separately</td><td>Combined as <b>chitta</b> in practice</td></tr>
+        <tr><td>Pramanas</td><td>Pratyaksha, anumana, shabda</td><td>Pratyaksha, anumana, agama</td></tr>
+        <tr><td>Liberation through</td><td>Discriminative knowledge (viveka-jnana)</td><td>Ashtanga yoga leading to viveka-khyati and samadhi</td></tr>
+        <tr><td>Ishvara</td><td>Not central</td><td>Important role</td></tr>
+      </table></div>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <p>Samkhya supplies the <b>map</b> (what exists); Patanjala Yoga supplies the <b>route</b> (how to get out of bondage). <span class="src cls">Raja notes</span> <span class="src cls">Darshana notes</span></p>
+      </div>
+      <h3 class="sub"><span class="n">2D</span>Raja Yoga and the other paths</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Pair</th><th>Link</th></tr>
+        <tr><td>Raja + Jnana</td><td>Meditation develops the clarity needed for discriminative knowledge</td></tr>
+        <tr><td>Raja + Karma</td><td>Selfless action purifies and steadies the mind</td></tr>
+        <tr><td>Raja + Bhakti</td><td>Ishvara-pranidhana brings devotion and surrender</td></tr>
+        <tr><td>Raja + Mantra</td><td>Om-japa (YS 1.27-28) is a method of concentration</td></tr>
+        <tr><td>Raja + Hatha</td><td>Asana and pranayama prepare for meditation, but classical Patanjali does not present the later Hatha system</td></tr>
+      </table></div>
+      <p><span class="src cls">Raja notes</span></p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Who systematised Yoga philosophy?</div><div class="a">Maharshi Patanjali, in the Yoga Sutra</div></div>
+        <div class="recall-card"><div class="q">Four padas in order?</div><div class="a">Samadhi, Sadhana, Vibhuti, Kaivalya</div></div>
+        <div class="recall-card"><div class="q">Major commentary?</div><div class="a">Vyasa Bhashya (also Tattva Vaisharadi, Rajamartanda)</div></div>
+        <div class="recall-card"><div class="q">What does Yoga add to Samkhya?</div><div class="a">Ishvara and a systematic practical method</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-structure">
+      <div class="sec-head">
+        <div class="kicker">03 &middot; Structure</div>
+        <h2>Citta, Vrittis, Kleshas and Karma</h2>
+        <p class="dek">The parts the system is made of: the mind and what disturbs it.</p>
+      </div>
+      <p>In the teacher&#8217;s pattern, <b>Structure</b> means the parts the system is made of. For Raja Yoga that is the mind and its disturbances: citta, its five levels, its five vrittis, the kleshas that disturb it, and the karma and samskara that keep the cycle going.</p>
+      <h3 class="sub"><span class="n">3A</span>Citta: the mind-stuff</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li>Buddhi, ahamkara and manas function together as <b>chitta</b>, the mind in the broad sense. It belongs to Prakriti, so it is not conscious by itself. <span class="src cls">Darshana notes</span></li>
+          <li>Chitta is fundamentally <b>sattvic</b> but is disturbed by rajas and tamas. <span class="src cls">Darshana notes</span></li>
+          <li>It is affected by perception, memory, desire, emotion, imagination, sleep and conditioning. <span class="src cls">Raja notes</span></li>
+          <li>Yoga aims to <b>master</b> chitta, not destroy it. <span class="src cls">Raja notes</span></li>
+        </ul>
+      </div>
+      <div class="table-wrap"><table>
+        <tr><th>Element</th><th>Role in knowing</th></tr>
+        <tr><td>Drashta (Purusha)</td><td>The Seer: pure witnessing consciousness</td></tr>
+        <tr><td>Drishya (Prakriti and its products)</td><td>The seen: body, senses, mind, intellect and ego</td></tr>
+        <tr><td>Chitta</td><td>The mental instrument, illumined by the Seer, that takes the form of the object</td></tr>
+        <tr><td>Vritti</td><td>The modification by which chitta takes the form of an object</td></tr>
+      </table></div>
+      <p>Knowing happens when chitta, lit by consciousness, takes the shape of an object. Suffering arises when the Seer is identified with these modifications (YS 2.17). <span class="src cls">Darshana notes</span></p>
+      <h3 class="sub"><span class="n">3B</span>Five levels of mind (chitta-bhumis)</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Level</th><th>Meaning</th></tr>
+        <tr><td>Kshipta</td><td>Scattered</td></tr>
+        <tr><td>Mudha</td><td>Dull</td></tr>
+        <tr><td>Vikshipta</td><td>Occasionally steady</td></tr>
+        <tr><td>Ekagra</td><td>One-pointed</td></tr>
+        <tr><td>Niruddha</td><td>Restrained</td></tr>
+      </table></div>
+      <p>Yoga moves chitta from scattered states towards <b>ekagra</b> and finally <b>niruddha</b>. Source: the Vyasa commentary, as given in your notes. <span class="src cls">Darshana notes</span></p>
+      <h3 class="sub"><span class="n">3C</span>The five vrittis (YS 1.5-1.11)</h3>
+      <p>All mental modifications fall into five types, and each can be <b>klishta</b> (afflicted, causing suffering) or <b>aklishta</b> (not afflicted, supporting practice), YS 1.5. <span class="src cls">Darshana notes</span></p>
+      <div class="table-wrap"><table>
+        <tr><th>Vritti</th><th>Meaning</th><th>YS</th><th>Example</th></tr>
+        <tr><td>Pramana</td><td>Valid knowledge</td><td>1.7</td><td>Seeing a tree; inferring fire from smoke; learning from a reliable teacher</td></tr>
+        <tr><td>Viparyaya</td><td>Misconception; false knowledge</td><td>1.8</td><td>Seeing a rope as a snake</td></tr>
+        <tr><td>Vikalpa</td><td>Verbal construct with no corresponding object</td><td>1.9</td><td>&ldquo;Horns of a hare&rdquo;</td></tr>
+        <tr><td>Nidra</td><td>Sleep: modification based on absence of content</td><td>1.10</td><td>Deep dreamless sleep</td></tr>
+        <tr><td>Smriti</td><td>Memory: not letting go of an object once experienced</td><td>1.11</td><td>Recalling a past event</td></tr>
+      </table></div>
+      <div class="blk mem">
+        <span class="lbl">Memory aid</span>
+        <p><b>P-V-V-N-S</b>: Pramana, Viparyaya, Vikalpa, Nidra, Smriti. In sutra order, the first is the only one that is correct knowledge; the last four are not. <span class="src cls">Raja notes</span> <span class="src add">added</span></p>
+      </div>
+      <h3 class="sub"><span class="n">3D</span>The five kleshas (YS 2.3)</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Klesha</th><th>Meaning</th></tr>
+        <tr><td>Avidya</td><td>Ignorance; the <b>root</b> and field of the others (YS 2.4)</td></tr>
+        <tr><td>Asmita</td><td>Egoism; the Seer mistaken for the instruments of seeing</td></tr>
+        <tr><td>Raga</td><td>Attachment to pleasure</td></tr>
+        <tr><td>Dvesha</td><td>Aversion to pain</td></tr>
+        <tr><td>Abhinivesha</td><td>Clinging to life; fear of death</td></tr>
+      </table></div>
+      <div class="flow"><span>Avidya</span><i>&rarr;</i><span>Asmita</span><i>&rarr;</i><span>Raga + Dvesha</span><i>&rarr;</i><span>Abhinivesha</span><i>&rarr;</i><span>Suffering and bondage</span></div>
+      <div class="blk und">
+        <span class="lbl">Understand it &#183; avidya (YS 2.5)</span>
+        <p>Avidya takes the <b>non-eternal as eternal, the impure as pure, pain as pleasure, and the non-Self as the Self</b>. Viparyaya is a momentary error (rope for snake); avidya is the deep, standing error behind suffering. Because everything else grows from it, removing avidya is what ends the kleshas. <span class="src cls">Raja notes</span> <span class="src cls">Darshana notes</span></p>
+      </div>
+      <h3 class="sub"><span class="n">3E</span>Karma and samskara</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li>Kleshas are the <b>roots</b> of the store of karma (karmashaya, YS 2.12). While the roots exist, karma ripens as birth, lifespan and experience (YS 2.13). <span class="src cls">Darshana notes</span></li>
+          <li><b>Samskara</b> is a latent impression produced by experience and action. The cycle is <b>action &rarr; impression &rarr; tendency &rarr; further action</b>; yoga practice weakens the patterns that maintain bondage. <span class="src cls">Raja notes</span></li>
+          <li><b>Types of karma, YS 4.7:</b> Krishna (black), Shukla (white), Shukla-Krishna (mixed), <b>Ashukla-Akrishna</b> (neither; of the advanced yogin). <span class="src cls">Raja notes</span></li>
+        </ul>
+      </div>
+      <p class="honest"><b>Source note.</b> <b>Exam trap from your notes:</b> for &ldquo;types of karma according to Patanjali Yoga Darshana&rdquo;, give the four above. The Sanchita, Prarabdha and Agami classification belongs to general Karma Yoga, not here.</p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Five levels of mind?</div><div class="a">Kshipta, mudha, vikshipta, ekagra, niruddha</div></div>
+        <div class="recall-card"><div class="q">Five vrittis?</div><div class="a">Pramana, viparyaya, vikalpa, nidra, smriti</div></div>
+        <div class="recall-card"><div class="q">Root klesha?</div><div class="a">Avidya</div></div>
+        <div class="recall-card"><div class="q">Karma types in Patanjali?</div><div class="a">Krishna, shukla, shukla-krishna, ashukla-akrishna (YS 4.7)</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-method">
+      <div class="sec-head">
+        <div class="kicker">04 &middot; Method</div>
+        <h2>Abhyasa, Kriya Yoga and the Eight Limbs</h2>
+        <p class="dek">How the path is practised, from steadying the mind to seedless samadhi.</p>
+      </div>
+      <p><b>Method</b> is the practice. Patanjali gives it in layers: first the two means of steadying the mind, then the remedies for the kleshas, then the eight limbs, and finally the advanced state, samyama.</p>
+      <div class="flow"><span>Abhyasa + Vairagya</span><i>&rarr;</i><span>Kriya yoga</span><i>&rarr;</i><span>Ashtanga yoga</span><i>&rarr;</i><span>Samyama</span><i>&rarr;</i><span>Samadhi</span><i>&rarr;</i><span>Viveka-khyati</span><i>&rarr;</i><span>Kaivalya</span></div>
+      <h3 class="sub"><span class="n">4A</span>Abhyasa and vairagya (YS 1.12)</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Means</th><th>Meaning</th></tr>
+        <tr><td><b>Abhyasa</b></td><td>Practice: continuous, sustained effort to keep the mind steady</td></tr>
+        <tr><td><b>Vairagya</b></td><td>Dispassion: freedom from attachment to objects of experience</td></tr>
+      </table></div>
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Abhyasa is the push towards steadiness; vairagya removes what keeps pulling the mind away. Either alone fails: practice without dispassion is undone by desire, and dispassion without practice leaves the mind unsteady. Together the citta becomes steady. <span class="src cls">Raja notes</span> <span class="src add">added</span></p>
+      </div>
+      <h3 class="sub"><span class="n">4B</span>Kriya yoga (YS 2.1)</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Part</th><th>Meaning</th></tr>
+        <tr><td>Tapas</td><td>Discipline, austerity</td></tr>
+        <tr><td>Svadhyaya</td><td>Self-study; study of sacred teachings</td></tr>
+        <tr><td>Ishvara-pranidhana</td><td>Surrender or dedication to Ishvara</td></tr>
+      </table></div>
+      <p>Kriya yoga <b>reduces the kleshas</b> and prepares the practitioner for deeper practice. <span class="src cls">Raja notes</span></p>
+      <h3 class="sub"><span class="n">4C</span>Obstacles and aids</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Antarayas, YS 1.30 (nine):</b> disease, mental dullness, doubt, carelessness, laziness, sense-indulgence, false perception, failure to attain a stage, instability in a stage. <span class="src cls">Darshana notes</span></li>
+          <li><b>Accompaniments, YS 1.31:</b> pain, despair, trembling of the body, irregular breathing. <span class="src cls">Darshana notes</span></li>
+          <li><b>Aids:</b> abhyasa and vairagya, Ishvara-pranidhana, the four brahmaviharas (YS 1.33), pranayama and the kriya yoga practices. <span class="src cls">Darshana notes</span></li>
+          <li><b>Brahmaviharas:</b> maitri (friendliness to the happy), karuna (compassion to the suffering), mudita (gladness at the virtuous), upeksha (equanimity to the non-virtuous). <span class="src cls">Darshana notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">4D</span>Ashtanga yoga: the eight limbs (YS 2.29)</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Limb</th><th>What it is</th><th>Type</th></tr>
+        <tr><td>1. Yama</td><td>Ethical restraints</td><td>Bahiranga (external)</td></tr>
+        <tr><td>2. Niyama</td><td>Personal observances</td><td>Bahiranga</td></tr>
+        <tr><td>3. Asana</td><td>Steady, comfortable posture: <i>sthira-sukham asanam</i> (YS 2.46)</td><td>Bahiranga</td></tr>
+        <tr><td>4. Pranayama</td><td>Regulation of breath and its flow (YS 2.49): inhalation, exhalation, retention</td><td>Bahiranga</td></tr>
+        <tr><td>5. Pratyahara</td><td>Withdrawal of the senses from objects (YS 2.54); awareness turns inward</td><td>Bahiranga</td></tr>
+        <tr><td>6. Dharana</td><td>Binding the mind to one place or object (YS 3.1)</td><td>Antaranga (internal)</td></tr>
+        <tr><td>7. Dhyana</td><td>Uninterrupted flow of awareness towards the object (YS 3.2)</td><td>Antaranga</td></tr>
+        <tr><td>8. Samadhi</td><td>Absorption in which only the object shines and the sense of self seems to fade (YS 3.3)</td><td>Antaranga</td></tr>
+      </table></div>
+      <p><span class="src cls">Raja notes</span><span class="src cls">Darshana notes</span> YS 2.28: practising the limbs removes impurities and brings the light of knowledge, ending in discriminative insight.</p>
+      <div class="blk know">
+        <span class="lbl">Know this &middot; asana in Patanjali</span>
+        <p>In the Patanjala system asana is mainly a <b>foundation for meditation</b>, a steady and comfortable seat. It is not the large repertoire of postures of later Hatha Yoga. <span class="src cls">Raja notes</span></p>
+      </div>
+      <h3 class="sub"><span class="n">4E</span>Yamas and niyamas: the ethical foundation</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Yama (YS 2.30)</th><th>Meaning</th><th>Fruit when established</th></tr>
+        <tr><td>Ahimsa</td><td>Non-violence in thought, word and deed</td><td>Hostility is given up in one&#8217;s presence (2.35)</td></tr>
+        <tr><td>Satya</td><td>Truthfulness</td><td>Words and actions become effective (2.36)</td></tr>
+        <tr><td>Asteya</td><td>Non-stealing</td><td>Wealth and resources come (2.37)</td></tr>
+        <tr><td>Brahmacharya</td><td>Moderation and right use of vital energy</td><td>Vigour and vitality (2.38)</td></tr>
+        <tr><td>Aparigraha</td><td>Non-possessiveness</td><td>Understanding of the &ldquo;why&rdquo; of existence (2.39)</td></tr>
+      </table></div>
+      <p><span class="src cls">Darshana notes</span> <b>Mahavrata (YS 2.31):</b> the yamas become the &ldquo;great vow&rdquo; when they are universal, not limited by birth, place, time or circumstance.</p>
+      <div class="table-wrap"><table>
+        <tr><th>Niyama (YS 2.32)</th><th>Meaning</th></tr>
+        <tr><td>Shaucha</td><td>Purity of body and mind</td></tr>
+        <tr><td>Santosha</td><td>Contentment</td></tr>
+        <tr><td>Tapas</td><td>Discipline, austerity, sustained effort</td></tr>
+        <tr><td>Svadhyaya</td><td>Self-study and study of liberating texts</td></tr>
+        <tr><td>Ishvara-pranidhana</td><td>Surrender and devotion to Ishvara</td></tr>
+      </table></div>
+      <p><b>Pratipaksha bhavana (YS 2.33):</b> when harmful thoughts arise, cultivate their opposites. <span class="src cls">Darshana notes</span></p>
+      <h3 class="sub"><span class="n">4F</span>Samyama, Om and the stages of samadhi</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Samyama (YS 3.4)</b> = dharana + dhyana + samadhi on one object, taught in the Vibhuti Pada. <span class="src cls">Raja notes</span></li>
+          <li>Dharana is <b>fixing</b> attention; dhyana is the <b>continuous flow</b> of attention; samadhi is absorption where meditator, meditation and object become one. <span class="src cls">Raja notes</span></li>
+          <li><b>Om:</b> YS 1.27 <i>tasya vachakah pranavah</i> (Om expresses Ishvara); YS 1.28 <i>taj-japas tad-artha-bhavanam</i> (repeat it and contemplate its meaning). This is where Raja Yoga meets Mantra Yoga. <span class="src cls">Raja notes</span></li>
+          <li>The first five limbs are external aids and the last three internal (YS 3.7), yet the three are in turn external to <b>nirbija</b> samadhi (YS 3.8). <span class="src cls">Darshana notes</span></li>
+        </ul>
+      </div>
+      <div class="table-wrap"><table>
+        <tr><th>Kind of samadhi</th><th>Description</th></tr>
+        <tr><td>Samprajnata (with cognition)</td><td>Absorption with an object of focus; stages vitarka, vichara, ananda, asmita (YS 1.17)</td></tr>
+        <tr><td>Asamprajnata (without cognition)</td><td>Beyond cognitive content; only latent impressions remain (YS 1.18)</td></tr>
+        <tr><td>Nirbija (seedless)</td><td>Even latent impressions cease, so the seeds of rebirth are gone (YS 1.51)</td></tr>
+        <tr><td>Dharmamegha</td><td>&ldquo;Cloud of virtue&rdquo;: final stage after perfect discrimination, from which kleshas and karma cease (YS 4.29-30)</td></tr>
+      </table></div>
+      <p class="honest"><b>Source note.</b> Samapatti terms (savitarka, nirvitarka, savichara, nirvichara, sananda, sasmita) vary in interpretation among commentators. Your Raja notes list them under samprajnata samadhi and your Darshana notes give vitarka, vichara, ananda, asmita. Use the version your teacher dictated.</p>
+      <h3 class="sub"><span class="n">4G</span>Vibhutis (siddhis)</h3>
+      <p>The Vibhuti Pada describes extraordinary capacities arising through samyama. They are <b>not the goal</b>: the final goal remains kaivalya. Do not describe Raja Yoga as a method for acquiring powers. <span class="src cls">Raja notes</span></p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Abhyasa and vairagya?</div><div class="a">Sustained practice; freedom from attachment (YS 1.12)</div></div>
+        <div class="recall-card"><div class="q">Kriya yoga?</div><div class="a">Tapas, svadhyaya, Ishvara-pranidhana (YS 2.1)</div></div>
+        <div class="recall-card"><div class="q">Bahiranga limbs?</div><div class="a">Yama, niyama, asana, pranayama, pratyahara</div></div>
+        <div class="recall-card"><div class="q">Samyama?</div><div class="a">Dharana + dhyana + samadhi (YS 3.4)</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-epistemology">
+      <div class="sec-head">
+        <div class="kicker">05 &middot; Epistemology</div>
+        <h2>How We Know, How We Err, What Frees</h2>
+        <p class="dek">The pramanas, the five vrittis as a theory of the mind, and the knowledge that ends bondage.</p>
+      </div>
+      <p><b>Epistemology</b> asks how we know and how we err. In Indian terms: the knower (<i>pramata</i>), the object known (<i>prameya</i>) and the valid means of knowing (<i>pramana</i>). In Yoga it is tied to psychology and practice: how the mind knows, how it goes wrong, and how right knowledge ends suffering. <span class="src cls">Darshana notes</span></p>
+      <h3 class="sub"><span class="n">5A</span>Three pramanas (YS 1.7)</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Pramana</th><th>Meaning</th><th>Note</th></tr>
+        <tr><td>Pratyaksha</td><td>Direct perception through the senses (and, in advanced states, direct insight)</td><td>Basis of empirical knowledge; can mislead when conditions are poor (rope and snake)</td></tr>
+        <tr><td>Anumana</td><td>Inference from a known relationship</td><td>Smoke and fire; used for what cannot be perceived, such as the nature of Prakriti and Purusha</td></tr>
+        <tr><td>Agama (shabda)</td><td>Reliable verbal testimony of authoritative teachers and texts</td><td>Not blind belief: validity depends on a reliable source and agreement with reason and experience</td></tr>
+      </table></div>
+      <p><span class="src cls">Darshana notes</span> Yoga accepts three pramanas, like Samkhya. Nyaya accepts four (adds upamana, comparison). Advaita Vedanta accepts more, including arthapatti and anupalabdhi.</p>
+      <h3 class="sub"><span class="n">5B</span>Valid knowledge, error and root error</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Term</th><th>What it is</th></tr>
+        <tr><td>Pramana (vritti)</td><td>Correct cognition</td></tr>
+        <tr><td>Viparyaya</td><td>Momentary error: a wrong cognition not based on the real form of the object</td></tr>
+        <tr><td>Vikalpa</td><td>Word-knowledge with no real object</td></tr>
+        <tr><td>Avidya</td><td>The <b>root</b> error: non-eternal as eternal, impure as pure, pain as pleasure, non-Self as Self (YS 2.5)</td></tr>
+      </table></div>
+      <div class="blk und">
+        <span class="lbl">Understand it &#183; why epistemology matters here</span>
+        <p>The yogic problem is epistemic at root. The Seer is <b>mistaken</b> for the activities of the mind (YS 1.4: the Seer appears to take the form of the vrittis). Bondage is therefore a case of wrong knowing, and liberation is right knowing that is <b>experienced</b> and kept steady, not just believed. <span class="src cls">Darshana notes</span> <span class="src add">added</span></p>
+      </div>
+      <h3 class="sub"><span class="n">5C</span>Knowledge that liberates: viveka-khyati</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Viveka-khyati (YS 2.26):</b> unwavering discriminative knowledge of Purusha as distinct from Prakriti. It removes avidya. <span class="src cls">Darshana notes</span></li>
+          <li><b>Seven-fold insight (YS 2.27)</b> describes the final stage of this knowledge. <span class="src cls">Darshana notes</span></li>
+          <li><b>Nirvichara vaisharadya and ritambhara prajna (YS 1.47-48):</b> in deep meditation clarity arises and insight becomes &ldquo;truth-bearing&rdquo;. <span class="src cls">Darshana notes</span></li>
+          <li>Knowledge ends suffering only when it is <b>experienced and sustained</b> by practice (abhyasa and vairagya, YS 1.12): movement from concept to direct realisation. <span class="src cls">Raja notes</span> <span class="src cls">Darshana notes</span></li>
+        </ul>
+      </div>
+      <div class="blk know">
+        <span class="lbl">Link to practice</span>
+        <p>Purifying and steadying the mind through ethics, asana, pranayama, pratyahara and meditation is a <b>condition</b> for reliable perception and discriminative insight. <span class="src cls">Darshana notes</span></p>
+      </div>
+      <h3 class="sub"><span class="n">5D</span>Pramanas across schools (for comparison questions)</h3>
+      <div class="table-wrap"><table>
+        <tr><th>School</th><th>Pramanas</th></tr>
+        <tr><td>Samkhya</td><td>Pratyaksha, anumana, shabda (3)</td></tr>
+        <tr><td>Yoga</td><td>Pratyaksha, anumana, agama (3)</td></tr>
+        <tr><td>Nyaya</td><td>Four: adds upamana</td></tr>
+        <tr><td>Advaita Vedanta</td><td>Six: adds upamana, arthapatti, anupalabdhi; shruti for Brahman</td></tr>
+      </table></div>
+      <p><span class="src cls">Darshana notes</span></p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Three pramanas in Yoga?</div><div class="a">Pratyaksha, anumana, agama</div></div>
+        <div class="recall-card"><div class="q">Viparyaya vs avidya?</div><div class="a">Viparyaya is momentary error; avidya is the root error behind suffering</div></div>
+        <div class="recall-card"><div class="q">Liberating knowledge?</div><div class="a">Viveka-khyati (YS 2.26)</div></div>
+        <div class="recall-card"><div class="q">Why is testimony valid?</div><div class="a">Because the source is reliable and agrees with reason and experience, not blind belief</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-metaphysics">
+      <div class="sec-head">
+        <div class="kicker">06 &middot; Metaphysics and liberation</div>
+        <h2>Purusha, Prakriti, Ishvara and Kaivalya</h2>
+        <p class="dek">What is real in Patanjala Yoga, why bondage happens, and what liberation is.</p>
+      </div>
+      <p><b>Metaphysics</b> asks what is real. Yoga follows Samkhya&#8217;s <b>dualism</b> and adds Ishvara. Its central problem is the <b>misidentification</b> of Purusha with the processes of Prakriti; its central solution is discriminative knowledge. <span class="src cls">Raja notes</span> <span class="src cls">Darshana notes</span></p>
+      <h3 class="sub"><span class="n">6A</span>Two realities</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Principle</th><th>Nature</th><th>Key sutra</th></tr>
+        <tr><td><b>Purusha</b></td><td>Pure consciousness; the witness; unchanging; not the body, senses, emotions or mind; many in number</td><td>YS 2.20: the Seer is pure consciousness, though appearing to see through the mind&#8217;s modifications</td></tr>
+        <tr><td><b>Prakriti</b></td><td>Unconscious primordial nature; source of body and mind; made of three gunas; constantly evolving</td><td>YS 2.18: the seen has the nature of illumination, activity and inertia, consists of elements and senses, and exists for experience and liberation</td></tr>
+      </table></div>
+      <h3 class="sub"><span class="n">6B</span>The three gunas</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Guna</th><th>Quality</th><th>In the mind</th></tr>
+        <tr><td>Sattva</td><td>Illumination, lightness, harmony</td><td>Clarity, calm, insight</td></tr>
+        <tr><td>Rajas</td><td>Activity, energy, restlessness</td><td>Desire, agitation, attachment</td></tr>
+        <tr><td>Tamas</td><td>Inertia, heaviness, obscuration</td><td>Dullness, confusion, resistance</td></tr>
+      </table></div>
+      <p><span class="src cls">Raja notes</span><span class="src cls">Darshana notes</span> The four levels of the gunas (YS 2.19: vishesha, avishesha, linga-matra, alinga) are the manifest and unmanifest stages of Prakriti. Liberation is <b>not</b> merely increasing sattva: it needs discrimination of Purusha from <b>all</b> gunas, sattva included.</p>
+      <h3 class="sub"><span class="n">6C</span>Evolution of Prakriti (the tattvas)</h3>
+      <p>Yoga accepts Samkhya&#8217;s account: Prakriti evolves into mahat or buddhi, ahamkara, manas, five jnanendriyas, five karmendriyas, five tanmatras and five mahabhutas. Counting mahat, ahamkara, manas and the 20 later items gives 23 evolutes; with Prakriti that is 24, and Purusha makes the <b>25 tattvas</b>. <span class="src cls">Darshana notes</span></p>
+      <p class="honest"><b>Source note.</b> Your Darshana notes say &ldquo;24 evolutes and Prakriti, plus Purusha = 25&rdquo;, which double-counts by one. The total of 25 is right; the count of evolutes is 23. <span class="src add">added: my arithmetic, confirm with teacher</span></p>
+      <h3 class="sub"><span class="n">6D</span>Ishvara (YS 1.23-27)</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Purusha-vishesha:</b> a special Purusha, untouched by kleshas, karma, the fruits of karma and latent impressions (YS 1.24). <span class="src cls">Raja notes</span> <span class="src cls">Darshana notes</span></li>
+          <li>Not the creator of the world in a theistic sense: the ever-liberated <b>model</b> and teacher even of the ancient teachers (YS 1.26). <span class="src cls">Darshana notes</span></li>
+          <li>Designated by <b>Om</b> (YS 1.27). Devotion to Ishvara (Ishvara-pranidhana) is an alternative or supporting means to samadhi (YS 1.23). <span class="src cls">Raja notes</span> <span class="src cls">Darshana notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">6E</span>Bondage and liberation</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Bondage:</b> conjunction (samyoga) of Seer and seen due to avidya (YS 2.17, 2.24). The pain not yet come is to be avoided (YS 2.16). <span class="src cls">Darshana notes</span></li>
+          <li><b>Liberation, kaivalya:</b> cessation of that conjunction when avidya goes (YS 2.25). YS 4.34: the gunas have no further purpose for Purusha, so consciousness stands in its own nature. <span class="src cls">Darshana notes</span></li>
+          <li>Kaivalya is <b>not</b> destruction of Purusha and <b>not</b> union with a higher entity; it is realisation of what Purusha always is. <span class="src cls">Darshana notes</span></li>
+        </ul>
+      </div>
+      <div class="flow"><span>Purusha + Prakriti</span><i>&rarr;</i><span>Avidya</span><i>&rarr;</i><span>Misidentification</span><i>&rarr;</i><span>Kleshas + karma + samskara</span><i>&rarr;</i><span>Bondage</span><i>&rarr;</i><span>Yoga</span><i>&rarr;</i><span>Viveka-khyati</span><i>&rarr;</i><span>KAIVALYA</span></div>
+      <h3 class="sub"><span class="n">6F</span>Liberation across schools</h3>
+      <div class="table-wrap"><table>
+        <tr><th>School</th><th>View of liberation</th><th>Means</th></tr>
+        <tr><td>Samkhya</td><td>Kaivalya: isolation of Purusha from Prakriti</td><td>Discriminative knowledge</td></tr>
+        <tr><td>Yoga</td><td>Kaivalya: stable abiding of Purusha in its own nature</td><td>Ashtanga yoga, viveka-khyati, nirbija samadhi</td></tr>
+        <tr><td>Nyaya</td><td>Apavarga: end of suffering through right knowledge</td><td>Tattva-jnana of the categories</td></tr>
+        <tr><td>Advaita Vedanta</td><td>Moksha: identity of Atman and Brahman</td><td>Jnana with preparatory disciplines</td></tr>
+      </table></div>
+      <p><span class="src cls">Darshana notes</span></p>
+      <div class="blk exam">
+        <span class="lbl">Exam angle</span>
+        <p>Marks usually go to: Purusha and Prakriti defined; the three gunas named with qualities; Ishvara as <b>purusha-vishesha</b>; avidya as the root of bondage; kaivalya as isolation, not union. <span class="src add">added</span></p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Purusha vs Prakriti?</div><div class="a">Conscious, unchanging witness vs unconscious, evolving nature of three gunas</div></div>
+        <div class="recall-card"><div class="q">How many tattvas?</div><div class="a">25 (Prakriti and its 23 evolutes, plus Purusha)</div></div>
+        <div class="recall-card"><div class="q">Who is Ishvara?</div><div class="a">Purusha-vishesha, untouched by klesha and karma, ever-liberated (YS 1.24)</div></div>
+        <div class="recall-card"><div class="q">What is kaivalya?</div><div class="a">Isolation of Purusha; stable abiding in its own nature</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-answers">
+      <div class="sec-head">
+        <div class="kicker">07 &middot; Exam answers</div>
+        <h2>Model Answers: 10, 5 and 2 Marks</h2>
+        <p class="dek">Written from the questions in your Raja Yoga notes. Try each one first, then tap to compare.</p>
+      </div>
+      <p>Your teacher&#8217;s answer pattern is <b>Introduction &rarr; Historical and philosophical background &rarr; Structure &rarr; Method &rarr; Epistemology &rarr; Metaphysics</b>. Section 1 to 6 of this page follow that order, so a long answer is those six headings in order, with the lines below.</p>
+      <h3 class="sub"><span class="n">7A</span>10 marks: Explain Raja Yoga in detail</h3>
+      <div class="mq"><div class="mqh"><span class="marks-tag">10 marks</span><span class="topic">Raja Yoga</span></div>
+        <p class="mqt">Explain Raja Yoga in detail.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p><b>1. Introduction.</b> Raja Yoga is the &ldquo;royal path&rdquo; of disciplining the mind, the Patanjala Yoga Darshana. YS 1.2: <i>yogash citta-vritti-nirodhah</i>, yoga is the stilling of the fluctuations of citta. Aim: immediate citta-vritti-nirodha, deeper viveka-khyati, ultimate kaivalya.</p><p><b>2. Historical and philosophical background.</b> Systematised by Maharshi Patanjali in the Yoga Sutra (about 195 sutras, four padas: Samadhi, Sadhana, Vibhuti, Kaivalya). Commentaries: Vyasa Bhashya, Tattva Vaisharadi, Rajamartanda. One of the six darshanas; shares Samkhya&#8217;s Purusha-Prakriti dualism and gunas, adds Ishvara and a practical method (sesvara Samkhya).</p><p><b>3. Structure.</b> Chitta (buddhi, ahamkara, manas) is a product of Prakriti; five levels (kshipta, mudha, vikshipta, ekagra, niruddha); five vrittis (pramana, viparyaya, vikalpa, nidra, smriti), klishta or aklishta; five kleshas (avidya, asmita, raga, dvesha, abhinivesha) with avidya as root; karma and samskara keep the cycle going.</p><p><b>4. Method.</b> Abhyasa and vairagya (YS 1.12); kriya yoga (tapas, svadhyaya, Ishvara-pranidhana, YS 2.1); ashtanga yoga (YS 2.29): yama, niyama, asana, pranayama, pratyahara (external) and dharana, dhyana, samadhi (internal), together samyama; kinds of samadhi: samprajnata, asamprajnata, nirbija. Vibhutis are by-products, not the goal.</p><p><b>5. Epistemology.</b> Three pramanas: pratyaksha, anumana, agama (YS 1.7). Viparyaya is momentary error; avidya the root error. Liberating knowledge is viveka-khyati (YS 2.26), realised by practice, not belief.</p><p><b>6. Metaphysics and liberation.</b> Purusha (conscious, many) and Prakriti (three gunas) with Ishvara as purusha-vishesha. Bondage is the conjunction of Seer and seen through avidya (YS 2.17). Liberation is kaivalya (YS 2.25, 4.34): Purusha abiding in its own nature.</p><p><b>Conclusion.</b> Still the mind, develop discrimination, distinguish Purusha from Prakriti, attain kaivalya.</p><p class="pts"><span class="src cls">Raja notes</span><span class="src cls">Darshana notes</span> Structure follows your teacher&#8217;s six headings; the wording is mine <span class="src add">added</span></p></div></details></div>
+      <h3 class="sub"><span class="n">7B</span>5 marks: the ten questions from your notes</h3>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Vrittis</span></div>
+        <p class="mqt">Explain the five citta-vrittis.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Citta-vrittis are the modifications of citta (YS 1.5-11), each klishta (afflicting) or aklishta:</p><ol><li><b>Pramana</b>: valid knowledge (perception, inference, testimony), YS 1.7</li><li><b>Viparyaya</b>: misconception, e.g. rope seen as snake, YS 1.8</li><li><b>Vikalpa</b>: verbal construct with no real object, e.g. horns of a hare, YS 1.9</li><li><b>Nidra</b>: sleep, a modification based on absence of content, YS 1.10</li><li><b>Smriti</b>: memory, not letting go of an experienced object, YS 1.11</li></ol><p>Yoga stills all five, not only the wrong ones.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Kleshas</span></div>
+        <p class="mqt">Explain the five kleshas.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Kleshas are afflictions that cause suffering (YS 2.3).</p><ol><li><b>Avidya</b>: ignorance, taking the non-eternal as eternal, impure as pure, pain as pleasure, non-Self as Self; the root and field of the rest</li><li><b>Asmita</b>: egoism, identifying the Seer with the instruments of seeing</li><li><b>Raga</b>: attachment to pleasure</li><li><b>Dvesha</b>: aversion to pain</li><li><b>Abhinivesha</b>: clinging to life, fear of death</li></ol><p>Flow: avidya &rarr; asmita &rarr; raga and dvesha &rarr; abhinivesha &rarr; suffering. Kriya yoga weakens them.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Abhyasa-vairagya</span></div>
+        <p class="mqt">Explain abhyasa and vairagya.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>YS 1.12: the means of steadying citta. <b>Abhyasa</b> is continuous, sustained effort to keep the mind steady. <b>Vairagya</b> is freedom from attachment to objects of experience. Together they make the citta steady: practice without dispassion is undone by desire, dispassion without practice leaves the mind unsteady.</p><p class="pts">The last sentence is my explanation <span class="src add">added</span></p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Kriya yoga</span></div>
+        <p class="mqt">Explain Kriya Yoga.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>YS 2.1: <b>tapas</b> (discipline, austerity), <b>svadhyaya</b> (self-study, study of sacred teachings), <b>Ishvara-pranidhana</b> (surrender or dedication to Ishvara). It reduces the kleshas and prepares the practitioner for deeper practice. It overlaps with the niyamas, which also list these three.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Ishvara</span></div>
+        <p class="mqt">Explain the concept of Ishvara in Patanjala Yoga.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Ishvara is <b>purusha-vishesha</b>, a special Purusha (YS 1.24), untouched by kleshas, karma, the fruits of karma and latent impressions. He is not creator in the theistic sense but the ever-liberated model and teacher of even the ancient teachers (YS 1.26). Designated by Om (YS 1.27), to be repeated and contemplated (YS 1.28). Ishvara-pranidhana is an alternative or supporting means to samadhi (YS 1.23). Ishvara is what Yoga adds to Samkhya.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Pramanas</span></div>
+        <p class="mqt">Explain the three pramanas.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>YS 1.7. <b>Pratyaksha</b>: direct perception; basis of empirical knowledge but can mislead. <b>Anumana</b>: inference, e.g. smoke to fire; used for what cannot be perceived, like Prakriti and Purusha. <b>Agama</b>: reliable testimony of authoritative teachers and texts; valid only when the source is reliable and agrees with reason and experience. Nyaya adds upamana; Advaita adds more.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Limbs</span></div>
+        <p class="mqt">Explain the first five limbs of Ashtanga Yoga.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>The five <b>bahiranga</b> (external) limbs, YS 2.29:</p><ol><li><b>Yama</b>: ahimsa, satya, asteya, brahmacharya, aparigraha (universal as mahavrata)</li><li><b>Niyama</b>: shaucha, santosha, tapas, svadhyaya, Ishvara-pranidhana</li><li><b>Asana</b>: sthira-sukham asanam (YS 2.46), steady and comfortable, a foundation for meditation</li><li><b>Pranayama</b>: regulation of breath: inhalation, exhalation, retention (YS 2.49)</li><li><b>Pratyahara</b>: withdrawal of the senses; attention turns inward (YS 2.54)</li></ol></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Samyama</span></div>
+        <p class="mqt">Explain Dharana, Dhyana and Samadhi.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>The three internal (<b>antaranga</b>) limbs, YS 3.1-3. <b>Dharana</b>: fixing the mind on one place or object (breath, mantra, a point). <b>Dhyana</b>: continuous, uninterrupted flow of awareness towards that object. <b>Samadhi</b>: absorption in which meditator, meditation and object are integrated. Together they are <b>samyama</b> (YS 3.4), whose practice gives the vibhutis; the goal remains kaivalya.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Purusha-Prakriti</span></div>
+        <p class="mqt">Explain Purusha and Prakriti.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p><b>Purusha</b>: pure consciousness, witness, unchanging, non-material, distinct from body, senses, emotions and mind; many in number. <b>Prakriti</b>: primordial nature, unconscious source of the manifest world, operating through sattva (clarity), rajas (activity), tamas (inertia); body, senses and mind belong to it. Bondage is mistaking one for the other; viveka-khyati removes the mistake.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Kaivalya</span></div>
+        <p class="mqt">Explain Kaivalya.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Kaivalya is the final goal: complete freedom (isolation) of Purusha from identification with Prakriti. It comes when avidya is removed and the conjunction of Seer and seen ceases (YS 2.25); the gunas have no further purpose for Purusha and consciousness stands in its own nature (YS 4.34). It is not destruction of Purusha nor union with a higher entity. Path: yoga practice, purified citta, samadhi, viveka-khyati, kaivalya.</p></div></details></div>
+      <h3 class="sub"><span class="n">7C</span>2 marks: the thirteen quick answers</h3>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Define Yoga according to Patanjali.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Yogash citta-vritti-nirodhah (YS 1.2): yoga is the stilling of the fluctuations of the mind.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Four padas of the Yoga Sutra?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Samadhi, Sadhana, Vibhuti, Kaivalya.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Five citta-vrittis?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Pramana, viparyaya, vikalpa, nidra, smriti.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Five kleshas?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Avidya, asmita, raga, dvesha, abhinivesha.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Three pramanas?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Pratyaksha, anumana, agama.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">What is abhyasa?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Continuous, sustained effort to keep the mind steady (YS 1.12).</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">What is vairagya?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Dispassion: freedom from attachment to objects of experience.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Define Kriya Yoga.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Tapas, svadhyaya and Ishvara-pranidhana (YS 2.1); it reduces kleshas.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">What is Ishvara?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Purusha-vishesha: a special Purusha untouched by klesha, karma and its fruits.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Types of karma (Patanjali)?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Krishna, shukla, shukla-krishna, ashukla-akrishna (YS 4.7).</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">What is Kaivalya?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Liberation: complete freedom of Purusha from identification with Prakriti.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">What is Samyama?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Dharana, dhyana and samadhi together on one object (YS 3.4).</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Define Asana (Patanjali).</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Sthira-sukham asanam: posture should be steady and comfortable (YS 2.46).</p></div></details></div>
+
+    </section>
+    <section class="section" id="sec-recall">
+      <div class="sec-head">
+        <div class="kicker">08 &middot; Sutras and recall</div>
+        <h2>Sutras, Concept Map and Checks</h2>
+        <p class="dek">One page to revise from the night before.</p>
+      </div>
+      <h3 class="sub"><span class="n">8A</span>Sutras to remember</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Sutra</th><th>Teaching</th></tr>
+        <tr><td>1.2</td><td>Yogash citta-vritti-nirodhah</td></tr>
+        <tr><td>1.5-11</td><td>Five vrittis</td></tr>
+        <tr><td>1.7</td><td>Three pramanas</td></tr>
+        <tr><td>1.12</td><td>Abhyasa and vairagya</td></tr>
+        <tr><td>1.23</td><td>Ishvara-pranidhana</td></tr>
+        <tr><td>1.24</td><td>Ishvara defined (purusha-vishesha)</td></tr>
+        <tr><td>1.27</td><td>Pranava (Om) designates Ishvara</td></tr>
+        <tr><td>1.28</td><td>Japa of Om and contemplation of its meaning</td></tr>
+        <tr><td>1.29</td><td>Results of Om practice</td></tr>
+        <tr><td>1.30-31</td><td>Obstacles and accompanying disturbances</td></tr>
+        <tr><td>1.33</td><td>Maitri, karuna, mudita, upeksha</td></tr>
+        <tr><td>2.1</td><td>Kriya yoga</td></tr>
+        <tr><td>2.3</td><td>Five kleshas</td></tr>
+        <tr><td>2.5</td><td>Avidya defined</td></tr>
+        <tr><td>2.17</td><td>Conjunction of Seer and seen is the cause of suffering</td></tr>
+        <tr><td>2.26</td><td>Viveka-khyati</td></tr>
+        <tr><td>2.29</td><td>Eight limbs</td></tr>
+        <tr><td>2.46</td><td>Sthira-sukham asanam</td></tr>
+        <tr><td>2.49</td><td>Pranayama</td></tr>
+        <tr><td>3.1-3</td><td>Dharana, dhyana, samadhi</td></tr>
+        <tr><td>3.4</td><td>Samyama</td></tr>
+        <tr><td>4.7</td><td>Classification of karma</td></tr>
+        <tr><td>4.34</td><td>Kaivalya</td></tr>
+      </table></div>
+      <p><span class="src cls">Raja notes</span><span class="src cls">Darshana notes</span></p>
+      <h3 class="sub"><span class="n">8B</span>Complete concept map</h3>
+      <div class="flow"><span>Purusha + Prakriti</span><i>&rarr;</i><span>Avidya</span><i>&rarr;</i><span>Kleshas</span><i>&rarr;</i><span>Citta-vrittis</span><i>&rarr;</i><span>Abhyasa + Vairagya</span><i>&rarr;</i><span>Kriya / Ashtanga yoga</span><i>&rarr;</i><span>Yama</span><i>&rarr;</i><span>Niyama</span><i>&rarr;</i><span>Asana</span><i>&rarr;</i><span>Pranayama</span><i>&rarr;</i><span>Pratyahara</span><i>&rarr;</i><span>Dharana</span><i>&rarr;</i><span>Dhyana</span><i>&rarr;</i><span>Samadhi</span><i>&rarr;</i><span>Viveka-khyati</span><i>&rarr;</i><span>KAIVALYA</span></div>
+      <h3 class="sub"><span class="n">8C</span>Key exam points</h3>
+      <div class="blk exam">
+        <span class="lbl">Remember</span>
+        <ul class="plain">
+          <li>Yoga shares Samkhya&#8217;s metaphysics but adds Ishvara and a practical method. <span class="src cls">Darshana notes</span></li>
+          <li>Viparyaya is momentary error; avidya is the root cause of bondage. <span class="src cls">Darshana notes</span></li>
+          <li>Mind, intellect and ego belong to Prakriti (as chitta), not to Purusha. <span class="src cls">Darshana notes</span></li>
+          <li>Yamas and niyamas are the ethical foundation, not optional extras. <span class="src cls">Darshana notes</span></li>
+          <li>Kaivalya is isolation of consciousness, not union with a higher entity. <span class="src cls">Darshana notes</span></li>
+          <li>The philosophical goal is kaivalya; health benefits of practice are valuable but secondary. <span class="src cls">Darshana notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">8D</span>Flags to confirm with your teacher</h3>
+      <div class="blk conf">
+        <span class="lbl">Check these</span>
+        <ul class="plain">
+          <li>Patanjali&#8217;s date and background: not in your notes. <span class="src add">added</span></li>
+          <li>Count of sutras (195 or 196), given as &ldquo;about 195/196&rdquo; in your notes. <span class="src cls">Raja notes</span></li>
+          <li>Samapatti and samprajnata sub-stages: two lists in your notes (see 4F). <span class="src cls">Raja notes</span> <span class="src cls">Darshana notes</span></li>
+          <li>Evolute count (23 vs the notes&#8217; 24): see 6C. <span class="src add">added</span></li>
+        </ul>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Whole philosophy in one line?</div><div class="a">Still the mind, develop discrimination, distinguish Purusha from Prakriti, attain kaivalya</div></div>
+        <div class="recall-card"><div class="q">Samkhya vs Yoga in one line?</div><div class="a">Samkhya gives the map, Yoga gives the route</div></div>
+        <div class="recall-card"><div class="q">Which limbs are internal?</div><div class="a">Dharana, dhyana, samadhi</div></div>
+        <div class="recall-card"><div class="q">Exam trap on karma?</div><div class="a">Use shukla/krishna types for Patanjali, not sanchita-prarabdha-agami</div></div>
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
+</script>
