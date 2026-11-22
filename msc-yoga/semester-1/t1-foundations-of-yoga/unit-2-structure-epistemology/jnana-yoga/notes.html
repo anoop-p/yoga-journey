@@ -1,0 +1,547 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jnana Yoga</title>
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .sk{ font-family:"Fraunces",Georgia,serif; font-style:italic; color:var(--ink); }
+  .flow{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 12px; }
+  .flow span{ background:var(--teal-soft); color:var(--teal); border-radius:8px; padding:5px 10px; font-size:13px; font-weight:600; }
+  .flow i{ color:var(--muted); font-style:normal; }
+  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 16px; }
+  .mq .mqh{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
+  .mq .topic{ font-size:11px; color:var(--muted); }
+  .mq .mqt{ font-weight:600; color:var(--ink); margin:0 0 10px; max-width:none; }
+  .mq details.ans > summary{ cursor:pointer; list-style:none; display:inline-block; padding:6px 12px; border-radius:8px; background:var(--teal-soft); color:var(--teal); font-size:13px; font-weight:600; }
+  .mq details.ans > summary::-webkit-details-marker{ display:none; }
+  .mq details.ans[open] > summary{ background:var(--surface-2); color:var(--muted); }
+  .mq .ansb{ margin-top:12px; border-top:1px dashed var(--border); padding-top:10px; }
+  .mq .ansb p{ margin:0 0 8px; }
+  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 12px; padding-left:22px; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Jnana Yoga</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../../index.html">&larr; T1 &middot; Foundations of Yoga</a>
+    <div class="brand">
+      <div class="eyebrow">Foundations of Yoga &middot; Unit 2</div>
+      <h1>Jnana Yoga</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="intro"><span class="num">01</span><span>Introduction</span></button>
+      <button class="nav-item" data-target="background"><span class="num">02</span><span>Historical &amp; Philosophical Background</span></button>
+      <button class="nav-item" data-target="structure"><span class="num">03</span><span>Structure</span></button>
+      <button class="nav-item" data-target="method"><span class="num">04</span><span>Method</span></button>
+      <button class="nav-item" data-target="epistemology"><span class="num">05</span><span>Epistemology</span></button>
+      <button class="nav-item" data-target="metaphysics"><span class="num">06</span><span>Metaphysics</span></button>
+      <button class="nav-item" data-target="answers"><span class="num">07</span><span>Exam Answers</span></button>
+      <button class="nav-item" data-target="recall"><span class="num">08</span><span>Flags</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Sources: your Jnana Yoga notes and Vedanta notes; structured in your teacher&#8217;s six parts
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="section" id="sec-intro">
+      <div class="sec-head">
+        <div class="kicker">01 &middot; Introduction (meaning)</div>
+        <h2>What Jnana Yoga Is</h2>
+        <p class="dek">The path of knowledge and its central question.</p>
+      </div>
+      <div class="stat-strip">
+        <div class="stat"><div class="v">4</div><div class="k">sadhana chatushtaya</div></div>
+        <div class="stat"><div class="v">6</div><div class="k">shat-sampatti</div></div>
+        <div class="stat"><div class="v">3</div><div class="k">stages: shravana, manana, nididhyasana</div></div>
+        <div class="stat"><div class="v">4</div><div class="k">mahavakyas</div></div>
+      </div>
+      <h3 class="sub"><span class="n">1A</span>Meaning</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Term</th><th>Meaning</th></tr>
+        <tr><td><b>Jnana</b></td><td>Knowledge, understanding, wisdom: not mere intellectual knowledge</td></tr>
+        <tr><td><b>Jnana Yoga</b></td><td>The path of knowledge: knowledge of the Self and of ultimate reality</td></tr>
+      </table></div>
+      <p><b>Central question:</b> &ldquo;Who am I?&rdquo; Is the real self the body, senses, mind and ego, or something deeper? <span class="src cls">Jnana notes</span></p>
+      <div class="flow"><span>Avidya (ignorance)</span><i>&rarr;</i><span>Wrong identification (&ldquo;I am the body or mind&rdquo;)</span><i>&rarr;</i><span>Attachment and suffering</span><i>&rarr;</i><span>Self-inquiry</span><i>&rarr;</i><span>Knowledge of Self</span><i>&rarr;</i><span>Moksha</span></div>
+      <div class="blk und">
+        <span class="lbl">Understand it</span>
+        <p>Jnana Yoga does not add something new; it removes a mistake. You take yourself to be the body, the thoughts, a social identity. The path examines that mistake until it falls away, as knowing the rope removes the snake in the dark. <span class="src cls">Jnana notes</span> <span class="src add">added</span></p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Central question of Jnana Yoga?</div><div class="a">Who am I?</div></div>
+        <div class="recall-card"><div class="q">Core logic?</div><div class="a">Avidya, wrong identification, suffering, self-inquiry, knowledge, moksha</div></div>
+        <div class="recall-card"><div class="q">Jnana is not?</div><div class="a">Mere intellectual knowledge</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-background">
+      <div class="sec-head">
+        <div class="kicker">02 &middot; Historical and philosophical background</div>
+        <h2>Upanishads to Vedanta</h2>
+        <p class="dek">The textual lineage.</p>
+      </div>
+      <h3 class="sub"><span class="n">2A</span>Where it comes from</h3>
+      <p>Associated mainly with the <b>Upanishadic tradition</b> and later <b>Vedanta</b>. Source lineage: <b>Vedas &rarr; Upanishads &rarr; Bhagavad Gita &rarr; Brahma Sutras &rarr; Vedanta traditions</b>. The Upanishads investigate the nature of the Self, ultimate reality, consciousness, the relation of Atman and Brahman, and liberation. <span class="src cls">Jnana notes</span></p>
+      <p>See the <a href="../../unit-1-history-development/vedanta/notes.html">Vedanta page</a> for the prasthanatraya, Advaita and the Mahavakyas.</p>
+      <div class="blk know">
+        <span class="lbl">Link to Shankara</span>
+        <p>In Advaita Vedanta (Shankara), the Atman is non-dual with Brahman. Jnana Yoga is the practical path of that view. <span class="src cls">Jnana notes</span> <span class="src cls">Vedanta notes</span></p>
+      </div>
+
+    </section>
+    <section class="section" id="sec-structure">
+      <div class="sec-head">
+        <div class="kicker">03 &middot; Structure</div>
+        <h2>The Seeker&#8217;s Equipment</h2>
+        <p class="dek">The fourfold qualification and the six disciplines.</p>
+      </div>
+      <h3 class="sub"><span class="n">3A</span>Sadhana chatushtaya: the fourfold qualification</h3>
+      <div class="table-wrap"><table>
+        <tr><th>#</th><th>Qualification</th><th>Meaning</th></tr>
+        <tr><td>1</td><td><b>Viveka</b></td><td>Discrimination: eternal (nitya) from impermanent (anitya)</td></tr>
+        <tr><td>2</td><td><b>Vairagya</b></td><td>Dispassion: non-attachment to impermanent objects; <b>not hatred</b> of the world</td></tr>
+        <tr><td>3</td><td><b>Shat-sampatti</b></td><td>Six mental disciplines (below)</td></tr>
+        <tr><td>4</td><td><b>Mumukshutva</b></td><td>Intense desire for liberation, not temporary happiness</td></tr>
+      </table></div>
+      <div class="table-wrap"><table>
+        <tr><th>Shat-sampatti</th><th>Meaning</th></tr>
+        <tr><td>Shama</td><td>Calmness; control of the mind</td></tr>
+        <tr><td>Dama</td><td>Regulation of the senses</td></tr>
+        <tr><td>Uparati</td><td>Withdrawal from unnecessary external involvement</td></tr>
+        <tr><td>Titiksha</td><td>Forbearance, endurance</td></tr>
+        <tr><td>Shraddha</td><td>Trust in the teaching and the teacher</td></tr>
+        <tr><td>Samadhana</td><td>One-pointedness of mind</td></tr>
+      </table></div>
+      <p><span class="src cls">Jnana notes</span> Same list as on the Vedanta page.</p>
+
+    </section>
+    <section class="section" id="sec-method">
+      <div class="sec-head">
+        <div class="kicker">04 &middot; Method</div>
+        <h2>Hear, Reflect, Contemplate</h2>
+        <p class="dek">Three stages, neti neti and self-inquiry.</p>
+      </div>
+      <h3 class="sub"><span class="n">4A</span>Three-stage method</h3>
+      <div class="flow"><span>Shravana (listening)</span><i>&rarr;</i><span>Manana (reflecting)</span><i>&rarr;</i><span>Nididhyasana (contemplating)</span></div>
+      <div class="table-wrap"><table>
+        <tr><th>Stage</th><th>What is done</th></tr>
+        <tr><td><b>Shravana</b></td><td>Listening to the teaching from a competent teacher</td></tr>
+        <tr><td><b>Manana</b></td><td>Reflecting, reasoning, questioning what was heard</td></tr>
+        <tr><td><b>Nididhyasana</b></td><td>Deep contemplation: assimilating the teaching</td></tr>
+      </table></div>
+      <p>Mnemonic: <b>Hear &rarr; Reflect &rarr; Contemplate</b>. <span class="src cls">Jnana notes</span></p>
+      <h3 class="sub"><span class="n">4B</span>Neti neti: &ldquo;not this, not this&rdquo;</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li>An Upanishadic method of inquiry: Am I the body? <i>Not this.</i> The senses? <i>Not this.</i> Thoughts? <i>Not this.</i> Emotions? <i>Not this.</i> <span class="src cls">Jnana notes</span></li>
+          <li>Purpose: <b>not</b> to conclude &ldquo;I am nothing&rdquo;, but to inquire into the Self that stays beyond all changing objects of experience. <span class="src cls">Jnana notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">4C</span>Practical self-inquiry</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Step</th><th>Question</th></tr>
+        <tr><td>1</td><td>Am I aware of my body? Yes</td></tr>
+        <tr><td>2</td><td>Am I aware of my thoughts? Yes</td></tr>
+        <tr><td>3</td><td>Am I aware of my emotions? Yes</td></tr>
+        <tr><td>4</td><td>What is this awareness itself? <i>Investigate; do not just answer</i></td></tr>
+      </table></div>
+      <p>Jnana Yoga emphasises <b>inquiry, not memorised answers</b>. <span class="src cls">Jnana notes</span></p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Three stages?</div><div class="a">Shravana, manana, nididhyasana</div></div>
+        <div class="recall-card"><div class="q">Neti neti means?</div><div class="a">Not this, not this: negating non-Self to inquire into the Self</div></div>
+        <div class="recall-card"><div class="q">Does neti neti mean I am nothing?</div><div class="a">No</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-epistemology">
+      <div class="sec-head">
+        <div class="kicker">05 &middot; Epistemology</div>
+        <h2>How Knowledge of Brahman Comes</h2>
+        <p class="dek">Valid means and the special role of Shruti.</p>
+      </div>
+      <h3 class="sub"><span class="n">5A</span>Pramanas</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Pramana</th><th>Meaning</th><th>Example</th></tr>
+        <tr><td>Pratyaksha</td><td>Direct perception</td><td>&ldquo;I see a tree&rdquo;</td></tr>
+        <tr><td>Anumana</td><td>Inference</td><td>Fire, because smoke is seen</td></tr>
+        <tr><td>Shabda</td><td>Reliable verbal testimony</td><td>Shruti (Upanishadic revelation)</td></tr>
+      </table></div>
+      <div class="blk know">
+        <span class="lbl">Key point</span>
+        <p><b>Brahman is not an ordinary sensory object</b>, so perception alone is not enough. Shabda or Shruti has special epistemological importance for knowledge of Brahman. <span class="src cls">Jnana notes</span></p>
+      </div>
+      <p>Your Vedanta notes extend the list to six pramanas for Advaita (adding upamana, arthapatti, anupalabdhi); see the Vedanta page. <span class="src cls">Vedanta notes</span></p>
+
+    </section>
+    <section class="section" id="sec-metaphysics">
+      <div class="sec-head">
+        <div class="kicker">06 &middot; Metaphysics</div>
+        <h2>Atman, Brahman, Avidya and Moksha</h2>
+        <p class="dek">What is real and what binds.</p>
+      </div>
+      <h3 class="sub"><span class="n">6A</span>What is ultimately real</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Concept</th><th>Meaning</th></tr>
+        <tr><td><b>Atman</b></td><td>The Self; not merely body, personality and thoughts</td></tr>
+        <tr><td><b>Brahman</b></td><td>Ultimate reality in Vedanta</td></tr>
+        <tr><td><b>Jagat</b></td><td>The world</td></tr>
+        <tr><td><b>Avidya</b></td><td>Ignorance</td></tr>
+        <tr><td><b>Moksha</b></td><td>Liberation</td></tr>
+      </table></div>
+      <div class="blk know">
+        <span class="lbl">Atman and Brahman</span>
+        <p>In Advaita (Shankara) they are <b>non-dual</b>. The Mahavakyas are not ordinary ego statements like &ldquo;my personality is God&rdquo;; they mean the identity of the <b>deepest Self</b> with Brahman. <span class="src cls">Jnana notes</span></p>
+      </div>
+      <div class="table-wrap"><table>
+        <tr><th>Mahavakya</th><th>Source</th><th>Meaning</th></tr>
+        <tr><td>Prajnanam Brahma</td><td>Aitareya Upanishad</td><td>Consciousness is Brahman</td></tr>
+        <tr><td>Aham Brahmasmi</td><td>Brihadaranyaka Upanishad</td><td>I am Brahman</td></tr>
+        <tr><td>Tat tvam asi</td><td>Chandogya Upanishad</td><td>That thou art</td></tr>
+        <tr><td>Ayam Atma Brahma</td><td>Mandukya Upanishad</td><td>This Self is Brahman</td></tr>
+      </table></div>
+      <h3 class="sub"><span class="n">6B</span>Avidya and moksha</h3>
+      <div class="flow"><span>Avidya</span><i>&rarr;</i><span>Ego and identification</span><i>&rarr;</i><span>Attachment</span><i>&rarr;</i><span>Suffering</span></div>
+      <div class="flow"><span>Knowledge</span><i>&rarr;</i><span>Discrimination</span><i>&rarr;</i><span>Avidya removed</span><i>&rarr;</i><span>Liberation</span></div>
+      <p><b>Moksha</b> is freedom from ignorance and bondage, tied to knowledge of the Self; it is <b>not</b> simply &ldquo;going somewhere after death&rdquo;. <span class="src cls">Jnana notes</span></p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Four mahavakyas?</div><div class="a">Prajnanam Brahma, Aham Brahmasmi, Tat tvam asi, Ayam Atma Brahma</div></div>
+        <div class="recall-card"><div class="q">What is moksha?</div><div class="a">Freedom from ignorance and bondage</div></div>
+        <div class="recall-card"><div class="q">Atman-Brahman in Advaita?</div><div class="a">Non-dual</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-answers">
+      <div class="sec-head">
+        <div class="kicker">07 &middot; Exam answers</div>
+        <h2>Model Answers: 10, 5 and 2 Marks</h2>
+        <p class="dek">Try each one first, then tap to compare.</p>
+      </div>
+      <p>Answers follow your teacher&#8217;s six parts: introduction, background, structure, method, epistemology, metaphysics.</p>
+      <div class="mq"><div class="mqh"><span class="marks-tag">10 marks</span><span class="topic">Jnana yoga</span></div>
+        <p class="mqt">Explain Jnana Yoga.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p><b>Introduction.</b> Jnana Yoga is the path of knowledge of the Self and ultimate reality; the question is &ldquo;Who am I?&rdquo; Ignorance leads to wrong identification, attachment and suffering; knowledge removes it.</p><p><b>Background.</b> Upanishadic tradition and Vedanta: Vedas, Upanishads, Gita, Brahma Sutras.</p><p><b>Structure.</b> Sadhana chatushtaya: viveka, vairagya, shat-sampatti (shama, dama, uparati, titiksha, shraddha, samadhana), mumukshutva.</p><p><b>Method.</b> Shravana, manana, nididhyasana; neti neti; self-inquiry.</p><p><b>Epistemology.</b> Pratyaksha, anumana, shabda; Shruti is key for Brahman, which is not a sensory object.</p><p><b>Metaphysics.</b> Atman, Brahman, jagat, avidya, moksha; non-duality in Advaita; mahavakyas.</p><p><b>Conclusion.</b> Knowledge removes avidya and gives moksha.</p><p class="pts"><span class="src cls">Jnana notes</span> Wording mine <span class="src add">added</span></p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Jnana</span></div>
+        <p class="mqt">Explain the sadhana chatushtaya.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Viveka (discrimination of eternal and impermanent), vairagya (dispassion, not hatred of the world), shat-sampatti (shama, dama, uparati, titiksha, shraddha, samadhana) and mumukshutva (intense longing for liberation).</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Jnana</span></div>
+        <p class="mqt">Explain shravana, manana and nididhyasana.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Shravana: listening to a competent teacher. Manana: reflecting and reasoning to remove doubts. Nididhyasana: deep contemplation to assimilate the knowledge. Hear, reflect, contemplate.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Jnana</span></div>
+        <p class="mqt">Explain neti neti.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>An Upanishadic method of negating what is not the Self: body, senses, thoughts, emotions. It does not conclude that one is nothing; it leads to inquiry into the Self beyond changing objects.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Jnana</span></div>
+        <p class="mqt">Explain the role of shabda in Jnana Yoga.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Brahman is not an ordinary sense object, so perception and inference are insufficient. Shabda or Shruti, the Upanishadic teaching given by a competent teacher, is the key source of Brahma-jnana, supported by reasoning and experience.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Jnana</span></div>
+        <p class="mqt">Explain the four mahavakyas.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Prajnanam Brahma (Aitareya): consciousness is Brahman. Aham Brahmasmi (Brihadaranyaka): I am Brahman. Tat tvam asi (Chandogya): that thou art. Ayam Atma Brahma (Mandukya): this Self is Brahman. They express the identity of the deepest Self with Brahman.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Define Jnana Yoga.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>The path of knowledge of the Self and ultimate reality.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Viveka means?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Discrimination between the eternal and the impermanent.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">What is mumukshutva?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Intense desire for liberation.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Name the shat-sampatti.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Shama, dama, uparati, titiksha, shraddha, samadhana.</p></div></details></div>
+
+    </section>
+    <section class="section" id="sec-recall">
+      <div class="sec-head">
+        <div class="kicker">08 &middot; Flags</div>
+        <h2>Things to Confirm</h2>
+        <p class="dek">Before the exam.</p>
+      </div>
+      <div class="blk conf">
+        <span class="lbl">Check these</span>
+        <ul class="plain">
+          <li>Your Jnana notes are short (about 740 words); the depth here comes from adding the Vedanta notes where they overlap. <span class="src cls">Jnana notes</span></li>
+          <li>The notes list <b>three</b> pramanas for Jnana Yoga; the Vedanta notes list six for Advaita. Use your teacher&#8217;s count. <span class="src cls">Jnana notes</span> <span class="src cls">Vedanta notes</span></li>
+        </ul>
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
+</script>

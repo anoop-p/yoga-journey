@@ -1,7 +1,7 @@
 <!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Model Question Paper</title>
+<title>T. Krishnamacharya</title>
 <style>
   :root{
     --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
@@ -211,71 +211,207 @@
   }
 
   .src.add{ background:var(--accent-soft); color:var(--accent); }
-  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 14px; }
+  .sk{ font-family:"Fraunces",Georgia,serif; font-style:italic; color:var(--ink); }
+  .flow{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 12px; }
+  .flow span{ background:var(--teal-soft); color:var(--teal); border-radius:8px; padding:5px 10px; font-size:13px; font-weight:600; }
+  .flow i{ color:var(--muted); font-style:normal; }
+  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 16px; }
   .mq .mqh{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
-  .mq .marks-tag{ margin-bottom:0; }
   .mq .topic{ font-size:11px; color:var(--muted); }
   .mq .mqt{ font-weight:600; color:var(--ink); margin:0 0 10px; max-width:none; }
   .mq details.ans > summary{ cursor:pointer; list-style:none; display:inline-block; padding:6px 12px; border-radius:8px; background:var(--teal-soft); color:var(--teal); font-size:13px; font-weight:600; }
   .mq details.ans > summary::-webkit-details-marker{ display:none; }
   .mq details.ans[open] > summary{ background:var(--surface-2); color:var(--muted); }
   .mq .ansb{ margin-top:12px; border-top:1px dashed var(--border); padding-top:10px; }
-  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 10px; padding-left:22px; }
   .mq .ansb p{ margin:0 0 8px; }
-  .mq .ansb .pts{ font-size:12.5px; color:var(--muted); }
-  .mq .ansb .pts b{ color:var(--teal); }
-  .mq .ansb .hi{ background:var(--teal-soft); border-radius:8px; padding:8px 12px; margin:0 0 10px; color:var(--ink); }
-  .mqbar{ display:flex; gap:8px; flex-wrap:wrap; margin:0 0 16px; position:sticky; top:0; z-index:5; background:var(--bg); padding:8px 0; }
-  .mqbar button{ font:inherit; font-size:13px; padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft); cursor:pointer; }
-  .mqbar button.on{ background:var(--accent); color:#fff; border-color:var(--accent); }
+  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 12px; padding-left:22px; }
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 
-<style>
-body{background:var(--bg,#f4f0e8)}
-.wrap{max-width:980px;margin:0 auto;padding:16px 14px 60px}
-.back{display:inline-block;margin-bottom:8px;font-size:14px;color:var(--teal);text-decoration:none}
-h1.mt{font-family:Georgia,serif;font-size:28px;margin:4px 0 4px}
-.tools{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}
-.tools button{border:1px solid var(--border);background:var(--surface-2);color:var(--ink);border-radius:999px;padding:8px 14px;font-size:14px;cursor:pointer}
-.tools button.on{background:var(--teal);color:#fff;border-color:var(--teal)}
-.root{background:var(--teal);color:#fff;text-align:center;border-radius:12px;padding:14px;font-size:20px;font-weight:700;letter-spacing:.04em}
-.arr{text-align:center;font-size:22px;color:var(--teal);line-height:1.2;margin:2px 0}
-.row{display:grid;grid-template-columns:190px 1fr;gap:0;align-items:start}
-.node{background:var(--surface-2);border:2px solid var(--teal);border-radius:12px;padding:10px 12px;position:relative;margin-right:22px}
-.node::after{content:"";position:absolute;right:-22px;top:26px;width:22px;border-top:2px solid var(--teal)}
-.node .no{display:inline-block;background:var(--teal);color:#fff;border-radius:50%;width:22px;height:22px;text-align:center;line-height:22px;font-size:12px;margin-right:6px}
-.node b{font-size:16px}.node small{display:block;color:var(--ink-soft);font-size:12px;margin-top:4px}
-.brs{display:flex;flex-wrap:wrap;gap:10px;border-left:2px solid var(--teal);padding-left:14px}
-.br{flex:1 1 210px;background:#fff;border:1px solid var(--border);border-radius:10px;padding:8px 10px;position:relative}
-.br::before{content:"";position:absolute;left:-14px;top:18px;width:14px;border-top:2px solid var(--teal)}
-.bt{font-weight:700;font-size:13px;color:var(--teal);margin-bottom:6px;border-bottom:1px solid var(--border);padding-bottom:4px}
-.lv{display:flex;flex-direction:column;gap:4px}
-.leaf{font-size:13px;color:var(--ink);background:var(--surface-2);border-radius:6px;padding:3px 8px;line-height:1.35}
-.leaf.add{border:1px dashed var(--gold)}
-body.test .leaf:not(.shown){filter:blur(6px);cursor:pointer;user-select:none}
-.ct{font-weight:700;margin:14px 0 6px}
-.cl{display:flex;flex-wrap:wrap;align-items:center;gap:6px}.arrs{color:var(--teal)}
-.legend{font-size:12px;color:var(--muted);margin-top:14px}
-@media(max-width:640px){.row{grid-template-columns:1fr}.node{margin-right:0}.node::after{display:none}.brs{margin:8px 0 0 12px}}
-</style><div class="wrap">
-<a class="back" href="notes.html">&larr; Unit 4 notes</a>
-<h1 class="mt">Contemporary Yogis Map</h1>
-<p style="color:var(--ink-soft);margin:0">Six modern teachers: dates, guru, institution and teaching.</p>
-<div class="tools"><button id="t">Hide names (test yourself)</button><button id="r">Reveal all</button></div>
-<div class="root">CONTEMPORARY YOGIS MAP</div><div style="height:12px"></div>
-<div class="row"><div class="node"><span class="no">1</span><b>Lahiri Mahasaya</b><small>Kriya yoga for householders</small></div><div class="brs"><div class="br"><div class="bt">Life</div><div class="lv"><span class="leaf">1828 to 1895</span><span class="leaf">Disciple of Mahavatar Babaji</span><span class="leaf">Householder, accountant</span></div></div></div></div><div style="height:12px"></div>
-<div class="row"><div class="node"><span class="no">2</span><b>T. Krishnamacharya</b><small>Ashtanga vinyasa, Mysore line</small></div><div class="brs"><div class="br"><div class="bt">Life</div><div class="lv"><span class="leaf">1888 to 1989</span><span class="leaf">Guru: Ramamohana Brahmachari</span><span class="leaf">Mysore palace</span><span class="leaf">Sri Tattvanidhi, 122 asanas</span></div></div></div></div><div style="height:12px"></div>
-<div class="row"><div class="node"><span class="no">3</span><b>Sivananda</b><small>Service and synthesis</small></div><div class="brs"><div class="br"><div class="bt">Life</div><div class="lv"><span class="leaf">1887 to 1963</span><span class="leaf">Doctor in Malaya before sannyasa</span></div></div><div class="br"><div class="bt">Work</div><div class="lv"><span class="leaf">Divine Life Society, Rishikesh 1936</span><span class="leaf">Yoga Vedanta Forest Academy 1948</span></div></div><div class="br"><div class="bt">Teaching</div><div class="lv"><span class="leaf">Serve, love, give, purify, meditate, realise</span></div></div></div></div><div style="height:12px"></div>
-<div class="row"><div class="node"><span class="no">4</span><b>Swami Rama</b><small>Science and spirit</small></div><div class="brs"><div class="br"><div class="bt">Life</div><div class="lv"><span class="leaf">1925 to 1996</span><span class="leaf">Guru: Bengali Baba</span></div></div><div class="br"><div class="bt">Work</div><div class="lv"><span class="leaf">Himalayan Institute</span><span class="leaf">Menninger Foundation research 1970</span></div></div></div></div><div style="height:12px"></div>
-<div class="row"><div class="node"><span class="no">5</span><b>Maharishi Mahesh Yogi</b><small>Transcendental Meditation</small></div><div class="brs"><div class="br"><div class="bt">Life</div><div class="lv"><span class="leaf">1918 to 2008</span><span class="leaf">Physicist</span><span class="leaf">Guru: Brahmananda Saraswati</span></div></div><div class="br"><div class="bt">Work</div><div class="lv"><span class="leaf">Silent mantra repetition</span><span class="leaf">Science of Creative Intelligence</span></div></div></div></div><div style="height:12px"></div>
-<div class="row"><div class="node"><span class="no">6</span><b>Shri Ram Sharma Acharya</b><small>Gayatri sadhana</small></div><div class="brs"><div class="br"><div class="bt">Life</div><div class="lv"><span class="leaf">1911 to 1990</span><span class="leaf">Born Anwalkheda, Agra</span></div></div><div class="br"><div class="bt">Work</div><div class="lv"><span class="leaf">Akhand Jyoti magazine</span><span class="leaf">All World Gayatri Pariwar</span><span class="leaf">Shantikunj, Haridwar</span><span class="leaf">Yug Nirman Yojana</span></div></div></div></div><div style="height:12px"></div>
-<p class="legend">Solid items come from your notes. Dashed items are general points not in your notes yet.</p>
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">T. Krishnamacharya</div>
 </div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../../index.html">&larr; T1 &middot; Foundations of Yoga</a>
+    <div class="brand">
+      <div class="eyebrow">Foundations of Yoga &middot; Unit 4</div>
+      <h1>T. Krishnamacharya</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="life"><span class="num">01</span><span>Life</span></button>
+      <button class="nav-item" data-target="work"><span class="num">02</span><span>Contribution</span></button>
+      <button class="nav-item" data-target="teaching"><span class="num">03</span><span>Teaching</span></button>
+      <button class="nav-item" data-target="answers"><span class="num">04</span><span>Exam Answers</span></button>
+      <button class="nav-item" data-target="flags"><span class="num">05</span><span>Flags</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Sources: Yogis notes; four-area rows marked added are my own reasoning
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="section" id="sec-life">
+      <div class="sec-head">
+        <div class="kicker">01 &middot; Life and background</div>
+        <h2>Who He Was</h2>
+        <p class="dek">Dates, teacher, setting.</p>
+      </div>
+      <div class="stat-strip">
+        <div class="stat"><div class="v">1888</div><div class="k">born</div></div>
+        <div class="stat"><div class="v">1989</div><div class="k">died</div></div>
+        <div class="stat"><div class="v">122</div><div class="k">asanas (Sritattvanidhi)</div></div>
+        <div class="stat"><div class="v">4</div><div class="k">famous disciples</div></div>
+      </div>
+      <h3 class="sub"><span class="n">1A</span>Life and background</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Item</th><th>Details</th></tr>
+        <tr><td><b>Name</b></td><td>Tirumalai Krishnamacharya (1888-1989)</td></tr>
+        <tr><td><b>Roles</b></td><td>Yoga teacher, Ayurvedic healer, scholar</td></tr>
+        <tr><td><b>Guru</b></td><td>Ramamohana Brahmachari</td></tr>
+        <tr><td><b>Known as</b></td><td>Credited with the revival of Hatha Yoga; most influential yoga teacher of the 20th century</td></tr>
+      </table></div>
+      <p>Taught at the Mysore palace in the early 20th century; developed Astanga Vinyasa Yoga (different from Patanjali&#8217;s ashtanga). <span class="src cls">Yogis notes</span></p>
+
+    </section>
+    <section class="section" id="sec-work">
+      <div class="sec-head">
+        <div class="kicker">02 &middot; Contribution</div>
+        <h2>What He Did</h2>
+        <p class="dek">Work, institutions and books.</p>
+      </div>
+      <h3 class="sub"><span class="n">2A</span>Sritattvanidhi</h3>
+      <p>Compiled and codified in the 19th century by Krishna Raja Wodeyar of Mysore; lists 122 asanas; dynamic asanas resembling Indian wrestling exercises and British gymnastics (colonial influence); adopted by Krishnamacharya. <span class="src cls">Yogis notes</span></p>
+      <h3 class="sub"><span class="n">2B</span>Books</h3>
+      <p>Yoga Makaranda, Yoga Sanagalu, Nathamuni&#8217;s Yoga Rahasya, Yogavalli, Yoga Yajnavalkya (translated by A.G. Mohan). Also the Vaidika Surya Namaskar A (10 poses) and Yogika Surya Namaskar B. <span class="src cls">Yogis notes</span></p>
+      <h3 class="sub"><span class="n">2C</span>Disciples</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Disciple</th><th>Contribution</th></tr>
+        <tr><td>K. Pattabhi Jois (1915-2009)</td><td>Astanga Vinyasa Yoga; Yoga Mala</td></tr>
+        <tr><td>B.K.S. Iyengar (1918-2014)</td><td>Iyengar Yoga, yoga with props; Light on Yoga; Krishnamacharya was his brother-in-law</td></tr>
+        <tr><td>Indra Devi</td><td>First lady of modern yoga; Russian</td></tr>
+        <tr><td>T.K.V. Desikachar (1938-2016)</td><td>Son and student; The Heart of Yoga</td></tr>
+      </table></div>
+      <p> <span class="src cls">Yogis notes</span></p>
+
+    </section>
+    <section class="section" id="sec-teaching">
+      <div class="sec-head">
+        <div class="kicker">03 &middot; Teaching</div>
+        <h2>Ideas and the Four Areas</h2>
+        <p class="dek">Core teaching, mapped to epistemology, metaphysics, ethics and liberation.</p>
+      </div>
+      <h3 class="sub"><span class="n">3A</span>Astanga Vinyasa</h3>
+      <p>A set of asanas in a specific sequence with dristi and flow of breath; also called Mysore-style yoga; Power Yoga and Vinyasa Yoga derive from it. <span class="src cls">Yogis notes</span></p>
+      <h3 class="sub"><span class="n">3B</span>The four areas (for the exam template)</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Area</th><th>Position</th></tr>
+        <tr><td><b>Epistemology</b></td><td>Not in your notes <span class="src add">added</span></td></tr>
+        <tr><td><b>Metaphysics</b></td><td>Not in your notes <span class="src add">added</span></td></tr>
+        <tr><td><b>Ethics</b></td><td>Not in your notes <span class="src add">added</span></td></tr>
+        <tr><td><b>Liberation</b></td><td>Not in your notes <span class="src add">added</span></td></tr>
+      </table></div>
+
+    </section>
+    <section class="section" id="sec-answers">
+      <div class="sec-head">
+        <div class="kicker">04 &middot; Exam answers</div>
+        <h2>Model Answers: 10, 5 and 2 Marks</h2>
+        <p class="dek">Tap to reveal.</p>
+      </div>
+      <p>Try each answer first, then tap to compare.</p>
+      <div class="mq"><div class="mqh"><span class="marks-tag">10 marks</span><span class="topic">T. Krishnamacharya</span></div>
+        <p class="mqt">Explain the contribution of T. Krishnamacharya.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Krishnamacharya (1888-1989), disciple of Ramamohana Brahmachari, is credited with reviving Hatha Yoga. At the Mysore palace he adopted asanas from the Sritattvanidhi (122 asanas) and developed Astanga Vinyasa Yoga with breath-linked flow and dristi. His disciples include Pattabhi Jois, B.K.S. Iyengar, Indra Devi and his son Desikachar. Works: Yoga Makaranda and others.</p><p class="pts"><span class="src cls">Yogis notes</span></p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">T. Krishnamacharya</span></div>
+        <p class="mqt">Name his four famous disciples.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Pattabhi Jois, B.K.S. Iyengar, Indra Devi, T.K.V. Desikachar.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">T. Krishnamacharya</span></div>
+        <p class="mqt">What is the Sritattvanidhi?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>A 19th-century text compiled by Krishna Raja Wodeyar listing 122 asanas, adopted by Krishnamacharya.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Revived which yoga?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Hatha Yoga.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Iyengar&#8217;s book?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Light on Yoga.</p></div></details></div>
+
+    </section>
+    <section class="section" id="sec-flags">
+      <div class="sec-head">
+        <div class="kicker">05 &middot; Flags</div>
+        <h2>Things to Confirm</h2>
+        <p class="dek">Before the exam.</p>
+      </div>
+      <div class="blk conf">
+        <span class="lbl">Check these</span>
+        <p>The four-area rows are blank because your notes do not give any; do not invent them for an exam answer. Iyengar&#8217;s death year: the scan says 2010 and the docx 2014; the docx (2014) is correct and used here. <span class="src cls">Yogis notes</span></p>
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
 <script>
-(function(){var t=document.getElementById('t'),r=document.getElementById('r');
-t.onclick=function(){document.body.classList.toggle('test');t.classList.toggle('on');document.querySelectorAll('.leaf.shown').forEach(function(x){x.classList.remove('shown')})};
-r.onclick=function(){document.querySelectorAll('.leaf').forEach(function(x){x.classList.add('shown')})};
-document.addEventListener('click',function(e){var l=e.target.closest('.leaf');if(l&&document.body.classList.contains('test'))l.classList.toggle('shown')});})();
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
 </script>
-</body></html>

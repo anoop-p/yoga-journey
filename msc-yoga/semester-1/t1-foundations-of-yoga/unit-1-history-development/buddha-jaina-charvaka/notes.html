@@ -1,0 +1,693 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buddha, Jaina and Charvaka</title>
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .sk{ font-family:"Fraunces",Georgia,serif; font-style:italic; color:var(--ink); }
+  .flow{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 12px; }
+  .flow span{ background:var(--teal-soft); color:var(--teal); border-radius:8px; padding:5px 10px; font-size:13px; font-weight:600; }
+  .flow i{ color:var(--muted); font-style:normal; }
+  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 16px; }
+  .mq .mqh{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
+  .mq .topic{ font-size:11px; color:var(--muted); }
+  .mq .mqt{ font-weight:600; color:var(--ink); margin:0 0 10px; max-width:none; }
+  .mq details.ans > summary{ cursor:pointer; list-style:none; display:inline-block; padding:6px 12px; border-radius:8px; background:var(--teal-soft); color:var(--teal); font-size:13px; font-weight:600; }
+  .mq details.ans > summary::-webkit-details-marker{ display:none; }
+  .mq details.ans[open] > summary{ background:var(--surface-2); color:var(--muted); }
+  .mq .ansb{ margin-top:12px; border-top:1px dashed var(--border); padding-top:10px; }
+  .mq .ansb p{ margin:0 0 8px; }
+  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 12px; padding-left:22px; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Buddha, Jaina and Charvaka</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../../index.html">&larr; T1 &middot; Foundations of Yoga</a>
+    <div class="brand">
+      <div class="eyebrow">Foundations of Yoga &middot; Unit 1</div>
+      <h1>Buddha, Jaina and Charvaka</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="overview"><span class="num">01</span><span>Overview</span></button>
+      <button class="nav-item" data-target="buddhism"><span class="num">02</span><span>Buddhism</span></button>
+      <button class="nav-item" data-target="jainism"><span class="num">03</span><span>Jainism</span></button>
+      <button class="nav-item" data-target="charvaka"><span class="num">04</span><span>Charvaka</span></button>
+      <button class="nav-item" data-target="compare"><span class="num">05</span><span>Comparison</span></button>
+      <button class="nav-item" data-target="answers"><span class="num">06</span><span>Exam Answers</span></button>
+      <button class="nav-item" data-target="recall"><span class="num">07</span><span>Recall &amp; Checks</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Sources: your Buddha, Jaina and Charvaka notes
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="section" id="sec-overview">
+      <div class="sec-head">
+        <div class="kicker">01 &middot; Overview</div>
+        <h2>The Heterodox Schools</h2>
+        <p class="dek">Astika versus nastika, and the three schools in one table.</p>
+      </div>
+      <div class="stat-strip">
+        <div class="stat"><div class="v">3</div><div class="k">nastika schools</div></div>
+        <div class="stat"><div class="v">4</div><div class="k">noble truths</div></div>
+        <div class="stat"><div class="v">8</div><div class="k">eightfold path factors</div></div>
+        <div class="stat"><div class="v">7</div><div class="k">Jain tattvas</div></div>
+        <div class="stat"><div class="v">4</div><div class="k">Charvaka elements</div></div>
+      </div>
+      <div class="blk und">
+        <span class="lbl">In one paragraph</span>
+        <p>Buddhism, Jainism and Charvaka are the <b>nastika</b> (heterodox) streams: they do not accept the authority of the Vedas. They differ sharply among themselves. Buddhism says there is no permanent self and teaches the middle path to nirvana. Jainism says there are many eternal souls bound by karmic matter and teaches ahimsa and self-effort. Charvaka accepts only perception and treats consciousness as a product of matter. <span class="src cls">BJC notes</span></p>
+      </div>
+      <h3 class="sub"><span class="n">1A</span>Astika and nastika</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Group</th><th>Meaning</th><th>Schools</th></tr>
+        <tr><td>Astika (orthodox)</td><td>Accept the authority of the Vedas</td><td>Nyaya, Vaisheshika, Samkhya, Yoga, Purva Mimamsa, Vedanta</td></tr>
+        <tr><td>Nastika (heterodox)</td><td>Do not accept the authority of the Vedas</td><td>Buddhism, Jainism, Charvaka (Lokayata)</td></tr>
+      </table></div>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Nastika</b> here means rejecting Vedic authority; it does <b>not</b> simply mean atheist. <span class="src cls">BJC notes</span></li>
+          <li>Buddhism and Jainism belong to the <b>shramana</b> (ascetic, renunciant) tradition and arose in the 6th to 5th century BCE in the Gangetic plains, rejecting animal sacrifice and ritualism and stressing ethics, self-effort and liberation from suffering. <span class="src cls">BJC notes</span></li>
+          <li>Charvaka is materialist and sceptical: it rejects the Vedas, the soul, karma, rebirth and liberation beyond death. <span class="src cls">BJC notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">1B</span>The four areas at a glance</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Area</th><th>Buddhism</th><th>Jainism</th><th>Charvaka</th></tr>
+        <tr><td>Epistemology</td><td>Direct experience, inference; verify for oneself</td><td>Five kinds of knowledge; anekantavada, syadvada, nayavada</td><td>Only perception is valid</td></tr>
+        <tr><td>Metaphysics</td><td>Impermanence, no-self, dependent origination</td><td>Plural souls and non-living substances; karma as subtle matter</td><td>Only the four elements; consciousness arises from them</td></tr>
+        <tr><td>Ethics</td><td>Five precepts, eightfold path, compassion</td><td>Five great vows; ahimsa above all</td><td>Pleasure as the goal of life</td></tr>
+        <tr><td>Liberation</td><td>Nirvana</td><td>Moksha (kaivalya)</td><td>None beyond death</td></tr>
+      </table></div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">What does nastika mean here?</div><div class="a">Rejecting Vedic authority (not simply atheist)</div></div>
+        <div class="recall-card"><div class="q">Three nastika schools?</div><div class="a">Buddhism, Jainism, Charvaka</div></div>
+        <div class="recall-card"><div class="q">What is the shramana tradition?</div><div class="a">Ascetic, renunciant tradition of Buddhism and Jainism</div></div>
+        <div class="recall-card"><div class="q">Which school accepts only perception?</div><div class="a">Charvaka</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-buddhism">
+      <div class="sec-head">
+        <div class="kicker">02 &middot; Buddhism</div>
+        <h2>Gautama Buddha: Four Truths, Eightfold Path, No-Self</h2>
+        <p class="dek">Life, teaching, metaphysics, epistemology, ethics, liberation and schools.</p>
+      </div>
+      <h3 class="sub"><span class="n">2A</span>The Buddha and the Four Noble Truths</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Siddhartha Gautama</b>, born at Lumbini in the Shakya clan, 6th to 5th century BCE (traditional dating; modern scholars differ by a few decades). <span class="src cls">BJC notes</span></li>
+          <li>Renounced after seeing old age, sickness and death; practised extreme austerity, then took the <b>Middle Path</b>. Enlightenment (bodhi) at Bodh Gaya; first sermon (Dhammachakkappavattana) at Sarnath; mahaparinirvana at Kushinagar. <span class="src cls">BJC notes</span></li>
+          <li>Teachings are in the <b>Tripitaka</b> (Pali canon): Vinaya, Sutta, Abhidhamma. <span class="src cls">BJC notes</span></li>
+        </ul>
+      </div>
+      <div class="table-wrap"><table>
+        <tr><th>Noble Truth</th><th>Meaning</th></tr>
+        <tr><td>1. Dukkha</td><td>Life involves suffering and unsatisfactoriness: birth, ageing, illness, death, separation, unfulfilled desire, instability of conditioned things</td></tr>
+        <tr><td>2. Samudaya</td><td>Cause: craving (tanha) rooted in ignorance (avidya)</td></tr>
+        <tr><td>3. Nirodha</td><td>Cessation: nirvana, the ending of craving</td></tr>
+        <tr><td>4. Magga</td><td>The path: the Noble Eightfold Path</td></tr>
+      </table></div>
+      <h3 class="sub"><span class="n">2B</span>Noble Eightfold Path (Ashtangika Marga)</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Group</th><th>Factor</th><th>Meaning</th></tr>
+        <tr><td>Wisdom (prajna)</td><td>1. Right view</td><td>Understanding the Four Truths, impermanence and causality</td></tr>
+        <tr><td></td><td>2. Right intention</td><td>Renunciation, goodwill, harmlessness</td></tr>
+        <tr><td>Conduct (sila)</td><td>3. Right speech</td><td>Truthful, kind, non-divisive</td></tr>
+        <tr><td></td><td>4. Right action</td><td>Not killing, stealing or misconduct</td></tr>
+        <tr><td></td><td>5. Right livelihood</td><td>Earning without harming others</td></tr>
+        <tr><td>Meditation (samadhi)</td><td>6. Right effort</td><td>Prevent unwholesome, cultivate wholesome states</td></tr>
+        <tr><td></td><td>7. Right mindfulness</td><td>Awareness of body, feelings, mind and mental objects (satipatthana)</td></tr>
+        <tr><td></td><td>8. Right concentration</td><td>Steady one-pointed absorption (dhyana/jhana)</td></tr>
+      </table></div>
+      <div class="blk mem">
+        <span class="lbl">Memory aid</span>
+        <p>Eightfold path = <b>Sila</b> (conduct) + <b>Samadhi</b> (meditation) + <b>Prajna</b> (wisdom). <span class="src cls">BJC notes</span></p>
+      </div>
+      <h3 class="sub"><span class="n">2C</span>Metaphysics: three marks and dependent origination</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Doctrine</th><th>Meaning</th></tr>
+        <tr><td>Anicca</td><td>Impermanence: all conditioned things change (momentariness, kshanikavada, in later schools)</td></tr>
+        <tr><td>Dukkha</td><td>Clinging to impermanent things leads to suffering</td></tr>
+        <tr><td>Anatta</td><td>No permanent soul; the person is a stream of five skandhas: form, feeling, perception, mental formations, consciousness</td></tr>
+        <tr><td>Pratityasamutpada</td><td>Everything arises depending on conditions: &ldquo;when this exists, that comes to be&rdquo;</td></tr>
+      </table></div>
+      <p><b>Twelve nidanas:</b> avidya, samskara, vijnana, namarupa, shadayatana, sparsha, vedana, trishna, upadana, bhava, jati, jaramarana. <span class="src cls">BJC notes</span></p>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Karma and rebirth:</b> intentional action (cetana) shapes future experience; rebirth is the continuity of a causal stream with no permanent self passing on. <span class="src cls">BJC notes</span></li>
+          <li>No creator God is posited; the focus is causal law (dhamma). <span class="src cls">BJC notes</span></li>
+          <li><b>Avyakata:</b> the Buddha declined speculative questions (is the world eternal?) because they do not end suffering. <span class="src cls">BJC notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">2D</span>Epistemology</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Ehipassiko</b>, &ldquo;come and see&rdquo;: test by experience. The <b>Kalama Sutta</b> advises not to accept something merely from tradition, authority or hearsay. <span class="src cls">BJC notes</span></li>
+          <li>Perception and inference are valid, formalised by later logicians <b>Dignaga</b> and <b>Dharmakirti</b>. <span class="src cls">BJC notes</span></li>
+          <li><b>Two truths:</b> conventional (samvriti) and ultimate (paramartha), developed in Madhyamaka. Knowledge is judged by whether it reduces craving, hatred and delusion. <span class="src cls">BJC notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">2E</span>Ethics and liberation</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Set</th><th>Contents</th></tr>
+        <tr><td>Five precepts (pancha sila)</td><td>Abstain from killing, stealing, sexual misconduct, false speech, intoxicants that cloud the mind</td></tr>
+        <tr><td>Brahmaviharas</td><td>Metta (loving-kindness), karuna (compassion), mudita (sympathetic joy), upekkha (equanimity)</td></tr>
+        <tr><td>Paramitas (Mahayana)</td><td>Generosity, ethical conduct, patience, effort, meditation, wisdom (and others)</td></tr>
+      </table></div>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li>Ethics rests on non-harm and compassion; <b>intention</b> largely decides the moral quality of an act. <span class="src cls">BJC notes</span></li>
+          <li><b>Nirvana</b> (nibbana): extinguishing the three fires of greed, hatred and delusion, ending samsara. Realised by wisdom born of ethics and meditation, not ritual or grace. <span class="src cls">BJC notes</span></li>
+          <li><b>Arhat</b> (Theravada ideal) has attained nirvana; <b>Bodhisattva</b> (Mahayana ideal) delays final liberation to help all beings. <span class="src cls">BJC notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">2F</span>Major schools</h3>
+      <div class="table-wrap"><table>
+        <tr><th>School</th><th>Key features</th></tr>
+        <tr><td>Theravada</td><td>Pali canon; arhat ideal; monastic practice and vipassana</td></tr>
+        <tr><td>Mahayana</td><td>Bodhisattva ideal; compassion and wisdom; includes Madhyamaka and Yogachara</td></tr>
+        <tr><td>Madhyamaka (Nagarjuna)</td><td>Shunyata (emptiness): all things lack intrinsic nature (svabhava); middle way between existence and non-existence</td></tr>
+        <tr><td>Yogachara (Vijnanavada)</td><td>Consciousness-only; mind as the basis of experience</td></tr>
+        <tr><td>Vajrayana</td><td>Tantric methods: ritual, visualisation, mantra</td></tr>
+        <tr><td>Early schools</td><td>Vaibhashika and Sautrantika: realist schools on perception and momentary dharmas</td></tr>
+      </table></div>
+      <p><b>Link to yoga:</b> samatha (calm) and vipassana (insight); the four foundations of mindfulness; suffering, craving, ignorance and cessation parallel Patanjali&#8217;s duhkha, kleshas, avidya and nirodha, though the metaphysics differs (no-self versus Purusha). <span class="src cls">BJC notes</span></p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Four Noble Truths?</div><div class="a">Dukkha, samudaya, nirodha, magga</div></div>
+        <div class="recall-card"><div class="q">Three marks?</div><div class="a">Anicca, dukkha, anatta</div></div>
+        <div class="recall-card"><div class="q">Three divisions of the eightfold path?</div><div class="a">Prajna, sila, samadhi</div></div>
+        <div class="recall-card"><div class="q">What is nirvana?</div><div class="a">Extinction of greed, hatred and delusion</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-jainism">
+      <div class="sec-head">
+        <div class="kicker">03 &middot; Jainism</div>
+        <h2>Mahavira: Souls, Karma and Ahimsa</h2>
+        <p class="dek">Teachers, the soul and non-soul, karma as matter, many-sided logic and moksha.</p>
+      </div>
+      <h3 class="sub"><span class="n">3A</span>Origin and teachers</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li>24 <b>Tirthankaras</b> (&ldquo;ford-makers&rdquo;): Rishabhanatha (first), Parshvanatha (23rd, historically recognised), <b>Mahavira</b> (24th). <span class="src cls">BJC notes</span></li>
+          <li><b>Vardhamana Mahavira:</b> born about the 6th century BCE at Kundagrama near Vaishali (dates vary); renounced at about thirty, practised severe austerity for about twelve years, attained <b>kevala jnana</b> (omniscience), taught for about thirty years, liberated at Pavapuri. <span class="src cls">BJC notes</span></li>
+          <li>Sects: <b>Digambara</b> (sky-clad monks; hold women cannot attain liberation directly in that birth) and <b>Shvetambara</b> (white-clad). Scriptures: the Agamas. <span class="src cls">BJC notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">3B</span>Metaphysics: realism and pluralism</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li>Reality is eternal in substance and changing in modes. Basic categories: <b>jiva</b> (soul) and <b>ajiva</b> (non-soul). <span class="src cls">BJC notes</span></li>
+          <li><b>Jiva:</b> conscious, eternal, with infinite potential for knowledge, perception, bliss and energy (<i>ananta chatushtaya</i>) obscured by karma; many souls, each taking the size of its body (<i>dehapramana</i>); classified by number of senses (one to five). <span class="src cls">BJC notes</span></li>
+          <li><b>Ajiva</b> has five substances: pudgala (matter), dharma (medium of motion), adharma (medium of rest), akasha (space), kala (time). With jiva: six <i>dravyas</i>. <span class="src cls">BJC notes</span></li>
+          <li>No creator God; the universe is beginningless and eternal, governed by natural law and karma. <span class="src cls">BJC notes</span></li>
+        </ul>
+      </div>
+      <div class="table-wrap"><table>
+        <tr><th>Seven tattvas</th><th>Meaning</th></tr>
+        <tr><td>Jiva</td><td>Soul</td></tr>
+        <tr><td>Ajiva</td><td>Non-soul substances</td></tr>
+        <tr><td>Asrava</td><td>Influx of karma into the soul</td></tr>
+        <tr><td>Bandha</td><td>Bondage by karma</td></tr>
+        <tr><td>Samvara</td><td>Stopping the influx</td></tr>
+        <tr><td>Nirjara</td><td>Shedding accumulated karma</td></tr>
+        <tr><td>Moksha</td><td>Liberation</td></tr>
+      </table></div>
+      <p>Some lists add <b>punya</b> (merit) and <b>papa</b> (demerit), making nine. <span class="src cls">BJC notes</span></p>
+      <div class="blk know">
+        <span class="lbl">Karma in Jainism</span>
+        <ul class="plain">
+          <li>Karma is a <b>subtle material substance</b> that sticks to the soul through the activity of body, speech and mind combined with passions (<i>kashayas</i>: anger, pride, deceit, greed). <span class="src cls">BJC notes</span></li>
+          <li><b>Eight types:</b> four <i>ghatiya</i> that obscure the soul&#8217;s qualities (jnanavaraniya, darshanavaraniya, mohaniya, antaraya) and four <i>aghatiya</i> (vedaniya, ayu, nama, gotra). <span class="src cls">BJC notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">3C</span>Epistemology</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Concept</th><th>Meaning</th></tr>
+        <tr><td>Five kinds of knowledge</td><td>Mati (sensory), shruta (scriptural), avadhi (clairvoyance), manahparyaya (telepathy), kevala (omniscience)</td></tr>
+        <tr><td>Pramanas</td><td>Pratyaksha (direct) and paroksha (indirect: memory, recognition, inference, testimony)</td></tr>
+        <tr><td>Anekantavada</td><td>Reality has many aspects; no single view captures it</td></tr>
+        <tr><td>Syadvada</td><td>Conditional predication with &ldquo;syat&rdquo; (&ldquo;in some respect&rdquo;); seven-fold (saptabhangi)</td></tr>
+        <tr><td>Nayavada</td><td>Partial standpoints; each valid only from its perspective</td></tr>
+      </table></div>
+      <p>The parable of the <b>blind men and the elephant</b> illustrates anekantavada; the doctrine promotes tolerance and non-dogmatism. <span class="src cls">BJC notes</span></p>
+      <h3 class="sub"><span class="n">3D</span>Ethics and liberation</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Ahimsa paramo dharmah:</b> non-violence is the highest duty, in thought, speech and action, towards all living beings including micro-organisms and plants. <span class="src cls">BJC notes</span></li>
+          <li><b>Five great vows (Mahavratas)</b> for ascetics: ahimsa, satya, asteya, brahmacharya, aparigraha. Laypeople follow smaller <b>anuvratas</b>. <span class="src cls">BJC notes</span></li>
+          <li><b>Triratna:</b> samyak darshana (right faith or perception), samyak jnana (right knowledge), samyak charitra (right conduct): together the path to liberation. <span class="src cls">BJC notes</span></li>
+          <li><b>Tapas:</b> twelve types, external (fasting, reduced diet) and internal (penance, humility, service, study, meditation, abandoning attachment). <b>Sallekhana:</b> voluntary fasting at life&#8217;s end under strict conditions. <span class="src cls">BJC notes</span></li>
+          <li><b>Moksha:</b> complete shedding of all karma, so the soul realises infinite knowledge, perception, bliss, energy. The <b>siddha</b> rises to the top of the universe (<b>Siddhashila</b>) and abides eternally. <span class="src cls">BJC notes</span></li>
+          <li>By <b>self-effort</b>: no God grants liberation. Path: stop new karma (samvara), shed old karma (nirjara). <span class="src cls">BJC notes</span></li>
+        </ul>
+      </div>
+      <p><b>Link to yoga:</b> the five mahavratas closely match Patanjali&#8217;s yamas; kayotsarga and preksha dhyana; non-violence towards the body in asana links to ahimsa and anekanta. <span class="src cls">BJC notes</span></p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Jain tattvas?</div><div class="a">Jiva, ajiva, asrava, bandha, samvara, nirjara, moksha</div></div>
+        <div class="recall-card"><div class="q">Triratna?</div><div class="a">Samyak darshana, jnana, charitra</div></div>
+        <div class="recall-card"><div class="q">Anekantavada?</div><div class="a">Reality is many-sided; no single view is complete</div></div>
+        <div class="recall-card"><div class="q">How is liberation reached?</div><div class="a">Self-effort: stop new karma, shed old karma</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-charvaka">
+      <div class="sec-head">
+        <div class="kicker">04 &middot; Charvaka</div>
+        <h2>Lokayata: Perception, Matter and Pleasure</h2>
+        <p class="dek">The materialist school: what it accepts, what it denies, and why we know it only through critics.</p>
+      </div>
+      <h3 class="sub"><span class="n">4A</span>Introduction and sources</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li>Also <b>Lokayata</b> (&ldquo;prevalent among the people&rdquo;) or <b>Barhaspatya</b> (after Brihaspati): the materialist, naturalist school. <span class="src cls">BJC notes</span></li>
+          <li>Original works are <b>lost</b>. Its views are known from opponents&#8217; summaries, e.g. Madhavacharya&#8217;s <i>Sarva-Darshana-Sangraha</i>, so opponents may have presented them in their own light. <span class="src cls">BJC notes</span></li>
+          <li>A related sceptical text, <i>Tattvopaplavasimha</i> of Jayarasi Bhatta, questions even the means of knowledge. <span class="src cls">BJC notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">4B</span>Epistemology</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Only perception</b> (pratyaksha) is valid. <span class="src cls">BJC notes</span></li>
+          <li><b>Inference rejected:</b> it needs invariable concomitance (<i>vyapti</i>), which can never be established with certainty since not all instances can be observed; at best it gives probability. <span class="src cls">BJC notes</span></li>
+          <li><b>Testimony rejected:</b> the Vedas are the work of fallible people, often serving priestly interests. So claims about God, soul, heaven, hell and karma are unfounded. <span class="src cls">BJC notes</span></li>
+        </ul>
+      </div>
+      <div class="blk conf">
+        <span class="lbl">Criticism</span>
+        <p>Opponents argue that rejecting inference is self-defeating: doubting inference, or arguing for a position, seems to use it; and daily life, such as predicting the sunrise, relies on it. <span class="src cls">BJC notes</span></p>
+      </div>
+      <h3 class="sub"><span class="n">4C</span>Metaphysics, ethics, liberation</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Four elements only:</b> earth, water, fire, air. Akasha is not accepted, because it is not perceived. <span class="src cls">BJC notes</span></li>
+          <li><b>Consciousness arises from the body</b>, as an intoxicating power arises when ingredients are fermented together (the <i>kinva</i> analogy). At death consciousness ends. No separate soul; the self is the body qualified by consciousness. <span class="src cls">BJC notes</span></li>
+          <li>No God, karma, rebirth, heaven or hell; the world arises by <b>svabhava</b> (nature). <span class="src cls">BJC notes</span></li>
+          <li><b>Ethics:</b> pleasure (sukha) is the aim. Of the four purusharthas only <b>artha and kama</b> are accepted; dharma (as ritual duty) and moksha are rejected. Pleasure mixed with pain is not rejected, just as one does not stop eating fish because of the bones. Vedic ritual is condemned as unproductive and exploitative. <span class="src cls">BJC notes</span></li>
+          <li><b>Liberation:</b> none beyond this life; &ldquo;death alone is liberation&rdquo;; freedom from pain is only worldly (release from sickness or poverty). <span class="src cls">BJC notes</span></li>
+        </ul>
+      </div>
+      <p>Often labelled crude hedonism; some scholars note a more reflective version that avoids harm and stresses present, worldly happiness. <b>Significance:</b> the sceptical, rationalist strand; it forced other schools to refine their theories of inference and to defend the soul and rebirth. <span class="src cls">BJC notes</span></p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Pramana accepted by Charvaka?</div><div class="a">Perception only</div></div>
+        <div class="recall-card"><div class="q">Four elements?</div><div class="a">Earth, water, fire, air (no akasha)</div></div>
+        <div class="recall-card"><div class="q">Kinva analogy?</div><div class="a">Consciousness arises from matter like intoxication from fermented ingredients</div></div>
+        <div class="recall-card"><div class="q">How do we know Charvaka views?</div><div class="a">From opponents&#8217; texts; its own works are lost</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-compare">
+      <div class="sec-head">
+        <div class="kicker">05 &middot; Comparison</div>
+        <h2>Buddhism, Jainism and Charvaka Compared</h2>
+        <p class="dek">Where they agree, where they split, and how they differ from the Vedic schools.</p>
+      </div>
+      <h3 class="sub"><span class="n">5A</span>The three side by side</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Feature</th><th>Buddhism</th><th>Jainism</th><th>Charvaka</th></tr>
+        <tr><td>Vedic authority</td><td>Rejected</td><td>Rejected</td><td>Rejected</td></tr>
+        <tr><td>God</td><td>No creator God</td><td>No creator God</td><td>No God</td></tr>
+        <tr><td>Soul</td><td>No permanent self (anatta)</td><td>Many eternal souls</td><td>No soul apart from the body</td></tr>
+        <tr><td>Karma and rebirth</td><td>Accepted (without permanent self)</td><td>Accepted (karma as subtle matter)</td><td>Rejected</td></tr>
+        <tr><td>Means of knowledge</td><td>Perception, inference (later logicians)</td><td>Pratyaksha and paroksha; syadvada</td><td>Perception only</td></tr>
+        <tr><td>Reality</td><td>Impermanent, interdependent</td><td>Plural, real substances; many-sided</td><td>Four elements only</td></tr>
+        <tr><td>Goal</td><td>Nirvana</td><td>Moksha (kaivalya)</td><td>Worldly pleasure</td></tr>
+        <tr><td>Path</td><td>Eightfold path</td><td>Triratna; five great vows</td><td>None; enjoy life</td></tr>
+        <tr><td>Central ethic</td><td>Compassion, middle path</td><td>Ahimsa, aparigraha, anekanta</td><td>Pleasure, rejection of ritual</td></tr>
+        <tr><td>Source</td><td>Gautama Buddha; Tripitaka</td><td>Mahavira; Agamas</td><td>Brihaspati (traditional); known from opponents</td></tr>
+      </table></div>
+      <h3 class="sub"><span class="n">5B</span>Contrast with the Vedic systems</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Issue</th><th>Buddhism / Jainism / Charvaka</th><th>Vedic schools (Samkhya, Yoga, Vedanta)</th></tr>
+        <tr><td>Authority</td><td>Reject the Vedas</td><td>Accept the Veda (in varying degrees)</td></tr>
+        <tr><td>Soul</td><td>Buddhism denies; Jainism affirms many; Charvaka denies</td><td>Affirm Purusha or Atman</td></tr>
+        <tr><td>Ritual</td><td>Rejected as a means to liberation</td><td>Valued (esp. Mimamsa) or subordinated to knowledge (Vedanta)</td></tr>
+      </table></div>
+
+    </section>
+    <section class="section" id="sec-answers">
+      <div class="sec-head">
+        <div class="kicker">06 &middot; Exam answers</div>
+        <h2>Model Answers: 10, 5 and 2 Marks</h2>
+        <p class="dek">Try each one first, then tap to compare.</p>
+      </div>
+      <p>Answers follow <b>introduction, epistemology, metaphysics, ethics, liberation, conclusion</b>.</p>
+      <div class="mq"><div class="mqh"><span class="marks-tag">10 marks</span><span class="topic">Nastika</span></div>
+        <p class="mqt">Explain the thoughts of Buddha, Jaina and Charvaka.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p><b>Introduction.</b> Nastika schools reject Vedic authority. Buddhism and Jainism are shramana traditions of the 6th to 5th century BCE; Charvaka is materialist.</p><p><b>Buddhism.</b> Four Noble Truths and Eightfold Path (sila, samadhi, prajna); anicca, dukkha, anatta; dependent origination and twelve nidanas; knowledge tested by experience (Kalama Sutta); five precepts and brahmaviharas; nirvana as extinction of greed, hatred and delusion.</p><p><b>Jainism.</b> Mahavira, 24th Tirthankara; jiva and ajiva, seven tattvas, karma as subtle matter; anekantavada, syadvada, nayavada; five mahavratas, ahimsa highest; triratna; moksha by self-effort.</p><p><b>Charvaka.</b> Only perception; four elements; consciousness from matter; pleasure the aim; no soul, rebirth or liberation beyond death.</p><p><b>Conclusion.</b> All three reject the Vedas but differ on soul, karma and God; together they challenged ritualism and sharpened debates on knowledge and ethics.</p><p class="pts"><span class="src cls">BJC notes</span> Wording mine <span class="src add">added</span></p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">BJC</span></div>
+        <p class="mqt">Explain the Four Noble Truths and the Eightfold Path.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Truths: dukkha (suffering), samudaya (craving rooted in ignorance), nirodha (cessation, nirvana), magga (the path). The path groups into wisdom (right view, intention), conduct (right speech, action, livelihood) and meditation (right effort, mindfulness, concentration).</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">BJC</span></div>
+        <p class="mqt">Explain the Jain concept of Tri-ratna.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>The three jewels, the path to liberation: samyak darshana (right faith or perception), samyak jnana (right knowledge), samyak charitra (right conduct, the five great vows). With samvara and nirjara they stop and shed karma.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">BJC</span></div>
+        <p class="mqt">Explain anekantavada, syadvada and nayavada.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Anekantavada: reality has many aspects and no single view is complete (blind men and elephant). Syadvada: statements are qualified by &ldquo;syat&rdquo;, seven-fold predication. Nayavada: partial standpoints, each valid from its own perspective. They promote tolerance.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">BJC</span></div>
+        <p class="mqt">Explain the Charvaka theory of knowledge and its criticism.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Only perception is valid; inference fails because vyapti cannot be established with certainty; testimony, including the Vedas, is unreliable. Critics say rejecting inference is self-defeating and everyday life relies on it.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">BJC</span></div>
+        <p class="mqt">Explain dependent origination.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Pratityasamutpada: everything arises depending on conditions. Twelve links from avidya to old age and death: avidya, samskara, vijnana, namarupa, shadayatana, sparsha, vedana, trishna, upadana, bhava, jati, jaramarana. It explains suffering and rebirth without a permanent self.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">What does nastika mean?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Rejecting the authority of the Vedas.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Name the three marks of existence.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Anicca, dukkha, anatta.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Name the Jain mahavratas.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Ahimsa, satya, asteya, brahmacharya, aparigraha.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Who is the 24th Tirthankara?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Vardhamana Mahavira.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Which elements does Charvaka accept?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Earth, water, fire, air.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">What is nirvana?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Extinguishing greed, hatred and delusion, ending rebirth.</p></div></details></div>
+
+    </section>
+    <section class="section" id="sec-recall">
+      <div class="sec-head">
+        <div class="kicker">07 &middot; Recall and checks</div>
+        <h2>One-Page Revision and Flags</h2>
+        <p class="dek">Revise from here the night before.</p>
+      </div>
+      <h3 class="sub"><span class="n">7A</span>Key exam points</h3>
+      <div class="blk exam">
+        <span class="lbl">Remember</span>
+        <ul class="plain">
+          <li>Buddha: middle path, no permanent self, nirvana by wisdom, conduct and meditation. <span class="src cls">BJC notes</span></li>
+          <li>Jainism: ahimsa, plural souls, karma as matter, self-effort, anekantavada. <span class="src cls">BJC notes</span></li>
+          <li>Charvaka: only perception; materialism and hedonism; known mainly through critics. <span class="src cls">BJC notes</span></li>
+          <li>All three reject Vedic authority but differ sharply on soul, karma and God. <span class="src cls">BJC notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">7B</span>Flags to confirm with your teacher</h3>
+      <div class="blk conf">
+        <span class="lbl">Check these</span>
+        <ul class="plain">
+          <li>Dates (Buddha, Mahavira) are traditional and approximate in your notes. <span class="src cls">BJC notes</span></li>
+          <li>Your earlier Unit 1 page uses the shorter &ldquo;Charvaka and the four elements&rdquo; note; this page replaces it. <span class="src add">added</span></li>
+          <li>No question on these schools appears in the Semester 1 paper you solved except the triratna and eightfold-path questions; the other questions here are mine. <span class="src add">added</span></li>
+        </ul>
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
+</script>

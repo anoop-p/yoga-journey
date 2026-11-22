@@ -1,0 +1,641 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yoga: Meaning, Definitions and History</title>
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .sk{ font-family:"Fraunces",Georgia,serif; font-style:italic; color:var(--ink); }
+  .flow{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 12px; }
+  .flow span{ background:var(--teal-soft); color:var(--teal); border-radius:8px; padding:5px 10px; font-size:13px; font-weight:600; }
+  .flow i{ color:var(--muted); font-style:normal; }
+  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 16px; }
+  .mq .mqh{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
+  .mq .topic{ font-size:11px; color:var(--muted); }
+  .mq .mqt{ font-weight:600; color:var(--ink); margin:0 0 10px; max-width:none; }
+  .mq details.ans > summary{ cursor:pointer; list-style:none; display:inline-block; padding:6px 12px; border-radius:8px; background:var(--teal-soft); color:var(--teal); font-size:13px; font-weight:600; }
+  .mq details.ans > summary::-webkit-details-marker{ display:none; }
+  .mq details.ans[open] > summary{ background:var(--surface-2); color:var(--muted); }
+  .mq .ansb{ margin-top:12px; border-top:1px dashed var(--border); padding-top:10px; }
+  .mq .ansb p{ margin:0 0 8px; }
+  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 12px; padding-left:22px; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Yoga: Meaning, Definitions and History</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../../index.html">&larr; T1 &middot; Foundations of Yoga</a>
+    <div class="brand">
+      <div class="eyebrow">Foundations of Yoga &middot; Unit 1</div>
+      <h1>Yoga: Meaning, Definitions and History</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="overview"><span class="num">01</span><span>Overview</span></button>
+      <button class="nav-item" data-target="meaning"><span class="num">02</span><span>Meaning &amp; Definitions</span></button>
+      <button class="nav-item" data-target="aims"><span class="num">03</span><span>Aims &amp; Misconceptions</span></button>
+      <button class="nav-item" data-target="origin"><span class="num">04</span><span>Origin &amp; Lineages</span></button>
+      <button class="nav-item" data-target="periods"><span class="num">05</span><span>Five Periods</span></button>
+      <button class="nav-item" data-target="answers"><span class="num">06</span><span>Exam Answers</span></button>
+      <button class="nav-item" data-target="recall"><span class="num">07</span><span>Recall &amp; Checks</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Sources: your Meaning and Definitions notes, Origin History and Development notes, Yoga History quick notes
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="section" id="sec-overview">
+      <div class="sec-head">
+        <div class="kicker">01 &middot; Overview</div>
+        <h2>What This Chapter Covers</h2>
+        <p class="dek">Meaning, definitions, aims, misconceptions, and the history of yoga in five periods.</p>
+      </div>
+      <div class="stat-strip">
+        <div class="stat"><div class="v">3</div><div class="k">roots of yuj</div></div>
+        <div class="stat"><div class="v">5</div><div class="k">periods of yoga history</div></div>
+        <div class="stat"><div class="v">10</div><div class="k">aims of yoga (your list)</div></div>
+        <div class="stat"><div class="v">21 Jun</div><div class="k">International Day of Yoga</div></div>
+      </div>
+      <div class="blk und">
+        <span class="lbl">In one paragraph</span>
+        <p>&ldquo;Yoga&rdquo; has several meanings (union, absorption, control, equanimity, skill, separation from pain), and each belongs to a different tradition. Its history runs from shamanic and Indus Valley traces through the Vedas, Upanishads, Jain and Buddhist practice, Patanjali, the Hatha texts and the modern teachers. Patanjali <b>systematised</b> yoga; he did not found it. <span class="src cls">Meaning notes</span> <span class="src cls">History notes</span></p>
+      </div>
+      <h3 class="sub"><span class="n">1A</span>Why the topic matters in the paper</h3>
+      <p>Questions on this chapter ask for <b>definitions</b> (with source and verse), the <b>aims</b> and <b>misconceptions</b>, and the <b>five periods</b>. Learn each definition with its text.</p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Patanjali: founder of yoga?</div><div class="a">No: he systematised and codified it</div></div>
+        <div class="recall-card"><div class="q">Five periods?</div><div class="a">Pre-Vedic, Pre-Classical (Vedic), Classical, Post-Classical, Modern</div></div>
+        <div class="recall-card"><div class="q">First Upanishad to use &ldquo;yoga&rdquo;?</div><div class="a">Katha Upanishad (II.3.10-11)</div></div>
+        <div class="recall-card"><div class="q">Yoga Day?</div><div class="a">21 June; first celebrated 2015</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-meaning">
+      <div class="sec-head">
+        <div class="kicker">02 &middot; Meaning and definitions</div>
+        <h2>The Word Yoga and Its Definitions</h2>
+        <p class="dek">Three roots, definitions by text, and definitions by modern teachers.</p>
+      </div>
+      <h3 class="sub"><span class="n">2A</span>Meaning of the word</h3>
+      <p>The word <b>yoga</b> comes from the Sanskrit root <b>yuj</b>. <i>Yujyate anena iti yoga:</i> that by which one is joined. Three roots are given: <span class="src cls">Meaning notes</span></p>
+      <div class="table-wrap"><table>
+        <tr><th>Root</th><th>Meaning</th><th>Definition that goes with it</th></tr>
+        <tr><td><i>Yuj samyoge</i></td><td>To unite</td><td>Yoga Yajnavalkya: union of jivatman and paramatman</td></tr>
+        <tr><td><i>Yuj samadhau</i></td><td>To contemplate; absorption</td><td>Vyasa on Yoga Sutra 1.1: &ldquo;Yoga is samadhi&rdquo;</td></tr>
+        <tr><td><i>Yuj samyamane</i></td><td>To control</td><td>Katha Upanishad: steady control of the senses and mind</td></tr>
+      </table></div>
+      <h3 class="sub"><span class="n">2B</span>Important definitions</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Source</th><th>Definition</th><th>Meaning</th></tr>
+        <tr><td><b>Yoga Yajnavalkya 1.44</b></td><td><i>Samyogo yoga ityukto jivatma-paramatmanoh</i></td><td>Union of the individual self (jivatman) with the supreme self (paramatman). Valid for those who follow the non-dualistic (Advaita) view</td></tr>
+        <tr><td><b>Vyasa on Yoga Sutra 1.1</b></td><td><i>Yogah samadhih</i></td><td>Total integration with the Absolute; absorption in supreme consciousness. <i>Samadhi</i> = thorough knowledge of the Atman or Brahman</td></tr>
+        <tr><td><b>Katha Upanishad II.3.10-11</b></td><td><i>Tam yogam iti manyante sthiram indriya-dharanam</i></td><td>The first Vedic scripture to use the word; yoga is mastery over mind, intellect and senses to reach the supreme state</td></tr>
+        <tr><td><b>Yoga Vasishtha</b></td><td>&mdash;</td><td>A skilful method to calm the mind</td></tr>
+        <tr><td><b>Bhagavad Gita 2.48</b></td><td><i>Samatvam yoga ucyate</i></td><td>Equanimity in pleasure and pain, success and failure</td></tr>
+        <tr><td><b>Bhagavad Gita 2.50</b></td><td><i>Yogah karmasu kaushalam</i></td><td>The art of working skilfully, free from the bondage of karma</td></tr>
+        <tr><td><b>Bhagavad Gita 6.23</b></td><td><i>Duhkha-samyoga-viyogam yoga-samjnitam</i></td><td>Disconnection from union with pain</td></tr>
+        <tr><td><b>Yoga Sutra 1.2</b></td><td><i>Yogash citta-vritti-nirodhah</i></td><td>Stilling the fluctuations of the mind. A solution to suffering, not union: yoga is <b>separation</b> from the snares of Prakriti, so Purusha abides in its own nature</td></tr>
+      </table></div>
+      <p class="honest"><b>Source note.</b> The Gita and Yoga Sutra lines in the right-hand column are in your notes in English. The Sanskrit wording in the middle column is added by me from the standard verses <span class="src add">added: check spelling against your text</span>. Your Meaning notes are an OCR scan; the Yoga Vasishtha reference number was unreadable.</p>
+      <div class="blk know">
+        <span class="lbl">Critical analysis (your notes)</span>
+        <p>All these definitions are philosophical: they speak of the Atman and the mind and ignore the body. <b>Hatha Yoga</b>, in the post-classical texts, adds the body: cleansing the body, controlling its movements and controlling prana in order to control the mind. So yoga is <b>not</b> only physical, only mental or only spiritual: it is a unified system of all three (body, mind, spirit). <span class="src cls">Meaning notes</span></p>
+      </div>
+      <h3 class="sub"><span class="n">2C</span>Definitions by modern yogis</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Teacher</th><th>Definition</th></tr>
+        <tr><td>Swami Sivananda (1966)</td><td>Harmony between the individual and the universe, between thought and act; the joining of a healthy body and a disciplined mind for spiritual development</td></tr>
+        <tr><td>Sri Aurobindo</td><td>A systematic methodology for all-round personality development: a practical psychology. &ldquo;All life is Yoga&rdquo;</td></tr>
+        <tr><td>Swami Kuvalayananda (Kaivalyadhama, Lonavla)</td><td>Yoga has a message for the human body, mind and spirit</td></tr>
+        <tr><td>Swami Satyananda</td><td>Not an ancient myth buried in oblivion; the most valuable inheritance of the present, the essential need of today and the culture of tomorrow</td></tr>
+      </table></div>
+      <p><span class="src cls">Meaning notes</span> Sri Aurobindo is also named there as the father of Integral Yoga.</p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Three roots of yuj?</div><div class="a">Samyoge (unite), samadhau (absorb), samyamane (control)</div></div>
+        <div class="recall-card"><div class="q">Gita definitions?</div><div class="a">2.48 equanimity; 2.50 skill in action; 6.23 disconnection from pain</div></div>
+        <div class="recall-card"><div class="q">Patanjali&#8217;s sense of yoga?</div><div class="a">Separation of Purusha from Prakriti, not union</div></div>
+        <div class="recall-card"><div class="q">Is yoga only physical?</div><div class="a">No: a unified system of body, mind and spirit</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-aims">
+      <div class="sec-head">
+        <div class="kicker">03 &middot; Aims and misconceptions</div>
+        <h2>Why Practise, and What Yoga Is Not</h2>
+        <p class="dek">The ten aims and the common misconceptions.</p>
+      </div>
+      <h3 class="sub"><span class="n">3A</span>Aims and objectives of yoga</h3>
+      <div class="table-wrap"><table>
+        <tr><th>#</th><th>Aim (from your notes)</th></tr>
+        <tr><td>1</td><td>Improve body health and physical ability</td></tr>
+        <tr><td>2</td><td>Use yoga as physical therapy for psychosomatic and lifestyle diseases, and as mental therapy for stress, anxiety, depression and neurotic disorders</td></tr>
+        <tr><td>3</td><td>Use yogic food to stay healthy and promote vegetarianism</td></tr>
+        <tr><td>4</td><td>Increase immunity</td></tr>
+        <tr><td>5</td><td>Improve moral and ethical values</td></tr>
+        <tr><td>6</td><td>Use yoga alongside medical treatment to reduce medication needs</td></tr>
+        <tr><td>7</td><td>Overall personality development: physical, mental, emotional, social, spiritual</td></tr>
+        <tr><td>8</td><td>Simple living and high thinking</td></tr>
+        <tr><td>9</td><td>Integrate thoughts, words and deeds; transform ego-consciousness into soul-consciousness</td></tr>
+        <tr><td>10</td><td><b>Ultimate aim:</b> a higher state of consciousness, Self-realisation, in which the Atman and Brahman are seen as one; a state of silence and highest bliss</td></tr>
+      </table></div>
+      <p><span class="src cls">Meaning notes</span></p>
+      <div class="blk mem">
+        <span class="lbl">Memory aid</span>
+        <p>Body &rarr; therapy &rarr; diet &rarr; immunity &rarr; ethics &rarr; medicine support &rarr; personality &rarr; simple living &rarr; integration &rarr; <b>Self-realisation</b>. The last one is the ultimate aim. <span class="src add">added</span></p>
+      </div>
+      <h3 class="sub"><span class="n">3B</span>Misconceptions about yoga</h3>
+      <p>Your notes list sixteen. The main ones, grouped: <span class="src cls">Meaning notes</span></p>
+      <div class="table-wrap"><table>
+        <tr><th>Group</th><th>Misconceptions</th></tr>
+        <tr><td>About what yoga is</td><td>A Hindu religious practice; a technique to attain siddhis; magical performances (bending bars, walking on fire, staying in a pit); limited to monks; only asanas or physical exercise; only a treatment</td></tr>
+        <tr><td>About who may practise</td><td>Not needed by children or by people who do hard physical work; women should not practise during menstruation; should not be done during pregnancy; &ldquo;which or whose yoga is good?&rdquo;</td></tr>
+        <tr><td>Fears</td><td>Becoming a celibate or monk; becoming thin or losing weight; becoming sexless; going mad; strict vegetarian diet is compulsory</td></tr>
+      </table></div>
+      <p><b>Conclusion in your notes:</b> research shows regular practice helps prevent, promote and cure many conditions and improves physical, emotional, intellectual and spiritual health; the misconceptions are <b>baseless</b>, and yoga can be practised by all irrespective of caste, creed, colour, race, religion, sex or age. <span class="src cls">Meaning notes</span></p>
+      <p class="honest"><b>Source note.</b> Some items in your notes (pregnancy, menstruation, specific conditions) are general statements about practice. For personal health decisions, follow a qualified teacher or doctor, not this page. <span class="src add">added</span></p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Ultimate aim of yoga?</div><div class="a">Self-realisation: Atman and Brahman as one; silence and bliss</div></div>
+        <div class="recall-card"><div class="q">Name three misconceptions</div><div class="a">Only asanas; only for monks; gives siddhis or magic</div></div>
+        <div class="recall-card"><div class="q">Conclusion on misconceptions?</div><div class="a">All baseless; yoga is for all, regardless of caste, creed, age or sex</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-origin">
+      <div class="sec-head">
+        <div class="kicker">04 &middot; Origin and lineages</div>
+        <h2>Who Taught Yoga First</h2>
+        <p class="dek">Traditional accounts of the origin of yoga and the four guru-shishya lines.</p>
+      </div>
+      <h3 class="sub"><span class="n">4A</span>Who created yoga? Traditional views</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li>Knowledge of yoga passed <b>orally from guru to shishya</b> under the <b>gurukula</b> system, which is believed to predate the Vedic age. <span class="src cls">History notes</span></li>
+          <li><b>Guru</b> (Advayataraka Upanishad): <i>gu</i> = darkness, <i>ru</i> = its dispeller; the guru removes ignorance. <span class="src cls">History notes</span> <span class="src cls">Meaning notes</span></li>
+          <li><b>Hiranyagarbha</b> is called the creator of yoga in the Yajnavalkya Smriti and the Mahabhagavatam. The Rig Veda calls him the self-manifested (<i>svayambhu</i>) creator of the universe; some texts equate him with Brahma. <span class="src cls">History notes</span></li>
+          <li><b>Ahirbudhnya Samhita</b> (ch. 12, Vaishnava): Hiranyagarbha composed two yoga works: <b>Nirodha Yoga</b> and <b>Karma Yoga</b>. <span class="src cls">History notes</span></li>
+          <li>The <b>Pashupati seal</b> of the Indus Valley (Shiva seated in meditation) is the earliest depiction of yoga excavated, so Shiva is called <b>Adi Guru</b>. <span class="src cls">History notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">4B</span>Guru-shishya lineages (parampara)</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Line</th><th>Chain</th></tr>
+        <tr><td>Vaishnava</td><td>Hiranyagarbha &rarr; Krishna &rarr; Vasishtha &rarr; Patanjali (said to be an incarnation of Adishesha)</td></tr>
+        <tr><td>Shaiva (Nath)</td><td>Shiva (Adinath) &rarr; Matsyendranath &rarr; Gorakshanath &rarr; 33 Nath yogis &rarr; Svatmarama (founder of Hatha Yoga as given in your notes)</td></tr>
+        <tr><td>Mundaka Upanishad (1.1.2)</td><td>Brahma &rarr; Atharva &rarr; Angiras &rarr; Bharadvaja &rarr; Satyavaha (Brahma-vidya, Raja Yoga)</td></tr>
+        <tr><td>Bhagavad Gita (4.1)</td><td>Krishna &rarr; Vivasvan (Sun) &rarr; Manu &rarr; Ikshvaku &rarr; rajarshis</td></tr>
+      </table></div>
+      <p><span class="src cls">History notes</span> Hatha texts also stress the guru: HYP 4.9 (without the teacher&#8217;s compassion, <i>sahaja</i> is hard to attain) and Shiva Samhita 3.11 (only knowledge from the guru&#8217;s lips is powerful and useful).</p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Creator of yoga per Yajnavalkya?</div><div class="a">Hiranyagarbha</div></div>
+        <div class="recall-card"><div class="q">Adi Guru?</div><div class="a">Shiva (Pashupati seal)</div></div>
+        <div class="recall-card"><div class="q">Meaning of guru?</div><div class="a">Gu = darkness, ru = dispeller</div></div>
+        <div class="recall-card"><div class="q">Gita lineage?</div><div class="a">Krishna, Vivasvan, Manu, Ikshvaku, rajarshis</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-periods">
+      <div class="sec-head">
+        <div class="kicker">05 &middot; Five periods</div>
+        <h2>The History of Yoga in Five Periods</h2>
+        <p class="dek">From shamanism and the Indus Valley to the modern teachers.</p>
+      </div>
+      <h3 class="sub"><span class="n">5A</span>The five periods</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Period</th><th>Approximate date (your notes)</th><th>Main evidence</th></tr>
+        <tr><td>1. Pre-Vedic</td><td>Shamanism ~25,000 BCE; Indus Valley ~3300 BCE</td><td>Shamanic postures; Pashupati seal and seated figures</td></tr>
+        <tr><td>2. Pre-Classical (Vedic)</td><td>Vedas ~1750 BCE to about 500 BCE</td><td>Vedas, Upanishads, Jainism, Buddhism, Tantra</td></tr>
+        <tr><td>3. Classical</td><td>~500 BCE</td><td>Yoga Sutra of Patanjali</td></tr>
+        <tr><td>4. Post-Classical</td><td>From 10 CE</td><td>Nath, Hatha and Tantric texts</td></tr>
+        <tr><td>5. Modern</td><td>From about 1800 CE</td><td>Teachers from Vivekananda onwards</td></tr>
+      </table></div>
+      <h3 class="sub"><span class="n">5B</span>Pre-Vedic</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Shamanism</b> (Siberia, ~25,000 BCE): &ldquo;shaman&rdquo; is linked to Pali <i>samana</i> and Sanskrit <i>shramana</i>, &ldquo;seeker&rdquo;. Shamans used postures like vajrasana, sukhasana, padmasana, utkatasana with meditation for trance journeys. <span class="src cls">History notes</span></li>
+          <li><b>Indus Valley</b> (~3300 BCE): seals and figures from Harappa and Mohenjodaro resemble asanas; the Pashupati seal is the earliest depiction. <span class="src cls">History notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">5C</span>Pre-Classical or Vedic period</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Strand</th><th>Yoga content (your notes)</th></tr>
+        <tr><td>Vedas (~1750 BCE)</td><td>Mantra yoga in yajnas; complex mudras in worship; <b>upanayana</b> at about age 8 included Gayatri mantra, surya namaskara and nadishodhana pranayama</td></tr>
+        <tr><td>Upanishads</td><td>Called Vedanta; Katha (II.3.10-11) first uses the word yoga; they relate Ishvara, jiva and jagat; <b>20 Yoga Upanishads</b> deal with hatha, mantra, laya, raja yoga, nadis, chakras, mudras, bandhas, pranayama, kundalini, dhyana and samadhi</td></tr>
+        <tr><td>Jainism</td><td>Yoga as the combination of mind, body and speech; yama panchakam, ahimsa; kayotsarga; Mahavira is said to have attained enlightenment in <i>mulabandhasana</i></td></tr>
+        <tr><td>Buddhism (563 BCE)</td><td>Middle path, against self-torment; eightfold path parallels ashtanga yoga; vipassana</td></tr>
+        <tr><td>Tantra (~5 BCE)</td><td>Shiva as father of Tantra yoga; <i>tanoti</i> (expand) + <i>trayati</i> (liberate); base of hatha, mantra and kundalini yoga; union of Shiva and Shakti</td></tr>
+        <tr><td>Pre-Columbian</td><td>Said to show hatha yoga evidence (Colombia), as proof of universality</td></tr>
+      </table></div>
+      <h3 class="sub"><span class="n">5D</span>Classical period: the Yoga Sutra</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li>Written by <b>Maharshi Patanjali</b>, who <b>codified</b> yoga scattered across the Vedas, Upanishads, Buddhism and Jainism. He is <b>not</b> the father of yoga. <span class="src cls">History notes</span> <span class="src cls">Meaning notes</span></li>
+          <li>Credited with works on Sanskrit grammar and Ayurveda; hence the Patanjala mantra chanted before yoga practice. <span class="src cls">Meaning notes</span></li>
+          <li>The Sutra is also called <b>Yoga Darshana</b>, <b>Ashtanga Yoga</b> and <b>Raja Yoga</b> (a name given by Swami Vivekananda). <span class="src cls">History notes</span></li>
+          <li>It made yoga a practical discipline by stressing the eight limbs, <b>removing mysticism</b>, and describes the nature of the mind and ways to control its restlessness. <span class="src cls">Meaning notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">5E</span>Post-classical period (from 10 CE)</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Text</th><th>Author</th></tr>
+        <tr><td>Goraksha Samhita, Yoga Beeja, Goraksha Shatakam, Siddhasiddhantapaddhati</td><td>Gorakshanath</td></tr>
+        <tr><td>Yoga Yajnavalkya</td><td>Yajnavalkya</td></tr>
+        <tr><td>Tirumandiram (7 CE)</td><td>Siddhar Thirumoolar</td></tr>
+        <tr><td>Vasishtha Samhita</td><td>Vasishtha</td></tr>
+        <tr><td>Shiva Samhita</td><td>Unknown</td></tr>
+        <tr><td>Hatha Pradipika</td><td>Svatmarama</td></tr>
+        <tr><td>Gheranda Samhita</td><td>Gheranda Muni</td></tr>
+        <tr><td>Hatha Ratnavali</td><td>Srinivasa Bhat</td></tr>
+      </table></div>
+      <p><span class="src cls">History notes</span> <b>Tirumandiram</b> (Thirumoolar): described as the first major hatha yoga text; nine tantras; describes tantric kundalini yoga; seven key asanas (padma, svastika, bhadra, gomukha, simha, vira, sukhasana); three pranayama stages (puraka, kumbhaka, rechaka) in the ratio 1:4:2 (12:64:32 in the scan).</p>
+      <h3 class="sub"><span class="n">5F</span>Why hatha yoga arose</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li>The Yoga Sutra gives asana, pranayama, pratyahara, dharana and dhyana little more than definitions; it is mainly <b>mental discipline</b> (a mind-body practice). <span class="src cls">History notes</span></li>
+          <li>Yogis realised that <b>physical fitness</b> is needed for pranayama, meditation and daily activity, and that strict yama and niyama discouraged many people. <span class="src cls">History notes</span></li>
+          <li>The <b>Nath yogis</b> (Matsyendranath, Gorakshanath) developed hatha yoga, a <b>body-mind</b> practice, to prepare for raja yoga. HYP 1.2: <i>kevalam raja-yogaya hatha-vidya upadishyate</i>. <span class="src cls">History notes</span></li>
+          <li><b>Meaning of hatha:</b> <i>ha</i> = sun, pingala, prana; <i>tha</i> = moon, ida, apana. Balancing the two, or merging prana and apana at the navel (Siddhasiddhanta Paddhati). <span class="src cls">History notes</span></li>
+        </ul>
+      </div>
+      <div class="table-wrap"><table>
+        <tr><th>Hatha yoga: ten techniques (your notes)</th><th></th></tr>
+        <tr><td>1. Shatkarma (cleansing)</td><td>6. Pranayama</td></tr>
+        <tr><td>2. Mitahara (yogic diet)</td><td>7. Pratyahara</td></tr>
+        <tr><td>3. Asana</td><td>8. Dharana</td></tr>
+        <tr><td>4. Mudra</td><td>9. Dhyana</td></tr>
+        <tr><td>5. Bandha</td><td>10. Samadhi</td></tr>
+      </table></div>
+      <h3 class="sub"><span class="n">5G</span>Yoga elements in other religions, and the modern period</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Christianity (1st c.):</b> &ldquo;yoke&rdquo; as the same idea as yoga; prithvi mudra on icons; rosary meditation. <b>Islam (6th c.):</b> prayer postures resemble vajrasana and shashankasana; 99-bead misbaha. <b>Sufism (13th c.):</b> vajrasana for meditation. <span class="src cls">History notes</span></li>
+          <li><b>Modern period (from about 1800):</b> Vivekananda, Kuvalayananda, Aurobindo, Sivananda, Lahiri, Yogananda (Kriya Yoga), Mahesh Yogi, Vishnudevananda, Satyananda (Bihar School), Ramana, Dayananda, Dhirendra Brahmachari, T. Krishnamacharya (Ashtanga Yoga), Swami Rama, Shriram Sharma Acharya. <span class="src cls">History notes</span></li>
+          <li>Modern focus: fitness and therapy with scientific backing; new trends (power yoga, hot yoga) are moving away from traditional hatha yoga. <span class="src cls">History notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">5H</span>Conclusions in your notes and International Day of Yoga</h3>
+      <div class="blk exam">
+        <span class="lbl">Remember</span>
+        <ul class="plain">
+          <li>Yoga is known mainly through Patanjali&#8217;s Yoga Sutra, but Patanjali was not the founder. <span class="src cls">History notes</span></li>
+          <li>Yoga was practised before Patanjali by Jains, Shaivas, Buddhists and other ascetics; the Indus people probably knew parts of it. <span class="src cls">History notes</span></li>
+          <li>The exact origin is unknown: yoga is &ldquo;as old as civilisation&rdquo;, universal and not tied to one religion. <span class="src cls">History notes</span></li>
+          <li>Ashtanga yoga (mind-body) removed mysticism; hatha yoga (body-mind) prepares for it and is the most popular branch. <span class="src cls">History notes</span></li>
+          <li><b>International Day of Yoga:</b> proposed by India&#8217;s PM at the UN General Assembly on 27 September 2014; the UN declared <b>21 June</b>; first celebrated 21 June 2015. <span class="src cls">History notes</span></li>
+        </ul>
+      </div>
+      <p class="honest"><b>Source note.</b> Several dates and claims here (shamanism 25,000 BCE, pre-Columbian hatha yoga, Mahavira in mulabandhasana) are statements in your teacher&#8217;s notes; many are traditional or disputed in modern scholarship. Use them as given for the exam. <span class="src add">added: confirm with teacher</span> Your scans are OCR; a few names (for example the Mundaka line) were partly unreadable and are completed from the other history sheet.</p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Which text first used the word yoga?</div><div class="a">Katha Upanishad</div></div>
+        <div class="recall-card"><div class="q">Why did hatha yoga arise?</div><div class="a">Sutra neglects the body; fitness needed; strict yama-niyama deterred many; Nath yogis developed it</div></div>
+        <div class="recall-card"><div class="q">Meaning of hatha?</div><div class="a">Ha = sun/pingala/prana; tha = moon/ida/apana</div></div>
+        <div class="recall-card"><div class="q">Yoga Sutra names?</div><div class="a">Yoga Darshana, Ashtanga Yoga, Raja Yoga (Vivekananda)</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-answers">
+      <div class="sec-head">
+        <div class="kicker">06 &middot; Exam answers</div>
+        <h2>Model Answers: 10, 5 and 2 Marks</h2>
+        <p class="dek">Try each one first, then tap to compare.</p>
+      </div>
+      <p>History answers usually follow the five periods, then conclusions.</p>
+      <div class="mq"><div class="mqh"><span class="marks-tag">10 marks</span><span class="topic">History</span></div>
+        <p class="mqt">Explain the origin, history and development of yoga.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p><b>Introduction.</b> Yoga passed orally from guru to shishya; traditional creator Hiranyagarbha; Shiva as Adi Guru (Pashupati seal). Four parampara lines.</p><p><b>Pre-Vedic.</b> Shamanic postures (~25,000 BCE); Indus Valley seals (~3300 BCE).</p><p><b>Pre-Classical.</b> Vedas (mantra yoga, upanayana); Upanishads (Katha first uses &ldquo;yoga&rdquo;; 20 Yoga Upanishads); Jainism (ahimsa, kayotsarga); Buddhism (middle path, eightfold path, vipassana); Tantra.</p><p><b>Classical.</b> Patanjali codified the Yoga Sutra and the eight limbs; he is not the founder.</p><p><b>Post-Classical.</b> Nath yogis; Hatha texts: Hatha Pradipika, Gheranda Samhita, Shiva Samhita, Goraksha Samhita; why hatha arose.</p><p><b>Modern.</b> Vivekananda to Krishnamacharya, Sivananda, Swami Rama; fitness and therapy; Yoga Day 21 June.</p><p><b>Conclusion.</b> Yoga is universal, not tied to one religion; Ashtanga yoga is mind-body, Hatha yoga body-mind.</p><p class="pts"><span class="src cls">History notes</span> Wording mine <span class="src add">added</span></p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">History</span></div>
+        <p class="mqt">Explain the different definitions of yoga.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Yoga Yajnavalkya 1.44: union of jivatman and paramatman. Vyasa: yoga is samadhi. Katha Upanishad: steady control of senses and mind. Gita 2.48: equanimity; 2.50: skill in action; 6.23: disconnection from pain. Yoga Sutra 1.2: stilling the vrittis. Modern: Sivananda, Aurobindo, Kuvalayananda, Satyananda. Yoga is a unified system of body, mind and spirit.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">History</span></div>
+        <p class="mqt">Explain the aims and objectives of yoga.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Health and physical ability; therapy for psychosomatic and lifestyle diseases; yogic diet; immunity; ethical values; support for medical treatment; all-round personality development; simple living and high thinking; harmony of thought, word and deed; ultimate aim: Self-realisation.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">History</span></div>
+        <p class="mqt">Explain the misconceptions about yoga.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>That it is a Hindu religious practice, only for monks, only asanas, a source of siddhis or magic, harmful in pregnancy or menstruation, makes one thin or mad or a celibate, or needs a strict vegetarian diet. Research shows these are baseless; yoga is for all.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">History</span></div>
+        <p class="mqt">Why was hatha yoga developed?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>The Yoga Sutra gives little detail on asana, pranayama and others and demands strict yama-niyama. Yogis realised fitness is needed for pranayama and meditation. Nath yogis Matsyendranath and Gorakshanath developed hatha yoga as a body-mind discipline preparing for raja yoga.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">History</span></div>
+        <p class="mqt">Who was Patanjali, and what did he contribute?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Maharshi Patanjali codified yoga scattered in the Vedas, Upanishads, Buddhism and Jainism into the Yoga Sutra with the eight limbs. He is not the founder. He removed mysticism and made yoga a practical discipline. The Sutra is also called Yoga Darshana and Raja Yoga.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Meaning of yoga (root)?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>From yuj: to unite, to contemplate, to control.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Who is Adi Guru?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Shiva (Pashupati seal).</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Which text first used the word yoga?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Katha Upanishad.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Name the five periods.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Pre-Vedic, Pre-Classical, Classical, Post-Classical, Modern.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Meaning of hatha?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Ha = sun/pingala; tha = moon/ida; balancing prana and apana.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">When is International Day of Yoga?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>21 June (first in 2015).</p></div></details></div>
+
+    </section>
+    <section class="section" id="sec-recall">
+      <div class="sec-head">
+        <div class="kicker">07 &middot; Recall and checks</div>
+        <h2>Flags</h2>
+        <p class="dek">What to confirm before the exam.</p>
+      </div>
+      <h3 class="sub"><span class="n">7A</span>Flags to confirm with your teacher</h3>
+      <div class="blk conf">
+        <span class="lbl">Check these</span>
+        <ul class="plain">
+          <li>Dates and traditions in your history notes are traditional; scholars differ. <span class="src cls">History notes</span></li>
+          <li>Sanskrit lines in 2B are added by me from the standard verses. <span class="src add">added</span></li>
+          <li>The Mundaka Upanishad lineage and the Yoga Vasishtha reference were partly unreadable in your scans. <span class="src cls">Meaning notes</span> <span class="src cls">History notes</span></li>
+        </ul>
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
+</script>

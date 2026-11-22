@@ -1,0 +1,506 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yajnavalkya Smriti and Yoga Yajnavalkya</title>
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .sk{ font-family:"Fraunces",Georgia,serif; font-style:italic; color:var(--ink); }
+  .flow{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 12px; }
+  .flow span{ background:var(--teal-soft); color:var(--teal); border-radius:8px; padding:5px 10px; font-size:13px; font-weight:600; }
+  .flow i{ color:var(--muted); font-style:normal; }
+  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 16px; }
+  .mq .mqh{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
+  .mq .topic{ font-size:11px; color:var(--muted); }
+  .mq .mqt{ font-weight:600; color:var(--ink); margin:0 0 10px; max-width:none; }
+  .mq details.ans > summary{ cursor:pointer; list-style:none; display:inline-block; padding:6px 12px; border-radius:8px; background:var(--teal-soft); color:var(--teal); font-size:13px; font-weight:600; }
+  .mq details.ans > summary::-webkit-details-marker{ display:none; }
+  .mq details.ans[open] > summary{ background:var(--surface-2); color:var(--muted); }
+  .mq .ansb{ margin-top:12px; border-top:1px dashed var(--border); padding-top:10px; }
+  .mq .ansb p{ margin:0 0 8px; }
+  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 12px; padding-left:22px; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Yajnavalkya Smriti and Yoga Yajnavalkya</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../../index.html">&larr; T1 &middot; Foundations of Yoga</a>
+    <div class="brand">
+      <div class="eyebrow">Foundations of Yoga &middot; Unit 1</div>
+      <h1>Yajnavalkya Smriti and Yoga Yajnavalkya</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="overview"><span class="num">01</span><span>Overview</span></button>
+      <button class="nav-item" data-target="smriti"><span class="num">02</span><span>The Smriti</span></button>
+      <button class="nav-item" data-target="yoga"><span class="num">03</span><span>Yoga Yajnavalkya</span></button>
+      <button class="nav-item" data-target="answers"><span class="num">04</span><span>Exam Answers</span></button>
+      <button class="nav-item" data-target="recall"><span class="num">05</span><span>Flags</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Sources: your Yajnavalkya Smriti study notes
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="section" id="sec-overview">
+      <div class="sec-head">
+        <div class="kicker">01 &middot; Overview</div>
+        <h2>The Smriti and the Yoga Treatise</h2>
+        <p class="dek">Two texts under one sage: what each is, its date, and its structure.</p>
+      </div>
+      <div class="stat-strip">
+        <div class="stat"><div class="v">~1,010</div><div class="k">slokas in the Smriti</div></div>
+        <div class="stat"><div class="v">3</div><div class="k">kandas</div></div>
+        <div class="stat"><div class="v">3rd-5th c. CE</div><div class="k">scholarly dating</div></div>
+        <div class="stat"><div class="v">5</div><div class="k">forms of pratyahara</div></div>
+        <div class="stat"><div class="v">18</div><div class="k">marma focal points</div></div>
+      </div>
+      <div class="blk und">
+        <span class="lbl">In one paragraph</span>
+        <p>Two things sit under the name Yajnavalkya. The <b>Yajnavalkya Smriti</b> is a Dharmashastra text on conduct, law and penance, second in influence only to the Manusmriti. The <b>Yoga Yajnavalkya</b> is a separate yoga treatise, a <b>bridge</b> between Patanjali and Hatha Yoga, with early systematic teaching on kundalini, pranayama, pratyahara, dharana and dhyana. The syllabus topic draws on the yogic strand. <span class="src cls">Yajnavalkya notes</span></p>
+      </div>
+      <h3 class="sub"><span class="n">1A</span>The text and its author</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Point</th><th>Your notes say</th></tr>
+        <tr><td>Type</td><td>One of the most important <b>Dharmashastra</b> texts; Sanskrit, in sloka metre; part of the Smriti tradition; follows the Manusmriti and is regarded by many scholars as clearer, more systematic and more juristically sophisticated <span class="src cls">Yajnavalkya notes</span></td></tr>
+        <tr><td>Author</td><td>Attributed to the sage <b>Yajnavalkya</b> (Shukla Yajurveda, Shatapatha Brahmana, and the <b>Brihadaranyaka Upanishad</b>, where he teaches his wife Maitreyi and debates Gargi at King Janaka&#8217;s court). The historical author is a later compiler or school writing in his name <span class="src cls">Yajnavalkya notes</span></td></tr>
+        <tr><td>Date</td><td>Roughly the <b>Gupta period, 3rd to 5th century CE</b>; Patrick Olivelle suggests the 4th to 5th. Evidence: terse technical style, the coin term <i>nanaka</i>, awareness of Greek astrology <span class="src cls">Yajnavalkya notes</span></td></tr>
+        <tr><td>Place</td><td>Associated with <b>Mithila</b> (North Bihar) <span class="src cls">Yajnavalkya notes</span></td></tr>
+      </table></div>
+      <h3 class="sub"><span class="n">1B</span>Structure: three kandas</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Kanda</th><th>Subject</th></tr>
+        <tr><td><b>Achara</b></td><td>Rules of conduct, personal and social duties, sacraments, daily observances (the largest)</td></tr>
+        <tr><td><b>Vyavahara</b></td><td>Legal procedure: courts, evidence, contracts, disputes, the eighteen titles of law</td></tr>
+        <tr><td><b>Prayashchitta</b></td><td>Expiation and penance for transgression and impurity</td></tr>
+      </table></div>
+      <p>Total about 1,010 slokas. Robert Lingat notes the practical, brief introduction; Ludo Rocher cautions that it is a treatise on <i>dharma</i> (religious, ethical and legal duty together), not a &ldquo;law book&rdquo; in the narrow Western sense. <span class="src cls">Yajnavalkya notes</span></p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Author and date?</div><div class="a">Attributed to Yajnavalkya; compiled in the Gupta period, 3rd-5th c. CE</div></div>
+        <div class="recall-card"><div class="q">Three kandas?</div><div class="a">Achara, Vyavahara, Prayashchitta</div></div>
+        <div class="recall-card"><div class="q">Place?</div><div class="a">Mithila (North Bihar)</div></div>
+        <div class="recall-card"><div class="q">Which text is the yoga treatise?</div><div class="a">Yoga Yajnavalkya (separate from the Smriti)</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-smriti">
+      <div class="sec-head">
+        <div class="kicker">02 &middot; The Smriti proper</div>
+        <h2>Conduct, Law and Penance</h2>
+        <p class="dek">What the Achara-kanda teaches and why the text mattered.</p>
+      </div>
+      <h3 class="sub"><span class="n">2A</span>Teachings of the Achara-kanda</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Teaching</th><th>Content</th></tr>
+        <tr><td><b>Sarva-samarpana bhava</b> (total surrender)</td><td>Conduct after knowledge should be done as total dedication to the Divine. Unlike texts that offer only good acts, Yajnavalkya says <b>all actions</b>, even prohibited ones and their consequences, are to be offered, with contrition, self-reproach and a resolve not to repeat them</td></tr>
+        <tr><td><b>Dharma-sadhana</b> (means of dharma)</td><td>Helping others is good, harming is evil; non-violence and goodwill. Qualities: ahimsa, satya, asteya, shaucha, indriya-nigraha, dana, dhriti (steadfastness), kshama (forbearance), dama (self-restraint). Also permitted and forbidden foods, with expiation in the Prayashchitta-kanda</td></tr>
+        <tr><td><b>Dana</b> (charity)</td><td>Giving suited to the recipient&#8217;s needs; even someone unable to do tapas receives a share of its fruit through giving</td></tr>
+        <tr><td><b>Pitri-yajna</b></td><td>Rites for ancestors, including pinda; sincerity and devotion; neglect is said to bring <i>vamsha-nasha</i> (decline of the family line); pleased ancestors give long life, wealth, learning, heaven, liberation, contentment</td></tr>
+        <tr><td><b>Panchayatana puja</b></td><td>Worship of five deities (Surya, Ganapati, Subrahmanya, Shiva, with Lakshmi added): Ganapati-kalpa (removing obstacles), Lakshmi-kalpa (prosperity), <b>Graha-shanti</b> (warding off the three kinds of affliction, adhyatmika, adhibhautika, adhidaivika)</td></tr>
+        <tr><td><b>Rajadharma and varnashrama</b></td><td>Duties of the king and of ascetics; duties of the four varnas; the role of women (grace resides where women are honoured); everything unfolds by the Divine Will</td></tr>
+      </table></div>
+      <h3 class="sub"><span class="n">2B</span>Significance and legacy</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li>The three-fold structure made it easier to cite than the Manusmriti; a principal source of medieval jurisprudence. <span class="src cls">Yajnavalkya notes</span></li>
+          <li>The Vyavahara-kanda affected actual legal administration more than the corresponding part of Manu; first major European translation in German, 1849. <span class="src cls">Yajnavalkya notes</span></li>
+          <li>Major commentary: <b>Mitakshara</b> of Vijnaneshvara (11th-12th century), which became one of the two great schools of Hindu law (with the Dayabhaga). <span class="src cls">Yajnavalkya notes</span></li>
+          <li>The yogic component is one of the fullest <b>pre-hatha</b> treatments of kundalini and pranayama, influencing yoga before the 12th century. <span class="src cls">Yajnavalkya notes</span></li>
+        </ul>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Sarva-samarpana bhava?</div><div class="a">Offering all actions, even prohibited ones, to the Divine, with contrition</div></div>
+        <div class="recall-card"><div class="q">Major commentary?</div><div class="a">Mitakshara of Vijnaneshvara</div></div>
+        <div class="recall-card"><div class="q">Panchayatana deities?</div><div class="a">Surya, Ganapati, Subrahmanya, Shiva (+ Lakshmi added by Yajnavalkya)</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-yoga">
+      <div class="sec-head">
+        <div class="kicker">03 &middot; The yoga treatise</div>
+        <h2>Kundalini, Pranayama, Pratyahara, Dharana, Dhyana</h2>
+        <p class="dek">The yogic teaching that the syllabus lists.</p>
+      </div>
+      <h3 class="sub"><span class="n">3A</span>The Yoga Yajnavalkya</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li>A specialised yoga treatise, presented as the sage&#8217;s instruction to his wife <b>Gargi</b> (in some recensions Maitreyi). Spiritual instruction was not restricted to men. <span class="src cls">Yajnavalkya notes</span></li>
+          <li>Its limbs resemble Patanjali&#8217;s ashtanga yoga, and in places lists <b>ten yamas and ten niyamas</b>. <span class="src cls">Yajnavalkya notes</span></li>
+          <li>It contains material absent from the Yoga Sutra: a developed doctrine of <b>kundalini</b>, and one of the most detailed classical discussions of pranayama, pratyahara, dharana and dhyana before hatha yoga. It is a <b>bridge text</b> between the Patanjala system and Hatha Yoga. <span class="src cls">Yajnavalkya notes</span></li>
+          <li>A separate text, conventionally studied with the Smriti under this sage&#8217;s name; related works: the Smriti proper and the Brihad-Yajnavalkya. <span class="src cls">Yajnavalkya notes</span></li>
+          <li><b>Definition of yoga</b> (YY 1.44): union of jivatman and paramatman (see the meaning page). <span class="src cls">Meaning notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">3B</span>Kundalini</h3>
+      <p>One of the earliest systematic expositions: a latent, coiled energy at the base of the trunk, linked to the nadis and to older Vedic ideas of <b>Agni</b> (inner fire) and <b>Prana</b>. Its awakening is a natural extension of <b>pranayama</b> and <b>nadi-shodhana</b>, and is central to advanced attainment and samadhi. <span class="src cls">Yajnavalkya notes</span></p>
+      <h3 class="sub"><span class="n">3C</span>Pranayama</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li>About a <b>hundred verses</b> are given to pranayama. <span class="src cls">Yajnavalkya notes</span></li>
+          <li>The theory of the nadis (ida, pingala, sushumna) and the need for <b>nadi-shodhana</b> first. <span class="src cls">Yajnavalkya notes</span></li>
+          <li>Three phases: <b>puraka</b> (inhalation), <b>kumbhaka</b> (retention), <b>rechaka</b> (exhalation). <span class="src cls">Yajnavalkya notes</span></li>
+          <li>Named techniques: alternate-nostril breathing, <b>ujjayi</b> (the victorious breath), <b>bhastrika</b> (bellows breath), with methods. <span class="src cls">Yajnavalkya notes</span></li>
+          <li>Physiological and psychological effects and a therapeutic role in Ayurveda. Pranayama purifies body and mind and makes the inner limbs possible. <span class="src cls">Yajnavalkya notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">3D</span>Pratyahara, dharana, dhyana</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Limb</th><th>Teaching in the Yoga Yajnavalkya</th></tr>
+        <tr><td><b>Pratyahara</b></td><td>Withdrawal of the senses; the bridge between external limbs (asana, pranayama) and internal ones (dharana, dhyana, samadhi). <b>Five forms</b>; the theory of <b>marma</b> with <b>eighteen</b> focal points in the body</td></tr>
+        <tr><td><b>Dharana</b></td><td>Key to mastering the mind. Methods: fixing the gaze on one point (<b>trataka</b>); mantra repetition (<b>japa</b>); visualising a form; meditation on the <b>five chakras</b> with seed syllables <b>lam, vam, ram, yam, ham</b>, to unite the mind with Parameshvara</td></tr>
+        <tr><td><b>Dhyana</b></td><td>Uninterrupted flow of awareness to one object; leads to bondage or freedom depending on what and how one meditates. <b>Saguna</b>: a symbol, e.g. the heart as an eight-petalled lotus with the Self as Vasudeva, Narayana or Purushottama, towards the state called <b>Vaishvanara</b>. <b>Nirguna</b>: direct realisation of the oneness of jivatman and Paramatman/Brahman</td></tr>
+      </table></div>
+      <p>Dhyana prepares samadhi, where the individual self and the highest Self are equal and abide as one in Brahman. In the fuller scheme this gives a <b>six-limbed (shadanga)</b> formulation: pranayama, pratyahara, dharana, dhyana, japa, samadhi, related to but distinct from Patanjali&#8217;s eight. <span class="src cls">Yajnavalkya notes</span></p>
+      <h3 class="sub"><span class="n">3E</span>Yoga Yajnavalkya and Patanjali</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Point</th><th>Patanjali</th><th>Yoga Yajnavalkya</th></tr>
+        <tr><td>Limbs</td><td>Eight (ashtanga)</td><td>Eight-like, and a six-limbed scheme for the subtler stages</td></tr>
+        <tr><td>Yamas and niyamas</td><td>Five each</td><td>Ten each in places</td></tr>
+        <tr><td>Kundalini</td><td>Not mentioned</td><td>Developed doctrine</td></tr>
+        <tr><td>Pranayama</td><td>Defined briefly</td><td>About a hundred verses; ujjayi, bhastrika</td></tr>
+        <tr><td>Role</td><td>Classical system</td><td>Bridge to Hatha Yoga</td></tr>
+      </table></div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Who is Yajnavalkya teaching?</div><div class="a">Gargi (in some recensions Maitreyi)</div></div>
+        <div class="recall-card"><div class="q">Five chakra seed syllables?</div><div class="a">Lam, vam, ram, yam, ham</div></div>
+        <div class="recall-card"><div class="q">Pratyahara details?</div><div class="a">Five forms; eighteen marma points</div></div>
+        <div class="recall-card"><div class="q">Shadanga formulation?</div><div class="a">Pranayama, pratyahara, dharana, dhyana, japa, samadhi</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-answers">
+      <div class="sec-head">
+        <div class="kicker">04 &middot; Exam answers</div>
+        <h2>Model Answers: 10, 5 and 2 Marks</h2>
+        <p class="dek">Try each one first, then tap to compare.</p>
+      </div>
+      <p>Answers follow your syllabus line: kundalini, pranayama, pratyahara, dharana, dhyana.</p>
+      <div class="mq"><div class="mqh"><span class="marks-tag">10 marks</span><span class="topic">Yajnavalkya</span></div>
+        <p class="mqt">Explain the yogic teachings in the Yajnavalkya tradition.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p><b>Introduction.</b> The Yajnavalkya Smriti (Gupta period, three kandas) is a Dharmashastra text; the Yoga Yajnavalkya, given to Gargi, is the yoga treatise, a bridge between Patanjali and Hatha Yoga.</p><p><b>Kundalini.</b> Coiled energy at the base of the trunk, linked to nadis, Agni and Prana; awakened through pranayama and nadi-shodhana; central to samadhi.</p><p><b>Pranayama.</b> About a hundred verses; nadis, nadi-shodhana, puraka-kumbhaka-rechaka, alternate-nostril, ujjayi, bhastrika, effects and Ayurvedic role.</p><p><b>Pratyahara.</b> Bridge between outer and inner limbs; five forms; eighteen marma points.</p><p><b>Dharana.</b> Trataka, japa, visualisation, the five chakras with lam, vam, ram, yam, ham.</p><p><b>Dhyana.</b> Saguna and nirguna; heart lotus with Vasudeva; leads to samadhi; six-limbed scheme.</p><p><b>Conclusion.</b> A fuller pre-hatha account than Patanjali, uniting dharma in society with inner discipline.</p><p class="pts"><span class="src cls">Yajnavalkya notes</span> Wording mine <span class="src add">added</span></p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Yajnavalkya</span></div>
+        <p class="mqt">Explain the Yajnavalkya Smriti: date, structure and teachings.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Gupta period, 3rd-5th c. CE, from Mithila. Three kandas: Achara (conduct), Vyavahara (law), Prayashchitta (penance); about 1,010 slokas. Teaches sarva-samarpana bhava, dharma-sadhana (ahimsa, satya, asteya, shaucha, indriya-nigraha, dana), pitri-yajna and panchayatana puja. Commentary: Mitakshara.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Yajnavalkya</span></div>
+        <p class="mqt">Explain pranayama in the Yoga Yajnavalkya.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>About a hundred verses. Nadis (ida, pingala, sushumna) and nadi-shodhana first; puraka, kumbhaka, rechaka; alternate-nostril, ujjayi and bhastrika; physiological and psychological effects and Ayurvedic use. It prepares the inner limbs.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Yajnavalkya</span></div>
+        <p class="mqt">Explain pratyahara and dharana in the Yoga Yajnavalkya.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Pratyahara: withdrawal of the senses, five forms, eighteen marma points; the bridge to the inner limbs. Dharana: trataka, japa, visualisation, and meditation on five chakras with lam, vam, ram, yam, ham, to unite the mind with Parameshvara.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Yajnavalkya</span></div>
+        <p class="mqt">Explain dhyana in the Yoga Yajnavalkya.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Uninterrupted flow of awareness to one object; leads to bondage or freedom depending on its object. Saguna dhyana uses a symbol (heart lotus, Vasudeva, Narayana) towards Vaishvanara; nirguna dhyana is realising jivatman-Paramatman oneness. It prepares samadhi.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Yajnavalkya</span></div>
+        <p class="mqt">How does the Yoga Yajnavalkya compare with Patanjali?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Similar limbs, but ten yamas and niyamas in places, a developed kundalini doctrine, far fuller pranayama, and a six-limbed scheme. It is a bridge between Patanjali and Hatha Yoga.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Date of the Smriti?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Gupta period, about 3rd-5th century CE.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Three kandas?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Achara, Vyavahara, Prayashchitta.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">To whom is the Yoga Yajnavalkya addressed?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Gargi (in some recensions Maitreyi).</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Name the commentary on the Smriti.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Mitakshara of Vijnaneshvara.</p></div></details></div>
+
+    </section>
+    <section class="section" id="sec-recall">
+      <div class="sec-head">
+        <div class="kicker">05 &middot; Flags</div>
+        <h2>Things to Confirm</h2>
+        <p class="dek">Before the exam.</p>
+      </div>
+      <div class="blk conf">
+        <span class="lbl">Check these</span>
+        <ul class="plain">
+          <li>The notes call the yoga text <i>conventionally studied</i> with the Smriti; ask your teacher whether she expects it as part of the Smriti or separately. <span class="src cls">Yajnavalkya notes</span></li>
+          <li>Dates are scholarly estimates (Olivelle: 4th-5th c.). <span class="src cls">Yajnavalkya notes</span></li>
+          <li>The Sanskrit spellings are normalised from the diacritic originals in your PDF. <span class="src add">added</span></li>
+        </ul>
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
+</script>

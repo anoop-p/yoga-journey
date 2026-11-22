@@ -1,0 +1,516 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kundalini Yoga</title>
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .sk{ font-family:"Fraunces",Georgia,serif; font-style:italic; color:var(--ink); }
+  .flow{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 12px; }
+  .flow span{ background:var(--teal-soft); color:var(--teal); border-radius:8px; padding:5px 10px; font-size:13px; font-weight:600; }
+  .flow i{ color:var(--muted); font-style:normal; }
+  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 16px; }
+  .mq .mqh{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
+  .mq .topic{ font-size:11px; color:var(--muted); }
+  .mq .mqt{ font-weight:600; color:var(--ink); margin:0 0 10px; max-width:none; }
+  .mq details.ans > summary{ cursor:pointer; list-style:none; display:inline-block; padding:6px 12px; border-radius:8px; background:var(--teal-soft); color:var(--teal); font-size:13px; font-weight:600; }
+  .mq details.ans > summary::-webkit-details-marker{ display:none; }
+  .mq details.ans[open] > summary{ background:var(--surface-2); color:var(--muted); }
+  .mq .ansb{ margin-top:12px; border-top:1px dashed var(--border); padding-top:10px; }
+  .mq .ansb p{ margin:0 0 8px; }
+  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 12px; padding-left:22px; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Kundalini Yoga</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../../index.html">&larr; T1 &middot; Foundations of Yoga</a>
+    <div class="brand">
+      <div class="eyebrow">Foundations of Yoga &middot; Unit 2</div>
+      <h1>Kundalini Yoga</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="intro"><span class="num">01</span><span>Introduction</span></button>
+      <button class="nav-item" data-target="background"><span class="num">02</span><span>Historical &amp; Philosophical Background</span></button>
+      <button class="nav-item" data-target="structure"><span class="num">03</span><span>Structure</span></button>
+      <button class="nav-item" data-target="method"><span class="num">04</span><span>Method</span></button>
+      <button class="nav-item" data-target="epistemology"><span class="num">05</span><span>Epistemology</span></button>
+      <button class="nav-item" data-target="metaphysics"><span class="num">06</span><span>Metaphysics</span></button>
+      <button class="nav-item" data-target="answers"><span class="num">07</span><span>Exam Answers</span></button>
+      <button class="nav-item" data-target="recall"><span class="num">08</span><span>Flags</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Sources: your Kundalini Yoga assignment; structured in your teacher&#8217;s six parts
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="section" id="sec-intro">
+      <div class="sec-head">
+        <div class="kicker">01 &middot; Introduction (meaning)</div>
+        <h2>What Kundalini Yoga Is</h2>
+        <p class="dek">Awakening dormant energy.</p>
+      </div>
+      <div class="stat-strip">
+        <div class="stat"><div class="v">3</div><div class="k">granthis</div></div>
+        <div class="stat"><div class="v">3</div><div class="k">principal nadis</div></div>
+        <div class="stat"><div class="v">7</div><div class="k">chakras</div></div>
+        <div class="stat"><div class="v">4</div><div class="k">kumbhakas</div></div>
+        <div class="stat"><div class="v">6</div><div class="k">shatkarmas</div></div>
+      </div>
+      <h3 class="sub"><span class="n">1A</span>Meaning</h3>
+      <p>Kundalini Yoga is the path concerned with <b>awakening a dormant primordial energy</b>, described in the <b>Yoga-Kundalini Upanishad</b> and the <b>Sat-Chakra-Nirupana</b> as coiled like a serpent at the <b>Muladhara</b> chakra (base of the spine), and guided upward until it unites with <b>Shiva-consciousness at Sahasrara</b>, the crown centre. <span class="src cls">Kundalini assignment</span></p>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li>Classical sources classify it as a form of <b>Laya Yoga</b> within the fourfold scheme of Mantra, Hatha, Laya and Raja Yoga. <span class="src cls">Kundalini assignment</span></li>
+          <li>Unlike Jnana Yoga (liberation by intellectual discrimination), it works through the <b>actual transformation of psychophysical energy</b>, treating the <b>body as the primary instrument</b> of realisation. <span class="src cls">Kundalini assignment</span></li>
+          <li>Distinctive goal: the Tantric tradition claims both <b>bhukti</b> (worldly enjoyment) and <b>mukti</b> (liberation) together, not liberation through renunciation alone. <span class="src cls">Kundalini assignment</span></li>
+        </ul>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Where is Kundalini coiled?</div><div class="a">Muladhara, base of the spine</div></div>
+        <div class="recall-card"><div class="q">Where does it unite with Shiva?</div><div class="a">Sahasrara, the crown centre</div></div>
+        <div class="recall-card"><div class="q">Fourfold scheme place?</div><div class="a">A form of Laya Yoga</div></div>
+        <div class="recall-card"><div class="q">Bhukti and mukti?</div><div class="a">Worldly enjoyment and liberation, together</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-background">
+      <div class="sec-head">
+        <div class="kicker">02 &middot; Historical and philosophical background</div>
+        <h2>Goraksha Shataka to Sat-Chakra-Nirupana</h2>
+        <p class="dek">Lineage, Tantric home, contrast with Raja and Vedanta.</p>
+      </div>
+      <h3 class="sub"><span class="n">2A</span>Historical lineage</h3>
+      <div class="flow"><span>Goraksha Shataka (11th-12th c.)</span><i>&rarr;</i><span>Yoga-Kundalini Upanishad</span><i>&rarr;</i><span>Hatha Yoga Pradipika (15th c.)</span><i>&rarr;</i><span>Sat-Chakra-Nirupana (16th c.)</span></div>
+      <p>The earliest datable technique for raising Kundalini is in the <b>Goraksha Shataka</b>, a Nath text attributed to Gorakhnath, teaching <b>Sarasvati-chalana</b> (stimulating the Sarasvati nadi near the navel). It reappears in the Yoga-Kundalini Upanishad. The Sat-Chakra-Nirupana gives the most detailed classical account of the chakra system. <span class="src cls">Kundalini assignment</span></p>
+      <h3 class="sub"><span class="n">2B</span>Philosophical background and contrast</h3>
+      <p>Home tradition: <b>Tantra</b>, where Shakti is worshipped as the Divine Mother and awakened through ritual and devotion towards union with <b>Sadashiva</b>. The Hatha Yoga Pradipika teaches the same awakening through <b>discipline</b>. <span class="src cls">Kundalini assignment</span></p>
+      <div class="table-wrap"><table>
+        <tr><th>Path</th><th>Kundalini?</th><th>How it works</th></tr>
+        <tr><td><b>Raja Yoga</b></td><td>No mention</td><td>Eight limbs of ethical and mental discipline stilling the mind directly</td></tr>
+        <tr><td><b>Vedanta</b></td><td>Omitted</td><td>Ignorance the only obstacle, dissolved by knowledge alone</td></tr>
+        <tr><td><b>Kundalini Yoga</b></td><td>Central</td><td>Neither purely ritual nor purely intellectual: a technical discipline of embodied energy</td></tr>
+      </table></div>
+
+    </section>
+    <section class="section" id="sec-structure">
+      <div class="sec-head">
+        <div class="kicker">03 &middot; Structure</div>
+        <h2>Nadis, Chakras and Granthis</h2>
+        <p class="dek">The framework.</p>
+      </div>
+      <h3 class="sub"><span class="n">3A</span>The framework: nadis, chakras, granthis</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Element</th><th>Notes say</th></tr>
+        <tr><td><b>Nadis</b></td><td>Subtle channels, 72,000 to over 300,000 depending on source. Principal three: <b>Ida, Pingala, Sushumna</b>. Sushumna runs along the spinal axis (<b>Merudanda</b>), the pathway Kundalini must ascend</td></tr>
+        <tr><td><b>Chakras</b></td><td>Seven along this axis, <b>Muladhara to Sahasrara</b>; in the Sat-Chakra-Nirupana each is linked to a corresponding plexus of the nervous system</td></tr>
+        <tr><td><b>Granthis</b></td><td>Three knots obstructing the ascent: <b>Brahma, Vishnu, Rudra</b>, formed through the three gunas; Kundalini pierces them in sequence</td></tr>
+      </table></div>
+      <p>Seven chakras, in order, as commonly listed: Muladhara, Svadhishthana, Manipura, Anahata, Vishuddha, Ajna, Sahasrara. <span class="src gen">general</span></p>
+      <div class="blk know">
+        <span class="lbl">Static-dynamic polarity of Shakti</span>
+        <p>Kundalini at rest in Muladhara is the <b>static pole</b>; <b>Prana</b> circulating through the body is her <b>dynamic expression</b>. Practice converts static into dynamic and draws it towards the crown. <span class="src cls">Kundalini assignment</span></p>
+      </div>
+      <div class="blk conf">
+        <span class="lbl">Note</span>
+        <p>These are traditional yogic concepts, not anatomical structures recognised by modern biomedical science (as your Laya notes also say). The nervous-system plexus correlation is what the Sat-Chakra-Nirupana account is described as giving, per your assignment. <span class="src cls">Kundalini assignment</span> <span class="src cls">Laya notes</span></p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Three principal nadis?</div><div class="a">Ida, pingala, sushumna</div></div>
+        <div class="recall-card"><div class="q">Three granthis?</div><div class="a">Brahma, Vishnu, Rudra</div></div>
+        <div class="recall-card"><div class="q">Static pole?</div><div class="a">Kundalini at rest in Muladhara</div></div>
+        <div class="recall-card"><div class="q">Dynamic expression?</div><div class="a">Prana</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-method">
+      <div class="sec-head">
+        <div class="kicker">04 &middot; Method</div>
+        <h2>Bandhas, Kumbhakas and Shaktipat</h2>
+        <p class="dek">How the awakening is done.</p>
+      </div>
+      <h3 class="sub"><span class="n">4A</span>Mechanics of awakening (Yoga-Kundalini Upanishad)</h3>
+      <div class="flow"><span>Apana raised by Mulabandha</span><i>&rarr;</i><span>Unites with Agni</span><i>&rarr;</i><span>Rises to meet Prana</span><i>&rarr;</i><span>Kundalini straightens</span><i>&rarr;</i><span>Pierces Brahma-granthi</span><i>&rarr;</i><span>Vishnu-granthi (heart)</span><i>&rarr;</i><span>Rudra-granthi (eyebrow centre)</span><i>&rarr;</i><span>Sahasrara</span></div>
+      <h3 class="sub"><span class="n">4B</span>Supporting practices</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Group</th><th>Items</th></tr>
+        <tr><td><b>Four kumbhakas</b></td><td>Suryabheda, Ujjayi, Shitali, Bhastrika. Bhastrika is specifically credited with piercing the three granthis</td></tr>
+        <tr><td><b>Three bandhas</b></td><td>Mula, Uddiyana, Jalandhara</td></tr>
+        <tr><td><b>Hatha Yoga Pradipika adds</b></td><td>Six shatkarmas: Dhauti, Basti, Neti, Nauli, Trataka, Kapalabhati; mudras such as Khechari, Vajroli, Shakti Chalana</td></tr>
+      </table></div>
+      <div class="blk know">
+        <span class="lbl">Shaktipat</span>
+        <p>The direct transmission of awakening through a Guru&#8217;s <b>touch, sight or will</b>. This makes the Guru methodologically indispensable here, in a way not required for bhakti or Vedantic practice. <span class="src cls">Kundalini assignment</span></p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Which kumbhaka pierces the granthis?</div><div class="a">Bhastrika</div></div>
+        <div class="recall-card"><div class="q">Shatkarmas?</div><div class="a">Dhauti, basti, neti, nauli, trataka, kapalabhati</div></div>
+        <div class="recall-card"><div class="q">Shaktipat?</div><div class="a">Guru transmits awakening by touch, sight or will</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-epistemology">
+      <div class="sec-head">
+        <div class="kicker">05 &middot; Epistemology</div>
+        <h2>Embodied Verification</h2>
+        <p class="dek">Experience over scripture.</p>
+      </div>
+      <h3 class="sub"><span class="n">5A</span>Epistemology</h3>
+      <p>Knowledge is <b>primarily experiential rather than scriptural</b>. Classical sources list physiological and psychological <b>signs confirming awakening</b>: involuntary bandhas, spontaneous breath suspension, inner sound and visions, and sensations resembling electric current. <span class="src cls">Kundalini assignment</span></p>
+      <div class="blk know">
+        <span class="lbl">Contrast with Jnana</span>
+        <p>This is <b>embodied verification</b>, distinct from the scriptural testimony stressed in Jnana Yoga. Validity rests on the practitioner&#8217;s own bodily and psychic experience, ordinarily confirmed <b>under a Guru&#8217;s guidance</b> rather than by reasoning alone. <span class="src cls">Kundalini assignment</span></p>
+      </div>
+
+    </section>
+    <section class="section" id="sec-metaphysics">
+      <div class="sec-head">
+        <div class="kicker">06 &middot; Metaphysics</div>
+        <h2>Shakti and Shiva</h2>
+        <p class="dek">Two poles, the sadhakas, and the Kashmir Shaiva variant.</p>
+      </div>
+      <h3 class="sub"><span class="n">6A</span>Metaphysics</h3>
+      <p>The path investigates the relationship between <b>Shakti</b> (dynamic energy and matter) and <b>Shiva</b> (static, unmanifested consciousness): two poles of a single reality. <span class="src cls">Kundalini assignment</span></p>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Totality:</b> unlike meditation-based yoga where only the mind attains stillness, Kundalini Yoga unites <b>body, mind and the body&#8217;s central power</b> at Sahasrara. <span class="src cls">Kundalini assignment</span></li>
+          <li><b>Two practitioners:</b> <b>Vira sadhaka</b> (outward ritual means) and <b>Divya sadhaka</b> (unites Shakti and Shiva purely within). Both attain bhukti and mukti by different routes. <span class="src cls">Kundalini assignment</span></li>
+          <li><b>Microcosm:</b> the body mirrors the cosmic macrocosm; the ascent re-enacts the return of manifest energy to its unmanifest source, culminating in supreme bliss and final liberation. <span class="src cls">Kundalini assignment</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">6B</span>Philosophical variant: Kashmir Shaivism</h3>
+      <p>Trika school: authorities include the Malinivijayottara Tantra and Siddhayogeshvarimata; the Spanda school rests on Vasugupta&#8217;s Shiva Sutras and the Spanda Karika. Here Shakti is <b>Spanda</b>, the ceaseless pulsation of consciousness itself, <b>already present</b> rather than a latent power triggered once. The Vijnana Bhairava Tantra&#8217;s <b>112 dharanas</b> include techniques for Kundalini&#8217;s rise by concentration alone, without the asana, bandha and pranayama apparatus of Hatha. Its teachers describe the rise as a shift across states of consciousness: <b>waking, dreaming, deep sleep, turiya</b>, not the popular six-chakra model. Treat it as a <b>separate philosophical perspective</b>, not an extension of the structure above. <span class="src cls">Kundalini assignment</span></p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Shakti and Shiva?</div><div class="a">Dynamic energy and static consciousness: two poles of one reality</div></div>
+        <div class="recall-card"><div class="q">Spanda?</div><div class="a">Ceaseless pulsation of consciousness, already present</div></div>
+        <div class="recall-card"><div class="q">Dharanas in Vijnana Bhairava?</div><div class="a">112</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-answers">
+      <div class="sec-head">
+        <div class="kicker">07 &middot; Exam answers</div>
+        <h2>Model Answers: 10, 5 and 2 Marks</h2>
+        <p class="dek">Try each one first, then tap to compare.</p>
+      </div>
+      <p>Answers follow your six parts.</p>
+      <div class="mq"><div class="mqh"><span class="marks-tag">10 marks</span><span class="topic">Kundalini yoga</span></div>
+        <p class="mqt">Explain Kundalini Yoga.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p><b>Introduction.</b> Awakening dormant primordial energy coiled at Muladhara and guiding it to unite with Shiva at Sahasrara; a form of Laya Yoga; offers bhukti and mukti together.</p><p><b>Background.</b> Goraksha Shataka, Yoga-Kundalini Upanishad, HYP, Sat-Chakra-Nirupana; Tantric home; Raja Yoga and Vedanta omit it.</p><p><b>Structure.</b> Nadis (ida, pingala, sushumna), seven chakras, three granthis; Shakti static and dynamic.</p><p><b>Method.</b> Mulabandha, apana-agni-prana, four kumbhakas (Bhastrika), three bandhas, shatkarmas, mudras, shaktipat.</p><p><b>Epistemology.</b> Experiential, signs of awakening, under a guru.</p><p><b>Metaphysics.</b> Shakti-Shiva polarity, body as microcosm, bliss and liberation.</p><p class="pts"><span class="src cls">Kundalini assignment</span></p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Kundalini</span></div>
+        <p class="mqt">Explain the granthis.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Brahma, Vishnu and Rudra granthis: three knots formed through the three gunas that obstruct the ascent; Kundalini pierces them in sequence, assisted by Bhastrika and the three bandhas.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Kundalini</span></div>
+        <p class="mqt">Explain shaktipat.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Direct transmission of awakening through a Guru&#8217;s touch, sight or will; it makes the Guru methodologically indispensable here, unlike bhakti or Vedanta.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Kundalini</span></div>
+        <p class="mqt">Compare Kundalini Yoga with Raja Yoga and Vedanta.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Raja Yoga does not mention Kundalini; it stills the mind through eight limbs. Vedanta omits it; ignorance is dissolved by knowledge. Kundalini Yoga is a technical discipline of embodied energy.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Kundalini</span></div>
+        <p class="mqt">Explain Kashmir Shaivism&#8217;s view.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Spanda: Shakti is the ceaseless pulsation of consciousness already present; Vijnana Bhairava gives 112 dharanas; the rise is a shift across waking, dreaming, deep sleep and turiya.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Name the three nadis.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Ida, pingala, sushumna.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Earliest datable text?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Goraksha Shataka (11th-12th century).</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Name the four kumbhakas.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Suryabheda, ujjayi, shitali, bhastrika.</p></div></details></div>
+
+    </section>
+    <section class="section" id="sec-recall">
+      <div class="sec-head">
+        <div class="kicker">08 &middot; Flags</div>
+        <h2>Things to Confirm</h2>
+        <p class="dek">Before the exam.</p>
+      </div>
+      <div class="blk conf">
+        <span class="lbl">Check these</span>
+        <p>Built from your handwritten assignment (read from scans, so small misreadings of Sanskrit are possible). The seven chakra names are general knowledge, not in the assignment. <span class="src cls">Kundalini assignment</span></p>
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
+</script>

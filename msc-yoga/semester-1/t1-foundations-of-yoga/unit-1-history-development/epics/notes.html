@@ -1,7 +1,7 @@
 <!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Model Question Paper</title>
+<title>Yoga in the Ramayana and Mahabharata</title>
 <style>
   :root{
     --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
@@ -211,100 +211,239 @@
   }
 
   .src.add{ background:var(--accent-soft); color:var(--accent); }
-  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 14px; }
+  .sk{ font-family:"Fraunces",Georgia,serif; font-style:italic; color:var(--ink); }
+  .flow{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 12px; }
+  .flow span{ background:var(--teal-soft); color:var(--teal); border-radius:8px; padding:5px 10px; font-size:13px; font-weight:600; }
+  .flow i{ color:var(--muted); font-style:normal; }
+  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 16px; }
   .mq .mqh{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
-  .mq .marks-tag{ margin-bottom:0; }
   .mq .topic{ font-size:11px; color:var(--muted); }
   .mq .mqt{ font-weight:600; color:var(--ink); margin:0 0 10px; max-width:none; }
   .mq details.ans > summary{ cursor:pointer; list-style:none; display:inline-block; padding:6px 12px; border-radius:8px; background:var(--teal-soft); color:var(--teal); font-size:13px; font-weight:600; }
   .mq details.ans > summary::-webkit-details-marker{ display:none; }
   .mq details.ans[open] > summary{ background:var(--surface-2); color:var(--muted); }
   .mq .ansb{ margin-top:12px; border-top:1px dashed var(--border); padding-top:10px; }
-  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 10px; padding-left:22px; }
   .mq .ansb p{ margin:0 0 8px; }
-  .mq .ansb .pts{ font-size:12.5px; color:var(--muted); }
-  .mq .ansb .pts b{ color:var(--teal); }
-  .mq .ansb .hi{ background:var(--teal-soft); border-radius:8px; padding:8px 12px; margin:0 0 10px; color:var(--ink); }
-  .mqbar{ display:flex; gap:8px; flex-wrap:wrap; margin:0 0 16px; position:sticky; top:0; z-index:5; background:var(--bg); padding:8px 0; }
-  .mqbar button{ font:inherit; font-size:13px; padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft); cursor:pointer; }
-  .mqbar button.on{ background:var(--accent); color:#fff; border-color:var(--accent); }
+  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 12px; padding-left:22px; }
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 
 <div class="mobile-bar">
   <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
-  <div class="title">Unit 2: Structure and Epistemology of Yoga</div>
+  <div class="title">Yoga in the Ramayana and Mahabharata</div>
 </div>
 <div class="scrim" id="scrim"></div>
 
 <div class="app">
   <aside class="sidebar" id="sidebar">
-    <a class="back-link" href="../index.html">&larr; Foundations of Yoga</a>
+    <a class="back-link" href="../../index.html">&larr; T1 &middot; Foundations of Yoga</a>
     <div class="brand">
-      <div class="eyebrow">DSCC-16 &#183; Foundations of Yoga</div>
-      <h1>Unit 2: Structure and Epistemology of Yoga</h1>
+      <div class="eyebrow">Foundations of Yoga &middot; Unit 1</div>
+      <h1>Yoga in the Ramayana and Mahabharata</h1>
     </div>
     <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
     <nav class="tree" id="tree">
-      <button class="nav-item" data-target="guide"><span class="num">01</span><span>Read this first</span></button>
-      <button class="nav-item" data-target="raja"><span class="num">02</span><span>Raja yoga</span></button>
-      <button class="nav-item" data-target="jnana"><span class="num">03</span><span>Jnana yoga</span></button>
-      <button class="nav-item" data-target="bhakti"><span class="num">04</span><span>Bhakti yoga</span></button>
-      <button class="nav-item" data-target="karma"><span class="num">05</span><span>Karma yoga</span></button>
-      <button class="nav-item" data-target="hatha"><span class="num">06</span><span>Hatha yoga</span></button>
-      <button class="nav-item" data-target="mantra"><span class="num">07</span><span>Mantra yoga</span></button>
-      <button class="nav-item" data-target="laya"><span class="num">08</span><span>Laya yoga</span></button>
-      <button class="nav-item" data-target="kundalini"><span class="num">09</span><span>Kundalini yoga</span></button>
-      <button class="nav-item" data-target="compare"><span class="num">10</span><span>Comparison</span></button>
+      <button class="nav-item" data-target="overview"><span class="num">01</span><span>Overview</span></button>
+      <button class="nav-item" data-target="aranya"><span class="num">02</span><span>Aranya Kanda</span></button>
+      <button class="nav-item" data-target="ramagita"><span class="num">03</span><span>Rama Gita</span></button>
+      <button class="nav-item" data-target="mahabharata"><span class="num">04</span><span>Mahabharata</span></button>
+      <button class="nav-item" data-target="answers"><span class="num">05</span><span>Exam Answers</span></button>
     </nav>
-    <div class="sidebar-footer">Foundations of Yoga &middot; Semester 1</div>
+    <div class="sidebar-footer">
+      Sources: your Aranya Kanda notes; the Mahabharata section is general knowledge
+    </div>
   </aside>
 
   <main id="main">
-<p class="mapnote" style="margin:0 0 14px"><a href="map.html" style="display:inline-block;padding:8px 14px;border:1px solid var(--teal);border-radius:999px;color:var(--teal);text-decoration:none;font-size:14px">Concept map: see it all at a glance &rarr;</a></p>
-<section class="section" id="sec-guide">
-<div class="sec-head"><div class="kicker">00 &#183; Unit 2</div><h2>Unit 2: Structure and Epistemology of Yoga</h2><p class="dek">Raja, Jnana, Bhakti, Karma, Hatha, Mantra, Laya and Kundalini.</p></div>
-<p class="honest"><b>Honest note.</b> Your class notes give a fixed answer pattern for each yoga: introduction, historical and philosophical background, structure, method, epistemology, metaphysics. Each section below follows it. Raja, Jnana, Karma, Mantra and Laya are from your notes, Bhakti from class and the Narada notes, Kundalini from your assignment. <b>Hatha yoga has no separate class note</b>, so it is drawn from your history and Gorakshanath notes.</p><div class="stat-strip"><div class="stat"><div class="v">8</div><div class="k">yogas</div></div><div class="stat"><div class="v">6</div><div class="k">steps in every answer</div></div><div class="stat"><div class="v">10</div><div class="k">marks for karma yoga (flagged in class)</div></div></div></section>
-<section class="section" id="sec-raja">
-<div class="sec-head"><div class="kicker">01 &#183; Unit</div><h2>Raja yoga</h2><p class="dek">The royal path of Patanjali.</p></div>
-<p>Raja means royal. The system is Patanjala Yoga Darshana; "raja yoga" is a later name (Vivekananda). Yoga Sutra has about 195 sutras in four padas: Samadhi, Sadhana, Vibhuti, Kaivalya. <span class="src cls">class</span></p><p><b>Definition</b> YS 1.2: yogash chitta-vritti-nirodhah. Aim: stilling the vrittis, then discrimination of purusha and prakriti, then kaivalya. <span class="src cls">class</span></p><div class="table-wrap"><table><tr><th>Part</th><th>Content</th></tr><tr><td>Structure</td><td>Abhyasa + vairagya (1.12); kriya yoga: tapas, svadhyaya, ishvara-pranidhana (2.1); eight limbs</td></tr><tr><td>Eight limbs</td><td>Yama, niyama, asana, pranayama, pratyahara, dharana, dhyana, samadhi</td></tr><tr><td>Yama</td><td>Ahimsa, satya, asteya, brahmacharya, aparigraha</td></tr><tr><td>Niyama</td><td>Shaucha, santosha, tapas, svadhyaya, ishvara-pranidhana</td></tr><tr><td>Epistemology</td><td>Pramana (pratyaksha, anumana, agama), viparyaya, vikalpa, nidra, smriti: five vrittis, klishta or aklishta</td></tr><tr><td>Metaphysics</td><td>Purusha, prakriti, 3 gunas, chitta, five kleshas (avidya root, asmita, raga, dvesha, abhinivesha), Ishvara</td></tr></table></div></section>
-<section class="section" id="sec-jnana">
-<div class="sec-head"><div class="kicker">02 &#183; Unit</div><h2>Jnana yoga</h2><p class="dek">The path of knowledge.</p></div>
-<p>Jnana is knowledge of the self. Question: who am I? Flow: avidya, wrong identification (I am the body), attachment and suffering, self-enquiry, knowledge, moksha. Example: Ramana Maharshi. Source: Upanishads, Gita, Brahma Sutra. <span class="src cls">class</span></p><div class="table-wrap"><table><tr><th>Part</th><th>Content</th></tr><tr><td>Sadhana chatushtaya</td><td>Viveka, vairagya, shat-sampatti, mumukshutva</td></tr><tr><td>Shat-sampatti</td><td>Shama, dama, uparati, titiksha, shraddha, samadhana</td></tr><tr><td>Method</td><td>Shravana, manana, nididhyasana; neti neti</td></tr><tr><td>Epistemology</td><td>Pratyaksha, anumana, shabda (shruti)</td></tr><tr><td>Metaphysics</td><td>Atman, jagat, Brahman, avidya, moksha</td></tr><tr><td>Mahavakyas</td><td>Tat tvam asi (Chandogya), Aham Brahmasmi (Brihadaranyaka), Ayam Atma Brahma (Mandukya)</td></tr></table></div></section>
-<section class="section" id="sec-bhakti">
-<div class="sec-head"><div class="kicker">03 &#183; Unit</div><h2>Bhakti yoga</h2><p class="dek">Love, devotion and surrender.</p></div>
-<p>Bhakti comes from the root <i>bhaj</i>. It is love, devotion and surrender to the divine. In karma yoga the key is giving up the fruit; in jnana yoga, questioning; here, surrender. <span class="src cls">class</span></p><div class="table-wrap"><table><tr><th>Part</th><th>Content</th></tr><tr><td>Texts</td><td>Gita ch 12, Bhagavata Purana, Narada Bhakti Sutra, Shandilya Bhakti Sutra</td></tr><tr><td>Structure</td><td>Shraddha, bhakti, smarana, seva, sharanagati, divine love, moksha</td></tr><tr><td>Navavidha bhakti</td><td>Shravana, kirtana, smarana, padasevana, archana, vandana, dasya, sakhya, atma-nivedana (Prahlada)</td></tr><tr><td>Types</td><td>Saguna (with form) and nirguna (formless)</td></tr><tr><td>Bhavas</td><td>Shanta, dasya, sakhya, vatsalya (Putana), madhurya (Meera)</td></tr><tr><td>Epistemology</td><td>Shraddha, shabda, anubhava</td></tr><tr><td>Metaphysics</td><td>Jiva, Ishvara, jagat, maya, moksha</td></tr></table></div><p>Jiva and Ishvara: Advaita (Shankara) atman is Brahman; Vishishtadvaita (Ramanuja) soul is part of the divine; Dvaita (Madhva) soul and God differ. <span class="src cls">class</span></p><p><b>Narada Bhakti Sutra</b>: 84 sutras. Bhakti is supreme love (sa tvasmin parama prema rupa), is amrita, is greater than karma and jnana because of its result. Gauni (secondary) bhakti is of three kinds by guna; mukhya (primary) is para bhakti. Eleven forms of attachment: guna-mahatmya, rupa, puja, smarana, dasya, sakhya, vatsalya, kanta, atma-nivedana, tanmaya, parama-viraha. <span class="src cls">class</span></p></section>
-<section class="section" id="sec-karma">
-<div class="sec-head"><div class="kicker">04 &#183; Unit</div><h2>Karma yoga</h2><p class="dek">Action without attachment to results.</p></div>
-<p>Karma yoga: doing duty without attachment to the fruit, offering action to the divine and keeping equanimity. Source: Gita (Krishna to Arjuna, ch 3). Problem is attachment, not action. <span class="src cls">class</span></p><p>Verses: 2.47 (right to action, not fruit), 2.48 samatvam yoga, 2.50 yogah karmasu kaushalam, 3.9. <span class="src cls">class</span></p><p>Chain: karma, svadharma, nishkama karma, ishvara-pranidhana, samatva, chitta-shuddhi, jnana, moksha. <span class="src cls">class</span></p><div class="table-wrap"><table><tr><th>Karma types (very important)</th><th>Meaning</th></tr><tr><td>Sanchita</td><td>Accumulated from past</td></tr><tr><td>Prarabdha</td><td>Already bearing fruit in this life</td></tr><tr><td>Agami / kriyamana</td><td>Being made now, fruit later</td></tr></table></div><p>Sakama karma is for a result; nishkama karma is without attachment. Three sadhakas: Hanuman (uttama), Arjuna (madhyama), Dhritarashtra (mandha, as in your note). Epistemology: pratyaksha, anumana, shabda; leads to chitta-shuddhi. <span class="src cls">class</span></p></section>
-<section class="section" id="sec-hatha">
-<div class="sec-head"><div class="kicker">05 &#183; Unit</div><h2>Hatha yoga</h2><p class="dek">Ha and tha: sun and moon.</p></div>
-<p>Ha is sun (pingala, prana), tha is moon (ida, apana): balancing the two. Developed by the Nath yogis, Matsyendranath and Gorakshanath. Svatmarama wrote the Hatha Yoga Pradipika. Hatha is a body-mind path that prepares for raja yoga: "kevalam raja yogaya hatha vidya upadishyate". <span class="src cls">class</span></p><div class="table-wrap"><table><tr><th>Part</th><th>Content</th></tr><tr><td>Ten techniques</td><td>Shatkarma, mitahara, asana, mudra, bandha, pranayama, pratyahara, dharana, dhyana, samadhi</td></tr><tr><td>Texts</td><td>Goraksha Samhita and Shataka, Siddha Siddhanta Paddhati, Hatha Pradipika (Svatmarama), Gheranda Samhita, Shiva Samhita, Hatha Ratnavali, Tirumandiram</td></tr><tr><td>Principle</td><td>Stable body, regulated breath, steady mind, meditation</td></tr><tr><td>Nadis</td><td>Ida (left, lunar), pingala (right, solar), sushumna (central)</td></tr></table></div><p>Hatha is not just exercise; the body is an instrument for mental and spiritual change. <span class="src cls">class</span></p></section>
-<section class="section" id="sec-mantra">
-<div class="sec-head"><div class="kicker">06 &#183; Unit</div><h2>Mantra yoga</h2><p class="dek">Sound, repetition, meaning.</p></div>
-<p>Man is mind, tra is protection. Mantra yoga: repeat sacred sounds to concentrate and purify the mind. Mantra, japa, concentration, purification, one-pointed mind, meditation, higher awareness. <span class="src cls">class</span></p><div class="table-wrap"><table><tr><th>Part</th><th>Content</th></tr><tr><td>Types of mantra</td><td>Bija (om, hrim, shrim, krim); saguna (om namah shivaya); nirguna (soham)</td></tr><tr><td>Japa</td><td>Vachika (aloud), upamshu (whisper), manasa (mental)</td></tr><tr><td>Mala</td><td>108 beads</td></tr><tr><td>Om</td><td>Pranava. YS 1.27 tasya vachakah pranavah; 1.28 tajjapas tad-artha-bhavanam</td></tr><tr><td>Epistemology</td><td>Shabda from the guru, then repetition and contemplation</td></tr><tr><td>Metaphysics</td><td>Shabda, nada, om, shakti, Ishvara</td></tr><tr><td>Texts</td><td>Mandukya and Prashna Upanishads, Yoga Sutra, HYP</td></tr></table></div></section>
-<section class="section" id="sec-laya">
-<div class="sec-head"><div class="kicker">07 &#183; Unit</div><h2>Laya yoga</h2><p class="dek">Mind dissolving into its source.</p></div>
-<p>Laya is dissolution or absorption: the mind dissolving into its source. Close to Hatha, Nada yoga and Tantra; no single fixed system. Path: withdrawal, concentration, meditation, nada, absorption (laya), samadhi. <span class="src cls">class</span></p><p>Methods: nada meditation, mantra, breath awareness, concentration, meditation, kundalini practices. Nada: external, inner, subtle sound. Texts: HYP, Gheranda Samhita, Shiva Samhita, Yoga-tattva Upanishad. <span class="src cls">class</span></p></section>
-<section class="section" id="sec-kundalini">
-<div class="sec-head"><div class="kicker">08 &#183; Unit</div><h2>Kundalini yoga</h2><p class="dek">The awakening of the coiled energy.</p></div>
-<p>From your handwritten assignment of 13 Sept 2026. Kundalini sleeps coiled at muladhara and is guided up to sahasrara, union with Shiva. Classical sources classify it under Laya yoga within the four: Mantra, Hatha, Laya, Raja. Tantra claims both bhukti (worldly enjoyment) and mukti (liberation). <span class="src cls">class</span></p><div class="table-wrap"><table><tr><th>Part</th><th>Content</th></tr><tr><td>History</td><td>Goraksha Shataka (11-12 c.) teaches sarasvati-chalana; Yoga-Kundalini Upanishad; Hatha Pradipika (15 c.); Sat-Chakra-Nirupana (16 c.)</td></tr><tr><td>Structure</td><td>Nadis (72,000 to over 300,000), ida, pingala, sushumna; seven chakras; three granthis: Brahma, Vishnu, Rudra; shakti static and dynamic</td></tr><tr><td>Method</td><td>Apana raised by mula bandha meets agni and prana; four kumbhakas: suryabheda, ujjayi, sitali, bhastrika; three bandhas; six shatkarmas; mudras khechari, vajroli, shakti-chalana; shaktipat from the guru</td></tr><tr><td>Epistemology</td><td>Experience: involuntary bandhas, breath suspension, inner sound, visions, electric sensations, under a guru</td></tr><tr><td>Metaphysics</td><td>Shakti and Shiva as two poles of one reality; body as microcosm; viras and divya sadhaka</td></tr><tr><td>Variant</td><td>Kashmir Shaivism (Trika, Spanda): shakti as ceaseless pulsation, vijnana bhairava 112 dharanas, states of waking, dream, sleep, turiya</td></tr></table></div></section>
-<section class="section" id="sec-compare">
-<div class="sec-head"><div class="kicker">09 &#183; Unit</div><h2>All eight at a glance</h2><p class="dek">One table for revision.</p></div>
-<div class="table-wrap"><table><tr><th>Yoga</th><th>Central means</th><th>Key text</th><th>Goal</th></tr><tr><td>Raja</td><td>Eight limbs</td><td>Yoga Sutra</td><td>Kaivalya</td></tr><tr><td>Jnana</td><td>Discrimination, neti neti</td><td>Upanishads</td><td>Moksha</td></tr><tr><td>Bhakti</td><td>Devotion, surrender</td><td>Gita 12, Narada</td><td>Divine love, moksha</td></tr><tr><td>Karma</td><td>Nishkama karma</td><td>Gita 3</td><td>Chitta-shuddhi, moksha</td></tr><tr><td>Hatha</td><td>Body, breath</td><td>HYP</td><td>Prepare for raja</td></tr><tr><td>Mantra</td><td>Japa</td><td>Mandukya, YS 1.27</td><td>Concentration</td></tr><tr><td>Laya</td><td>Nada, absorption</td><td>HYP</td><td>Laya</td></tr><tr><td>Kundalini</td><td>Awaken shakti</td><td>Sat-Chakra-Nirupana</td><td>Bhukti and mukti</td></tr></table></div></section>
+    <section class="section" id="sec-overview">
+      <div class="sec-head">
+        <div class="kicker">01 &middot; Overview</div>
+        <h2>Yoga in Story Form</h2>
+        <p class="dek">Why the syllabus lists the Ramayana and Mahabharata.</p>
+      </div>
+      <div class="stat-strip">
+        <div class="stat"><div class="v">7</div><div class="k">kandas of the Ramayana</div></div>
+        <div class="stat"><div class="v">75</div><div class="k">sargas in Aranya Kanda</div></div>
+        <div class="stat"><div class="v">~24,000</div><div class="k">shlokas in the Valmiki Ramayana</div></div>
+      </div>
+      <div class="blk und">
+        <span class="lbl">In one paragraph</span>
+        <p>The epics teach yoga and Vedanta through <b>story</b>. The Ramayana&#8217;s Aranya Kanda is set in the forest, the place of the Aranyakas, so the tone shifts from court politics to spiritual teaching. The Mahabharata holds the Bhagavad Gita (Bhishma Parva) and the long teaching of Bhishma (Shanti Parva). <span class="src cls">Aranya Kanda notes</span></p>
+      </div>
+      <h3 class="sub"><span class="n">1A</span>Why study yoga through the epics</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li>Indian thought flows in streams: <b>Shruti</b> (Vedas, Upanishads), <b>Smriti</b> (Manu, Yajnavalkya) and <b>Itihasa-Purana</b> (Ramayana, Mahabharata, Puranas). <span class="src cls">Aranya Kanda notes</span></li>
+          <li>The syllabus pairs the epics with the Vedas and Yajnavalkya Smriti because yogic and Vedantic ideas were <b>narrativised</b>: taught through story, character and dialogue, to far more people than Sanskrit scholars. The epics are &ldquo;smriti made memorable&rdquo;: dharma is modelled through Rama&#8217;s choices. <span class="src cls">Aranya Kanda notes</span></li>
+        </ul>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Three textual streams?</div><div class="a">Shruti, Smriti, Itihasa-Purana</div></div>
+        <div class="recall-card"><div class="q">Why are the epics in the syllabus?</div><div class="a">They taught yoga and Vedanta through story</div></div>
+        <div class="recall-card"><div class="q">Where is the Gita?</div><div class="a">Mahabharata, Bhishma Parva</div></div>
+      </div>
 
-<script>
-(function(){
-  var bar=document.getElementById('mqbar'); if(!bar) return;
-  var btns=bar.querySelectorAll('button');
-  btns.forEach(function(b){ b.addEventListener('click',function(){
-    var f=b.getAttribute('data-f'), cards=document.querySelectorAll('.mq');
-    if(f==='reveal'||f==='hide'){ document.querySelectorAll('.mq details.ans').forEach(function(d){ if(f==='reveal') d.setAttribute('open',''); else d.removeAttribute('open'); }); return; }
-    btns.forEach(function(x){ x.classList.remove('on'); }); b.classList.add('on');
-    cards.forEach(function(c){ c.style.display=(f==='all'||c.getAttribute('data-m')===f)?'':'none'; });
-  }); });
-})();
-</script>
+    </section>
+    <section class="section" id="sec-aranya">
+      <div class="sec-head">
+        <div class="kicker">02 &middot; Ramayana: Aranya Kanda</div>
+        <h2>The Forest Episodes</h2>
+        <p class="dek">Structure of the epic, the symbolism of the forest and four teaching episodes.</p>
+      </div>
+      <h3 class="sub"><span class="n">2A</span>Structure of Aranya Kanda</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Kanda</th><th>Content</th></tr>
+        <tr><td>Bala</td><td>Childhood, marriage</td></tr>
+        <tr><td>Ayodhya</td><td>Exile ordered</td></tr>
+        <tr><td><b>Aranya</b></td><td>Forest life, sage encounters, Sita&#8217;s abduction</td></tr>
+        <tr><td>Kishkindha</td><td>Alliance with Sugriva, search for Sita</td></tr>
+        <tr><td>Sundara</td><td>Hanuman&#8217;s journey to Lanka</td></tr>
+        <tr><td>Yuddha (Lanka)</td><td>The war</td></tr>
+        <tr><td>Uttara</td><td>Aftermath</td></tr>
+      </table></div>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Why &ldquo;Aranya&rdquo;:</b> the forest is where the <b>Aranyakas</b> (texts bridging the Brahmanas and Upanishads) were studied in seclusion. Setting this kanda in the forest signals a shift from courtly politics to spiritual instruction. Rama passes from Aryavarta into <b>Janasthana</b>, a zone of ascetics and demons alike. <span class="src cls">Aranya Kanda notes</span></li>
+          <li>Aranya Kanda has <b>75 sargas</b> (critical edition). The philosophically dense matter is in sargas 1-13 (the sage encounters). <span class="src cls">Aranya Kanda notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">2B</span>Episodes and their yogic meaning</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Episode (sargas)</th><th>What happens</th><th>Yogic meaning</th></tr>
+        <tr><td><b>Viradha</b> (2-4)</td><td>Rama and Lakshmana kill the demon Viradha, a cursed Gandharva, who asks that his body be buried</td><td>Release from the demon body is <b>moksha through grace</b>: even antagonists can be liberated by contact with the Divine (bhakti idea)</td></tr>
+        <tr><td><b>Sharabhanga</b> (5)</td><td>The sage waits for Rama, enters a self-kindled fire and ascends to Brahmaloka</td><td>A <b>willed, conscious exit</b>: <i>utkranti</i> in later hatha and tantric texts; compare Gita 8.5-8.6 (state at death shapes the next)</td></tr>
+        <tr><td><b>The sages</b> (6-8)</td><td>Sages threatened by rakshasas; Rama vows to protect them</td><td><b>Dharma-samrakshana</b>: pravritti (worldly) and nivritti (renunciate) paths support each other: the king protects the ascetic, the ascetic preserves knowledge</td></tr>
+        <tr><td><b>Agastya&#8217;s ashrama</b> (11-13)</td><td>A hermitage of total dharma: no liars or cheats; even animals follow dharma. Inmates practise tapas, <b>mitahara</b>, <b>indriya-nigraha</b>. Agastya gives Rama Vishnu&#8217;s bow, two quivers from Indra, a golden-hilted sword</td><td>Resonates with hatha yoga&#8217;s mitahara and pratyahara. Allegory: the sage (jnana) arms the king (dharma in action): <b>karma yoga needs jnana</b>; action without wisdom is blind, wisdom without action incomplete</td></tr>
+        <tr><td><b>Panchavati, Jatayu</b> (13-14)</td><td>Rama settles at Panchavati on Agastya&#8217;s advice; befriends the vulture Jatayu, who pledges to protect Sita and later dies fighting Ravana</td><td><b>Selfless duty</b> without expectation of gain: karma yoga and devotion</td></tr>
+      </table></div>
+      <p><span class="src cls">Aranya Kanda notes</span></p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Why is the kanda called Aranya?</div><div class="a">Forest setting = place of the Aranyakas; shift to spiritual teaching</div></div>
+        <div class="recall-card"><div class="q">Sharabhanga shows?</div><div class="a">Conscious, willed exit from the body (utkranti)</div></div>
+        <div class="recall-card"><div class="q">Agastya&#8217;s ashrama shows?</div><div class="a">Tapas, mitahara, sense control; wisdom arming action</div></div>
+        <div class="recall-card"><div class="q">Jatayu shows?</div><div class="a">Selfless duty and sacrifice</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-ramagita">
+      <div class="sec-head">
+        <div class="kicker">03 &middot; The Rama Gita</div>
+        <h2>Vedanta and the Three Yogas</h2>
+        <p class="dek">What the explicit teaching says, and where it comes from.</p>
+      </div>
+      <h3 class="sub"><span class="n">3A</span>Source of the Rama Gita</h3>
+      <div class="blk conf">
+        <span class="lbl">Say this in the exam</span>
+        <p>The explicit <b>Rama Gita</b> (Atman and Maya, three gunas, three yogas) is from the <b>Adhyatma Ramayana</b> (embedded in the Brahmanda Purana, in the Vyasa corpus), <b>not</b> from Valmiki&#8217;s Ramayana, which is restrained on direct metaphysics here. Tulsidas follows the Adhyatma tradition. There are two Rama Gita episodes: one in Aranya Kanda (Rama to Lakshmana), and one in Uttara Kanda (more developed, per commentators including Swami Chinmayananda). <span class="src cls">Aranya Kanda notes</span></p>
+      </div>
+      <p>Distinguish &ldquo;philosophy implicit in Valmiki&#8217;s narrative&rdquo; (sage encounters, Rama&#8217;s conduct) from &ldquo;the explicit Rama Gita&rdquo;. <span class="src cls">Aranya Kanda notes</span></p>
+      <h3 class="sub"><span class="n">3B</span>Content of the Rama Gita</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Theme</th><th>Teaching</th></tr>
+        <tr><td><b>Atman and Maya</b></td><td>The Self is not different from Brahman. Multiplicity and suffering come from <b>Maya</b>, Rama&#8217;s own creative power, personified as Sita (his Prakriti or Shakti). Before creation the Self alone existed; Maya covers the featureless Absolute and makes it appear with attributes (nirguna as saguna)</td></tr>
+        <tr><td><b>Three gunas</b></td><td>From Maya arise Mahat, then Ahamkara, then a world differentiated by sattva, rajas, tamas: the Samkhya-Yoga triguna frame</td></tr>
+        <tr><td><b>Three yogas</b></td><td>Addressed to Kaushalya: <b>Karma, Jnana and Bhakti Yoga</b> as complementary routes to one liberation, anticipating the Gita&#8217;s structure</td></tr>
+        <tr><td><b>Practical teaching</b></td><td>Vairagya, right upasana (worship, meditation) and the process leading to moksha</td></tr>
+      </table></div>
+      <h3 class="sub"><span class="n">3C</span>Rama Gita and Bhagavad Gita</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Point</th><th>Rama Gita</th><th>Bhagavad Gita</th></tr>
+        <tr><td>Speaker, listener</td><td>Rama to Lakshmana (and Kaushalya)</td><td>Krishna to Arjuna</td></tr>
+        <tr><td>Setting</td><td>Forest exile or palace</td><td>Battlefield of Kurukshetra</td></tr>
+        <tr><td>Core</td><td>Advaita Vedanta, Atman-Brahman identity, three gunas</td><td>Same</td></tr>
+        <tr><td>Yogas</td><td>Karma, Jnana, Bhakti</td><td>Same, plus fuller Dhyana Yoga</td></tr>
+        <tr><td>Status</td><td>Later devotional-philosophical Adhyatma Ramayana</td><td>Independent classic within the Mahabharata</td></tr>
+      </table></div>
+      <p><span class="src cls">Aranya Kanda notes</span> Shared form: an avatara teaching a devoted kinsman at a moment of personal crisis.</p>
+      <h3 class="sub"><span class="n">3D</span>A kundalini reading</h3>
+      <div class="blk know">
+        <span class="lbl">One interpretive lens only</span>
+        <p>Some modern commentators (Gunturu Seshendra Sharma&#8217;s <i>Shodasi</i>) read the epic symbolically through kundalini yoga: forests, oceans and mountains as prana moving through the nadis. Applied most famously to Sundara Kanda (Hanuman&#8217;s flight as movement through sushumna), and by extension to the forest-crossing of Aranya Kanda as obstacles (kleshas) before &ldquo;crossing the ocean&rdquo; of samsara. It is a devotional-interpretive tradition, not mainstream academic Vedanta: <b>do not present it as settled fact</b>. <span class="src cls">Aranya Kanda notes</span></p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Source of the Rama Gita?</div><div class="a">Adhyatma Ramayana, not Valmiki</div></div>
+        <div class="recall-card"><div class="q">Three yogas in the Rama Gita?</div><div class="a">Karma, jnana, bhakti</div></div>
+        <div class="recall-card"><div class="q">Maya personified as?</div><div class="a">Sita (Rama&#8217;s Shakti)</div></div>
+        <div class="recall-card"><div class="q">Gita difference?</div><div class="a">Bhagavad Gita adds fuller dhyana yoga</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-mahabharata">
+      <div class="sec-head">
+        <div class="kicker">04 &middot; Mahabharata</div>
+        <h2>Bhishma Parva and Shanti Parva</h2>
+        <p class="dek">The two parvas the syllabus names (general knowledge only).</p>
+      </div>
+      <div class="blk conf">
+        <span class="lbl">Source honesty</span>
+        <p>Your folder has <b>no notes on the Mahabharata</b>. Everything in this section is general textbook knowledge, tagged <span class="src gen">general</span>, and should be replaced by your teacher&#8217;s points when you have them.</p>
+      </div>
+      <h3 class="sub"><span class="n">4A</span>Bhishma Parva and the Gita</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Bhishma Parva</b> contains the <b>Bhagavad Gita</b> (chapters 25-42): karma, jnana, bhakti and dhyana yoga. <span class="src gen">general</span></li>
+          <li>Two famous definitions: <b>samatvam yoga ucyate</b> (Gita 2.48) and <b>yogah karmasu kaushalam</b> (Gita 2.50). <span class="src gen">general</span> <span class="src cls">Meaning notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">4B</span>Shanti Parva</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li>The longest parva. <b>Bhishma teaches Yudhishthira</b> on dharma, rajadharma and moksha-dharma. <span class="src gen">general</span></li>
+          <li><b>Moksha-dharma</b> includes Samkhya and yoga teaching and the Yajnavalkya-Janaka dialogue. <span class="src gen">general</span></li>
+          <li>The Mahabharata names <b>Hiranyagarbha</b> as the first teacher of yoga (also in your history notes). <span class="src gen">general</span> <span class="src cls">History notes</span></li>
+        </ul>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Where is the Gita?</div><div class="a">Bhishma Parva, chapters 25-42</div></div>
+        <div class="recall-card"><div class="q">Shanti Parva content?</div><div class="a">Bhishma to Yudhishthira: dharma, rajadharma, moksha-dharma</div></div>
+        <div class="recall-card"><div class="q">Yoga definitions in the Gita?</div><div class="a">2.48 equanimity; 2.50 skill in action</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-answers">
+      <div class="sec-head">
+        <div class="kicker">05 &middot; Exam answers</div>
+        <h2>Model Answers: 10, 5 and 2 Marks</h2>
+        <p class="dek">Try each one first, then tap to compare.</p>
+      </div>
+      <p>Answers follow: introduction, the text, episodes or teachings, yogic meaning, conclusion.</p>
+      <div class="mq"><div class="mqh"><span class="marks-tag">10 marks</span><span class="topic">Epics</span></div>
+        <p class="mqt">Explain yoga in the Ramayana (Aranya Kanda).</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p><b>Introduction.</b> The epics narrativise yoga and Vedanta. Aranya Kanda (75 sargas) is set in the forest, the place of the Aranyakas; the tone shifts from courtly politics to spiritual instruction.</p><p><b>Episodes.</b> Viradha (liberation of a cursed gandharva: grace and bhakti); Sharabhanga (conscious departure, utkranti); the sages (pravritti and nivritti support each other); Agastya&#8217;s ashrama (tapas, mitahara, indriya-nigraha; Vishnu&#8217;s bow: karma yoga needs jnana); Panchavati and Jatayu (selfless duty).</p><p><b>Rama Gita.</b> From the Adhyatma Ramayana, not Valmiki: Atman-Brahman identity, Maya as Sita, the three gunas, karma, jnana and bhakti yoga.</p><p><b>Comparison.</b> Like the Bhagavad Gita: an avatara teaches a devoted kinsman; the Gita adds fuller dhyana yoga.</p><p><b>Conclusion.</b> The epic carries yoga as lived dharma. A kundalini reading exists but is one interpretive lens.</p><p class="pts"><span class="src cls">Aranya Kanda notes</span> Wording mine <span class="src add">added</span></p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Epics</span></div>
+        <p class="mqt">What is the Rama Gita, and where is it from?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>The explicit philosophical teaching of Rama on Atman and Maya, the three gunas and the yogas of action, knowledge and devotion. It is from the Adhyatma Ramayana (in the Brahmanda Purana), not Valmiki. There are two episodes: Aranya Kanda and Uttara Kanda.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Epics</span></div>
+        <p class="mqt">Explain Sharabhanga and Agastya episodes.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Sharabhanga waits for Rama, then enters a self-kindled fire and ascends: a willed exit (utkranti). Agastya&#8217;s ashrama is a place of total dharma, tapas, mitahara and sense control; his gift of Vishnu&#8217;s bow to Rama shows wisdom arming action.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Epics</span></div>
+        <p class="mqt">Compare the Rama Gita and the Bhagavad Gita.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Both are dialogues of an avatara with a devoted kinsman in crisis and teach Atman-Brahman identity and the gunas. Rama teaches Lakshmana (and Kaushalya) in forest or palace and gives karma, jnana, bhakti; Krishna teaches Arjuna at Kurukshetra and adds dhyana yoga. The Rama Gita is part of the later Adhyatma Ramayana.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Epics</span></div>
+        <p class="mqt">What does the Mahabharata contribute to yoga?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Bhishma Parva holds the Bhagavad Gita with its yoga definitions; Shanti Parva has moksha-dharma teaching including Samkhya and yoga and names Hiranyagarbha the first teacher of yoga. (General knowledge; confirm with your teacher.)</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Number of kandas?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Seven.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Number of sargas in Aranya Kanda?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>75.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Source of the Rama Gita?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Adhyatma Ramayana.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Who was Viradha?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>A gandharva under a curse, freed by Rama.</p></div></details></div>
+
+    </section>
 
   </main>
 </div>

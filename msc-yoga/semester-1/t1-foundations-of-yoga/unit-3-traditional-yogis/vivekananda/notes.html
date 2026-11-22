@@ -1,7 +1,7 @@
 <!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Model Question Paper</title>
+<title>Swami Vivekananda</title>
 <style>
   :root{
     --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
@@ -211,94 +211,146 @@
   }
 
   .src.add{ background:var(--accent-soft); color:var(--accent); }
-  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 14px; }
+  .sk{ font-family:"Fraunces",Georgia,serif; font-style:italic; color:var(--ink); }
+  .flow{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 12px; }
+  .flow span{ background:var(--teal-soft); color:var(--teal); border-radius:8px; padding:5px 10px; font-size:13px; font-weight:600; }
+  .flow i{ color:var(--muted); font-style:normal; }
+  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 16px; }
   .mq .mqh{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
-  .mq .marks-tag{ margin-bottom:0; }
   .mq .topic{ font-size:11px; color:var(--muted); }
   .mq .mqt{ font-weight:600; color:var(--ink); margin:0 0 10px; max-width:none; }
   .mq details.ans > summary{ cursor:pointer; list-style:none; display:inline-block; padding:6px 12px; border-radius:8px; background:var(--teal-soft); color:var(--teal); font-size:13px; font-weight:600; }
   .mq details.ans > summary::-webkit-details-marker{ display:none; }
   .mq details.ans[open] > summary{ background:var(--surface-2); color:var(--muted); }
   .mq .ansb{ margin-top:12px; border-top:1px dashed var(--border); padding-top:10px; }
-  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 10px; padding-left:22px; }
   .mq .ansb p{ margin:0 0 8px; }
-  .mq .ansb .pts{ font-size:12.5px; color:var(--muted); }
-  .mq .ansb .pts b{ color:var(--teal); }
-  .mq .ansb .hi{ background:var(--teal-soft); border-radius:8px; padding:8px 12px; margin:0 0 10px; color:var(--ink); }
-  .mqbar{ display:flex; gap:8px; flex-wrap:wrap; margin:0 0 16px; position:sticky; top:0; z-index:5; background:var(--bg); padding:8px 0; }
-  .mqbar button{ font:inherit; font-size:13px; padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft); cursor:pointer; }
-  .mqbar button.on{ background:var(--accent); color:#fff; border-color:var(--accent); }
+  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 12px; padding-left:22px; }
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 
 <div class="mobile-bar">
   <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
-  <div class="title">Unit 1: History and Development of Yoga</div>
+  <div class="title">Swami Vivekananda</div>
 </div>
 <div class="scrim" id="scrim"></div>
 
 <div class="app">
   <aside class="sidebar" id="sidebar">
-    <a class="back-link" href="../index.html">&larr; Foundations of Yoga</a>
+    <a class="back-link" href="../../index.html">&larr; T1 &middot; Foundations of Yoga</a>
     <div class="brand">
-      <div class="eyebrow">DSCC-16 &#183; Foundations of Yoga</div>
-      <h1>Unit 1: History and Development of Yoga</h1>
+      <div class="eyebrow">Foundations of Yoga &middot; Unit 3</div>
+      <h1>Swami Vivekananda</h1>
     </div>
     <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
     <nav class="tree" id="tree">
-      <button class="nav-item" data-target="guide"><span class="num">01</span><span>Read this first</span></button>
-      <button class="nav-item" data-target="history"><span class="num">02</span><span>History, meaning and definitions</span></button>
-      <button class="nav-item" data-target="vedas"><span class="num">03</span><span>Vedas, Upanishads, Purushartha</span></button>
-      <button class="nav-item" data-target="epics"><span class="num">04</span><span>Ramayana and Mahabharata</span></button>
-      <button class="nav-item" data-target="yaj"><span class="num">05</span><span>Yajnavalkya Smriti</span></button>
-      <button class="nav-item" data-target="darshana"><span class="num">06</span><span>Shad Darshanas</span></button>
-      <button class="nav-item" data-target="bjc"><span class="num">07</span><span>Buddha, Jaina, Charvaka</span></button>
+      <button class="nav-item" data-target="life"><span class="num">01</span><span>Life</span></button>
+      <button class="nav-item" data-target="work"><span class="num">02</span><span>Contribution</span></button>
+      <button class="nav-item" data-target="teaching"><span class="num">03</span><span>Teaching</span></button>
+      <button class="nav-item" data-target="answers"><span class="num">04</span><span>Exam Answers</span></button>
+      <button class="nav-item" data-target="flags"><span class="num">05</span><span>Flags</span></button>
     </nav>
-    <div class="sidebar-footer">Foundations of Yoga &middot; Semester 1</div>
+    <div class="sidebar-footer">
+      Sources: Yogis notes; four-area rows marked added are my own reasoning
+    </div>
   </aside>
 
   <main id="main">
-<p class="mapnote" style="margin:0 0 14px"><a href="map.html" style="display:inline-block;padding:8px 14px;border:1px solid var(--teal);border-radius:999px;color:var(--teal);text-decoration:none;font-size:14px">Concept map: see it all at a glance &rarr;</a></p>
-<section class="section" id="sec-guide">
-<div class="sec-head"><div class="kicker">00 &#183; Unit 1</div><h2>Unit 1: History and Development of Yoga</h2><p class="dek">Meaning, history, scriptures, epics, Yajnavalkya, the six darshanas, and Buddha, Jaina and Charvaka.</p></div>
-<div class="stat-strip"><div class="stat"><div class="v">6</div><div class="k">topics</div></div><div class="stat"><div class="v">3</div><div class="k">sources: your notes, standard texts, added</div></div><div class="stat"><div class="v">1</div><div class="k">honest box to read</div></div></div><p class="honest"><b>Honest note.</b> Most of this unit comes from your own notes: Origin, History and Development; Meaning and Definitions; Yoga in Aranya Kanda; the Yajnavalkya study; the Shad Darshana and Buddha, Jaina, Charvaka notes. Tags show the source: <span class="src cls">class</span> your notes, <span class="src gen">general</span> standard texts, <span class="src add">added</span> not in your notes. <b>Mahabharata (Shanti and Bhishma Parva)</b> has no notes in your folder, so that section is written from standard sources and tagged general.</p><ul><li>Your class notes call Patanjali the "father of yoga" on day 1, but your history notes say he was not the founder. Both are explained in section 1.</li></ul></section>
-<section class="section" id="sec-history">
-<div class="sec-head"><div class="kicker">01 &#183; Unit</div><h2>Yoga: meaning, definitions, aims and history</h2><p class="dek">From the root yuj to the modern period.</p></div>
-<h3 class="sub"><span class="n">1</span>Meaning of the word yoga</h3><p>Yoga comes from the root <i>yuj</i>. Three roots give three meanings: <i>yuj samyoge</i> (to unite), <i>yuj samadhau</i> (to concentrate, absorb) and <i>yuj samyamane</i> (to control). <span class="src cls">class</span></p><div class="table-wrap"><table><tr><th>Root</th><th>Meaning</th><th>Source of the idea</th></tr><tr><td>Yuj samyoge</td><td>Union of jivatma with paramatma</td><td>Yoga Yajnavalkya 1.44 (valid for the advaita view)</td></tr><tr><td>Yuj samadhau</td><td>Samadhi, total absorption</td><td>Vyasa on Yoga Sutra 1.1</td></tr><tr><td>Yuj samyamane</td><td>Control of mind and senses</td><td>Katha Upanishad 2.3.10-11, the first Vedic text to use the word yoga</td></tr></table></div><h3 class="sub"><span class="n">2</span>Definitions</h3><div class="table-wrap"><table><tr><th>Source</th><th>Definition</th></tr><tr><td>Yoga Sutra 1.2</td><td>Yoga is stilling the movements of the mind (chitta vritti nirodhah)</td></tr><tr><td>Gita 2.48</td><td>Evenness of mind in success and failure (samatvam yoga uchyate)</td></tr><tr><td>Gita 2.50</td><td>Skill in action (yogah karmasu kaushalam)</td></tr><tr><td>Gita 6.23</td><td>Separation from union with pain</td></tr><tr><td>Swami Sivananda</td><td>Harmony between individual and universe, thought and act</td></tr><tr><td>Sri Aurobindo</td><td>All life is yoga</td></tr><tr><td>Kuvalayananda</td><td>A message for body, mind and spirit</td></tr></table></div><p>Yoga is not only physical, not only mental and not only spiritual. It is a joined system of all three. <span class="src cls">class</span></p><h3 class="sub"><span class="n">3</span>Aims and objectives</h3><ul><li>Health of body, and yoga as therapy for lifestyle and stress disorders</li><li>Better immunity, moral and ethical values, yogic diet</li><li>Personality development: physical, mental, emotional, social, spiritual</li><li>Harmony of thought, word and deed</li><li>Highest aim: self-realisation, knowing that atman and Brahman are one</li></ul><h3 class="sub"><span class="n">4</span>Misconceptions</h3><p>Yoga is not a Hindu-only practice, not magic or siddhis, not only for monks, not only asana, not only treatment. It can be practised by all, whatever caste, creed, age or sex. <span class="src cls">class</span></p><h3 class="sub"><span class="n">5</span>History: five periods</h3><ol><li>Pre-Vedic</li><li>Pre-classical (Vedic)</li><li>Classical</li><li>Post-classical</li><li>Modern</li></ol><div class="table-wrap"><table><tr><th>Period</th><th>What happened</th></tr><tr><td>Pre-Vedic</td><td>Shamanism (Siberia, about 25,000 BCE) used vajrasana, sukhasana, padmasana. Indus Valley (about 3300 BCE): the Pashupati seal, Shiva seated in meditation, earliest picture of yoga. So Shiva is called Adi Guru.</td></tr><tr><td>Pre-classical</td><td>Vedas (about 1750 BCE): mantra, mudra, upanayana with Gayatri, surya namaskar and nadishodhana. Upanishads: Katha first uses "yoga"; 20 yoga Upanishads. Jainism, Buddhism (563 BCE), Tantra, pre-Columbian evidence.</td></tr><tr><td>Classical</td><td>Patanjali Yoga Sutra (about 500 BCE): eight limbs, mind-body approach, mysticism removed.</td></tr><tr><td>Post-classical</td><td>From about 10 CE. Nath yogis (Matsyendranath, Gorakshanath) develop Hatha yoga. Goraksha Samhita, Hatha Pradipika (Svatmarama), Gheranda Samhita, Hatha Ratnavali, Tirumandiram (7 CE).</td></tr><tr><td>Modern</td><td>1800 CE onwards: Vivekananda, Aurobindo, Sivananda, Krishnamacharya and others. Fitness and therapy focus.</td></tr></table></div><h3 class="sub"><span class="n">6</span>Who created yoga? Lineages</h3><div class="table-wrap"><table><tr><th>Line</th><th>Chain</th></tr><tr><td>Vaishnava</td><td>Hiranyagarbha, Krishna, Vasishtha, Patanjali (incarnation of Adishesha)</td></tr><tr><td>Shaiva / Nath</td><td>Adinath (Shiva), Matsyendranath, Gorakshanath, 33 Nath yogis, Svatmarama</td></tr><tr><td>Mundaka Upanishad</td><td>Brahma, Atharva, Angirasa, Bharadvaja, Satyavaha</td></tr><tr><td>Bhagavad Gita 4.1</td><td>Krishna, Vivasvan, Manu, Ikshvaku, rajarshis</td></tr></table></div><p>Yajnavalkya Smriti and the Mahabharata (ch 12) call Hiranyagarbha the creator of yoga. Ahirbudhnya Samhita says he gave two works: Nirodha Yoga and Karma Yoga. Guru means: gu is darkness, ru is the one who removes it (Advayataraka Upanishad). <span class="src cls">class</span></p><p class="honest"><b>Honest note.</b> <b>Conflict in your notes.</b> Day 1 class note: "Father of yoga: Maharshi Patanjali." Your history note: Patanjali "is not the founder", he only codified yoga scattered in the Vedas, Upanishads and Jainism. Write it this way in the exam: Patanjali is the compiler and systematiser of classical yoga, not its originator. Yoga is "as old as civilization".</p><h3 class="sub"><span class="n">7</span>Why Hatha yoga arose</h3><p>Patanjali stressed mind-discipline and strict yama-niyama, which put many people off. The Nath yogis added body and breath practice so that people could prepare for raja yoga. Ha is sun (pingala, prana), tha is moon (ida, apana). The ten Hatha techniques: shatkarma, mitahara, asana, mudra, bandha, pranayama, pratyahara, dharana, dhyana, samadhi. <span class="src cls">class</span></p><p>International Day of Yoga: proposed at the UN General Assembly on 27 Sept 2014, declared as 21 June, first celebrated in 2015. <span class="src cls">class</span></p>
-<div class="card addnote"><h3 class="sub" style="margin-top:0">Three roots of yuj</h3><ul><li><b>Yuj samyoge</b>: to unite. <b>Yuj samadhau</b>: to concentrate or absorb. <b>Yuj samyamane</b>: to control.</li></ul><div class="src-foot"><span class="src add">added</span> general textbook points</div></div>
-    </section>
-<section class="section" id="sec-vedas">
-<div class="sec-head"><div class="kicker">02 &#183; Unit</div><h2>Vedas, Upanishads and Purushartha Chatushtaya</h2><p class="dek">The scripture base of yoga.</p></div>
-<h3 class="sub"><span class="n">1</span>The Vedas</h3><div class="table-wrap"><table><tr><th>Veda</th><th>Content</th></tr><tr><td>Rigveda</td><td>Chanting and mantras; 21 branches</td></tr><tr><td>Yajurveda</td><td>Yajnas and rituals; Shukla and Krishna</td></tr><tr><td>Samaveda</td><td>Songs</td></tr><tr><td>Atharvaveda</td><td>Daily life, healing, spells</td></tr></table></div><p>Each Veda has four parts: Samhita (mantras), Brahmana (how to use the mantras), Aranyaka (practices and upasana, studied in the forest) and Upanishad (knowledge). Samhita + Brahmana + Aranyaka is the karma kanda; the Upanishads are the jnana kanda. Together: the Veda. <span class="src cls">class</span></p><h3 class="sub"><span class="n">2</span>Upanishads</h3><p>Upa (near) + ni + shad (sit): sitting near the teacher, near the truth. There are 108 Upanishads, 10 principal (mukhya). They speak about jiva, jagat and Brahman. Smriti (Manu, Yajnavalkya) tells how to live in society; the Puranas (18 and 18 upa-puranas) and the Itihasas (Ramayana, Mahabharata) carry the teaching as story. <span class="src cls">class</span></p><p>The ten principal Upanishads are Isha, Kena, Katha, Prashna, Mundaka, Mandukya, Taittiriya, Aitareya, Chandogya and Brihadaranyaka. <span class="src gen">general</span></p><h3 class="sub"><span class="n">3</span>Purushartha chatushtaya</h3><p>The four aims of human life: dharma (right living), artha (wealth), kama (desire, enjoyment) and moksha (liberation). The class note joins them to the four ashramas and the parts of the Veda: <span class="src gen">general</span></p><div class="table-wrap"><table><tr><th>Ashrama</th><th>Age (class note)</th><th>Where the Veda speaks of it</th></tr><tr><td>Brahmacharya (student)</td><td>up to 24</td><td>Samhita</td></tr><tr><td>Grihastha (householder)</td><td>24-48</td><td>Brahmana</td></tr><tr><td>Vanaprastha (retired)</td><td>48-72</td><td>Aranyaka</td></tr><tr><td>Sannyasa</td><td>from 72</td><td>Upanishads</td></tr></table></div></section>
-<section class="section" id="sec-epics">
-<div class="sec-head"><div class="kicker">03 &#183; Unit</div><h2>Yoga in the Ramayana and Mahabharata</h2><p class="dek">Aranya Kanda, Shanti Parva and Bhishma Parva.</p></div>
-<h3 class="sub"><span class="n">1</span>Ramayana: Aranya Kanda</h3><p>The Valmiki Ramayana has 7 kandas. Aranya Kanda (75 sargas) is set in the forest, the place of the Aranyakas, so the tone shifts from court politics to spiritual teaching. <span class="src cls">class</span></p><div class="table-wrap"><table><tr><th>Episode</th><th>Yogic meaning</th></tr><tr><td>Viradha (sargas 2-4)</td><td>A cursed gandharva is freed by Rama: even enemies reach liberation through contact with the divine (bhakti idea)</td></tr><tr><td>Sharabhanga (5)</td><td>Chooses the time to leave the body, enters fire: willed death (utkranti)</td></tr><tr><td>Sages (6-8)</td><td>Rama protects the ascetics: pravritti and nivritti support each other</td></tr><tr><td>Agastya (11-13)</td><td>Ashrama of total dharma, tapas, mitahara, sense control. Rama receives Vishnu's bow: wisdom arms right action (karma yoga needs jnana)</td></tr><tr><td>Panchavati, Jatayu (13-14)</td><td>Selfless duty, sacrifice without reward</td></tr></table></div><p>The explicit <b>Rama Gita</b> (Atman and Maya, three gunas, karma, jnana and bhakti yoga) is from the Adhyatma Ramayana, not Valmiki. Say this in the exam. A kundalini reading of the epic exists but is one interpretive view. <span class="src cls">class</span></p><h3 class="sub"><span class="n">2</span>Mahabharata: Shanti Parva and Bhishma Parva</h3><p><b>Bhishma Parva</b> holds the Bhagavad Gita (chapters 25-42): karma, jnana, bhakti and dhyana yoga, and the definitions samatvam yoga and yogah karmasu kaushalam. <span class="src gen">general</span></p><p><b>Shanti Parva</b> is the longest parva: Bhishma teaches Yudhishthira on dharma, rajadharma and moksha dharma. Moksha dharma includes Samkhya and yoga teaching, the Yajnavalkya-Janaka dialogue, and the Mahabharata calls Hiranyagarbha the first teacher of yoga. <span class="src gen">general</span></p><p class="honest"><b>Honest note.</b> No notes on the Mahabharata sections are in your folder. This section is general and short. Add your teacher's points when you have them.</p>
-<div class="card addnote"><h3 class="sub" style="margin-top:0">Aranya Kanda episodes</h3><ul><li>Viradha, Sharabhanga, the Agastya ashrama, and Jatayu at Panchavati (the four episodes your notes list).</li></ul><div class="src-foot"><span class="src add">added</span> general textbook points</div></div>
-    </section>
-<section class="section" id="sec-yaj">
-<div class="sec-head"><div class="kicker">04 &#183; Unit</div><h2>Yajnavalkya Smriti and Yoga Yajnavalkya</h2><p class="dek">Kundalini, pranayama, pratyahara, dharana, dhyana.</p></div>
-<p>Yajnavalkya Smriti is a Dharmashastra text of about 1,010 verses, in three kandas: Achara, Vyavahara and Prayashchitta. It is dated roughly 3rd-5th century CE, from Mithila, and comes after Manu Smriti. Its famous commentary is the Mitakshara. <span class="src cls">class</span></p><p>The yoga teaching belongs to the <b>Yoga Yajnavalkya</b>, given to his wife Gargi (Maitreyi in some versions). It is a bridge between Patanjali and Hatha yoga. <span class="src cls">class</span></p><div class="table-wrap"><table><tr><th>Topic</th><th>Points from your notes</th></tr><tr><td>Kundalini</td><td>One of the earliest systematic accounts. Coiled energy at the base, linked to nadis, agni and prana. Wakes through pranayama and nadi-shodhana.</td></tr><tr><td>Pranayama</td><td>About 100 verses. Nadis ida, pingala, sushumna. Purification, then puraka, kumbhaka, rechaka. Names ujjayi, bhastrika, alternate-nostril.</td></tr><tr><td>Pratyahara</td><td>Withdrawal of senses, the bridge from outer to inner limbs. Five forms. Marma points: 18.</td></tr><tr><td>Dharana</td><td>Fix the gaze (tratak), japa, visualisation, five chakras with seeds lam, vam, ram, yam, ham.</td></tr><tr><td>Dhyana</td><td>Saguna meditation (heart lotus, Vasudeva) and nirguna (jivatma is paramatma). Leads to samadhi.</td></tr></table></div><p>The text lists ten yamas and ten niyamas, and a six-limbed scheme: pranayama, pratyahara, dharana, dhyana, japa, samadhi. <span class="src cls">class</span></p></section>
-<section class="section" id="sec-darshana">
-<div class="sec-head"><div class="kicker">05 &#183; Unit</div><h2>Shad Darshanas: four areas</h2><p class="dek">Epistemology, metaphysics, ethics and liberation.</p></div>
-<p>Darshana comes from <i>drish</i>, to see. Six schools: Nyaya (logic, Gautama), Vaisheshika (matter, Kanada), Samkhya (consciousness and matter, Kapila), Yoga (Patanjali), Purva Mimamsa (ritual and dharma, Jaimini) and Vedanta (ultimate truth, Vyasa/Badarayana). Four areas of study: epistemology, metaphysics, ethics, liberation. <span class="src cls">class</span></p><div class="table-wrap"><table><tr><th>Area</th><th>Samkhya</th><th>Yoga</th><th>Vedanta (Advaita)</th></tr><tr><td>Epistemology</td><td>3 pramanas: pratyaksha, anumana, shabda</td><td>Same 3 (agama), five vrittis, avidya, viveka-khyati</td><td>6 pramanas, adds upamana, arthapatti, anupalabdhi; shruti for Brahman</td></tr><tr><td>Metaphysics</td><td>Purusha and Prakriti, 3 gunas, many purushas</td><td>Same, plus Ishvara; chitta, kleshas</td><td>Brahman, atman, maya; jagat is mithya</td></tr><tr><td>Ethics</td><td>Knowledge and detachment</td><td>Yamas, niyamas, kriya yoga, brahmaviharas</td><td>Sadhana chatushtaya, nishkama karma</td></tr><tr><td>Liberation</td><td>Kaivalya through viveka</td><td>Kaivalya through ashtanga yoga</td><td>Moksha through jnana; jivanmukti</td></tr></table></div><p>Mahavakyas: Prajnanam Brahma (Aitareya), Aham Brahmasmi (Brihadaranyaka), Tat tvam asi (Chandogya), Ayam Atma Brahma (Mandukya). Core of Advaita: Brahma satyam, jagan mithya, jivo brahmaiva naparah. <span class="src cls">class</span></p><p>Samkhya: the 25 tattvas, the triple suffering (adhyatmika, adhibhautika, adhidaivika) and the aim of separating purusha from prakriti. Five vrittis and five kleshas belong to Yoga. <span class="src cls">class</span></p></section>
-<section class="section" id="sec-bjc">
-<div class="sec-head"><div class="kicker">06 &#183; Unit</div><h2>Thoughts of Buddha, Jaina and Charvaka</h2><p class="dek">Three nastika schools.</p></div>
-<p>Astika schools accept the Veda (the six darshanas). Nastika schools do not: Buddhism, Jainism and Charvaka. Nastika here means rejecting Vedic authority, not simply atheist. <span class="src cls">class</span></p><div class="table-wrap"><table><tr><th></th><th>Buddhism</th><th>Jainism</th><th>Charvaka</th></tr><tr><td>Knowledge</td><td>Experience, inference</td><td>Five kinds; anekantavada, syadvada</td><td>Only perception</td></tr><tr><td>Reality</td><td>Impermanence, no-self, dependent origination</td><td>Jiva and ajiva, karma as subtle matter</td><td>Four elements; mind from matter</td></tr><tr><td>Ethics</td><td>Five precepts, eightfold path</td><td>Five great vows, ahimsa first</td><td>Pleasure</td></tr><tr><td>Liberation</td><td>Nirvana</td><td>Moksha (kaivalya)</td><td>None beyond death</td></tr></table></div><h3 class="sub"><span class="n">1</span>Buddhism</h3><p>Four noble truths: dukkha, samudaya (craving), nirodha (cessation), magga (path). Eightfold path: right view and intention (wisdom); right speech, action, livelihood (conduct); right effort, mindfulness, concentration (meditation). Three marks: anicca, dukkha, anatta. Twelve nidanas from avidya to old age and death. <span class="src cls">class</span></p><h3 class="sub"><span class="n">2</span>Jainism</h3><p>24 Tirthankaras, Mahavira the last. Three jewels: right perception, right knowledge, right conduct. Five great vows: ahimsa, satya, asteya, brahmacharya, aparigraha. Seven tattvas: jiva, ajiva, asrava, bandha, samvara, nirjara, moksha. Soul is pure but karma binds it. <span class="src cls">class</span></p><h3 class="sub"><span class="n">3</span>Charvaka</h3><p>Also Lokayata, founder traditionally Brihaspati. Only perception is valid, only four elements exist (not akasha), consciousness comes from them like intoxication from fermenting, no soul, karma or rebirth. Opponents say rejecting inference refutes itself. <span class="src cls">class</span></p>
-<div class="card addnote"><h3 class="sub" style="margin-top:0">Charvaka and the four elements</h3><ul><li>Charvaka (materialist) accepts only four elements: <b>earth, water, fire and air</b>. It does not accept ether (akasha), since ether cannot be perceived.</li></ul><div class="src-foot"><span class="src add">added</span> general textbook points</div></div>
-    </section>
+    <section class="section" id="sec-life">
+      <div class="sec-head">
+        <div class="kicker">01 &middot; Life and background</div>
+        <h2>Who He Was</h2>
+        <p class="dek">Dates, teacher, setting.</p>
+      </div>
+      <div class="stat-strip">
+        <div class="stat"><div class="v">1863</div><div class="k">born</div></div>
+        <div class="stat"><div class="v">1902</div><div class="k">samadhi</div></div>
+        <div class="stat"><div class="v">1893</div><div class="k">Chicago, 11 Sept</div></div>
+        <div class="stat"><div class="v">1897</div><div class="k">Ramakrishna Mission</div></div>
+      </div>
+      <h3 class="sub"><span class="n">1A</span>Life and background</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Item</th><th>Details</th></tr>
+        <tr><td><b>Birth name</b></td><td>Narendranath Datta</td></tr>
+        <tr><td><b>Born / samadhi</b></td><td>1863 / 1902</td></tr>
+        <tr><td><b>Guru</b></td><td>Paramhansa Ramakrishna</td></tr>
+        <tr><td><b>Disciple</b></td><td>Sister Nivedita (Irish teacher, author, social activist)</td></tr>
+      </table></div>
+      <p>First Indian monk to present Vedanta and yoga (jnana, bhakti, karma, raja) to the world, in his address of 11 Sept 1893 at the First World&#8217;s Parliament of Religions, Chicago. <span class="src cls">Yogis notes</span></p>
 
-<script>
-(function(){
-  var bar=document.getElementById('mqbar'); if(!bar) return;
-  var btns=bar.querySelectorAll('button');
-  btns.forEach(function(b){ b.addEventListener('click',function(){
-    var f=b.getAttribute('data-f'), cards=document.querySelectorAll('.mq');
-    if(f==='reveal'||f==='hide'){ document.querySelectorAll('.mq details.ans').forEach(function(d){ if(f==='reveal') d.setAttribute('open',''); else d.removeAttribute('open'); }); return; }
-    btns.forEach(function(x){ x.classList.remove('on'); }); b.classList.add('on');
-    cards.forEach(function(c){ c.style.display=(f==='all'||c.getAttribute('data-m')===f)?'':'none'; });
-  }); });
-})();
-</script>
+    </section>
+    <section class="section" id="sec-work">
+      <div class="sec-head">
+        <div class="kicker">02 &middot; Contribution</div>
+        <h2>What He Did</h2>
+        <p class="dek">Work, institutions and books.</p>
+      </div>
+      <h3 class="sub"><span class="n">2A</span>Institutions</h3>
+      <p>Ramakrishna Mission founded 1 May 1897; Belur Math, headquarters of the Math and Mission, 1898. Eknath Ranade built the Vivekananda Rock Memorial (1970) and Vivekananda Kendra at Kanyakumari. <span class="src cls">Yogis notes</span></p>
+      <h3 class="sub"><span class="n">2B</span>Books</h3>
+      <p>Karma Yoga, Bhakti Yoga, Jnana Yoga, Raja Yoga, Complete Works of Vivekananda. He wrote on the Patanjala Yoga Sutra and called it Raja Yoga in Chicago. <span class="src cls">Yogis notes</span></p>
+
+    </section>
+    <section class="section" id="sec-teaching">
+      <div class="sec-head">
+        <div class="kicker">03 &middot; Teaching</div>
+        <h2>Ideas and the Four Areas</h2>
+        <p class="dek">Core teaching, mapped to epistemology, metaphysics, ethics and liberation.</p>
+      </div>
+      <h3 class="sub"><span class="n">3A</span>Four yogas</h3>
+      <p>Equal importance to all four yogas for moksha; special emphasis on <b>karma yoga</b> to awaken youth. Hatha yoga, in his view, makes the body strong. <span class="src cls">Yogis notes</span></p>
+      <h3 class="sub"><span class="n">3B</span>Slogan and quotes</h3>
+      <p>&ldquo;Arise! Awake! and stop not till the goal is reached&rdquo; (Katha Upanishad). Each soul is potentially divine. Education is the manifestation of the perfection already in man. Do all as an offering to the Lord. Be in the world but not of it, like the lotus leaf. <span class="src cls">Yogis notes</span></p>
+      <h3 class="sub"><span class="n">3C</span>Scientific study</h3>
+      <p>He advocated studying yoga scientifically; the first scientific research on yoga was conducted by Swami Kuvalayananda at Lonavla in 1920. <span class="src cls">Yogis notes</span></p>
+      <h3 class="sub"><span class="n">3D</span>The four areas (for the exam template)</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Area</th><th>Position</th></tr>
+        <tr><td><b>Epistemology</b></td><td>Not stated in your notes <span class="src add">added</span></td></tr>
+        <tr><td><b>Metaphysics</b></td><td>Each soul potentially divine (Vedanta); not elaborated in your notes <span class="src cls">Yogis notes</span> <span class="src add">added</span></td></tr>
+        <tr><td><b>Ethics</b></td><td>Karma yoga: all work as offering; love to all <span class="src cls">Yogis notes</span></td></tr>
+        <tr><td><b>Liberation</b></td><td>Moksha through the four yogas in balance <span class="src cls">Yogis notes</span></td></tr>
+      </table></div>
+
+    </section>
+    <section class="section" id="sec-answers">
+      <div class="sec-head">
+        <div class="kicker">04 &middot; Exam answers</div>
+        <h2>Model Answers: 10, 5 and 2 Marks</h2>
+        <p class="dek">Tap to reveal.</p>
+      </div>
+      <p>Try each answer first, then tap to compare.</p>
+      <div class="mq"><div class="mqh"><span class="marks-tag">10 marks</span><span class="topic">Swami Vivekananda</span></div>
+        <p class="mqt">Explain the contribution of Swami Vivekananda to yoga.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Born Narendranath Datta (1863-1902), disciple of Ramakrishna. At Chicago in 1893 he presented Vedanta and the four yogas to the world. He called Patanjali&#8217;s system Raja Yoga and wrote books on all four. He gave equal weight to them for moksha, stressing karma yoga for youth. He founded the Ramakrishna Mission (1897) and Belur Math (1898) and urged scientific study of yoga.</p><p class="pts"><span class="src cls">Yogis notes</span></p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Swami Vivekananda</span></div>
+        <p class="mqt">Explain his four yogas.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Jnana, bhakti, karma and raja yoga: equal importance for moksha, with special emphasis on karma yoga.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Swami Vivekananda</span></div>
+        <p class="mqt">Quote and explain his slogan.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>&ldquo;Arise, awake and stop not till the goal is reached&rdquo; (Katha Upanishad): to awaken the youth.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Real name?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Narendranath Datta.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Date of Chicago address?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>11 September 1893.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Guru?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Ramakrishna Paramahansa.</p></div></details></div>
+
+    </section>
+    <section class="section" id="sec-flags">
+      <div class="sec-head">
+        <div class="kicker">05 &middot; Flags</div>
+        <h2>Things to Confirm</h2>
+        <p class="dek">Before the exam.</p>
+      </div>
+      <div class="blk conf">
+        <span class="lbl">Check these</span>
+        <p>The notes (OCR scan and the docx) agree on dates. The epistemology row is not covered by your notes; ask your teacher what is expected. <span class="src cls">Yogis notes</span></p>
+      </div>
+
+    </section>
 
   </main>
 </div>

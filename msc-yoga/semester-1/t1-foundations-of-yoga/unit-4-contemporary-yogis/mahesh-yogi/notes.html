@@ -1,7 +1,7 @@
 <!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Model Question Paper</title>
+<title>Maharishi Mahesh Yogi</title>
 <style>
   :root{
     --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
@@ -211,71 +211,194 @@
   }
 
   .src.add{ background:var(--accent-soft); color:var(--accent); }
-  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 14px; }
+  .sk{ font-family:"Fraunces",Georgia,serif; font-style:italic; color:var(--ink); }
+  .flow{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 12px; }
+  .flow span{ background:var(--teal-soft); color:var(--teal); border-radius:8px; padding:5px 10px; font-size:13px; font-weight:600; }
+  .flow i{ color:var(--muted); font-style:normal; }
+  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 16px; }
   .mq .mqh{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
-  .mq .marks-tag{ margin-bottom:0; }
   .mq .topic{ font-size:11px; color:var(--muted); }
   .mq .mqt{ font-weight:600; color:var(--ink); margin:0 0 10px; max-width:none; }
   .mq details.ans > summary{ cursor:pointer; list-style:none; display:inline-block; padding:6px 12px; border-radius:8px; background:var(--teal-soft); color:var(--teal); font-size:13px; font-weight:600; }
   .mq details.ans > summary::-webkit-details-marker{ display:none; }
   .mq details.ans[open] > summary{ background:var(--surface-2); color:var(--muted); }
   .mq .ansb{ margin-top:12px; border-top:1px dashed var(--border); padding-top:10px; }
-  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 10px; padding-left:22px; }
   .mq .ansb p{ margin:0 0 8px; }
-  .mq .ansb .pts{ font-size:12.5px; color:var(--muted); }
-  .mq .ansb .pts b{ color:var(--teal); }
-  .mq .ansb .hi{ background:var(--teal-soft); border-radius:8px; padding:8px 12px; margin:0 0 10px; color:var(--ink); }
-  .mqbar{ display:flex; gap:8px; flex-wrap:wrap; margin:0 0 16px; position:sticky; top:0; z-index:5; background:var(--bg); padding:8px 0; }
-  .mqbar button{ font:inherit; font-size:13px; padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft); cursor:pointer; }
-  .mqbar button.on{ background:var(--accent); color:#fff; border-color:var(--accent); }
+  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 12px; padding-left:22px; }
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 
-<style>
-body{background:var(--bg,#f4f0e8)}
-.wrap{max-width:980px;margin:0 auto;padding:16px 14px 60px}
-.back{display:inline-block;margin-bottom:8px;font-size:14px;color:var(--teal);text-decoration:none}
-h1.mt{font-family:Georgia,serif;font-size:28px;margin:4px 0 4px}
-.tools{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}
-.tools button{border:1px solid var(--border);background:var(--surface-2);color:var(--ink);border-radius:999px;padding:8px 14px;font-size:14px;cursor:pointer}
-.tools button.on{background:var(--teal);color:#fff;border-color:var(--teal)}
-.root{background:var(--teal);color:#fff;text-align:center;border-radius:12px;padding:14px;font-size:20px;font-weight:700;letter-spacing:.04em}
-.arr{text-align:center;font-size:22px;color:var(--teal);line-height:1.2;margin:2px 0}
-.row{display:grid;grid-template-columns:190px 1fr;gap:0;align-items:start}
-.node{background:var(--surface-2);border:2px solid var(--teal);border-radius:12px;padding:10px 12px;position:relative;margin-right:22px}
-.node::after{content:"";position:absolute;right:-22px;top:26px;width:22px;border-top:2px solid var(--teal)}
-.node .no{display:inline-block;background:var(--teal);color:#fff;border-radius:50%;width:22px;height:22px;text-align:center;line-height:22px;font-size:12px;margin-right:6px}
-.node b{font-size:16px}.node small{display:block;color:var(--ink-soft);font-size:12px;margin-top:4px}
-.brs{display:flex;flex-wrap:wrap;gap:10px;border-left:2px solid var(--teal);padding-left:14px}
-.br{flex:1 1 210px;background:#fff;border:1px solid var(--border);border-radius:10px;padding:8px 10px;position:relative}
-.br::before{content:"";position:absolute;left:-14px;top:18px;width:14px;border-top:2px solid var(--teal)}
-.bt{font-weight:700;font-size:13px;color:var(--teal);margin-bottom:6px;border-bottom:1px solid var(--border);padding-bottom:4px}
-.lv{display:flex;flex-direction:column;gap:4px}
-.leaf{font-size:13px;color:var(--ink);background:var(--surface-2);border-radius:6px;padding:3px 8px;line-height:1.35}
-.leaf.add{border:1px dashed var(--gold)}
-body.test .leaf:not(.shown){filter:blur(6px);cursor:pointer;user-select:none}
-.ct{font-weight:700;margin:14px 0 6px}
-.cl{display:flex;flex-wrap:wrap;align-items:center;gap:6px}.arrs{color:var(--teal)}
-.legend{font-size:12px;color:var(--muted);margin-top:14px}
-@media(max-width:640px){.row{grid-template-columns:1fr}.node{margin-right:0}.node::after{display:none}.brs{margin:8px 0 0 12px}}
-</style><div class="wrap">
-<a class="back" href="notes.html">&larr; Unit 2 notes</a>
-<h1 class="mt">Paths of Yoga Map</h1>
-<p style="color:var(--ink-soft);margin:0">The main paths of yoga and what each one stresses.</p>
-<div class="tools"><button id="t">Hide names (test yourself)</button><button id="r">Reveal all</button></div>
-<div class="root">PATHS OF YOGA MAP</div><div style="height:12px"></div>
-<div class="row"><div class="node"><span class="no">1</span><b>Raja yoga</b><small>Eight limbs</small></div><div class="brs"><div class="br"><div class="bt">Ashtanga</div><div class="lv"><span class="leaf">Yama</span><span class="leaf">Niyama</span><span class="leaf">Asana</span><span class="leaf">Pranayama</span><span class="leaf">Pratyahara</span><span class="leaf">Dharana</span><span class="leaf">Dhyana</span><span class="leaf">Samadhi</span></div></div></div></div><div style="height:12px"></div>
-<div class="row"><div class="node"><span class="no">2</span><b>Jnana yoga</b><small>Knowledge</small></div><div class="brs"><div class="br"><div class="bt">Steps</div><div class="lv"><span class="leaf add" title="General point, not in your notes">Shravana</span><span class="leaf add" title="General point, not in your notes">Manana</span><span class="leaf add" title="General point, not in your notes">Nididhyasana</span></div></div></div></div><div style="height:12px"></div>
-<div class="row"><div class="node"><span class="no">3</span><b>Bhakti yoga</b><small>Devotion</small></div><div class="brs"><div class="br"><div class="bt">Nine forms</div><div class="lv"><span class="leaf add" title="General point, not in your notes">Shravana</span><span class="leaf add" title="General point, not in your notes">Kirtana</span><span class="leaf add" title="General point, not in your notes">Smarana</span><span class="leaf add" title="General point, not in your notes">Padasevana</span><span class="leaf add" title="General point, not in your notes">Archana</span><span class="leaf add" title="General point, not in your notes">Vandana</span><span class="leaf add" title="General point, not in your notes">Dasya</span><span class="leaf add" title="General point, not in your notes">Sakhya</span><span class="leaf add" title="General point, not in your notes">Atmanivedana</span></div></div></div></div><div style="height:12px"></div>
-<div class="row"><div class="node"><span class="no">4</span><b>Karma yoga</b><small>Selfless action</small></div><div class="brs"><div class="br"><div class="bt">Idea</div><div class="lv"><span class="leaf add" title="General point, not in your notes">Action without attachment to results</span></div></div></div></div><div style="height:12px"></div>
-<div class="row"><div class="node"><span class="no">5</span><b>Hatha, mantra, laya</b><small>Body, sound, dissolution</small></div><div class="brs"><div class="br"><div class="bt">Paths</div><div class="lv"><span class="leaf">Hatha yoga</span><span class="leaf">Mantra yoga</span><span class="leaf">Laya yoga</span></div></div></div></div><div style="height:12px"></div>
-<div class="row"><div class="node"><span class="no">6</span><b>Kundalini</b><small>Energy centres</small></div><div class="brs"><div class="br"><div class="bt">Seven chakras</div><div class="lv"><span class="leaf add" title="General point, not in your notes">Muladhara</span><span class="leaf add" title="General point, not in your notes">Svadhisthana</span><span class="leaf add" title="General point, not in your notes">Manipura</span><span class="leaf add" title="General point, not in your notes">Anahata</span><span class="leaf add" title="General point, not in your notes">Vishuddha</span><span class="leaf add" title="General point, not in your notes">Ajna</span><span class="leaf add" title="General point, not in your notes">Sahasrara</span></div></div></div></div><div style="height:12px"></div>
-<p class="legend">Solid items come from your notes. Dashed items are general points not in your notes yet.</p>
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Maharishi Mahesh Yogi</div>
 </div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../../index.html">&larr; T1 &middot; Foundations of Yoga</a>
+    <div class="brand">
+      <div class="eyebrow">Foundations of Yoga &middot; Unit 4</div>
+      <h1>Maharishi Mahesh Yogi</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="life"><span class="num">01</span><span>Life</span></button>
+      <button class="nav-item" data-target="work"><span class="num">02</span><span>Contribution</span></button>
+      <button class="nav-item" data-target="teaching"><span class="num">03</span><span>Teaching</span></button>
+      <button class="nav-item" data-target="answers"><span class="num">04</span><span>Exam Answers</span></button>
+      <button class="nav-item" data-target="flags"><span class="num">05</span><span>Flags</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Sources: Yogis notes; four-area rows marked added are my own reasoning
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="section" id="sec-life">
+      <div class="sec-head">
+        <div class="kicker">01 &middot; Life and background</div>
+        <h2>Who He Was</h2>
+        <p class="dek">Dates, teacher, setting.</p>
+      </div>
+      <div class="stat-strip">
+        <div class="stat"><div class="v">1918</div><div class="k">born</div></div>
+        <div class="stat"><div class="v">2008</div><div class="k">died</div></div>
+        <div class="stat"><div class="v">1</div><div class="k">Transcendental Meditation</div></div>
+        <div class="stat"><div class="v">2</div><div class="k">books in notes</div></div>
+      </div>
+      <h3 class="sub"><span class="n">1A</span>Life and background</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Item</th><th>Details</th></tr>
+        <tr><td><b>Born / died</b></td><td>1918-2008</td></tr>
+        <tr><td><b>Background</b></td><td>Physicist</td></tr>
+        <tr><td><b>Guru</b></td><td>Swami Brahmananda Saraswati</td></tr>
+      </table></div>
+      <p>Founder of Transcendental Meditation (TM), leader and guru of a worldwide organisation. <span class="src cls">Yogis notes</span></p>
+
+    </section>
+    <section class="section" id="sec-work">
+      <div class="sec-head">
+        <div class="kicker">02 &middot; Contribution</div>
+        <h2>What He Did</h2>
+        <p class="dek">Work, institutions and books.</p>
+      </div>
+      <h3 class="sub"><span class="n">2A</span>Transcendental Meditation</h3>
+      <p>A technique for avoiding distracting thoughts and promoting a state of relaxed awareness. It involves meditation and mantra diksha from the guru, so it is not open to all and can be learned only at authorised centres. <span class="src cls">Yogis notes</span></p>
+      <h3 class="sub"><span class="n">2B</span>Books</h3>
+      <p>Science of Being and Art of Living; Love and God. <span class="src cls">Yogis notes</span></p>
+
+    </section>
+    <section class="section" id="sec-teaching">
+      <div class="sec-head">
+        <div class="kicker">03 &middot; Teaching</div>
+        <h2>Ideas and the Four Areas</h2>
+        <p class="dek">Core teaching, mapped to epistemology, metaphysics, ethics and liberation.</p>
+      </div>
+      <h3 class="sub"><span class="n">3A</span>Link to Mantra Yoga</h3>
+      <p>TM uses a mantra given by a teacher: see the <a href="../../unit-2-structure-epistemology/mantra-yoga/notes.html">Mantra Yoga page</a> (shabda received from a guru). <span class="src add">added</span></p>
+      <h3 class="sub"><span class="n">3B</span>The four areas (for the exam template)</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Area</th><th>Position</th></tr>
+        <tr><td><b>Epistemology</b></td><td>Mantra received by diksha; experience of relaxed awareness <span class="src cls">Yogis notes</span></td></tr>
+        <tr><td><b>Metaphysics</b></td><td>Not in your notes <span class="src add">added</span></td></tr>
+        <tr><td><b>Ethics</b></td><td>Not in your notes <span class="src add">added</span></td></tr>
+        <tr><td><b>Liberation</b></td><td>Not in your notes <span class="src add">added</span></td></tr>
+      </table></div>
+
+    </section>
+    <section class="section" id="sec-answers">
+      <div class="sec-head">
+        <div class="kicker">04 &middot; Exam answers</div>
+        <h2>Model Answers: 10, 5 and 2 Marks</h2>
+        <p class="dek">Tap to reveal.</p>
+      </div>
+      <p>Try each answer first, then tap to compare.</p>
+      <div class="mq"><div class="mqh"><span class="marks-tag">10 marks</span><span class="topic">Maharishi Mahesh Yogi</span></div>
+        <p class="mqt">Write on Maharishi Mahesh Yogi.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Maharishi Mahesh Yogi (1918-2008), a physicist and disciple of Swami Brahmananda Saraswati, founded Transcendental Meditation, a mantra-based technique for relaxed awareness taught after mantra diksha at authorised centres. Books: Science of Being and Art of Living; Love and God.</p><p class="pts"><span class="src cls">Yogis notes</span></p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Maharishi Mahesh Yogi</span></div>
+        <p class="mqt">Explain Transcendental Meditation.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>A technique for avoiding distracting thoughts and promoting relaxed awareness, using mantra diksha from the guru, learned at authorised centres.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Founder of?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Transcendental Meditation.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">His guru?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Swami Brahmananda Saraswati.</p></div></details></div>
+
+    </section>
+    <section class="section" id="sec-flags">
+      <div class="sec-head">
+        <div class="kicker">05 &middot; Flags</div>
+        <h2>Things to Confirm</h2>
+        <p class="dek">Before the exam.</p>
+      </div>
+      <div class="blk conf">
+        <span class="lbl">Check these</span>
+        <p>Short entry in your notes; the four-area rows are not in them. <span class="src cls">Yogis notes</span></p>
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
 <script>
-(function(){var t=document.getElementById('t'),r=document.getElementById('r');
-t.onclick=function(){document.body.classList.toggle('test');t.classList.toggle('on');document.querySelectorAll('.leaf.shown').forEach(function(x){x.classList.remove('shown')})};
-r.onclick=function(){document.querySelectorAll('.leaf').forEach(function(x){x.classList.add('shown')})};
-document.addEventListener('click',function(e){var l=e.target.closest('.leaf');if(l&&document.body.classList.contains('test'))l.classList.toggle('shown')});})();
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
 </script>
-</body></html>

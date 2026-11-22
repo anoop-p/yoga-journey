@@ -1,7 +1,7 @@
 <!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Model Question Paper</title>
+<title>Laya Yoga</title>
 <style>
   :root{
     --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
@@ -211,88 +211,226 @@
   }
 
   .src.add{ background:var(--accent-soft); color:var(--accent); }
-  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 14px; }
+  .sk{ font-family:"Fraunces",Georgia,serif; font-style:italic; color:var(--ink); }
+  .flow{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 12px; }
+  .flow span{ background:var(--teal-soft); color:var(--teal); border-radius:8px; padding:5px 10px; font-size:13px; font-weight:600; }
+  .flow i{ color:var(--muted); font-style:normal; }
+  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 16px; }
   .mq .mqh{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
-  .mq .marks-tag{ margin-bottom:0; }
   .mq .topic{ font-size:11px; color:var(--muted); }
   .mq .mqt{ font-weight:600; color:var(--ink); margin:0 0 10px; max-width:none; }
   .mq details.ans > summary{ cursor:pointer; list-style:none; display:inline-block; padding:6px 12px; border-radius:8px; background:var(--teal-soft); color:var(--teal); font-size:13px; font-weight:600; }
   .mq details.ans > summary::-webkit-details-marker{ display:none; }
   .mq details.ans[open] > summary{ background:var(--surface-2); color:var(--muted); }
   .mq .ansb{ margin-top:12px; border-top:1px dashed var(--border); padding-top:10px; }
-  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 10px; padding-left:22px; }
   .mq .ansb p{ margin:0 0 8px; }
-  .mq .ansb .pts{ font-size:12.5px; color:var(--muted); }
-  .mq .ansb .pts b{ color:var(--teal); }
-  .mq .ansb .hi{ background:var(--teal-soft); border-radius:8px; padding:8px 12px; margin:0 0 10px; color:var(--ink); }
-  .mqbar{ display:flex; gap:8px; flex-wrap:wrap; margin:0 0 16px; position:sticky; top:0; z-index:5; background:var(--bg); padding:8px 0; }
-  .mqbar button{ font:inherit; font-size:13px; padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft); cursor:pointer; }
-  .mqbar button.on{ background:var(--accent); color:#fff; border-color:var(--accent); }
+  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 12px; padding-left:22px; }
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 
 <div class="mobile-bar">
   <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
-  <div class="title">Unit 3: Yogic Contributions of Traditional Yogis</div>
+  <div class="title">Laya Yoga</div>
 </div>
 <div class="scrim" id="scrim"></div>
 
 <div class="app">
   <aside class="sidebar" id="sidebar">
-    <a class="back-link" href="../index.html">&larr; Foundations of Yoga</a>
+    <a class="back-link" href="../../index.html">&larr; T1 &middot; Foundations of Yoga</a>
     <div class="brand">
-      <div class="eyebrow">DSCC-16 &#183; Foundations of Yoga</div>
-      <h1>Unit 3: Yogic Contributions of Traditional Yogis</h1>
+      <div class="eyebrow">Foundations of Yoga &middot; Unit 2</div>
+      <h1>Laya Yoga</h1>
     </div>
     <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
     <nav class="tree" id="tree">
-      <button class="nav-item" data-target="guide"><span class="num">01</span><span>Read this first</span></button>
-      <button class="nav-item" data-target="patanjali"><span class="num">02</span><span>Patanjali</span></button>
-      <button class="nav-item" data-target="gorakh"><span class="num">03</span><span>Gorakshanath</span></button>
-      <button class="nav-item" data-target="viveka"><span class="num">04</span><span>Vivekananda</span></button>
-      <button class="nav-item" data-target="auro"><span class="num">05</span><span>Aurobindo</span></button>
-      <button class="nav-item" data-target="ramana"><span class="num">06</span><span>Ramana Maharshi</span></button>
-      <button class="nav-item" data-target="daya"><span class="num">07</span><span>Dayananda Saraswati</span></button>
+      <button class="nav-item" data-target="intro"><span class="num">01</span><span>Introduction</span></button>
+      <button class="nav-item" data-target="background"><span class="num">02</span><span>Historical &amp; Philosophical Background</span></button>
+      <button class="nav-item" data-target="structure"><span class="num">03</span><span>Structure</span></button>
+      <button class="nav-item" data-target="method"><span class="num">04</span><span>Method</span></button>
+      <button class="nav-item" data-target="epistemology"><span class="num">05</span><span>Epistemology</span></button>
+      <button class="nav-item" data-target="metaphysics"><span class="num">06</span><span>Metaphysics</span></button>
+      <button class="nav-item" data-target="answers"><span class="num">07</span><span>Exam Answers</span></button>
     </nav>
-    <div class="sidebar-footer">Foundations of Yoga &middot; Semester 1</div>
+    <div class="sidebar-footer">
+      Sources: your Laya Yoga notes; structured in your teacher&#8217;s six parts
+    </div>
   </aside>
 
   <main id="main">
-<p class="mapnote" style="margin:0 0 14px"><a href="map.html" style="display:inline-block;padding:8px 14px;border:1px solid var(--teal);border-radius:999px;color:var(--teal);text-decoration:none;font-size:14px">Concept map: see it all at a glance &rarr;</a></p>
-<section class="section" id="sec-guide">
-<div class="sec-head"><div class="kicker">00 &#183; Unit 3</div><h2>Unit 3: Yogic Contributions of Traditional Yogis</h2><p class="dek">Patanjali, Gorakshanath, Vivekananda, Aurobindo, Ramana, Dayananda.</p></div>
-<p class="honest"><b>Honest note.</b> Sources: Aurobindo, Ramana, Gorakshanath and Dayananda are from your notes (class and the Yogis document); Vivekananda from the Yogis document. <b>Patanjali has no biography note</b>; his section uses your Raja yoga and history notes plus standard facts, tagged general. Dates differ a little between sources; they are flagged.</p></section>
-<section class="section" id="sec-patanjali">
-<div class="sec-head"><div class="kicker">01 &#183; Unit</div><h2>Maharshi Patanjali</h2><p class="dek">Systematiser of classical yoga.</p></div>
-<p>Compiler of the Yoga Sutra (about 500 BCE, per your history note): about 195 sutras in four padas. He did not found yoga; he systematised what was scattered in the Vedas, Upanishads, Jainism and Buddhism. Said to be an incarnation of Adishesha and also credited with works on grammar and Ayurveda. Vivekananda called the system raja yoga. <span class="src cls">class</span></p><div class="table-wrap"><table><tr><th>Contribution</th><th>Detail</th></tr><tr><td>Definition</td><td>Yogash chitta-vritti-nirodhah (1.2)</td></tr><tr><td>Eight limbs</td><td>Yama to samadhi, removed mysticism; mind-body approach</td></tr><tr><td>Kriya yoga</td><td>Tapas, svadhyaya, ishvara-pranidhana</td></tr><tr><td>Philosophy</td><td>Purusha, prakriti, gunas, kleshas, Ishvara; kaivalya</td></tr><tr><td>Structure</td><td>Samadhi, Sadhana, Vibhuti, Kaivalya padas</td></tr></table></div><p>Your class note gives the goal-oriented line: unstable chitta, abhyasa and vairagya, yama-niyama, asana, pranayama, pratyahara, dharana, dhyana, samadhi, viveka-khyati, kaivalya. Nine obstacles (antarayas): vyadhi, styana, samshaya, pramada, alasya, avirati, bhranti-darshana, alabdha-bhumikatva, anavasthitatva. <span class="src cls">class</span></p></section>
-<section class="section" id="sec-gorakh">
-<div class="sec-head"><div class="kicker">02 &#183; Unit</div><h2>Guru Gorakshanath</h2><p class="dek">Nath yoga and Hatha yoga.</p></div>
-<p>Great Hatha yogi and Nath guru, about 11th-12th century CE (dates uncertain). Guru: Matsyendranath. Lineage: Adinath (Shiva), Matsyendranath, Gorakshanath. Taught practical discipline and direct experience; the guru is central. <span class="src cls">class</span></p><div class="table-wrap"><table><tr><th>Topic</th><th>Points</th></tr><tr><td>Texts</td><td>Goraksha Samhita, Goraksha Shataka, Siddha Siddhanta Paddhati, Viveka Martanda, Yoga Martanda</td></tr><tr><td>Practices</td><td>Asana, pranayama, mudra (maha mudra, khechari, vajroli, shakti-chalana), bandha (mula, uddiyana, jalandhara, maha)</td></tr><tr><td>Ideas</td><td>Prana, nadis, kundalini, seven chakras, siddha body, kaya siddhi</td></tr><tr><td>Siddha Siddhanta Paddhati</td><td>Body as microcosm of the universe</td></tr><tr><td>Navanathas</td><td>Matsyendra, Gorakha, Jalandhar, Kanifnath, Gahininath, Bhartrinath, Revananath, Charpatinath, Naganath (lists vary)</td></tr></table></div></section>
-<section class="section" id="sec-viveka">
-<div class="sec-head"><div class="kicker">03 &#183; Unit</div><h2>Swami Vivekananda</h2><p class="dek">Yoga to the world.</p></div>
-<p>Born 1863 as Narendranath Datta, samadhi 1902. Disciple of Ramakrishna Paramahamsa. First Indian monk to present Vedanta and yoga (jnana, bhakti, karma, raja) to the world, at the Parliament of Religions, Chicago, 11 Sept 1893. <span class="src cls">class</span></p><ul><li>Wrote the commentary on the Yoga Sutra; called it raja yoga. Hatha yoga, to him, makes the body strong</li><li>Equal importance to the four yogas, special emphasis on karma yoga for youth</li><li>Slogan: Arise! Awake! (Katha Upanishad)</li><li>Founded Ramakrishna Mission 1 May 1897, Belur Math 1898</li><li>Sister Nivedita a disciple; Vivekananda Rock Memorial 1970 (Eknath Ranade)</li><li>Books: Karma Yoga, Bhakti Yoga, Jnana Yoga, Raja Yoga</li></ul></section>
-<section class="section" id="sec-auro">
-<div class="sec-head"><div class="kicker">04 &#183; Unit</div><h2>Sri Aurobindo</h2><p class="dek">Integral yoga.</p></div>
-<p>Born Calcutta 1872 as Aurobindo Ghose, samadhi 1950. Father of Integral yoga: freedom fighter, philosopher, yogi. Learned silencing the mind from Vishnu Bhaskar Lele at Baroda; the real guru is within. <span class="src cls">class</span></p><p><b>Integral yoga</b>: synthesis of jnana, bhakti and karma yoga, no emphasis on hatha. Life is the field; aim is to make life divine, supramental consciousness. <span class="src cls">class</span></p><div class="table-wrap"><table><tr><th>Idea</th><th>Detail</th></tr><tr><td>Involution</td><td>Spirit descends into matter: sat-chit-ananda to inconscient matter</td></tr><tr><td>Evolution</td><td>Matter, life, mind, higher mind, illumined, intuitive, overmind, supermind, sat-chit-ananda</td></tr><tr><td>Triple transformation</td><td>Psychic, spiritual, supramental</td></tr><tr><td>Books</td><td>Savitri (about 24,000 lines), The Life Divine, Synthesis of Yoga, The Human Cycle</td></tr><tr><td>Institutions</td><td>Ashram 1926, International Centre of Education 1952, Auroville 1968 (the Mother, Mirra Alfassa)</td></tr></table></div><p class="honest"><b>Honest note.</b> <b>Conflict.</b> Your class note says Auroville was established in 1952. The Yogis document says the Centre of Education was 1952 and Auroville 1968. Write 1952 for the Centre and 1968 for Auroville.</p></section>
-<section class="section" id="sec-ramana">
-<div class="sec-head"><div class="kicker">05 &#183; Unit</div><h2>Maharshi Ramana</h2><p class="dek">Self-enquiry and silence.</p></div>
-<p>Born 30 Dec 1879, Tiruchuzhi near Madurai, as Venkataraman Iyer; samadhi 14 April 1950; lived at Tiruvannamalai (Arunachala). Mouna guru: teaches by silence. Called the Upanishadic sage of modern India. <span class="src cls">class</span></p><ul><li>Self-enquiry "Who am I?" removes the idea "I am the body" (dehatma buddhi)</li><li>Reality is loss of ego; happiness is your nature; heart is another name for the Supreme</li><li>Guru: internal guru pulls, external guru pushes</li><li>Surrender; moksha is already our nature</li><li>Books: Who Am I, Be As You Are, Complete Works</li></ul></section>
-<section class="section" id="sec-daya">
-<div class="sec-head"><div class="kicker">06 &#183; Unit</div><h2>Swami Dayananda Saraswati</h2><p class="dek">Arya Samaj and upasana yoga.</p></div>
-<p>Born 1824 at Tankara, Gujarat as Moolshankar; died 1883. Guru: Swami Virajananda. Founded the Arya Samaj in 1875 (motto: Krinvanto Vishvam Aryam). Caste by karma, not birth; against sati; promoted women's education, Hindi and Sanskrit. <span class="src cls">class</span></p><p>Upasana yoga: ishvara-stuti, prarthana, yachana, samarpanam, upasana (trisandhya, mantra, asana, pranayama), ishvara-pranidhana, bhavana chatushtaya (maitri, karuna, mudita, upeksha), viveka-khyati, ashtanga yoga. Books: Satyarth Prakash (18 chapters), Sanskarvidhi, Yajurveda Bhashyam. <span class="src cls">class</span></p></section>
+    <section class="section" id="sec-intro">
+      <div class="sec-head">
+        <div class="kicker">01 &middot; Introduction (meaning)</div>
+        <h2>What Laya Yoga Is</h2>
+        <p class="dek">Dissolution of mental activity.</p>
+      </div>
+      <div class="stat-strip">
+        <div class="stat"><div class="v">6</div><div class="k">methods of laya yoga</div></div>
+        <div class="stat"><div class="v">5</div><div class="k">stages nada to laya</div></div>
+        <div class="stat"><div class="v">1</div><div class="k">core idea: dissolution</div></div>
+      </div>
+      <h3 class="sub"><span class="n">1A</span>Meaning</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Term</th><th>Meaning</th></tr>
+        <tr><td><b>Laya</b></td><td>Dissolution, absorption, merging: the mind dissolving into its source</td></tr>
+        <tr><td><b>Laya Yoga</b></td><td>The path in which mental fluctuations are gradually dissolved through concentration, meditation, nada and related practices, leading to absorption and realisation</td></tr>
+      </table></div>
+      <div class="flow"><span>Mind</span><i>&rarr;</i><span>Concentration</span><i>&rarr;</i><span>Dissolution</span><i>&rarr;</i><span>Absorption</span><i>&rarr;</i><span>Higher consciousness</span></div>
+      <div class="blk und">
+        <span class="lbl">What is &ldquo;dissolved&rdquo;?</span>
+        <p>Not the mind itself. The ordinary restlessness of the mind goes quiet and absorbed. Normal mind: sense object &rarr; thought &rarr; desire &rarr; more thoughts. In laya: object of concentration &rarr; sustained attention &rarr; thoughts quieten &rarr; mind absorbed &rarr; laya. <span class="src cls">Laya notes</span></p>
+      </div>
+      <div class="blk mem">
+        <span class="lbl">Key idea</span>
+        <p>&ldquo;Laya means dissolution or absorption of the mind.&rdquo; Slogan: <i>when the mind dissolves, awareness becomes clear.</i> <span class="src cls">Laya notes</span></p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Meaning of laya?</div><div class="a">Dissolution, absorption, merging</div></div>
+        <div class="recall-card"><div class="q">What dissolves?</div><div class="a">The ordinary fluctuations of the mind, not the mind itself</div></div>
+        <div class="recall-card"><div class="q">Core idea?</div><div class="a">Mind, concentration, dissolution, absorption, higher consciousness</div></div>
+      </div>
 
-<script>
-(function(){
-  var bar=document.getElementById('mqbar'); if(!bar) return;
-  var btns=bar.querySelectorAll('button');
-  btns.forEach(function(b){ b.addEventListener('click',function(){
-    var f=b.getAttribute('data-f'), cards=document.querySelectorAll('.mq');
-    if(f==='reveal'||f==='hide'){ document.querySelectorAll('.mq details.ans').forEach(function(d){ if(f==='reveal') d.setAttribute('open',''); else d.removeAttribute('open'); }); return; }
-    btns.forEach(function(x){ x.classList.remove('on'); }); b.classList.add('on');
-    cards.forEach(function(c){ c.style.display=(f==='all'||c.getAttribute('data-m')===f)?'':'none'; });
-  }); });
-})();
-</script>
+    </section>
+    <section class="section" id="sec-background">
+      <div class="sec-head">
+        <div class="kicker">02 &middot; Historical and philosophical background</div>
+        <h2>Hatha, Nada and Tantra</h2>
+        <p class="dek">Lineage, sources, and how it differs from Raja Yoga.</p>
+      </div>
+      <h3 class="sub"><span class="n">2A</span>Background</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li>Closely linked with <b>Hatha Yoga, Nada Yoga and Tantric</b> traditions. <span class="src cls">Laya notes</span></li>
+          <li><b>Not standardised</b> into one fixed system (unlike Patanjali&#8217;s eight-limbed Raja Yoga); described differently across texts. <span class="src cls">Laya notes</span></li>
+          <li>Key sources: <b>Hatha Yoga Pradipika, Gheranda Samhita, Shiva Samhita, Yoga-tattva Upanishad</b>, nada-oriented traditions. <span class="src cls">Laya notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">2B</span>Laya and Raja Yoga</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Raja Yoga</th><th>Laya Yoga</th></tr>
+        <tr><td>Citta-vritti-nirodha: stilling fluctuations (YS 1.2)</td><td>Laya: dissolution or absorption of mental activity</td></tr>
+      </table></div>
+      <p>Related concepts, <b>not identical systems</b>. <span class="src cls">Laya notes</span> <span class="src cls">Raja notes</span></p>
+      <h3 class="sub"><span class="n">2C</span>Laya is not samadhi</h3>
+      <div class="blk conf">
+        <span class="lbl">Do not equate</span>
+        <p><b>Laya &ne; samadhi.</b> Laya is dissolution or absorption, a process or state of deep meditation. Samadhi has broader, more specific meanings across traditions. <span class="src cls">Laya notes</span></p>
+      </div>
+
+    </section>
+    <section class="section" id="sec-structure">
+      <div class="sec-head">
+        <div class="kicker">03 &middot; Structure</div>
+        <h2>Stages and Links</h2>
+        <p class="dek">Structure of laya and its relations to nada, mantra and kundalini.</p>
+      </div>
+      <h3 class="sub"><span class="n">3A</span>Structure</h3>
+      <div class="flow"><span>Withdrawal</span><i>&rarr;</i><span>Concentration</span><i>&rarr;</i><span>Meditation</span><i>&rarr;</i><span>Nada or subtle object</span><i>&rarr;</i><span>Increasing absorption</span><i>&rarr;</i><span>Laya</span><i>&rarr;</i><span>Samadhi or realisation</span></div>
+      <h3 class="sub"><span class="n">3B</span>Nada and laya</h3>
+      <div class="flow"><span>External sound</span><i>&rarr;</i><span>Inner sound</span><i>&rarr;</i><span>Subtle nada</span><i>&rarr;</i><span>Deep concentration</span><i>&rarr;</i><span>Absorption (laya)</span></div>
+      <p>Nada can be the object through which the mind moves towards laya; this is why Laya and Mantra Yoga overlap. <span class="src cls">Laya notes</span></p>
+      <h3 class="sub"><span class="n">3C</span>Laya and Mantra Yoga; laya and Kundalini</h3>
+      <div class="flow"><span>Mantra</span><i>&rarr;</i><span>Japa</span><i>&rarr;</i><span>One-pointed mind</span><i>&rarr;</i><span>Less thought activity</span><i>&rarr;</i><span>Laya</span></div>
+      <p>As Kundalini rises through the subtle system, ordinary limits of consciousness are transcended, leading towards laya. Related: nadis, chakras, prana, kundalini, granthis, nada. These are <b>traditional yogic concepts</b>, not anatomical structures recognised by modern biomedical science. <span class="src cls">Laya notes</span></p>
+
+    </section>
+    <section class="section" id="sec-method">
+      <div class="sec-head">
+        <div class="kicker">04 &middot; Method</div>
+        <h2>Nada, Mantra, Breath, Meditation</h2>
+        <p class="dek">The six methods and the goal.</p>
+      </div>
+      <h3 class="sub"><span class="n">4A</span>Six methods</h3>
+      <div class="table-wrap"><table>
+        <tr><th>#</th><th>Method</th><th>Meaning</th></tr>
+        <tr><td>1</td><td>Nada meditation</td><td>Concentration on subtle inner sound</td></tr>
+        <tr><td>2</td><td>Mantra</td><td>Repetition until the mind is deeply concentrated</td></tr>
+        <tr><td>3</td><td>Breath awareness</td><td>Using prana or breath to calm the mind</td></tr>
+        <tr><td>4</td><td>Concentration</td><td>Fixing the mind on one object</td></tr>
+        <tr><td>5</td><td>Meditation</td><td>Sustained inward awareness</td></tr>
+        <tr><td>6</td><td>Kundalini-oriented practices</td><td>Dissolution linked to the rise of Kundalini through the subtle system</td></tr>
+      </table></div>
+      <h3 class="sub"><span class="n">4B</span>Simple classroom practice</h3>
+      <p>Sit comfortably, close eyes, observe natural breathing, listen to the surrounding sounds, gradually notice the <b>subtlest sound comfortably audible</b>, do not strain for an &ldquo;inner sound&rdquo;, and observe the increased focus. Purpose: to show that sustained attention reduces mental distraction, <b>not</b> to search for mysterious sounds. <span class="src cls">Laya notes</span></p>
+      <h3 class="sub"><span class="n">4C</span>Goal</h3>
+      <div class="flow"><span>Fewer fluctuations</span><i>&rarr;</i><span>Absorption of mind</span><i>&rarr;</i><span>Deep meditation</span><i>&rarr;</i><span>Higher consciousness</span><i>&rarr;</i><span>Realisation or liberation</span></div>
+      <p>The exact description varies by tradition. <span class="src cls">Laya notes</span></p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Six methods?</div><div class="a">Nada, mantra, breath awareness, concentration, meditation, kundalini practices</div></div>
+        <div class="recall-card"><div class="q">Purpose of the classroom practice?</div><div class="a">Show that attention reduces distraction, not to find mysterious sounds</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-epistemology">
+      <div class="sec-head">
+        <div class="kicker">05 &middot; Epistemology</div>
+        <h2>From Understanding to Experience</h2>
+        <p class="dek">The contemplative emphasis.</p>
+      </div>
+      <h3 class="sub"><span class="n">5A</span>Epistemology</h3>
+      <p>Primarily a <b>contemplative practice</b>, not an independent theory of knowledge. It recognises the traditional means: pratyaksha, anumana, agama or shabda. The emphasis is a movement from <b>intellectual understanding to direct inner experience</b> through meditation. <span class="src cls">Laya notes</span></p>
+
+    </section>
+    <section class="section" id="sec-metaphysics">
+      <div class="sec-head">
+        <div class="kicker">06 &middot; Metaphysics</div>
+        <h2>Mind, Prana, Nada and Kundalini</h2>
+        <p class="dek">What laya yoga says is going on.</p>
+      </div>
+      <h3 class="sub"><span class="n">6A</span>Metaphysics</h3>
+      <p><b>Central question:</b> what is the mind, and what happens when its ordinary activity dissolves? <span class="src cls">Laya notes</span></p>
+      <div class="table-wrap"><table>
+        <tr><th>Concept</th><th>Meaning</th></tr>
+        <tr><td>Citta</td><td>Mind-consciousness; the mental field</td></tr>
+        <tr><td>Prana</td><td>Vital energy</td></tr>
+        <tr><td>Nada</td><td>Subtle sound</td></tr>
+        <tr><td>Kundalini</td><td>Spiritual energy (in relevant traditions)</td></tr>
+        <tr><td>Atman / ultimate consciousness</td><td>The deeper reality, described differently by different schools</td></tr>
+      </table></div>
+      <p><b>Basic idea:</b> ordinary mental activity obscures deeper awareness; through laya the mind is absorbed and a deeper level of consciousness is experienced. <span class="src cls">Laya notes</span></p>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Central question?</div><div class="a">What is the mind and what happens when its activity dissolves?</div></div>
+        <div class="recall-card"><div class="q">Basic idea?</div><div class="a">Ordinary mental activity hides deeper awareness; laya reveals it</div></div>
+        <div class="recall-card"><div class="q">Laya vs samadhi?</div><div class="a">Not equal: laya is absorption, samadhi is broader</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-answers">
+      <div class="sec-head">
+        <div class="kicker">07 &middot; Exam answers</div>
+        <h2>Model Answers: 10, 5 and 2 Marks</h2>
+        <p class="dek">Try each one first, then tap to compare.</p>
+      </div>
+      <p>Answers follow your six parts.</p>
+      <div class="mq"><div class="mqh"><span class="marks-tag">10 marks</span><span class="topic">Laya yoga</span></div>
+        <p class="mqt">Explain Laya Yoga.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p><b>Introduction.</b> Laya = dissolution, absorption, merging of the mind in its source; the ordinary fluctuations quieten, the mind is not destroyed.</p><p><b>Background.</b> Linked with Hatha, Nada and Tantric traditions; not one fixed system; sources: HYP, Gheranda Samhita, Shiva Samhita, Yoga-tattva Upanishad.</p><p><b>Structure.</b> Withdrawal, concentration, meditation, nada, absorption, laya, samadhi or realisation; nada from external to subtle; links with mantra and kundalini.</p><p><b>Method.</b> Nada meditation, mantra, breath awareness, concentration, meditation, kundalini practices.</p><p><b>Epistemology.</b> Contemplative; direct inner experience through meditation.</p><p><b>Metaphysics.</b> Citta, prana, nada, kundalini, atman; ordinary mental activity obscures deeper awareness.</p><p><b>Conclusion.</b> Laya is related to citta-vritti-nirodha but is not the same, and is not samadhi.</p><p class="pts"><span class="src cls">Laya notes</span> Wording mine <span class="src add">added</span></p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Laya</span></div>
+        <p class="mqt">Explain nada and laya.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Nada is subtle inner sound. The mind moves from external sound to inner sound to subtle nada, to deep concentration, to absorption (laya). This is why Laya and Mantra Yoga overlap.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Laya</span></div>
+        <p class="mqt">Distinguish laya yoga and raja yoga.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Raja yoga stills mental fluctuations (citta-vritti-nirodha, YS 1.2) in a fixed eight-limbed system. Laya yoga dissolves or absorbs mental activity and is described differently across texts. Related, not identical.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Laya</span></div>
+        <p class="mqt">Explain the methods of laya yoga.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Nada meditation, mantra, breath awareness, concentration, meditation and kundalini-oriented practices.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Laya</span></div>
+        <p class="mqt">Is laya the same as samadhi?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>No. Laya is dissolution or absorption, a process or state of deep meditation; samadhi has broader, more specific meanings across traditions.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Meaning of laya?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Dissolution or absorption.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Name two sources of laya yoga.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Hatha Yoga Pradipika, Gheranda Samhita (also Shiva Samhita, Yoga-tattva Upanishad).</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">What is nada?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Subtle or inner sound.</p></div></details></div>
+
+    </section>
 
   </main>
 </div>

@@ -1,7 +1,7 @@
 <!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Model Question Paper</title>
+<title>Eight Yoga Paths Compared</title>
 <style>
   :root{
     --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
@@ -211,69 +211,146 @@
   }
 
   .src.add{ background:var(--accent-soft); color:var(--accent); }
-  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 14px; }
+  .sk{ font-family:"Fraunces",Georgia,serif; font-style:italic; color:var(--ink); }
+  .flow{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 12px; }
+  .flow span{ background:var(--teal-soft); color:var(--teal); border-radius:8px; padding:5px 10px; font-size:13px; font-weight:600; }
+  .flow i{ color:var(--muted); font-style:normal; }
+  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 16px; }
   .mq .mqh{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
-  .mq .marks-tag{ margin-bottom:0; }
   .mq .topic{ font-size:11px; color:var(--muted); }
   .mq .mqt{ font-weight:600; color:var(--ink); margin:0 0 10px; max-width:none; }
   .mq details.ans > summary{ cursor:pointer; list-style:none; display:inline-block; padding:6px 12px; border-radius:8px; background:var(--teal-soft); color:var(--teal); font-size:13px; font-weight:600; }
   .mq details.ans > summary::-webkit-details-marker{ display:none; }
   .mq details.ans[open] > summary{ background:var(--surface-2); color:var(--muted); }
   .mq .ansb{ margin-top:12px; border-top:1px dashed var(--border); padding-top:10px; }
-  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 10px; padding-left:22px; }
   .mq .ansb p{ margin:0 0 8px; }
-  .mq .ansb .pts{ font-size:12.5px; color:var(--muted); }
-  .mq .ansb .pts b{ color:var(--teal); }
-  .mq .ansb .hi{ background:var(--teal-soft); border-radius:8px; padding:8px 12px; margin:0 0 10px; color:var(--ink); }
-  .mqbar{ display:flex; gap:8px; flex-wrap:wrap; margin:0 0 16px; position:sticky; top:0; z-index:5; background:var(--bg); padding:8px 0; }
-  .mqbar button{ font:inherit; font-size:13px; padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft); cursor:pointer; }
-  .mqbar button.on{ background:var(--accent); color:#fff; border-color:var(--accent); }
+  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 12px; padding-left:22px; }
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 
-<style>
-body{background:var(--bg,#f4f0e8)}
-.wrap{max-width:980px;margin:0 auto;padding:16px 14px 60px}
-.back{display:inline-block;margin-bottom:8px;font-size:14px;color:var(--teal);text-decoration:none}
-h1.mt{font-family:Georgia,serif;font-size:28px;margin:4px 0 4px}
-.tools{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}
-.tools button{border:1px solid var(--border);background:var(--surface-2);color:var(--ink);border-radius:999px;padding:8px 14px;font-size:14px;cursor:pointer}
-.tools button.on{background:var(--teal);color:#fff;border-color:var(--teal)}
-.root{background:var(--teal);color:#fff;text-align:center;border-radius:12px;padding:14px;font-size:20px;font-weight:700;letter-spacing:.04em}
-.arr{text-align:center;font-size:22px;color:var(--teal);line-height:1.2;margin:2px 0}
-.row{display:grid;grid-template-columns:190px 1fr;gap:0;align-items:start}
-.node{background:var(--surface-2);border:2px solid var(--teal);border-radius:12px;padding:10px 12px;position:relative;margin-right:22px}
-.node::after{content:"";position:absolute;right:-22px;top:26px;width:22px;border-top:2px solid var(--teal)}
-.node .no{display:inline-block;background:var(--teal);color:#fff;border-radius:50%;width:22px;height:22px;text-align:center;line-height:22px;font-size:12px;margin-right:6px}
-.node b{font-size:16px}.node small{display:block;color:var(--ink-soft);font-size:12px;margin-top:4px}
-.brs{display:flex;flex-wrap:wrap;gap:10px;border-left:2px solid var(--teal);padding-left:14px}
-.br{flex:1 1 210px;background:#fff;border:1px solid var(--border);border-radius:10px;padding:8px 10px;position:relative}
-.br::before{content:"";position:absolute;left:-14px;top:18px;width:14px;border-top:2px solid var(--teal)}
-.bt{font-weight:700;font-size:13px;color:var(--teal);margin-bottom:6px;border-bottom:1px solid var(--border);padding-bottom:4px}
-.lv{display:flex;flex-direction:column;gap:4px}
-.leaf{font-size:13px;color:var(--ink);background:var(--surface-2);border-radius:6px;padding:3px 8px;line-height:1.35}
-.leaf.add{border:1px dashed var(--gold)}
-body.test .leaf:not(.shown){filter:blur(6px);cursor:pointer;user-select:none}
-.ct{font-weight:700;margin:14px 0 6px}
-.cl{display:flex;flex-wrap:wrap;align-items:center;gap:6px}.arrs{color:var(--teal)}
-.legend{font-size:12px;color:var(--muted);margin-top:14px}
-@media(max-width:640px){.row{grid-template-columns:1fr}.node{margin-right:0}.node::after{display:none}.brs{margin:8px 0 0 12px}}
-</style><div class="wrap">
-<a class="back" href="notes.html">&larr; Unit 1 notes</a>
-<h1 class="mt">History and Development Map</h1>
-<p style="color:var(--ink-soft);margin:0">Eras, Vedas, epics, yajna, the six darshanas and the heterodox schools.</p>
-<div class="tools"><button id="t">Hide names (test yourself)</button><button id="r">Reveal all</button></div>
-<div class="root">HISTORY AND DEVELOPMENT MAP</div><div style="height:12px"></div>
-<div class="row"><div class="node"><span class="no">1</span><b>Vedas</b><small>Four collections</small></div><div class="brs"><div class="br"><div class="bt">The four</div><div class="lv"><span class="leaf">Rig Veda</span><span class="leaf">Yajur Veda</span><span class="leaf">Sama Veda</span><span class="leaf">Atharva Veda</span></div></div></div></div><div style="height:12px"></div>
-<div class="row"><div class="node"><span class="no">2</span><b>Epics</b><small>Itihasa</small></div><div class="brs"><div class="br"><div class="bt">The two</div><div class="lv"><span class="leaf">Ramayana</span><span class="leaf">Mahabharata</span></div></div></div></div><div style="height:12px"></div>
-<div class="row"><div class="node"><span class="no">3</span><b>Six darshanas</b><small>Orthodox schools</small></div><div class="brs"><div class="br"><div class="bt">The six</div><div class="lv"><span class="leaf">Nyaya</span><span class="leaf">Vaisheshika</span><span class="leaf">Samkhya</span><span class="leaf">Yoga</span><span class="leaf">Mimamsa</span><span class="leaf">Vedanta</span></div></div></div></div><div style="height:12px"></div>
-<div class="row"><div class="node"><span class="no">4</span><b>Heterodox schools</b><small>Buddhism, Jainism, Charvaka</small></div><div class="brs"><div class="br"><div class="bt">The three</div><div class="lv"><span class="leaf">Buddhism</span><span class="leaf">Jainism</span><span class="leaf">Charvaka</span></div></div></div></div><div style="height:12px"></div>
-<p class="legend">Solid items come from your notes. Dashed items are general points not in your notes yet.</p>
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Eight Yoga Paths Compared</div>
 </div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../../index.html">&larr; T1 &middot; Foundations of Yoga</a>
+    <div class="brand">
+      <div class="eyebrow">Foundations of Yoga &middot; Unit 2</div>
+      <h1>Eight Yoga Paths Compared</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="table"><span class="num">01</span><span>Side by side</span></button>
+      <button class="nav-item" data-target="quick"><span class="num">02</span><span>Quick facts</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Sources: your eight Unit 2 pages
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="section" id="sec-table">
+      <div class="sec-head">
+        <div class="kicker">01 &middot; Eight paths</div>
+        <h2>Eight Paths in Six Parts</h2>
+        <p class="dek">Compare at a glance.</p>
+      </div>
+      <p>One row per path, in your teacher&#8217;s six parts. Each name links to its full page.</p>
+      <div class="table-wrap"><table>
+        <tr><th>Path</th><th>Meaning</th><th>Background</th><th>Structure</th><th>Method</th><th>Epistemology</th><th>Metaphysics</th></tr>
+        <tr><td><a href="../../unit-2-structure-epistemology/raja-yoga/notes.html"><b>Raja</b></a></td><td>Citta-vritti-nirodha (YS 1.2)</td><td>Patanjali; Yoga Darshana</td><td>8 limbs; 5 vrittis; 5 kleshas</td><td>Ashtanga yoga; abhyasa-vairagya</td><td>Pratyaksha, anumana, agama</td><td>Purusha, Prakriti, Ishvara; kaivalya</td></tr>
+        <tr><td><a href="../../unit-2-structure-epistemology/jnana-yoga/notes.html"><b>Jnana</b></a></td><td>Path of knowledge: Who am I?</td><td>Upanishads, Gita, Vedanta</td><td>Viveka, vairagya, shat-sampatti, mumukshutva</td><td>Shravana, manana, nididhyasana; neti neti</td><td>Pratyaksha, anumana, shabda; Shruti for Brahman</td><td>Atman=Brahman; avidya; moksha</td></tr>
+        <tr><td><a href="../../unit-2-structure-epistemology/karma-yoga/notes.html"><b>Karma</b></a></td><td>Duty without attachment to fruits</td><td>Vedic roots; Bhagavad Gita</td><td>Dharma, nishkama karma, samatva; 3 karma types</td><td>Gita 2.47, 2.48, 2.50, 3.9; yajna; arpita and prasada buddhi</td><td>Ethical-practical; purifies the mind</td><td>Atman, Prakriti, Ishvara; attachment binds</td></tr>
+        <tr><td><a href="../../unit-2-structure-epistemology/bhakti-yoga/notes.html"><b>Bhakti</b></a></td><td>Supreme love of God</td><td>Narada Bhakti Sutra; saints</td><td>Mukhya and gauni; 11 forms</td><td>Loving service, hearing and singing, qualities of the bhakta</td><td>Derived (flagged)</td><td>Derived (flagged)</td></tr>
+        <tr><td><a href="../../unit-2-structure-epistemology/hatha-yoga/notes.html"><b>Hatha</b></a></td><td>Ha-tha: sun and moon</td><td>Nath yogis; Gorakshanath; HYP</td><td>10 techniques; nadis</td><td>Shatkarma to samadhi</td><td>Derived (flagged)</td><td>Derived (flagged)</td></tr>
+        <tr><td><a href="../../unit-2-structure-epistemology/mantra-yoga/notes.html"><b>Mantra</b></a></td><td>Sound that frees the mind</td><td>Vedas, Upanishads, Tantra</td><td>Types, japa, mala</td><td>Om, japa + artha-bhavana, nada</td><td>Shabda from the guru</td><td>Shabda, nada, Om, Shakti</td></tr>
+        <tr><td><a href="../../unit-2-structure-epistemology/laya-yoga/notes.html"><b>Laya</b></a></td><td>Dissolution, absorption</td><td>Hatha, Nada, Tantra; not fixed</td><td>Concentration to laya to samadhi</td><td>Nada, mantra, breath, meditation, kundalini</td><td>Contemplative; experience</td><td>Citta, prana, nada, kundalini</td></tr>
+        <tr><td><a href="../../unit-2-structure-epistemology/kundalini-yoga/notes.html"><b>Kundalini</b></a></td><td>Awakening dormant energy</td><td>Goraksha Shataka to Sat-Chakra-Nirupana</td><td>Nadis, 7 chakras, 3 granthis</td><td>Mulabandha, kumbhakas, bandhas, shaktipat</td><td>Embodied verification under a guru</td><td>Shakti and Shiva</td></tr>
+      </table></div>
+      <p>Sources: each linked page (the notes named there).</p>
+
+    </section>
+    <section class="section" id="sec-quick">
+      <div class="sec-head">
+        <div class="kicker">02 &middot; Quick facts</div>
+        <h2>Which Path Does What?</h2>
+        <p class="dek">Likely exam contrasts.</p>
+      </div>
+      <div class="table-wrap"><table>
+        <tr><th>Question</th><th>Answer</th></tr>
+        <tr><td>Which path is closest to Samkhya?</td><td>Raja (Purusha-Prakriti base) <span class="src gen">general</span></td></tr>
+        <tr><td>Which path stresses shabda?</td><td>Jnana (Shruti) and Mantra (guru)</td></tr>
+        <tr><td>Which path needs a guru most?</td><td>Kundalini (shaktipat)</td></tr>
+        <tr><td>Which classified under Laya?</td><td>Kundalini (your assignment)</td></tr>
+        <tr><td>Which prepares for Raja?</td><td>Hatha (HYP verse)</td></tr>
+        <tr><td>Which purifies the mind?</td><td>Karma (chitta-shuddhi)</td></tr>
+        <tr><td>Bhakti and Mantra overlap?</td><td>Same mantra, different attitude</td></tr>
+      </table></div>
+      <p>Mostly from the pages above.</p>
+
+    </section>
+
+  </main>
+</div>
+
 <script>
-(function(){var t=document.getElementById('t'),r=document.getElementById('r');
-t.onclick=function(){document.body.classList.toggle('test');t.classList.toggle('on');document.querySelectorAll('.leaf.shown').forEach(function(x){x.classList.remove('shown')})};
-r.onclick=function(){document.querySelectorAll('.leaf').forEach(function(x){x.classList.add('shown')})};
-document.addEventListener('click',function(e){var l=e.target.closest('.leaf');if(l&&document.body.classList.contains('test'))l.classList.toggle('shown')});})();
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
 </script>
-</body></html>

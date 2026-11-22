@@ -1,7 +1,7 @@
 <!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Model Question Paper</title>
+<title>Lahiri Mahasaya</title>
 <style>
   :root{
     --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
@@ -211,88 +211,139 @@
   }
 
   .src.add{ background:var(--accent-soft); color:var(--accent); }
-  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 14px; }
+  .sk{ font-family:"Fraunces",Georgia,serif; font-style:italic; color:var(--ink); }
+  .flow{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 12px; }
+  .flow span{ background:var(--teal-soft); color:var(--teal); border-radius:8px; padding:5px 10px; font-size:13px; font-weight:600; }
+  .flow i{ color:var(--muted); font-style:normal; }
+  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 16px; }
   .mq .mqh{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
-  .mq .marks-tag{ margin-bottom:0; }
   .mq .topic{ font-size:11px; color:var(--muted); }
   .mq .mqt{ font-weight:600; color:var(--ink); margin:0 0 10px; max-width:none; }
   .mq details.ans > summary{ cursor:pointer; list-style:none; display:inline-block; padding:6px 12px; border-radius:8px; background:var(--teal-soft); color:var(--teal); font-size:13px; font-weight:600; }
   .mq details.ans > summary::-webkit-details-marker{ display:none; }
   .mq details.ans[open] > summary{ background:var(--surface-2); color:var(--muted); }
   .mq .ansb{ margin-top:12px; border-top:1px dashed var(--border); padding-top:10px; }
-  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 10px; padding-left:22px; }
   .mq .ansb p{ margin:0 0 8px; }
-  .mq .ansb .pts{ font-size:12.5px; color:var(--muted); }
-  .mq .ansb .pts b{ color:var(--teal); }
-  .mq .ansb .hi{ background:var(--teal-soft); border-radius:8px; padding:8px 12px; margin:0 0 10px; color:var(--ink); }
-  .mqbar{ display:flex; gap:8px; flex-wrap:wrap; margin:0 0 16px; position:sticky; top:0; z-index:5; background:var(--bg); padding:8px 0; }
-  .mqbar button{ font:inherit; font-size:13px; padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--ink-soft); cursor:pointer; }
-  .mqbar button.on{ background:var(--accent); color:#fff; border-color:var(--accent); }
+  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 12px; padding-left:22px; }
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 
 <div class="mobile-bar">
   <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
-  <div class="title">Unit 4: Yogic Contributions of Contemporary Yogis</div>
+  <div class="title">Lahiri Mahasaya</div>
 </div>
 <div class="scrim" id="scrim"></div>
 
 <div class="app">
   <aside class="sidebar" id="sidebar">
-    <a class="back-link" href="../index.html">&larr; Foundations of Yoga</a>
+    <a class="back-link" href="../../index.html">&larr; T1 &middot; Foundations of Yoga</a>
     <div class="brand">
-      <div class="eyebrow">DSCC-16 &#183; Foundations of Yoga</div>
-      <h1>Unit 4: Yogic Contributions of Contemporary Yogis</h1>
+      <div class="eyebrow">Foundations of Yoga &middot; Unit 4</div>
+      <h1>Lahiri Mahasaya</h1>
     </div>
     <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
     <nav class="tree" id="tree">
-      <button class="nav-item" data-target="guide"><span class="num">01</span><span>Read this first</span></button>
-      <button class="nav-item" data-target="lahiri"><span class="num">02</span><span>Lahiri</span></button>
-      <button class="nav-item" data-target="krishna"><span class="num">03</span><span>Krishnamacharya</span></button>
-      <button class="nav-item" data-target="siva"><span class="num">04</span><span>Sivananda</span></button>
-      <button class="nav-item" data-target="rama"><span class="num">05</span><span>Swami Rama</span></button>
-      <button class="nav-item" data-target="mahesh"><span class="num">06</span><span>Mahesh Yogi</span></button>
-      <button class="nav-item" data-target="shriram"><span class="num">07</span><span>Shriram Sharma</span></button>
+      <button class="nav-item" data-target="life"><span class="num">01</span><span>Life</span></button>
+      <button class="nav-item" data-target="work"><span class="num">02</span><span>Contribution</span></button>
+      <button class="nav-item" data-target="teaching"><span class="num">03</span><span>Teaching</span></button>
+      <button class="nav-item" data-target="answers"><span class="num">04</span><span>Exam Answers</span></button>
+      <button class="nav-item" data-target="flags"><span class="num">05</span><span>Flags</span></button>
     </nav>
-    <div class="sidebar-footer">Foundations of Yoga &middot; Semester 1</div>
+    <div class="sidebar-footer">
+      Sources: Yogis notes; four-area rows marked added are my own reasoning
+    </div>
   </aside>
 
   <main id="main">
-<p class="mapnote" style="margin:0 0 14px"><a href="map.html" style="display:inline-block;padding:8px 14px;border:1px solid var(--teal);border-radius:999px;color:var(--teal);text-decoration:none;font-size:14px">Concept map: see it all at a glance &rarr;</a></p>
-<section class="section" id="sec-guide">
-<div class="sec-head"><div class="kicker">00 &#183; Unit 4</div><h2>Unit 4: Yogic Contributions of Contemporary Yogis</h2><p class="dek">Lahiri, Krishnamacharya, Sivananda, Swami Rama, Mahesh Yogi, Shriram Sharma.</p></div>
-<p class="honest"><b>Honest note.</b> Sources: your class notes (Sept 2026) and the Yogis document. <b>Where they differ it is flagged.</b> Kuvalayananda is not on your syllabus list but was taught in class, so he is included.</p></section>
-<section class="section" id="sec-lahiri">
-<div class="sec-head"><div class="kicker">01 &#183; Unit</div><h2>Shri Shyama Charan Lahiri</h2><p class="dek">Kriya yoga for householders.</p></div>
-<p>Born 1828 in Bengal, mahasamadhi 1895. Kriya yoga master, disciple of Mahavatar Babaji (met near Ranikhet). Worked as an accountant in the military engineering department; a householder. Taught kriya to sincere seekers. Disciples: Panchanon Bhattacharya, Swami Sri Yukteswar Giri, whose disciple was Paramahansa Yogananda. <span class="src cls">class</span></p></section>
-<section class="section" id="sec-krishna">
-<div class="sec-head"><div class="kicker">02 &#183; Unit</div><h2>Shri T. Krishnamacharya</h2><p class="dek">Ashtanga vinyasa and the Mysore line.</p></div>
-<p>1888-1989, teacher, Ayurvedic healer, scholar, called the father of modern yoga (or the reviver of Hatha yoga). Guru: Ramamohana Brahmachari. Taught at the Mysore palace. Influenced by the Sri Tattvanidhi (122 asanas). <span class="src cls">class</span></p><ul><li>Ashtanga Vinyasa: breath coordination, asana, vinyasa, drishti, flow; different from Patanjali's ashtanga</li><li>Two surya namaskars: Vaidika (A, 10 poses) and Yogika (B)</li><li>Books: Yoga Makaranda, Yoga Sanagalu, Nathamuni's Yoga Rahasya, Yogavalli, Yoga Yajnavalkya</li><li>Disciples: K. Pattabhi Jois (Yoga Mala), B.K.S. Iyengar (Light on Yoga; his sister was Krishnamacharya's wife), Indra Devi, T.K.V. Desikachar (son; The Heart of Yoga)</li></ul><p><b>Kuvalayananda</b> (1883-1966, Jagannath Ganesh Gune, guru Swami Madhav Das): began scientific research on yoga 1920, journal Yoga Mimamsa 1924, founded Kaivalyadhama at Lonavala 1924. <span class="src cls">class</span></p><p class="honest"><b>Honest note.</b> The "father of modern yoga" title: the Yogis document gives it to Krishnamacharya. Some books give it to Vivekananda. Write what your teacher says.</p></section>
-<section class="section" id="sec-siva">
-<div class="sec-head"><div class="kicker">03 &#183; Unit</div><h2>Swami Sivananda Saraswati</h2><p class="dek">Service and synthesis.</p></div>
-<p>1887-1963, born Kuppuswami in Tamil Nadu, a doctor who practised in Malaya before sannyasa. Founded the Divine Life Society, Rishikesh (1936) and the Yoga Vedanta Forest Academy (1948). Over 200 books. Teaching: Serve, love, give, purify, meditate, realise. Combined karma, bhakti, raja and jnana. Sivananda yoga is a gentle Hatha for health. <span class="src cls">class</span></p><p>Disciples: Swami Vishnudevananda (International Sivananda Yoga Vedanta Centres), Swami Satyananda (Bihar School of Yoga 1963, Yoga Nidra), Swami Satchidananda (Integral Yoga Institute). Books: Bliss Divine, Practice of Yoga, Science of Pranayama, Kundalini Yoga. <span class="src cls">class</span></p><p class="honest"><b>Honest note.</b> <b>Conflict.</b> His guru is "Swami Vishwananda Saraswati" in your class note and "Swami Vishvesharananda" in the Yogis document. I could not settle it; use your teacher's version.</p></section>
-<section class="section" id="sec-rama">
-<div class="sec-head"><div class="kicker">04 &#183; Unit</div><h2>Swami Rama of the Himalayas</h2><p class="dek">Science and spirit.</p></div>
-<p>1925-1996, born in the Garhwal Himalaya, doctor, guru Bengali Baba. Founded the Himalayan Institute of Yoga Science and Philosophy; joined traditional yoga to modern science. Took part in Menninger Foundation research in 1970 (voluntary control of heart, temperature, brain waves). Books: Living with the Himalayan Masters, Path of Fire and Light, Science of Breath, Art of Joyful Living, Meditation and Its Practice. <span class="src cls">class</span></p></section>
-<section class="section" id="sec-mahesh">
-<div class="sec-head"><div class="kicker">05 &#183; Unit</div><h2>Maharishi Mahesh Yogi</h2><p class="dek">Transcendental meditation.</p></div>
-<p>1918-2008, a physicist (born Chhattisgarh per your class note), guru Swami Brahmananda Saraswati. Founded Transcendental Meditation: silent mantra repetition to settle the mind, taught through authorised centres. Interest in stress, brain activity and consciousness; Science of Creative Intelligence; Maharishi International University. Books: Science of Being and Art of Living, Love and God. <span class="src cls">class</span></p></section>
-<section class="section" id="sec-shriram">
-<div class="sec-head"><div class="kicker">06 &#183; Unit</div><h2>Pt. Shri Ram Sharma Acharya</h2><p class="dek">Gayatri sadhana and social change.</p></div>
-<p>1911-1990, born at Anwalkheda, Agra. Teaching: individual transformation, then family, then society. Gayatri sadhana (japa, meditation, prayer, self-discipline), yajna as selflessness, magazine Akhand Jyoti, All World Gayatri Pariwar, Shantikunj at Haridwar, Yug Nirman Yojana (new era), scientific spirituality. <span class="src cls">class</span></p></section>
+    <section class="section" id="sec-life">
+      <div class="sec-head">
+        <div class="kicker">01 &middot; Life and background</div>
+        <h2>Who He Was</h2>
+        <p class="dek">Dates, teacher, setting.</p>
+      </div>
+      <div class="stat-strip">
+        <div class="stat"><div class="v">1828</div><div class="k">born, Bengal</div></div>
+        <div class="stat"><div class="v">1895</div><div class="k">mahasamadhi</div></div>
+        <div class="stat"><div class="v">1</div><div class="k">Kriya Yoga</div></div>
+        <div class="stat"><div class="v">1</div><div class="k">guru: Mahavatar Babaji</div></div>
+      </div>
+      <h3 class="sub"><span class="n">1A</span>Life and background</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Item</th><th>Details</th></tr>
+        <tr><td><b>Name</b></td><td>Sri Shyamacharan Lahiri (Lahiri Mahasaya)</td></tr>
+        <tr><td><b>Born / mahasamadhi</b></td><td>1828, Bengal / 1895</td></tr>
+        <tr><td><b>Occupation</b></td><td>Accountant, Military Engineering Department, British government (householder)</td></tr>
+        <tr><td><b>Guru</b></td><td>Mahavatar Babaji, met near Ranikhet</td></tr>
+      </table></div>
+      <p>A master of Kriya Yoga, initiated by Mahavatar Babaji. He lived as a householder; idol worship was not practised, self-realisation was the focus. <span class="src cls">Yogis notes</span></p>
 
-<script>
-(function(){
-  var bar=document.getElementById('mqbar'); if(!bar) return;
-  var btns=bar.querySelectorAll('button');
-  btns.forEach(function(b){ b.addEventListener('click',function(){
-    var f=b.getAttribute('data-f'), cards=document.querySelectorAll('.mq');
-    if(f==='reveal'||f==='hide'){ document.querySelectorAll('.mq details.ans').forEach(function(d){ if(f==='reveal') d.setAttribute('open',''); else d.removeAttribute('open'); }); return; }
-    btns.forEach(function(x){ x.classList.remove('on'); }); b.classList.add('on');
-    cards.forEach(function(c){ c.style.display=(f==='all'||c.getAttribute('data-m')===f)?'':'none'; });
-  }); });
-})();
-</script>
+    </section>
+    <section class="section" id="sec-work">
+      <div class="sec-head">
+        <div class="kicker">02 &middot; Contribution</div>
+        <h2>What He Did</h2>
+        <p class="dek">Work, institutions and books.</p>
+      </div>
+      <h3 class="sub"><span class="n">2A</span>Kriya Yoga transmission</h3>
+      <p>Mahavatar Babaji lived a householder&#8217;s life and taught Kriya Yoga to sincere seekers regardless of religious background. <span class="src cls">Yogis notes</span></p>
+      <h3 class="sub"><span class="n">2B</span>Disciples</h3>
+      <p>Sri Panchanan Bhattacharya; Swami Sri Yukteswar Giri; Paramahansa Yogananda, chief disciple of Yukteswar. <span class="src cls">Yogis notes</span></p>
+
+    </section>
+    <section class="section" id="sec-teaching">
+      <div class="sec-head">
+        <div class="kicker">03 &middot; Teaching</div>
+        <h2>Ideas and the Four Areas</h2>
+        <p class="dek">Core teaching, mapped to epistemology, metaphysics, ethics and liberation.</p>
+      </div>
+      <h3 class="sub"><span class="n">3A</span>Householder yogi</h3>
+      <p>Shows that yoga and a worldly job can go together. <span class="src add">added</span></p>
+      <h3 class="sub"><span class="n">3B</span>The four areas (for the exam template)</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Area</th><th>Position</th></tr>
+        <tr><td><b>Epistemology</b></td><td>Direct experience through Kriya under a guru <span class="src cls">Yogis notes</span> <span class="src add">added</span></td></tr>
+        <tr><td><b>Metaphysics</b></td><td>Not in your notes <span class="src add">added</span></td></tr>
+        <tr><td><b>Ethics</b></td><td>Self-realisation over ritual; no idol worship <span class="src cls">Yogis notes</span></td></tr>
+        <tr><td><b>Liberation</b></td><td>Self-realisation <span class="src cls">Yogis notes</span></td></tr>
+      </table></div>
+
+    </section>
+    <section class="section" id="sec-answers">
+      <div class="sec-head">
+        <div class="kicker">04 &middot; Exam answers</div>
+        <h2>Model Answers: 10, 5 and 2 Marks</h2>
+        <p class="dek">Tap to reveal.</p>
+      </div>
+      <p>Try each answer first, then tap to compare.</p>
+      <div class="mq"><div class="mqh"><span class="marks-tag">10 marks</span><span class="topic">Lahiri Mahasaya</span></div>
+        <p class="mqt">Write on Lahiri Mahasaya.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Shyamacharan Lahiri (1828-1895) was a householder who worked as an accountant, a master of Kriya Yoga initiated by Mahavatar Babaji near Ranikhet. He stressed self-realisation over idol worship. Disciples included Panchanan Bhattacharya and Swami Sri Yukteswar Giri, whose chief disciple was Paramahansa Yogananda.</p><p class="pts"><span class="src cls">Yogis notes</span></p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Lahiri Mahasaya</span></div>
+        <p class="mqt">Who was his guru?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Mahavatar Babaji.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Lahiri Mahasaya</span></div>
+        <p class="mqt">Name his disciples.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Panchanan Bhattacharya, Yukteswar Giri (and through him Yogananda).</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Which yoga did he master?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Kriya Yoga.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Born?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>1828, Bengal.</p></div></details></div>
+
+    </section>
+    <section class="section" id="sec-flags">
+      <div class="sec-head">
+        <div class="kicker">05 &middot; Flags</div>
+        <h2>Things to Confirm</h2>
+        <p class="dek">Before the exam.</p>
+      </div>
+      <div class="blk conf">
+        <span class="lbl">Check these</span>
+        <p>The docx and scan agree. Kriya technique itself is not described in your notes, so it is not described here. <span class="src cls">Yogis notes</span></p>
+      </div>
+
+    </section>
 
   </main>
 </div>

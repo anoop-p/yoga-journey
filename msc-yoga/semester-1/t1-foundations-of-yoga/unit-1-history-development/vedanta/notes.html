@@ -1,0 +1,669 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vedanta Darshana</title>
+<style>
+  :root{
+    --bg:#f3f1ea; --surface:#ffffff; --surface-2:#ebe7db; --border:#d9d3c2;
+    --ink:#1e231f; --ink-soft:#4d5449; --muted:#7a8072;
+    --accent:#b1502e; --accent-soft:#f0dccd;
+    --teal:#2f6a5e; --teal-soft:#dde9e4;
+    --gold:#a9822c; --gold-soft:#f1e6c9;
+    --code-bg:#eae5d6;
+    --shadow: 0 1px 2px rgba(30,35,31,.06), 0 8px 24px -12px rgba(30,35,31,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+      --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+      --accent:#e0895f; --accent-soft:#3a2a20;
+      --teal:#7fbfae; --teal-soft:#213330;
+      --gold:#d9b862; --gold-soft:#3a3016;
+      --code-bg:#2a2c24;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#181a16; --surface:#212420; --surface-2:#262924; --border:#3a3d35;
+    --ink:#ece8dd; --ink-soft:#c3c2b5; --muted:#8d9285;
+    --accent:#e0895f; --accent-soft:#3a2a20;
+    --teal:#7fbfae; --teal-soft:#213330;
+    --gold:#d9b862; --gold-soft:#3a3016;
+    --code-bg:#2a2c24;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4{ font-family:"Fraunces", Georgia, serif; font-weight:600; text-wrap:balance; margin:0 0 .4em; color:var(--ink); }
+  p{ line-height:1.62; margin:0 0 1em; color:var(--ink-soft); max-width:66ch; }
+  code, .mono{ font-family:"IBM Plex Mono", ui-monospace, monospace; }
+  a{ color:var(--accent); }
+  .app{ display:flex; min-height:100%; }
+  .sidebar{ width:280px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; padding:20px 14px 40px; }
+  .brand{ display:flex; flex-direction:column; gap:2px; padding:6px 10px 18px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .back-link{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); text-decoration:none; padding:2px 10px 10px; }
+  .back-link:hover{ color:var(--accent); }
+  .brand .eyebrow{ font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--teal); font-weight:600; }
+  .brand h1{ font-size:20px; margin:2px 0 0; }
+  .search{ width:100%; padding:9px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink); font-size:13px; font-family:inherit; margin-bottom:14px; }
+  .search:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .search::placeholder{ color:var(--muted); }
+  nav.tree{ display:flex; flex-direction:column; gap:2px; }
+  .tree button.nav-item{ all:unset; cursor:pointer; display:flex; align-items:baseline; gap:8px; padding:8px 10px; border-radius:7px; font-size:13.5px; color:var(--ink-soft); line-height:1.35; }
+  .tree button.nav-item .num{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--muted); min-width:16px; }
+  .tree button.nav-item:hover{ background:var(--surface-2); color:var(--ink); }
+  .tree button.nav-item.active{ background:var(--accent-soft); color:var(--accent); font-weight:600; }
+  .tree button.nav-item.active .num{ color:var(--accent); }
+  .tree .nav-item[hidden]{ display:none; }
+  .sidebar-footer{ margin-top:22px; padding-top:14px; border-top:1px solid var(--border); font-size:11.5px; color:var(--muted); line-height:1.5; }
+  main{ flex:1; min-width:0; padding:36px clamp(18px, 5vw, 64px) 100px; }
+  .section{ max-width:760px; margin:0 auto 88px; scroll-margin-top:24px; }
+  .section[hidden]{ display:none; }
+  .kicker{ display:inline-flex; align-items:center; gap:8px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:10px; }
+  .section h2{ font-size:30px; margin-bottom:6px; }
+  .section .dek{ font-size:15px; color:var(--muted); margin-bottom:28px; max-width:60ch; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .card h3{ font-size:16px; margin-bottom:10px; }
+  .card h3 .tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; background:var(--teal-soft); color:var(--teal); padding:2px 7px; border-radius:5px; margin-right:9px; vertical-align:middle; position:relative; top:-1px; }
+  .dsf{ display:flex; flex-direction:column; gap:10px; }
+  .dsf .row{ display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:start; }
+  .dsf .row .label{ font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); padding-top:2px; }
+  .dsf .row p{ margin:0; font-size:14.5px; }
+  @media (max-width:480px){ .dsf .row{ grid-template-columns:1fr; gap:3px; } }
+  ul.notes{ margin:0 0 1em; padding-left:1.1em; color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+  ul.notes li{ margin-bottom:5px; }
+  ul.notes ul{ margin-top:5px; }
+  .mal{ color:var(--muted); font-style:italic; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+  .stat-strip{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 22px; }
+  .stat{ background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; min-width:120px; }
+  .stat .v{ font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; color:var(--ink); }
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  td{ color:var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--surface); box-shadow:var(--shadow); margin-bottom:18px; }
+  .table-wrap table{ margin:0; }
+  .table-wrap th, .table-wrap td{ padding:11px 14px; }
+  .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:14px 0 22px; font-size:13.5px; font-family:"IBM Plex Mono", monospace; }
+  .flow .step{ background:var(--teal-soft); color:var(--teal); border-radius:7px; padding:6px 11px; font-weight:600; }
+  .flow .arrow{ color:var(--muted); }
+  figure{ margin:0 0 22px; }
+  figure img{ width:100%; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow); display:block; }
+  figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .figure-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 22px; }
+  .figure-grid figure{ margin:0; }
+  @media (max-width:640px){ .figure-grid{ grid-template-columns:1fr; } }
+  .source-note{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .layer-nav{ display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:4px; margin-bottom:18px; }
+  .layer-nav button{ all:unset; cursor:pointer; flex:1; text-align:center; padding:9px 6px; border-radius:7px; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .layer-nav button .n{ display:block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:500; opacity:.75; margin-bottom:2px; }
+  .layer-nav button.active{ background:var(--surface); color:var(--accent); box-shadow:var(--shadow); }
+  .layer-panel[hidden]{ display:none; }
+  .layer-panel{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); margin-bottom:18px; }
+  .layer-panel .story p{ font-size:14.5px; max-width:none; }
+  .layer-panel .story p b{ color:var(--ink); }
+  .analogy{ background:var(--teal-soft); border-radius:9px; padding:12px 15px; font-size:13.5px; color:var(--ink); margin:14px 0; }
+  .analogy b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); margin-bottom:4px; }
+  .marks-tag{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--accent); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:12px; }
+  .practice-link{ border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:8px; padding:12px 15px; margin:12px 0; font-size:13.5px; }
+  .practice-link b{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--gold); margin-bottom:4px; }
+  .recall-strip{ display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+  .recall-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:9px; padding:11px 13px; cursor:pointer; user-select:none; }
+  .recall-card .q{ font-size:12.5px; color:var(--ink); font-weight:600; }
+  .recall-card .a{ font-size:12.5px; color:var(--accent); margin-top:6px; display:none; }
+  .recall-card.flipped .a{ display:block; }
+  .recall-card.flipped .q{ color:var(--muted); font-weight:500; }
+  .recall-hint{ font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .mobile-bar{ display:none; position:sticky; top:0; z-index:20; background:var(--surface); border-bottom:1px solid var(--border); padding:12px 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); align-items:center; gap:10px; }
+  .mobile-bar button{ all:unset; cursor:pointer; display:flex; flex-direction:column; gap:3px; padding:6px; }
+  .mobile-bar button span{ width:18px; height:2px; background:var(--ink); border-radius:2px; }
+  .mobile-bar .title{ font-family:"Fraunces", serif; font-weight:600; font-size:16px; }
+  @media (max-width: 860px){
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; z-index:30; transform:translateX(-100%); transition:transform .22s ease; width:82vw; max-width:320px; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.25); }
+    .mobile-bar{ display:flex; }
+    main{ padding-top:28px; }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:25; }
+    .scrim.show{ display:block; }
+  }
+<style>
+  html{ scroll-behavior:smooth; }
+  .tree button.nav-item.done{ }
+  .section{ max-width:900px; margin:0 auto 96px; }
+  .section > .dek{ max-width:64ch; }
+  .sec-head{ border-top:3px solid var(--accent); padding-top:18px; margin-bottom:22px; }
+  h3.sub{ font-size:19px; margin:34px 0 12px; color:var(--ink); }
+  h3.sub .n{ font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--accent); letter-spacing:.06em; margin-right:8px; }
+  .spread{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:22px; align-items:start; margin:0 0 24px; }
+  .spread.rev{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); }
+  .spread.wide{ grid-template-columns:1fr; }
+  @media (max-width:760px){ .spread, .spread.rev{ grid-template-columns:1fr; } }
+  .fig{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px; box-shadow:var(--shadow); margin:0; }
+  .fig svg, .fig img{ width:100%; height:auto; display:block; border:0; box-shadow:none; border-radius:6px; }
+  .fig figcaption{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center; }
+  .fig.photo img{ background:#fff; }
+  ol.key{ list-style:none; counter-reset:k; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  ol.key li{ counter-increment:k; position:relative; padding-left:34px; font-size:14px; line-height:1.5; color:var(--ink-soft); }
+  ol.key li::before{ content:counter(k); position:absolute; left:0; top:1px; width:23px; height:23px; border-radius:50%; background:var(--accent); color:#fff; font:600 11.5px/23px "IBM Plex Mono", monospace; text-align:center; }
+  ol.key li b{ color:var(--ink); }
+  ul.plain{ margin:0 0 .9em; padding-left:1.15em; font-size:14.5px; line-height:1.6; color:var(--ink-soft); }
+  ul.plain li{ margin-bottom:4px; } ul.plain li b{ color:var(--ink); }
+  .blk{ border-left:4px solid var(--border); background:var(--surface); border-radius:0 10px 10px 0; padding:13px 17px; margin:0 0 14px; box-shadow:var(--shadow); }
+  .blk > .lbl{ display:block; font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+  .blk p{ font-size:14.5px; max-width:none; margin:0 0 .7em; } .blk p:last-child{ margin-bottom:0; }
+  .blk ul.plain:last-child{ margin-bottom:0; }
+  .blk.und{ border-left-color:var(--teal); } .blk.und > .lbl{ color:var(--teal); }
+  .blk.know{ border-left-color:var(--ink-soft); } .blk.know > .lbl{ color:var(--ink-soft); }
+  .blk.mem{ border-left-color:var(--gold); background:var(--gold-soft); } .blk.mem > .lbl{ color:var(--gold); }
+  .blk.conf{ border-left-color:var(--accent); } .blk.conf > .lbl{ color:var(--accent); }
+  .blk.exam{ border-left-color:var(--accent); background:var(--accent-soft); } .blk.exam > .lbl{ color:var(--accent); }
+  .blk.say{ border-left-color:var(--teal); background:var(--teal-soft); } .blk.say > .lbl{ color:var(--teal); }
+  .blk.say p{ font-style:italic; color:var(--ink); }
+  .cols2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } @media (max-width:760px){ .cols2{ grid-template-columns:1fr; } }
+  details.deeper{ border:1px dashed var(--border); border-radius:10px; padding:0; margin:0 0 16px; background:var(--surface); }
+  details.deeper > summary{ cursor:pointer; padding:11px 16px; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; list-style:none; }
+  details.deeper > summary::-webkit-details-marker{ display:none; }
+  details.deeper > summary::before{ content:"+ "; color:var(--accent); }
+  details.deeper[open] > summary::before{ content:"\2212 "; }
+  details.deeper > .inner{ padding:2px 18px 14px; }
+  details.deeper p{ font-size:14px; max-width:none; }
+  .src{ display:inline-block; font-family:"IBM Plex Mono", monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; padding:1px 6px; border-radius:4px; vertical-align:1px; margin-left:4px; font-weight:600; white-space:nowrap; }
+  .src.cls{ background:var(--teal-soft); color:var(--teal); }
+  .src.gen{ background:var(--gold-soft); color:var(--gold); }
+  .honest{ font-size:13px; color:var(--muted); border:1px dashed var(--border); border-radius:9px; padding:10px 14px; margin:0 0 16px; line-height:1.55; }
+  .honest b{ color:var(--ink-soft); }
+  .chk{ list-style:none; padding:0; margin:0; }
+  .chk li{ position:relative; padding-left:26px; margin-bottom:5px; font-size:14px; color:var(--ink); line-height:1.5; }
+  .chk li::before{ content:""; position:absolute; left:2px; top:3px; width:13px; height:13px; border:2px solid var(--accent); border-radius:3px; }
+  /* svg helpers */
+  svg .t{ font-family:"IBM Plex Sans", sans-serif; font-size:12px; fill:var(--ink); }
+  svg .tb{ font-weight:600; } svg .ts{ font-size:10.5px; fill:var(--ink-soft); } svg .tm{ fill:var(--muted); font-size:10.5px; }
+  svg .tc{ text-anchor:middle; } svg .te{ text-anchor:end; }
+  svg .ln{ stroke:var(--ink-soft); stroke-width:1.5; fill:none; stroke-linecap:round; }
+  svg .lnt{ stroke:var(--muted); stroke-width:1; fill:none; stroke-dasharray:3 3; }
+  svg .fa{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.5; }
+  svg .ft{ fill:var(--teal-soft); stroke:var(--teal); stroke-width:1.5; }
+  svg .fg{ fill:var(--gold-soft); stroke:var(--gold); stroke-width:1.5; }
+  svg .fs{ fill:var(--surface-2); stroke:var(--border); stroke-width:1.5; }
+  svg .fw{ fill:var(--surface); stroke:var(--ink-soft); stroke-width:1.5; }
+  svg .ca{ stroke:var(--accent); stroke-width:2.2; fill:none; } svg .ct{ stroke:var(--teal); stroke-width:2.2; fill:none; }
+  svg .bd circle{ fill:var(--accent); } svg .bd text{ fill:#fff; font:600 11px "IBM Plex Mono", monospace; text-anchor:middle; }
+  svg .pt{ fill:var(--accent); }
+  .cmp td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .cmp td.in{ background:var(--teal-soft); } .cmp td.out{ background:var(--accent-soft); }
+  .src-foot{ font-size:12px; color:var(--muted); border-top:1px dashed var(--border); padding-top:12px; margin-top:6px; }
+  .hide-sm-print{ }
+  @media print{
+    @page{ size:A4; margin:12mm; }
+    body{ background:#fff; }
+    .sidebar, .mobile-bar, .scrim{ display:none !important; }
+    main{ padding:0; } .section{ max-width:none; margin:0 0 10mm; }
+    .blk, .fig, .spread, .table-wrap{ break-inside:avoid; box-shadow:none; }
+    details.deeper > summary{ color:#000; }
+    .recall-card .a{ display:block; } .recall-card{ break-inside:avoid; }
+    h2, h3.sub{ break-after:avoid; }
+  }
+
+  .src.add{ background:var(--accent-soft); color:var(--accent); }
+  .sk{ font-family:"Fraunces",Georgia,serif; font-style:italic; color:var(--ink); }
+  .flow{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 12px; }
+  .flow span{ background:var(--teal-soft); color:var(--teal); border-radius:8px; padding:5px 10px; font-size:13px; font-weight:600; }
+  .flow i{ color:var(--muted); font-style:normal; }
+  .mq{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:0 0 16px; }
+  .mq .mqh{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
+  .mq .topic{ font-size:11px; color:var(--muted); }
+  .mq .mqt{ font-weight:600; color:var(--ink); margin:0 0 10px; max-width:none; }
+  .mq details.ans > summary{ cursor:pointer; list-style:none; display:inline-block; padding:6px 12px; border-radius:8px; background:var(--teal-soft); color:var(--teal); font-size:13px; font-weight:600; }
+  .mq details.ans > summary::-webkit-details-marker{ display:none; }
+  .mq details.ans[open] > summary{ background:var(--surface-2); color:var(--muted); }
+  .mq .ansb{ margin-top:12px; border-top:1px dashed var(--border); padding-top:10px; }
+  .mq .ansb p{ margin:0 0 8px; }
+  .mq .ansb ul,.mq .ansb ol{ color:var(--ink-soft); line-height:1.6; margin:0 0 12px; padding-left:22px; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<div class="mobile-bar">
+  <button id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <div class="title">Vedanta Darshana</div>
+</div>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a class="back-link" href="../../index.html">&larr; T1 &middot; Foundations of Yoga</a>
+    <div class="brand">
+      <div class="eyebrow">Foundations of Yoga &middot; Unit 1 &middot; Shad Darshanas</div>
+      <h1>Vedanta Darshana</h1>
+    </div>
+    <input class="search" id="search" type="text" placeholder="Search topics&hellip;" autocomplete="off">
+    <nav class="tree" id="tree">
+      <button class="nav-item" data-target="overview"><span class="num">01</span><span>Overview</span></button>
+      <button class="nav-item" data-target="terms"><span class="num">02</span><span>Key Terms</span></button>
+      <button class="nav-item" data-target="epistemology"><span class="num">03</span><span>Epistemology</span></button>
+      <button class="nav-item" data-target="metaphysics"><span class="num">04</span><span>Metaphysics</span></button>
+      <button class="nav-item" data-target="liberation"><span class="num">05</span><span>Ethics &amp; Liberation</span></button>
+      <button class="nav-item" data-target="compare"><span class="num">06</span><span>Comparison</span></button>
+      <button class="nav-item" data-target="answers"><span class="num">07</span><span>Exam Answers</span></button>
+      <button class="nav-item" data-target="recall"><span class="num">08</span><span>Recall &amp; Checks</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      Sources: your Vedanta darshana notes (epistemology, metaphysics, ethics, liberation)
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="section" id="sec-overview">
+      <div class="sec-head">
+        <div class="kicker">01 &middot; Overview</div>
+        <h2>What Vedanta Is</h2>
+        <p class="dek">The end of the Vedas, its texts and its three main schools.</p>
+      </div>
+      <div class="stat-strip">
+        <div class="stat"><div class="v">3</div><div class="k">main schools</div></div>
+        <div class="stat"><div class="v">3</div><div class="k">prasthanatraya texts</div></div>
+        <div class="stat"><div class="v">6</div><div class="k">pramanas (Advaita)</div></div>
+        <div class="stat"><div class="v">3</div><div class="k">orders of reality</div></div>
+        <div class="stat"><div class="v">4</div><div class="k">mahavakyas</div></div>
+      </div>
+      <div class="blk und">
+        <span class="lbl">In one paragraph</span>
+        <p>Vedanta is the philosophy of the Upanishads. Its core claim (Advaita) is that <b>Brahman alone is ultimately real</b>, the world is <b>mithya</b> (experienced but not ultimately real), and the individual self is <b>none other than Brahman</b>. Bondage is a mistake of knowing (avidya), so liberation comes from knowledge, not from action. <span class="src cls">Vedanta notes</span></p>
+      </div>
+      <h3 class="sub"><span class="n">1A</span>Meaning and sources</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Point</th><th>Your notes say</th></tr>
+        <tr><td>Meaning</td><td><b>Veda-anta</b>, the end or culmination of the Vedas: the knowledge portion (jnana-kanda). Also called <b>Uttara Mimamsa</b>, as opposed to Purva Mimamsa (the ritual portion) <span class="src cls">Vedanta notes</span></td></tr>
+        <tr><td>Texts: <b>Prasthanatraya</b></td><td>(1) Upanishads, the Shruti prasthana; (2) Brahma Sutras of Badarayana, the Nyaya prasthana; (3) Bhagavad Gita, the Smriti prasthana <span class="src cls">Vedanta notes</span></td></tr>
+        <tr><td>Founding aim</td><td>Brahma Sutra 1.1.1: <i>athato brahma-jijnasa</i>, &ldquo;now, therefore, the inquiry into Brahman&rdquo; <span class="src cls">Vedanta notes</span></td></tr>
+        <tr><td>Influence</td><td>The most influential of the Shad Darshanas; has shaped Yoga and Bhakti traditions <span class="src cls">Vedanta notes</span></td></tr>
+      </table></div>
+      <h3 class="sub"><span class="n">1B</span>Major schools</h3>
+      <div class="table-wrap"><table>
+        <tr><th>School</th><th>Founder (traditional period)</th><th>View of Brahman, soul and world</th></tr>
+        <tr><td><b>Advaita</b> (non-dualism)</td><td>Shankaracharya (8th century CE)</td><td>Brahman alone is ultimately real; the jiva is identical with Brahman; the world is mithya</td></tr>
+        <tr><td><b>Vishishtadvaita</b> (qualified non-dualism)</td><td>Ramanujacharya (11th-12th century)</td><td>Brahman (Vishnu/Narayana) is one, but souls and matter are real parts or modes of Brahman, his &ldquo;body&rdquo;</td></tr>
+        <tr><td><b>Dvaita</b> (dualism)</td><td>Madhvacharya (13th century)</td><td>God, souls and matter are eternally and really different (pancha-bheda)</td></tr>
+      </table></div>
+      <p>Others: Dvaitadvaita (Nimbarka), Shuddhadvaita (Vallabha), Achintya-bhedabheda (Chaitanya tradition). The notes emphasise Advaita. <span class="src cls">Vedanta notes</span></p>
+      <div class="blk mem">
+        <span class="lbl">Core of Advaita</span>
+        <p><b>Brahma satyam, jagan mithya, jivo brahmaiva naparah.</b> Brahman is real; the world is mithya; the individual self is none other than Brahman. <span class="src cls">Vedanta notes</span></p>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Meaning of Vedanta?</div><div class="a">Veda-anta: end of the Vedas; the Upanishads (Uttara Mimamsa)</div></div>
+        <div class="recall-card"><div class="q">Prasthanatraya?</div><div class="a">Upanishads, Brahma Sutras, Bhagavad Gita</div></div>
+        <div class="recall-card"><div class="q">Three main schools and founders?</div><div class="a">Advaita (Shankara), Vishishtadvaita (Ramanuja), Dvaita (Madhva)</div></div>
+        <div class="recall-card"><div class="q">Core of Advaita?</div><div class="a">Brahma satyam, jagan mithya, jivo brahmaiva naparah</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-terms">
+      <div class="sec-head">
+        <div class="kicker">02 &middot; Key terms</div>
+        <h2>Sanskrit Terms and What They Mean</h2>
+        <p class="dek">A working glossary for the sections below.</p>
+      </div>
+      <p>Most Vedanta answers are these words used correctly.</p>
+      <div class="table-wrap"><table>
+        <tr><th>Term</th><th>Meaning</th></tr>
+        <tr><td><b>Brahman</b></td><td>The ultimate reality; sat-chit-ananda (being, consciousness, bliss)</td></tr>
+        <tr><td><b>Nirguna / Saguna Brahman</b></td><td>Brahman without attributes (highest truth) / with Maya, as Ishvara (object of worship)</td></tr>
+        <tr><td><b>Atman</b></td><td>The innermost self; pure consciousness; the witness (sakshi)</td></tr>
+        <tr><td><b>Maya</b></td><td>The power by which the manifold world appears; neither real like Brahman nor unreal like a hare&#8217;s horn</td></tr>
+        <tr><td><b>Avidya</b></td><td>Ignorance as positive misapprehension, not mere absence of knowledge</td></tr>
+        <tr><td><b>Adhyasa</b></td><td>Superimposition of one thing&#8217;s qualities on another (rope as snake)</td></tr>
+        <tr><td><b>Mithya</b></td><td>Empirically real, not ultimately real; contradicted by knowledge of Brahman</td></tr>
+        <tr><td><b>Jiva / Ishvara</b></td><td>Brahman limited by individual upadhi (antahkarana) / associated with Maya</td></tr>
+        <tr><td><b>Upadhi</b></td><td>Limiting adjunct, such as the body-mind complex</td></tr>
+        <tr><td><b>Vivartavada</b></td><td>The world is an apparent transformation of Brahman</td></tr>
+        <tr><td><b>Mahavakya</b></td><td>Great Upanishadic statement of identity</td></tr>
+        <tr><td><b>Moksha</b></td><td>Liberation: removal of avidya; recognition of one&#8217;s ever-free nature</td></tr>
+        <tr><td><b>Jivanmukti / Videhamukti</b></td><td>Liberation while living / at the fall of the body</td></tr>
+      </table></div>
+      <p><span class="src cls">Vedanta notes</span></p>
+
+    </section>
+    <section class="section" id="sec-epistemology">
+      <div class="sec-head">
+        <div class="kicker">03 &middot; Core ideas: epistemology</div>
+        <h2>How We Know Brahman</h2>
+        <p class="dek">Six pramanas, the Mahavakyas, adhyasa and the theory of error.</p>
+      </div>
+      <p>In Advaita, knowledge arises when the mind (antahkarana) takes the form of the object (a <i>vritti</i>) and the object is revealed by the consciousness that illumines it. Terms: pramata (knower), prameya (object), pramana (means), pramiti (resulting valid knowledge). <span class="src cls">Vedanta notes</span></p>
+      <h3 class="sub"><span class="n">3A</span>Six pramanas of Advaita</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Pramana</th><th>Meaning</th><th>Example</th></tr>
+        <tr><td>Pratyaksha</td><td>Direct perception</td><td>Seeing a pot</td></tr>
+        <tr><td>Anumana</td><td>Inference</td><td>Fire on a hill from smoke</td></tr>
+        <tr><td>Upamana</td><td>Comparison, analogy</td><td>Recognising a wild cow (gavaya) from its likeness to a domestic cow</td></tr>
+        <tr><td>Shabda (Agama)</td><td>Reliable testimony; for Brahman, the Shruti</td><td>Learning about Brahman through the Mahavakyas</td></tr>
+        <tr><td>Arthapatti</td><td>Postulation to explain an otherwise inexplicable fact</td><td>A person who is fat but never eats by day must eat at night</td></tr>
+        <tr><td>Anupalabdhi</td><td>Non-apprehension: knowledge of absence</td><td>Knowing there is no pot on the table</td></tr>
+      </table></div>
+      <p>Compare: Samkhya and Yoga accept 3; Nyaya 4; Vishishtadvaita and Dvaita typically 3. <span class="src cls">Vedanta notes</span></p>
+      <h3 class="sub"><span class="n">3B</span>Shruti as the means to know Brahman</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li>Brahman is not an object of the senses and cannot be proved by inference alone, so the <b>Shruti</b> (Upanishads) is the means. <span class="src cls">Vedanta notes</span></li>
+          <li>Perception and inference work in the empirical (vyavaharika) world; reasoning and experience <b>support</b> Shruti but do not replace it. <span class="src cls">Vedanta notes</span></li>
+          <li>Shabda is not mere belief: it is careful teaching by a competent guru, understood through <b>shravana, manana, nididhyasana</b>. <span class="src cls">Vedanta notes</span></li>
+        </ul>
+      </div>
+      <div class="table-wrap"><table>
+        <tr><th>Mahavakya</th><th>Source</th><th>Meaning</th></tr>
+        <tr><td>Prajnanam Brahma</td><td>Aitareya (Rig Veda)</td><td>Brahman is consciousness</td></tr>
+        <tr><td>Aham Brahmasmi</td><td>Brihadaranyaka (Yajur Veda)</td><td>I am Brahman</td></tr>
+        <tr><td>Tat tvam asi</td><td>Chandogya (Sama Veda)</td><td>That thou art</td></tr>
+        <tr><td>Ayam Atma Brahma</td><td>Mandukya (Atharva Veda)</td><td>This Self is Brahman</td></tr>
+      </table></div>
+      <h3 class="sub"><span class="n">3C</span>Error and how knowledge removes it</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Adhyasa</b> (Shankara): superimposing the qualities of one thing on another. The basic error is superimposing body, senses and mind (the not-self) on Atman, giving &ldquo;I am the body&rdquo; and &ldquo;I am the doer&rdquo;. <span class="src cls">Vedanta notes</span></li>
+          <li><b>Anirvachaniya-khyati:</b> the &ldquo;snake&rdquo; seen on a rope is neither absolutely real nor absolutely non-existent (indeterminable). It is <b>sublated</b> once the rope is known; the criterion of truth is non-contradiction (<i>abadhitatva</i>). <span class="src cls">Vedanta notes</span></li>
+          <li>Other schools differ (Ramanuja: satkhyati; Madhva: abhinava-anyathakhyati) but all say error is wrong apprehension. <span class="src cls">Vedanta notes</span></li>
+          <li>Knowledge of Brahman creates no new object; it <b>removes avidya</b>, as knowing the rope removes the snake (<i>jnana-nivartya</i>). So valid knowledge is the direct means to liberation. <span class="src cls">Vedanta notes</span></li>
+        </ul>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Pramanas of Advaita?</div><div class="a">Pratyaksha, anumana, upamana, shabda, arthapatti, anupalabdhi</div></div>
+        <div class="recall-card"><div class="q">Means to know Brahman?</div><div class="a">Shruti (Upanishads), supported by reasoning and experience</div></div>
+        <div class="recall-card"><div class="q">What is adhyasa?</div><div class="a">Superimposition, e.g. rope as snake; body-mind taken as Atman</div></div>
+        <div class="recall-card"><div class="q">What removes avidya?</div><div class="a">Knowledge, not action</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-metaphysics">
+      <div class="sec-head">
+        <div class="kicker">04 &middot; Core ideas: metaphysics</div>
+        <h2>Brahman, Maya, Jiva and the World</h2>
+        <p class="dek">What is real, and what only appears.</p>
+      </div>
+      <h3 class="sub"><span class="n">4A</span>Brahman, Atman, Maya</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Brahman:</b> <i>satyam jnanam anantam Brahma</i> (Taittiriya 2.1.1): truth, consciousness, infinity. <b>Sat-chit-ananda</b> is its nature, not a set of qualities it has. <span class="src cls">Vedanta notes</span></li>
+          <li><b>Nirguna Brahman</b> is the highest truth (paramarthika). <b>Saguna Brahman (Ishvara)</b> is Brahman with Maya as creator, sustainer, dissolver; object of worship. <span class="src cls">Vedanta notes</span></li>
+          <li><b>Atman:</b> pure consciousness, witness of body, senses, mind and the three states. Not the body, senses, mind or intellect. Jiva and Brahman differ only through limiting adjuncts (<i>upadhi</i>). <span class="src cls">Vedanta notes</span></li>
+          <li><b>Maya</b> has two functions: <b>avarana</b> (veiling the true nature) and <b>vikshepa</b> (projecting multiplicity). The world is <b>mithya</b>. <span class="src cls">Vedanta notes</span></li>
+          <li><b>Vivartavada</b>: apparent transformation, like rope as snake; contrast Samkhya&#8217;s <b>parinamavada</b>. Brahman is both material (<i>upadana</i>) and efficient (<i>nimitta</i>) cause, as clay is for pots (Chandogya 6.1). <span class="src cls">Vedanta notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">4B</span>Three orders of reality</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Level</th><th>Name</th><th>Description</th><th>Example</th></tr>
+        <tr><td>Absolute</td><td>Paramarthika</td><td>Ultimately real; never contradicted</td><td>Brahman / Atman</td></tr>
+        <tr><td>Empirical</td><td>Vyavaharika</td><td>Real for ordinary transactions until knowledge of Brahman</td><td>World, body, objects</td></tr>
+        <tr><td>Apparent</td><td>Pratibhasika</td><td>Real only during an illusion; sublated later</td><td>Rope-snake; dream objects</td></tr>
+      </table></div>
+      <h3 class="sub"><span class="n">4C</span>Jiva and Ishvara</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Feature</th><th>Jiva</th><th>Ishvara</th></tr>
+        <tr><td>Limiting adjunct</td><td>Individual antahkarana (avidya)</td><td>Maya (universal)</td></tr>
+        <tr><td>Knowledge</td><td>Limited</td><td>All-knowing</td></tr>
+        <tr><td>Power</td><td>Limited</td><td>Omnipotent</td></tr>
+        <tr><td>Nature</td><td>Brahman conditioned by individual upadhi</td><td>Brahman associated with Maya</td></tr>
+        <tr><td>Ultimate nature</td><td>Brahman</td><td>Brahman</td></tr>
+      </table></div>
+      <p>When the upadhis are discounted, the identity of jiva, Ishvara and Brahman is seen: pure consciousness. <span class="src cls">Vedanta notes</span></p>
+      <h3 class="sub"><span class="n">4D</span>Analysis of the individual</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Concept</th><th>Components</th></tr>
+        <tr><td>Five koshas</td><td>Annamaya (food), Pranamaya (vital energy), Manomaya (mind), Vijnanamaya (intellect), Anandamaya (bliss)</td></tr>
+        <tr><td>Three bodies</td><td>Sthula (gross), Sukshma (subtle), Karana (causal)</td></tr>
+        <tr><td>Three states</td><td>Jagrat (waking), Svapna (dream), Sushupti (deep sleep); the witness remains constant</td></tr>
+        <tr><td>Turiya</td><td>The &ldquo;fourth&rdquo;: pure consciousness underlying the three states (Mandukya)</td></tr>
+      </table></div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Three orders of reality?</div><div class="a">Paramarthika, vyavaharika, pratibhasika</div></div>
+        <div class="recall-card"><div class="q">Two functions of Maya?</div><div class="a">Avarana (veiling) and vikshepa (projecting)</div></div>
+        <div class="recall-card"><div class="q">Five koshas?</div><div class="a">Anna, prana, mano, vijnana, ananda-maya</div></div>
+        <div class="recall-card"><div class="q">Vivarta vs parinama?</div><div class="a">Apparent transformation (Advaita) vs real transformation (Samkhya)</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-liberation">
+      <div class="sec-head">
+        <div class="kicker">05 &middot; Core ideas: ethics and liberation</div>
+        <h2>Preparation and Moksha</h2>
+        <p class="dek">Sadhana chatushtaya, nishkama karma, the three-fold path and the two kinds of liberation.</p>
+      </div>
+      <h3 class="sub"><span class="n">5A</span>Ethics in Vedanta</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li><b>Foundation:</b> unity of existence. If one Self dwells in all, injury to another is injury to oneself. The Isha Upanishad: the sage who sees all beings in the Self and the Self in all has no hatred. <span class="src cls">Vedanta notes</span></li>
+          <li><b>Dharma:</b> right action by role and capacity (varna-ashrama-dharma in the classical frame). <span class="src cls">Vedanta notes</span></li>
+          <li>Ethics prepares the mind (<i>chitta-shuddhi</i>) to understand and retain the teaching. For the knower, virtue is spontaneous. <span class="src cls">Vedanta notes</span></li>
+          <li><b>Nishkama karma</b> (Gita 2.47): act without clinging to the fruits, as an offering to Ishvara. Gita 16 (daivi sampad) lists the aspirant&#8217;s qualities; Gita 12.13-19 describes the devotee. <span class="src cls">Vedanta notes</span></li>
+          <li>Ahimsa, satya, asteya, brahmacharya and aparigraha are recognised; also svadhyaya, seva, dana and daya. <span class="src cls">Vedanta notes</span></li>
+        </ul>
+      </div>
+      <div class="table-wrap"><table>
+        <tr><th>Sadhana chatushtaya</th><th>Meaning</th></tr>
+        <tr><td>Viveka</td><td>Discrimination between the eternal and the non-eternal</td></tr>
+        <tr><td>Vairagya</td><td>Dispassion towards the fruits of action here and hereafter</td></tr>
+        <tr><td>Shat-sampatti</td><td>Six virtues: shama (calmness), dama (sense control), uparati (inner restraint), titiksha (forbearance), shraddha (faith in teacher and scripture), samadhana (steady attention)</td></tr>
+        <tr><td>Mumukshutva</td><td>Intense longing for liberation</td></tr>
+      </table></div>
+      <p><span class="src cls">Vedanta notes</span> Teaching point: ethics is both a <b>path</b> (preparation) and a <b>fruit</b> (the natural conduct of the wise).</p>
+      <h3 class="sub"><span class="n">5B</span>Liberation (moksha)</h3>
+      <div class="blk know">
+        <span class="lbl">Know this</span>
+        <ul class="plain">
+          <li>Bondage is not a real chain but the notion &ldquo;I am a limited doer and enjoyer&rdquo;, from avidya. <span class="src cls">Vedanta notes</span></li>
+          <li>Moksha is <b>not produced</b> by action; it is one&#8217;s nature (<i>nitya-prapta</i>), recognised when ignorance goes. Mundaka 3.2.9: the knower of Brahman becomes Brahman. <span class="src cls">Vedanta notes</span></li>
+          <li>Action cannot give liberation because it works within duality; knowledge removes ignorance. Karma, bhakti and yoga help by purifying and steadying the mind. <span class="src cls">Vedanta notes</span></li>
+        </ul>
+      </div>
+      <div class="table-wrap"><table>
+        <tr><th>Stage</th><th>Practice</th></tr>
+        <tr><td>Preparation</td><td>Sadhana chatushtaya, karma yoga, upasana, a teacher</td></tr>
+        <tr><td>Shravana</td><td>Listening to the Upanishadic teaching from a competent guru</td></tr>
+        <tr><td>Manana</td><td>Reflecting to remove doubts by reasoning</td></tr>
+        <tr><td>Nididhyasana</td><td>Deep, steady meditation to assimilate the knowledge and remove contrary habits</td></tr>
+        <tr><td>Result</td><td>Aparoksha-jnana: direct knowledge &ldquo;I am Brahman&rdquo;</td></tr>
+      </table></div>
+      <div class="table-wrap"><table>
+        <tr><th>Type</th><th>Meaning</th></tr>
+        <tr><td>Jivanmukti</td><td>Liberation while living: free from the sense of bondage</td></tr>
+        <tr><td>Videhamukti</td><td>Liberation at the fall of the body, after prarabdha is exhausted</td></tr>
+      </table></div>
+      <div class="table-wrap"><table>
+        <tr><th>Karma</th><th>Meaning</th><th>Effect of knowledge</th></tr>
+        <tr><td>Sanchita</td><td>Accumulated past karma</td><td>Destroyed</td></tr>
+        <tr><td>Agami</td><td>Future karma from present actions</td><td>Not accrued without a sense of doership</td></tr>
+        <tr><td>Prarabdha</td><td>Already bearing fruit (this body)</td><td>Runs its course</td></tr>
+      </table></div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Sadhana chatushtaya?</div><div class="a">Viveka, vairagya, shat-sampatti, mumukshutva</div></div>
+        <div class="recall-card"><div class="q">Three-fold method of knowledge?</div><div class="a">Shravana, manana, nididhyasana</div></div>
+        <div class="recall-card"><div class="q">Jivanmukti vs videhamukti?</div><div class="a">Free while living / free at the fall of the body</div></div>
+        <div class="recall-card"><div class="q">What happens to sanchita and prarabdha?</div><div class="a">Sanchita destroyed; prarabdha runs its course</div></div>
+      </div>
+
+    </section>
+    <section class="section" id="sec-compare">
+      <div class="sec-head">
+        <div class="kicker">06 &middot; Comparison</div>
+        <h2>Vedanta Against Its Neighbours</h2>
+        <p class="dek">Other Vedanta schools, Samkhya and Yoga.</p>
+      </div>
+      <h3 class="sub"><span class="n">6A</span>Advaita, Vishishtadvaita and Dvaita</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Issue</th><th>Advaita</th><th>Vishishtadvaita</th><th>Dvaita</th></tr>
+        <tr><td>Brahman and soul</td><td>Identical</td><td>Soul is a real mode or part of Brahman</td><td>Eternally different</td></tr>
+        <tr><td>World</td><td>Mithya</td><td>Real, the body of Brahman</td><td>Real, different from God</td></tr>
+        <tr><td>Maya</td><td>Central</td><td>Power of God producing a real world</td><td>Not central</td></tr>
+        <tr><td>Liberation</td><td>Identity with Brahman; end of ignorance</td><td>Eternal service and communion with God; soul stays distinct</td><td>Eternal bliss in God&#8217;s presence, differences retained; graded</td></tr>
+        <tr><td>Means</td><td>Jnana</td><td>Bhakti and prapatti (surrender)</td><td>Bhakti with God&#8217;s grace; right knowledge of difference</td></tr>
+      </table></div>
+      <h3 class="sub"><span class="n">6B</span>Samkhya and Advaita</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Feature</th><th>Samkhya</th><th>Advaita</th></tr>
+        <tr><td>Reality</td><td>Two: Purusha and Prakriti</td><td>One: Brahman</td></tr>
+        <tr><td>Selves</td><td>Many Purushas</td><td>One non-dual Atman</td></tr>
+        <tr><td>World</td><td>Real evolution (parinama)</td><td>Apparent manifestation due to Maya (vivarta)</td></tr>
+        <tr><td>Bondage</td><td>Non-discrimination of Purusha and Prakriti</td><td>Avidya: non-recognition of Atman as Brahman</td></tr>
+        <tr><td>Liberation</td><td>Isolation (kaivalya)</td><td>Identity with Brahman</td></tr>
+        <tr><td>Mind and body</td><td>Belong to Prakriti</td><td>Belong to the empirical order (anatma)</td></tr>
+      </table></div>
+      <h3 class="sub"><span class="n">6C</span>Advaita and Patanjala Yoga</h3>
+      <p>Yoga holds a dualism of Purusha and Prakriti and reaches <b>kaivalya</b> through ashtanga yoga; Advaita holds non-dualism and reaches moksha through <b>knowledge of Brahman</b>. Yoga borrows Vedantic ideas: Atman, the koshas, the three states and turiya, and meditation on Om. <span class="src cls">Vedanta notes</span></p>
+
+    </section>
+    <section class="section" id="sec-answers">
+      <div class="sec-head">
+        <div class="kicker">07 &middot; Exam answers</div>
+        <h2>Model Answers: 10, 5 and 2 Marks</h2>
+        <p class="dek">Try each one first, then tap to compare.</p>
+      </div>
+      <p>Darshana answers follow <b>introduction, epistemology, metaphysics, ethics, liberation, conclusion</b>.</p>
+      <div class="mq"><div class="mqh"><span class="marks-tag">10 marks</span><span class="topic">Vedanta</span></div>
+        <p class="mqt">Explain Vedanta darshana (Advaita) in detail.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p><b>Introduction.</b> Vedanta is the culmination of the Vedas, the philosophy of the Upanishads, Brahma Sutras and Gita (prasthanatraya). Schools: Advaita (Shankara), Vishishtadvaita (Ramanuja), Dvaita (Madhva). Core: Brahma satyam, jagan mithya, jivo brahmaiva naparah.</p><p><b>Epistemology.</b> Six pramanas; Shruti is the means to know Brahman, supported by reasoning and experience; Mahavakyas; error is adhyasa rooted in avidya; knowledge removes ignorance.</p><p><b>Metaphysics.</b> Brahman as sat-chit-ananda (nirguna and saguna); Atman as witness; Maya with avarana and vikshepa; world mithya (vivartavada); three orders of reality; jiva and Ishvara as Brahman under different upadhis; koshas, three bodies, three states, turiya.</p><p><b>Ethics.</b> Based on unity of beings; sadhana chatushtaya, dharma, nishkama karma; ethics prepares the mind and becomes natural conduct for the knower.</p><p><b>Liberation.</b> Moksha is removal of avidya, not a produced result; shravana, manana, nididhyasana give aparoksha-jnana; jivanmukti and videhamukti.</p><p><b>Conclusion.</b> Avidya binds, knowledge frees.</p><p class="pts"><span class="src cls">Vedanta notes</span> Wording mine <span class="src add">added</span></p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Vedanta</span></div>
+        <p class="mqt">Explain the six pramanas of Advaita Vedanta.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Pratyaksha (perception), anumana (inference), upamana (comparison), shabda (testimony; for Brahman, Shruti), arthapatti (postulation) and anupalabdhi (non-apprehension), with examples: pot; smoke and fire; gavaya; Mahavakyas; the fat man who does not eat by day; absence of a pot. Samkhya and Yoga accept three, Nyaya four.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Vedanta</span></div>
+        <p class="mqt">Explain Maya and the three orders of reality.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Maya is Brahman&#8217;s power by which the world appears, neither real nor unreal, with avarana (veiling) and vikshepa (projecting). Reality has three orders: paramarthika (Brahman), vyavaharika (the empirical world, real until Brahman is known) and pratibhasika (illusions such as rope-snake, sublated by later knowledge).</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Vedanta</span></div>
+        <p class="mqt">Explain the sadhana chatushtaya.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Fourfold qualification: viveka (discrimination of eternal and non-eternal), vairagya (dispassion), shat-sampatti (shama, dama, uparati, titiksha, shraddha, samadhana) and mumukshutva (longing for liberation). They prepare the mind for knowledge.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Vedanta</span></div>
+        <p class="mqt">Compare Samkhya and Advaita Vedanta.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Samkhya: two realities, many Purushas, real evolution (parinama), bondage from non-discrimination, liberation as isolation. Advaita: one Brahman, one Atman, apparent world through Maya (vivarta), bondage from avidya, liberation as identity with Brahman.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">5 marks</span><span class="topic">Vedanta</span></div>
+        <p class="mqt">Explain jivanmukti and videhamukti.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Jivanmukti: liberation while living; the knower lives on, free from the sense of bondage. Videhamukti: liberation at the fall of the body after prarabdha karma is exhausted. Sanchita karma is destroyed by knowledge, agami is not accrued without doership, prarabdha runs its course.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Meaning of Vedanta?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Veda-anta: the end of the Vedas; the Upanishadic teaching.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Prasthanatraya?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Upanishads, Brahma Sutras, Bhagavad Gita.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Name the four Mahavakyas.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Prajnanam Brahma, Aham Brahmasmi, Tat tvam asi, Ayam Atma Brahma.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">What is adhyasa?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Superimposition of one thing on another, e.g. rope seen as snake.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">Name the five koshas.</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>Annamaya, pranamaya, manomaya, vijnanamaya, anandamaya.</p></div></details></div>
+      <div class="mq"><div class="mqh"><span class="marks-tag">2 marks</span><span class="topic">Quick</span></div>
+        <p class="mqt">What is turiya?</p>
+        <details class="ans"><summary>Tap to reveal answer</summary><div class="ansb"><p>The fourth state: pure consciousness underlying waking, dream and deep sleep.</p></div></details></div>
+
+    </section>
+    <section class="section" id="sec-recall">
+      <div class="sec-head">
+        <div class="kicker">08 &middot; Recall and checks</div>
+        <h2>One-Page Revision and Flags</h2>
+        <p class="dek">Revise from here the night before.</p>
+      </div>
+      <h3 class="sub"><span class="n">8A</span>Key exam points</h3>
+      <div class="blk exam">
+        <span class="lbl">Remember</span>
+        <ul class="plain">
+          <li>Advaita: Brahman alone is ultimately real; the world is mithya; jiva is Brahman. <span class="src cls">Vedanta notes</span></li>
+          <li>Shruti is the means for Brahman; reasoning and experience support it. <span class="src cls">Vedanta notes</span></li>
+          <li>Avidya, not action, binds; knowledge, not action, liberates. <span class="src cls">Vedanta notes</span></li>
+          <li>Maya has avarana and vikshepa; vivartavada is Advaita&#8217;s causation view. <span class="src cls">Vedanta notes</span></li>
+          <li>Prarabdha karma continues for the jivanmukta; sanchita is destroyed. <span class="src cls">Vedanta notes</span></li>
+        </ul>
+      </div>
+      <h3 class="sub"><span class="n">8B</span>Flags to confirm with your teacher</h3>
+      <div class="blk conf">
+        <span class="lbl">Check these</span>
+        <ul class="plain">
+          <li>The centuries given for Shankara, Ramanuja and Madhva come from your notes as &ldquo;traditional period&rdquo;; use your teacher&#8217;s dates if she gave different ones. <span class="src cls">Vedanta notes</span></li>
+          <li>Your notes give only Advaita in depth; Vishishtadvaita and Dvaita appear only in the comparison tables. <span class="src cls">Vedanta notes</span></li>
+          <li>The questions here are mine, modelled on your other papers; no Vedanta question appears in the Semester 1 paper you solved. <span class="src add">added</span></li>
+        </ul>
+      </div>
+      <div class="recall-hint">Flip to test yourself</div>
+      <div class="recall-strip">
+        <div class="recall-card"><div class="q">Brahman in one line?</div><div class="a">Satyam jnanam anantam: truth, consciousness, infinity</div></div>
+        <div class="recall-card"><div class="q">Who is Ishvara?</div><div class="a">Brahman associated with Maya (saguna Brahman)</div></div>
+        <div class="recall-card"><div class="q">Mahavakya from the Chandogya?</div><div class="a">Tat tvam asi</div></div>
+        <div class="recall-card"><div class="q">Liberation means?</div><div class="a">Recognising one&#8217;s ever-free nature; removal of avidya</div></div>
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.section'));
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-item'));
+  var sidebar = document.getElementById('sidebar');
+  var scrim = document.getElementById('scrim');
+  var menuBtn = document.getElementById('menuBtn');
+  var searchEl = document.getElementById('search');
+
+  function setActive(id){
+    navItems.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+  }
+  function closeSidebar(){ if (window.innerWidth <= 860){ sidebar.classList.remove('open'); scrim.classList.remove('show'); } }
+  function openSidebar(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+
+  navItems.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById('sec-' + btn.dataset.target);
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      try { history.replaceState(null, '', '#' + btn.dataset.target); } catch(e){}
+      setActive(btn.dataset.target);
+      closeSidebar();
+    });
+  });
+  menuBtn.addEventListener('click', openSidebar);
+  scrim.addEventListener('click', closeSidebar);
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    navItems.forEach(function(btn){
+      btn.hidden = q.length > 0 && btn.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setActive(e.target.id.replace('sec-','')); });
+    }, {rootMargin:'-20% 0px -70% 0px'});
+    sections.forEach(function(s){ io.observe(s); });
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll('.recall-card')).forEach(function(card){
+    card.addEventListener('click', function(){ card.classList.toggle('flipped'); });
+  });
+
+  var hash = (location.hash || '').replace('#','');
+  if (hash && document.getElementById('sec-' + hash)){
+    document.getElementById('sec-' + hash).scrollIntoView();
+    setActive(hash);
+  } else { setActive('overview'); }
+
+  var opened = [];
+  window.addEventListener('beforeprint', function(){
+    Array.prototype.slice.call(document.querySelectorAll('details.deeper')).forEach(function(d){ if (!d.open){ d.open = true; opened.push(d); } });
+  });
+  window.addEventListener('afterprint', function(){ opened.forEach(function(d){ d.open = false; }); opened = []; });
+})();
+</script>
